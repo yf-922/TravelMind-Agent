@@ -117,4 +117,3 @@ class ReviewerAgent(BaseAgent):
             "issues": ([] if approved else ["Draft is empty or includes an unverified POI."]),
             "revision_instruction": ("" if approved else "Keep only verified POI candidates and create a non-empty route."),
         })
-

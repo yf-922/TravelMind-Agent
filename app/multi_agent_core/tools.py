@@ -24,4 +24,3 @@ class FixturePoiTool:
             {"name": f"{city} Old Town", "address": f"{city} Riverside"},
             {"name": f"{city} Park", "address": f"{city} North District"},
         ]
-

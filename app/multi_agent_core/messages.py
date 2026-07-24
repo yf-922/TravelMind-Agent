@@ -24,4 +24,3 @@ class AgentMessage(BaseModel):
     created_at: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
 
     model_config = {"populate_by_name": True}
-
