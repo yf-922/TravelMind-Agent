@@ -224,6 +224,16 @@ class TravelPlanState(BaseModel):
     final_plan: Optional[dict[str, Any]] = None
 
 
+class SemanticMemoryExtraction(BaseModel):
+    """Only durable, user-confirmed travel preferences are eligible for memory."""
+
+    memories: list[str] = Field(
+        default_factory=list,
+        max_length=3,
+        description="0-3 stable, reusable travel preferences extracted from the user's request",
+    )
+
+
 # ─── Spot Tips Agent Schema ───────────────────────────────────
 
 class SpotTipItem(BaseModel):

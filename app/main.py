@@ -37,6 +37,11 @@ from app.core.memory import (
     save_pending_modification,
     set_user_profile,
 )
+from app.core.semantic_memory import (
+    format_semantic_memories,
+    run_semantic_memory_update,
+    search_user_memories,
+)
 from app.core.thread_store import thread_store
 from app.planning.graph import run_modification_stream
 from app.planning.graph import run_stream as run_plan_stream
@@ -224,7 +229,9 @@ async def create_plan_stream(req: PlanRequest, request: Request):
     if user_id:
         with get_conn() as conn:
             profile = get_user_profile(user_id, conn)
-        profile_hint = format_profile_for_prompt(profile)
+        structured_hint = format_profile_for_prompt(profile)
+        semantic_hint = format_semantic_memories(search_user_memories(user_id, query))
+        profile_hint = "\n".join(part for part in (structured_hint, semantic_hint) if part)
 
     # ── 6. 普通规划流 ─────────────────────────────────────────
     async def gen():
@@ -244,6 +251,9 @@ async def create_plan_stream(req: PlanRequest, request: Request):
                     ev["plan_id"] = saved_plan_id[0]
                     asyncio.create_task(
                         run_profile_update_agent(user_id, query, overrides.get("model_name"))
+                    )
+                    asyncio.create_task(
+                        run_semantic_memory_update(user_id, query, overrides.get("model_name"))
                     )
                 yield f"data: {json.dumps(ev, ensure_ascii=False)}\n\n"
         except Exception as e:  # noqa: BLE001
