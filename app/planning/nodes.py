@@ -10,7 +10,7 @@ from typing import Annotated, Any
 logger = logging.getLogger(__name__)
 
 from app.llm.factory import build_structured_llm
-from app.providers.amap.poi import search_around_pois
+from app.providers.amap.poi import ATTRACTION_TYPE, poi_to_spot, search_around_pois, search_city_pois
 from app.planning.schemas import (
     DayMealPick,
     IntentExtraction,
@@ -195,8 +195,30 @@ def attraction_search_node(state: TravelPlanState) -> dict[str, Any]:
     api_key = amap_key()
     spots = fetch_city_spots(state.destination or "", api_key, max_spots=state.max_spots)
     kept, _ = filter_by_rating(spots, state.min_rating)
-    note = f"高德景点搜索：抓取 {len(spots)} 个，rating≥{state.min_rating} 保留 {len(kept)} 个"
-    return {"pois": kept, "history": state.history + [note]}
+    targeted: list[dict[str, Any]] = []
+    target_query = (state.query or state.rewritten_query or "").strip()
+    if target_query:
+        try:
+            raw_targeted = search_city_pois(
+                state.destination or "", api_key, keywords=target_query,
+                types=ATTRACTION_TYPE, offset=8,
+            )
+            targeted = [spot for raw in raw_targeted if (spot := poi_to_spot(raw))]
+        except RuntimeError:
+            targeted = []
+
+    merged: list[dict[str, Any]] = []
+    seen: set[str] = set()
+    for spot in [*targeted, *kept]:
+        name = str(spot.get("name") or "").strip()
+        if name and name not in seen:
+            seen.add(name)
+            merged.append(spot)
+    note = (
+        f"高德景点搜索：通用池 {len(spots)} 个，定向扩展 {len(targeted)} 个，"
+        f"最终候选池 {len(merged)} 个；定向扩展用于覆盖用户明确提到但通用池没有的景点"
+    )
+    return {"pois": merged, "history": state.history + [note]}
 
 
 # ─── Planner ─────────────────────────────────────────────────

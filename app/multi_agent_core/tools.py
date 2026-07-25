@@ -4,7 +4,8 @@ from __future__ import annotations
 
 from typing import Any
 
-from app.planning.helpers import amap_key, fetch_city_spots
+from app.planning.helpers import amap_key, fetch_city_spots, merge_verified_poi
+from app.providers.amap.poi import ATTRACTION_TYPE, poi_to_spot, search_city_pois
 
 
 class ToolPermissionError(PermissionError):
@@ -32,8 +33,18 @@ class AmapPoiTool:
     """Live POI tool used in the real demo. It requires AMAP_API_KEY."""
 
     def search(self, city: str, query: str = "") -> list[dict[str, Any]]:
-        # The existing project has a stable multi-query POI collector. Reuse it here.
-        return fetch_city_spots(city, amap_key(), max_spots=12)
+        api_key = amap_key()
+        candidates = fetch_city_spots(city, api_key, max_spots=12)
+        if not query.strip():
+            return candidates
+        targeted = search_city_pois(
+            city, api_key, keywords=query.strip(), types=ATTRACTION_TYPE, offset=8
+        )
+        for raw in targeted:
+            spot = poi_to_spot(raw)
+            if spot:
+                candidates = merge_verified_poi(candidates, spot)
+        return candidates
 
 
 class FixturePoiTool:

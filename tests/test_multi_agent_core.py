@@ -24,6 +24,7 @@ def test_supervisor_dispatches_multiple_agents_and_preserves_private_memories():
     ]
     assert supervisor.agents["intent_agent"].private_memory
     assert supervisor.agents["planner_agent"].private_memory
+    assert supervisor.agents["intent_agent"].private_memory is not supervisor.agents["planner_agent"].private_memory
     assert supervisor.agents["intent_agent"].private_memory != supervisor.agents["planner_agent"].private_memory
 
 
