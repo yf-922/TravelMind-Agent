@@ -173,6 +173,21 @@ def filter_by_rating(
     return kept, dropped
 
 
+def merge_verified_poi(candidates: list[dict[str, Any]], poi: dict[str, Any]) -> list[dict[str, Any]]:
+    """Add a server-verified POI to the planning pool without duplicate names.
+
+    The selected POI is placed first so it remains visible to the planner even
+    when the original pool is already large. This function intentionally does
+    not apply the initial rating filter: an explicitly selected, verified place
+    is a user requirement rather than an automatic recommendation.
+    """
+    name = str(poi.get("name") or "").strip()
+    if not name:
+        raise ValueError("verified POI requires a name")
+    remaining = [item for item in candidates if str(item.get("name") or "").strip() != name]
+    return [poi, *remaining]
+
+
 # ─── 格式化 ──────────────────────────────────────────────────
 
 _CLUSTER_LABELS = "①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮"

@@ -45,7 +45,9 @@ from app.core.semantic_memory import (
 from app.core.thread_store import thread_store
 from app.planning.graph import run_modification_stream
 from app.planning.graph import run_stream as run_plan_stream
+from app.planning.helpers import amap_key, merge_verified_poi
 from app.planning.profile_updater import run_profile_update_agent
+from app.providers.amap.poi import ATTRACTION_TYPE, poi_to_spot, search_city_pois
 from app.api.auth_routes import router as auth_router
 from app.api.history_routes import router as history_router
 from app.api.profile_routes import router as profile_router
@@ -99,6 +101,9 @@ class PlanRequest(BaseModel):
     # 修改规划
     plan_id: Optional[str] = None
     modification_notes: Optional[str] = None
+    # A place selected from the manual POI search. The server verifies it again
+    # before adding it to the checkpoint candidate pool for local replanning.
+    selected_poi_name: Optional[str] = None
 
 
 @app.get("/api/health")
@@ -191,11 +196,49 @@ async def create_plan_stream(req: PlanRequest, request: Request):
         checkpoint = data["planner_state"] if data else None
 
         if checkpoint:
+            modification_notes = req.modification_notes
+            if req.selected_poi_name:
+                poi_name = req.selected_poi_name.strip()
+                destination = str(checkpoint.get("destination") or "").strip()
+                if not poi_name or len(poi_name) > 100:
+                    raise HTTPException(status_code=400, detail="景点名称不能为空或超过 100 个字符")
+                if not destination:
+                    raise HTTPException(status_code=400, detail="原行程缺少目的地，无法核验新增景点")
+                try:
+                    raw_pois = search_city_pois(
+                        destination,
+                        amap_key(),
+                        keywords=poi_name,
+                        types=ATTRACTION_TYPE,
+                        offset=8,
+                    )
+                except RuntimeError as exc:
+                    raise HTTPException(status_code=502, detail=f"新增景点核验失败：{exc}") from exc
+
+                verified = next(
+                    (poi_to_spot(raw) for raw in raw_pois if str(raw.get("name") or "").strip() == poi_name),
+                    None,
+                )
+                if not verified:
+                    raise HTTPException(
+                        status_code=404,
+                        detail=f"未能在 {destination} 核验到景点“{poi_name}”，请从搜索结果中重新选择",
+                    )
+                checkpoint = {
+                    **checkpoint,
+                    "pois": merge_verified_poi(list(checkpoint.get("pois") or []), verified),
+                }
+                modification_notes = (
+                    f"{modification_notes}\n"
+                    f"【用户已确认新增景点】{verified['name']}。该景点已由高德核验并加入候选池，"
+                    "必须安排进最终行程；请据此重新平衡当天顺序、时间和周边餐饮。"
+                )
+
             async def gen_modification():
                 try:
                     async for ev in run_modification_stream(
                         checkpoint,
-                        req.modification_notes,
+                        modification_notes,
                         memory_writer=memory_writer,
                         **overrides,
                     ):

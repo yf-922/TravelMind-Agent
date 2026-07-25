@@ -114,7 +114,12 @@ function PlanPage({ onRequestLogin, currentUsername, onPhaseChange, onPlanReady,
   // 由 App 传入修改触发器，在挂载时（planKey bump 后）立即执行修改流
   React.useEffect(() => {
     if (modifyTrigger) {
-      doStream({ query: modifyTrigger.query, plan_id: modifyTrigger.planId, modification_notes: modifyTrigger.query });
+      doStream({
+        query: modifyTrigger.query,
+        plan_id: modifyTrigger.planId,
+        modification_notes: modifyTrigger.query,
+        selected_poi_name: modifyTrigger.selectedPoiName || undefined,
+      });
     }
   }, []); // eslint-disable-line
 
@@ -370,6 +375,7 @@ function TripDetailPage({ plan: planProp, planId: planIdProp, onRequestModify, o
     setRedoStack([]);
     setSaveErr("");
     setSearchTarget(null);
+    setReplanSearchOpen(false);
   }, [planProp, planIdProp]);
 
   const applyDayTimeline = (dayI, timeline) => {
@@ -449,6 +455,7 @@ function TripDetailPage({ plan: planProp, planId: planIdProp, onRequestModify, o
   const [saveErr, setSaveErr] = React.useState("");
   // 搜索弹层目标：{ dayI, idx } 替换；{ dayI, idx:null, addType } 新增
   const [searchTarget, setSearchTarget] = React.useState(null);
+  const [replanSearchOpen, setReplanSearchOpen] = React.useState(false);
 
   const dirty = undoStack.length > 0;
   const dirtyRef = React.useRef(false);
@@ -598,6 +605,14 @@ function TripDetailPage({ plan: planProp, planId: planIdProp, onRequestModify, o
     onRequestModify?.(modQuery, planId);
   };
 
+  const handleReplanPoiPick = (poi) => {
+    setReplanSearchOpen(false);
+    if (!planId || !poi?.name) return;
+    const message = `将“${poi.name}”加入行程，并重新安排景点顺序、游玩时间和周边餐饮。`;
+    if (!confirm(`将核验“${poi.name}”并加入候选池，再重新生成整份行程。是否继续？`)) return;
+    onRequestModify?.(message, planId, poi.name);
+  };
+
   if (!plan) return null;
   const viewPlan = editing && editedView ? editedView : plan;
   const day = viewPlan.days[dayIdx];
@@ -646,6 +661,14 @@ function TripDetailPage({ plan: planProp, planId: planIdProp, onRequestModify, o
           title={searchTarget.idx != null ? "更换为…" : "添加…"}
           onPick={handlePoiPick}
           onClose={() => setSearchTarget(null)} />
+      )}
+      {replanSearchOpen && (
+        <PoiSearchModal
+          city={plan.destination}
+          kind="attraction"
+          title="搜索景点并重新规划"
+          onPick={handleReplanPoiPick}
+          onClose={() => setReplanSearchOpen(false)} />
       )}
       {nearbyTarget && (
         <NearbySearchModal
@@ -719,6 +742,9 @@ function TripDetailPage({ plan: planProp, planId: planIdProp, onRequestModify, o
             {dayMsg && dayMsg.day === dayNo && <span className="day-opt-msg">{dayMsg.text}</span>}
             {!editing && planId && (
               <button className="optimize-btn" onClick={enterEdit}>✏️ 编辑行程</button>
+            )}
+            {!editing && planId && (
+              <button className="optimize-btn" onClick={() => setReplanSearchOpen(true)}>＋ 添加景点并重规划</button>
             )}
             {!editing && hasAttractions && planId && (
               isOptimized ? (

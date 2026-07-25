@@ -104,9 +104,9 @@ function App() {
   };
 
   // 从行程详情页发起修改：跳到规划页执行修改流
-  const onRequestModify = (query, planId) => {
+  const onRequestModify = (query, planId, selectedPoiName = null) => {
     const nonce = ++modifyNonceRef.current;
-    setModifyTrigger({ query, planId, nonce });
+    setModifyTrigger({ query, planId, selectedPoiName, nonce });
     if (planPhase !== "loading") setPlanKey(k => k + 1);
     setPage("plan");
     window.scrollTo({ top: 0 });
