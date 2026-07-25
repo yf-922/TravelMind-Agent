@@ -16,7 +16,9 @@ User request
 If the review fails: ReviewerAgent -> Supervisor -> PlannerAgent (one revision) -> ReviewerAgent
 ```
 
-`Supervisor` owns only the current task trace (`dispatch_log`). Each worker owns a separate `system_prompt` and `private_memory`; the supervisor never passes one worker's private memory to another worker. Workers communicate only through `AgentMessage`.
+`Supervisor` owns only the current task trace (`dispatch_log`) and a centralized routing policy. Each worker owns a separate `system_prompt` and `private_memory`; the supervisor never passes one worker's private memory to another worker. Workers communicate only through `AgentMessage`.
+
+The POI worker has an explicit `poi_search` allow-list. `ToolRegistry` rejects calls made by Agents without that permission. Worker model adapters are injectable: the production application can provide an LLM adapter while the deterministic default remains reproducible for tests.
 
 ## Message Schema
 
@@ -28,6 +30,7 @@ Every dispatch has these fields:
 - `content`: structured task input or result.
 - `status`: `pending`, `running`, `done`, `failed`, or `retrying`.
 - `attempt`: `0` for the first route and `1` for the one permitted revision.
+- `error_code`: populated on a terminal worker failure after the retry budget is exhausted.
 - `trace_id` and `created_at`: log correlation and timestamp.
 
 ## Run
@@ -54,8 +57,8 @@ No key is stored in the source code or committed to Git.
 .\.venv\Scripts\python.exe -m pytest tests\test_multi_agent_core.py -q
 ```
 
-The tests verify four-worker dispatch, memory isolation, POI grounding, and the conditional revision route.
+The tests verify four-worker dispatch, memory isolation, POI grounding, conditional revision, retry-to-failure handling, tool permission isolation, and model-adapter injection.
 
 ## Current Boundary
 
-The course core intentionally uses deterministic role implementations so the offline demo and tests are repeatable. Their distinct system prompts and private memories are already modeled, but this module does not yet call an LLM directly. The existing main FloatTrip workflow remains the project component that invokes the configured LLM. The next extension is to inject an LLM client into `IntentAgent`, `PlannerAgent`, and `ReviewerAgent`, while retaining the same message schema, memory isolation, tool boundary, and offline tests.
+The default course demo uses deterministic role implementations so it is repeatable without an API key. `IntentAgent`, `PlannerAgent`, and `ReviewerAgent` now accept an injected model adapter; an adapter receives only that Agent's system prompt, private memory, and current message. The existing main FloatTrip workflow remains the production component that invokes the configured LLM. Migrating that UI path to this Supervisor is a separate integration step, not something this experiment core claims to have already done.

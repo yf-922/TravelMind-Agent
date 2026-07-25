@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import json
 from abc import ABC, abstractmethod
-from typing import Any, Protocol
+from typing import Any, Callable, Protocol
 
 from app.multi_agent_core.messages import AgentMessage
 
@@ -16,10 +16,19 @@ class PoiTool(Protocol):
 class BaseAgent(ABC):
     """Each instance owns its prompt and memory. No global message list is used."""
 
-    def __init__(self, name: str, system_prompt: str) -> None:
+    def __init__(
+        self,
+        name: str,
+        system_prompt: str,
+        *,
+        model: Callable[[str, list[dict[str, str]], dict[str, Any]], dict[str, Any]] | None = None,
+        allowed_tools: set[str] | None = None,
+    ) -> None:
         self.name = name
         self.system_prompt = system_prompt
         self.private_memory: list[dict[str, str]] = []
+        self.model = model
+        self.allowed_tools = frozenset(allowed_tools or set())
 
     def _remember(self, role: str, content: str) -> None:
         self.private_memory.append({"role": role, "content": content})
@@ -37,19 +46,32 @@ class BaseAgent(ABC):
             trace_id=message.trace_id,
         )
 
+    def _model_payload(self, message: AgentMessage) -> dict[str, Any] | None:
+        """Optional model seam: production callers can inject an LLM adapter; tests stay offline."""
+        if self.model is None:
+            return None
+        payload = self.model(self.system_prompt, list(self.private_memory), message.content)
+        if not isinstance(payload, dict):
+            raise TypeError(f"{self.name} model must return a dict")
+        return payload
+
     @abstractmethod
     def run(self, message: AgentMessage) -> AgentMessage:
         """Process a single structured message using only this agent's memory."""
 
 
 class IntentAgent(BaseAgent):
-    def __init__(self) -> None:
+    def __init__(self, *, model=None) -> None:
         super().__init__(
             "intent_agent",
             "Extract the destination and stable travel constraints. Do not plan an itinerary or search POIs.",
+            model=model,
         )
 
     def run(self, message: AgentMessage) -> AgentMessage:
+        model_payload = self._model_payload(message)
+        if model_payload is not None:
+            return self._reply(message, model_payload)
         request = str(message.content.get("user_request", ""))
         destination = str(message.content.get("destination_hint", "")).strip()
         return self._reply(message, {
@@ -60,34 +82,46 @@ class IntentAgent(BaseAgent):
 
 
 class POIResearchAgent(BaseAgent):
-    def __init__(self, tool: PoiTool) -> None:
+    def __init__(self, tool: PoiTool, *, model=None) -> None:
         super().__init__(
             "poi_research_agent",
             "Verify travel places with the POI tool. Never invent a place, coordinate, or address.",
+            model=model,
+            allowed_tools={"poi_search"},
         )
         self.tool = tool
+
+    def use_poi_tool(self, city: str, query: str = "") -> list[dict[str, Any]]:
+        if "poi_search" not in self.allowed_tools:
+            raise PermissionError(f"{self.name} cannot use poi_search")
+        return self.tool.search(city, query)
 
     def run(self, message: AgentMessage) -> AgentMessage:
         city = str(message.content.get("destination", "")).strip()
         query = str(message.content.get("place_query", "")).strip()
         if not city:
             return self._reply(message, {"candidates": [], "error": "destination is required"})
-        candidates = self.tool.search(city, query)
+        candidates = self.use_poi_tool(city, query)
         return self._reply(message, {
             "destination": city,
             "candidates": candidates,
             "tool_used": self.tool.__class__.__name__,
+            "allowed_tools": sorted(self.allowed_tools),
         })
 
 
 class PlannerAgent(BaseAgent):
-    def __init__(self) -> None:
+    def __init__(self, *, model=None) -> None:
         super().__init__(
             "planner_agent",
             "Create an itinerary only from verified POI candidates. Do not judge your own plan.",
+            model=model,
         )
 
     def run(self, message: AgentMessage) -> AgentMessage:
+        model_payload = self._model_payload(message)
+        if model_payload is not None:
+            return self._reply(message, model_payload)
         candidates = list(message.content.get("candidates", []))
         selected = candidates[:3]
         itinerary = [
@@ -101,13 +135,17 @@ class PlannerAgent(BaseAgent):
 
 
 class ReviewerAgent(BaseAgent):
-    def __init__(self) -> None:
+    def __init__(self, *, model=None) -> None:
         super().__init__(
             "reviewer_agent",
             "Review a draft against verified candidates. Do not rewrite the itinerary.",
+            model=model,
         )
 
     def run(self, message: AgentMessage) -> AgentMessage:
+        model_payload = self._model_payload(message)
+        if model_payload is not None:
+            return self._reply(message, model_payload)
         itinerary = list(message.content.get("itinerary", []))
         candidate_names = {item.get("name") for item in message.content.get("candidates", [])}
         unknown = [item.get("name") for item in itinerary if item.get("name") not in candidate_names]

@@ -2,6 +2,7 @@ from app.multi_agent_core.agents import IntentAgent, POIResearchAgent, PlannerAg
 from app.multi_agent_core.messages import AgentMessage
 from app.multi_agent_core.supervisor import Supervisor
 from app.multi_agent_core.tools import FixturePoiTool
+from app.multi_agent_core.tools import ToolPermissionError, ToolRegistry
 
 
 def make_supervisor() -> Supervisor:
@@ -59,3 +60,51 @@ def test_supervisor_routes_rejected_draft_back_to_planner_once():
         ("itinerary_revise", "planner_agent", 1),
         ("itinerary_review", "reviewer_agent", 1),
     ]
+
+
+def test_supervisor_retries_worker_and_returns_structured_failure():
+    class BrokenIntent(IntentAgent):
+        def run(self, message):
+            raise TimeoutError("simulated timeout")
+
+    supervisor = Supervisor({
+        "intent_agent": BrokenIntent(),
+        "poi_research_agent": POIResearchAgent(FixturePoiTool()),
+        "planner_agent": PlannerAgent(),
+        "reviewer_agent": ReviewerAgent(),
+    }, max_attempts=2)
+    result = supervisor.run_trip("Plan a day", "Beijing")
+
+    assert result["status"] == "failed"
+    assert result["failed_agent"] == "intent_agent"
+    assert result["error_code"] == "TimeoutError"
+    assert [entry["attempt"] for entry in result["dispatch_log"] if entry["to"] == "intent_agent"] == [0, 1]
+
+
+def test_tool_registry_rejects_cross_agent_tool_access():
+    class ProtectedAgent(IntentAgent):
+        pass
+
+    registry = ToolRegistry()
+    registry.register("poi_search", lambda city: [{"name": city}])
+
+    try:
+        registry.call(ProtectedAgent(), "poi_search", "Beijing")
+    except ToolPermissionError:
+        pass
+    else:
+        raise AssertionError("an Agent without poi_search permission called the tool")
+
+
+def test_model_adapter_receives_private_memory_and_role_prompt():
+    captured = {}
+
+    def adapter(system_prompt, memory, content):
+        captured.update(system_prompt=system_prompt, memory=memory, content=content)
+        return {"user_request": "x", "destination": "Beijing", "constraints": "y"}
+
+    agent = IntentAgent(model=adapter)
+    agent.run(AgentMessage(task_id="t", task_type="intent_extract", **{"from": "supervisor", "to": "intent_agent"}, content={"user_request": "x"}))
+
+    assert "Extract the destination" in captured["system_prompt"]
+    assert captured["memory"] == []

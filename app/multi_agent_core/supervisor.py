@@ -15,9 +15,24 @@ logger = logging.getLogger(__name__)
 class Supervisor:
     """Owns task state and logs; worker private memories remain inaccessible here."""
 
-    def __init__(self, agents: dict[str, BaseAgent]) -> None:
+    def __init__(self, agents: dict[str, BaseAgent], *, max_attempts: int = 2) -> None:
         self.agents = agents
+        self.max_attempts = max(1, max_attempts)
         self.dispatch_log: list[AgentMessage] = []
+
+    def route_after(self, result: AgentMessage, *, review_passed: bool | None = None) -> str:
+        """Central routing policy; workers never decide which worker runs next."""
+        if result.status == "failed":
+            return "stop"
+        if result.task_type == "intent_extract":
+            return "poi_research_agent"
+        if result.task_type == "poi_research":
+            return "planner_agent"
+        if result.task_type == "itinerary_plan":
+            return "reviewer_agent"
+        if result.task_type == "itinerary_review":
+            return "done" if review_passed else "planner_agent"
+        return "stop"
 
     def _dispatch(self, task_id: str, task_type: str, to: str, content: dict[str, Any], attempt: int = 0) -> AgentMessage:
         message = AgentMessage(
@@ -30,10 +45,32 @@ class Supervisor:
         )
         self.dispatch_log.append(message)
         logger.info("[dispatch] task=%s to=%s type=%s attempt=%d", task_id, to, task_type, attempt)
-        result = self.agents[to].run(message)
-        self.dispatch_log.append(result)
-        logger.info("[result] task=%s from=%s status=%s", task_id, result.from_agent, result.status)
-        return result
+        agent = self.agents[to]
+        for current_attempt in range(attempt, self.max_attempts):
+            if current_attempt > attempt:
+                message = message.model_copy(update={"attempt": current_attempt, "status": "retrying"})
+                self.dispatch_log.append(message)
+            try:
+                result = agent.run(message)
+                self.dispatch_log.append(result)
+                logger.info("[result] task=%s from=%s status=%s", task_id, result.from_agent, result.status)
+                return result
+            except Exception as exc:  # noqa: BLE001 - supervisor converts worker failures to messages
+                logger.warning("[worker-error] task=%s agent=%s attempt=%d error=%s", task_id, to, current_attempt, exc)
+                if current_attempt + 1 >= self.max_attempts:
+                    failed = AgentMessage(
+                        task_id=task_id,
+                        task_type=task_type,
+                        **{"from": to, "to": "supervisor"},
+                        content={"error": "worker failed after retries"},
+                        status="failed",
+                        attempt=current_attempt,
+                        trace_id=message.trace_id,
+                        error_code=type(exc).__name__,
+                    )
+                    self.dispatch_log.append(failed)
+                    return failed
+        raise RuntimeError("unreachable supervisor retry state")
 
     def run_trip(self, user_request: str, destination_hint: str) -> dict[str, Any]:
         # A dispatch trace belongs to one user task. Worker memories remain private
@@ -44,21 +81,30 @@ class Supervisor:
             "user_request": user_request,
             "destination_hint": destination_hint,
         })
+        if intent.status == "failed":
+            return self._failure_result(task_id, "intent_agent", "intent extraction failed", intent)
         research = self._dispatch(task_id, "poi_research", "poi_research_agent", {
             "destination": intent.content["destination"],
             "place_query": user_request,
         })
+        if research.status == "failed":
+            return self._failure_result(task_id, "poi_research_agent", "POI research failed", research)
         plan = self._dispatch(task_id, "itinerary_plan", "planner_agent", {
             "intent": intent.content,
             "candidates": research.content["candidates"],
         })
+        if plan.status == "failed":
+            return self._failure_result(task_id, "planner_agent", "planning failed", plan)
         review = self._dispatch(task_id, "itinerary_review", "reviewer_agent", {
             "itinerary": plan.content["itinerary"],
             "candidates": research.content["candidates"],
         })
+        if review.status == "failed":
+            return self._failure_result(task_id, "reviewer_agent", "review failed", review)
 
         # Advanced conditional route: a rejected draft is repaired once, then reviewed again.
-        if not review.content["approved"]:
+        next_agent = self.route_after(review, review_passed=bool(review.content.get("approved")))
+        if next_agent == "planner_agent":
             plan = self._dispatch(task_id, "itinerary_revise", "planner_agent", {
                 "intent": intent.content,
                 "candidates": research.content["candidates"],
@@ -76,4 +122,15 @@ class Supervisor:
             "itinerary": plan.content["itinerary"],
             "review": review.content,
             "dispatch_log": [message.model_dump(by_alias=True) for message in self.dispatch_log],
+        }
+
+    def _failure_result(self, task_id: str, agent: str, message: str, failure: AgentMessage) -> dict[str, Any]:
+        """Return an actionable partial result instead of crashing on a worker failure."""
+        return {
+            "task_id": task_id,
+            "status": "failed",
+            "failed_agent": agent,
+            "error": message,
+            "error_code": failure.error_code,
+            "dispatch_log": [entry.model_dump(by_alias=True) for entry in self.dispatch_log],
         }

@@ -22,5 +22,6 @@ class AgentMessage(BaseModel):
     attempt: int = 0
     trace_id: str = Field(default_factory=lambda: str(uuid4()))
     created_at: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
+    error_code: str | None = None
 
     model_config = {"populate_by_name": True}
