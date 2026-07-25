@@ -212,6 +212,8 @@ class TravelPlanState(BaseModel):
     # 用户记忆注入（由 API 层填充）
     profile_hint: Optional[str] = None
 
+    rag_sources: list[dict[str, Any]] = Field(default_factory=list)
+
     # 修改规划相关（由 API 层填充）
     modification_notes: Optional[str] = None
     parent_plan_id: Optional[str] = None

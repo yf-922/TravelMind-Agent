@@ -52,6 +52,7 @@ from app.planning.prompts import (
     WEEKDAYS,
 )
 from app.core.database import get_conn
+from app.core.travel_knowledge import search_travel_knowledge
 from app.core.memory import search_profile_fields
 
 from langgraph.graph import END
@@ -228,6 +229,19 @@ def make_planner_node(model_name: str | None):
 
         cluster_map = cluster_pois_by_location(state.pois, state.days)
         cand_text = format_spots_for_llm(state.pois, cluster_map)
+        rag_sources = search_travel_knowledge(
+            f"{state.destination or ''} {state.rewritten_query or state.query}", limit=3
+        )
+        rag_block = ""
+        if rag_sources:
+            rag_block = (
+                "\n\nTravel knowledge retrieved by the search_docs tool. Use it only for factual "
+                "claims. If you mention a fact in notes, retain its [source: source#chunk] label.\n"
+                + "\n\n".join(
+                    f"[source: {item['source']}#{item['chunk_id']}]\n{item['text']}"
+                    for item in rag_sources
+                )
+            )
         feedback = ""
         if state.route_modify_opinion:
             is_user_opinion = "【用户修改意见】" in state.route_modify_opinion
@@ -283,6 +297,7 @@ def make_planner_node(model_name: str | None):
             f"{_travel_dates_block(state)}"
             f"{weather_block}\n\n"
             f"候选景点池（共 {len(state.pois)} 个）：\n{cand_text}"
+            f"{rag_block}"
             f"{feedback}"
             f"{dialogue_block}"
             f"{final_note}\n\n"
@@ -330,6 +345,7 @@ def make_planner_node(model_name: str | None):
             "planner_reviewer_dialogue": state.planner_reviewer_dialogue + [planner_line],
             "modification_concern": result.modification_concern or None,
             "route_stale_warning": new_stale_warning,
+            "rag_sources": rag_sources,
         }
 
     return planner
@@ -861,6 +877,7 @@ def _finalize_impl(state: TravelPlanState) -> dict[str, Any]:
         if s.get("name") and s["name"] not in placed_names
     ][:20]
     final_plan["candidate_spots"] = candidate_spots
+    final_plan["knowledge_sources"] = list(state.rag_sources or [])
 
     history = state.history + ["finalize：已组装最终计划"]
     # 规划过程日志随 plan 一起落库，历史详情页回看时可还原完整规划过程
