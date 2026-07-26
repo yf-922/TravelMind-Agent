@@ -92,6 +92,8 @@ function PlanPage({ onRequestLogin, currentUsername, onPhaseChange, onPlanReady,
   const [activeNode, setActiveNode] = React.useState(null);
   const [doneNodes, setDoneNodes] = React.useState([]);
   const [stageLabel, setStageLabel] = React.useState("");
+  const [liveNarration, setLiveNarration] = React.useState("旅行助手已出发，正在整理你的需求…");
+  const [stageReport, setStageReport] = React.useState("");
   const [missingFields, setMissingFields] = React.useState([]);
   const [threadId, setThreadId] = React.useState(null);
   const [concernModal, setConcernModal] = React.useState(null);
@@ -101,6 +103,55 @@ function PlanPage({ onRequestLogin, currentUsername, onPhaseChange, onPlanReady,
   const abortRef = React.useRef(null);
   // 旅程已走到的最远站点下标：planner⇄reviewer / planner⇄time_check 循环时只前进不后退
   const maxStepRef = React.useRef(-1);
+  const narrationIndexRef = React.useRef(0);
+
+  const narrationPool = (node) => ({
+    intent: [
+      "先对齐目的地、日期和游玩偏好，避免后面规划跑偏。",
+      "正在检查出行日期是否完整，并尝试获取对应天气信息。",
+    ],
+    query_rewrite: [
+      "正在结合你的历史偏好，把需求改写成更适合检索的表达。",
+      "本次明确需求优先于历史偏好，正在处理可能的冲突。",
+    ],
+    attraction_search: [
+      "正在搜索通用候选池，也会核验你明确提到的景点。",
+      "候选景点会先检查名称、坐标和评分，避免把不存在的地点写进计划。",
+    ],
+    planner: [
+      "规划师正在把候选景点按区域、节奏和天气组合成逐日行程。",
+      "正在给每个景点安排时段，并尽量减少跨区折返。",
+    ],
+    reviewer: [
+      "评审 Agent 正在检查路线是否使用了候选池外的景点，以及是否满足你的约束。",
+      "如果发现问题，会把明确的返工意见交回规划 Agent。",
+    ],
+    time_check: [
+      "正在核对景点开放时间和安排时段，避免到了才发现闭馆。",
+      "时间冲突会触发局部返工，不会直接丢掉整份行程。",
+    ],
+    meal_search: [
+      "正在围绕当天路线搜索附近餐厅，减少吃饭时来回绕路。",
+      "正在根据景点坐标确定午餐和晚餐的搜索范围。",
+    ],
+    meal_recommend: [
+      "正在从附近候选餐厅中挑选午餐和晚餐，并参考你的口味偏好。",
+      "餐厅信息不足时会保留提示，不会编造店铺。",
+    ],
+    spot_tips: [
+      "正在为行程中的景点补充游玩贴士和天气提醒。",
+      "最后检查一次信息是否齐全，马上为你整理成可读的行程单。",
+    ],
+    finalize: [
+      "正在收进行程、路线距离和注意事项，马上就能出发了。",
+    ],
+  })[node] || ["多个 Agent 正在交接结果，请稍等片刻。"];
+
+  const updateNarration = (node) => {
+    const pool = narrationPool(node);
+    const index = narrationIndexRef.current++ % pool.length;
+    setLiveNarration(pool[index]);
+  };
 
   React.useEffect(() => () => abortRef.current && abortRef.current(), []);
 
@@ -126,6 +177,7 @@ function PlanPage({ onRequestLogin, currentUsername, onPhaseChange, onPlanReady,
   const handleStage = (ev) => {
     setLogs(prev => [...prev, ev.label || ev.node]);
     setStageLabel(ev.label || "");
+    updateNarration(ev.node);
     const key = NODE_TO_STEP[ev.node] || ev.node;
     const idx = JOURNEY_STEPS.findIndex(s => s.key === key);
     if (idx < 0 || idx <= maxStepRef.current) return; // 未知节点或回头路（多轮循环）不动小人
@@ -139,7 +191,16 @@ function PlanPage({ onRequestLogin, currentUsername, onPhaseChange, onPlanReady,
     setActiveNode(null);
     setDoneNodes([]);
     setStageLabel("");
+    narrationIndexRef.current = 0;
+    setLiveNarration("旅行助手已出发，正在整理你的需求…");
+    setStageReport("");
   };
+
+  React.useEffect(() => {
+    if (phase !== "loading") return;
+    const timer = window.setInterval(() => updateNarration(activeNode || "intent"), 3600);
+    return () => window.clearInterval(timer);
+  }, [phase, activeNode]); // eslint-disable-line
 
   const doStream = (body) => {
     setPhase("loading");
@@ -159,6 +220,12 @@ function PlanPage({ onRequestLogin, currentUsername, onPhaseChange, onPlanReady,
     streamPlan(body, {
       onAbort: (fn) => { abortRef.current = fn; },
       onStage: handleStage,
+      onStageSummary: (ev) => {
+        if (!ev.summary) return;
+        setStageReport(ev.summary);
+        setLiveNarration(ev.summary);
+        setLogs(prev => [...prev, `✓ ${ev.summary}`]);
+      },
       onResult: (ev) => {
         const adapted = adaptPlan(ev.plan, currentUsername);
         adapted.logs = ev.history || logs;
@@ -202,6 +269,12 @@ function PlanPage({ onRequestLogin, currentUsername, onPhaseChange, onPlanReady,
     confirmModification(pending_id, parent_plan_id, {
       onAbort: (fn) => { abortRef.current = fn; },
       onStage: handleStage,
+      onStageSummary: (ev) => {
+        if (!ev.summary) return;
+        setStageReport(ev.summary);
+        setLiveNarration(ev.summary);
+        setLogs(prev => [...prev, `✓ ${ev.summary}`]);
+      },
       onResult: (ev) => {
         const adapted = adaptPlan(ev.plan, currentUsername);
         const newPlanId = ev.plan_id || planId;
@@ -236,6 +309,18 @@ function PlanPage({ onRequestLogin, currentUsername, onPhaseChange, onPlanReady,
             <span className="sub">多位 Agent 接力工作中 · 通常需要 1–2 分钟</span>
           </div>
           <JourneyLoading steps={JOURNEY_STEPS} activeNode={activeNode} doneNodes={doneNodes} />
+          <div className="journey-live" aria-live="polite">
+            <span className="journey-live-dot"></span>
+            <span className="journey-live-title">旅行助手播报</span>
+            <span>{liveNarration}</span>
+          </div>
+          {stageReport && (
+            <div className="journey-report" aria-live="polite">
+              <span className="journey-report-check">✓</span>
+              <span className="journey-report-title">阶段小结</span>
+              <span>{stageReport}</span>
+            </div>
+          )}
           <div className="journey-steps">
             {JOURNEY_STEPS.map((s) => {
               const isDone = doneNodes.includes(s.key);

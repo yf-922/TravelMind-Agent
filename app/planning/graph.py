@@ -124,6 +124,47 @@ def _stage_event(node: str, acc: dict[str, Any], upd: dict[str, Any]) -> dict[st
     return ev
 
 
+def _route_spot_count(route: Any) -> int:
+    """Return a display-only spot count without exposing model reasoning."""
+    if not isinstance(route, list):
+        return 0
+    return sum(len(day.get("spots", [])) for day in route if isinstance(day, dict))
+
+
+def _stage_summary(node: str, state_before: dict[str, Any], update: dict[str, Any]) -> str:
+    """Build a factual completion report using only structured state fields."""
+    state = {**state_before, **update}
+    destination = state.get("destination") or "目的地"
+    days = state.get("days") or 0
+
+    if node == "intent":
+        weather = "天气信息已获取" if state.get("weather_forecast") else "天气暂不可用，已启用提示降级"
+        return f"已识别：{destination}，{days} 天行程；{weather}。"
+    if node == "query_rewrite":
+        return "已结合本次需求和用户偏好，整理检索约束。"
+    if node == "attraction_search":
+        return f"已建立 {len(state.get('pois') or [])} 个候选景点池。"
+    if node == "planner":
+        return (f"第 {state.get('review_round') or 1} 轮行程草案已生成："
+                f"{len(state.get('route') or []) or days} 天、{_route_spot_count(state.get('route'))} 个景点。")
+    if node == "reviewer":
+        issues = state.get("reviewer_issues") or []
+        if state.get("approved"):
+            return "行程评审通过，进入开放时间核验。"
+        return f"评审发现 {len(issues)} 项需调整内容，已交回规划 Agent 修改。"
+    if node == "time_check":
+        return f"已完成开放时间核验：发现 {len(state.get('time_violations') or [])} 项时间冲突。"
+    if node == "meal_search":
+        return f"已找到 {len(state.get('meal_candidates') or [])} 个行程周边餐饮候选。"
+    if node == "meal_recommend":
+        return f"已完成 {len(state.get('meals') or [])} 天的午晚餐推荐。"
+    if node == "spot_tips":
+        return f"已生成 {len(state.get('spot_tips') or {})} 条景点游玩提示。"
+    if node == "finalize":
+        return "行程已整理完成，正在展示结果。"
+    return "一个规划阶段已完成，正在继续下一步。"
+
+
 # ─── 修改模式专用迷你图 ────────────────────────────────────────
 
 def _route_after_review_for_modification(state: TravelPlanState) -> str:
@@ -228,6 +269,7 @@ async def run_modification_stream(
             # （review_round 尚未递增），update 之后再算会多加 1
             planner_done = True
             yield _stage_event(node, acc, upd)
+            yield {"type": "stage_summary", "node": node, "summary": _stage_summary(node, acc, upd)}
             acc.update(upd)
             concern = acc.get("modification_concern") or ""
             if concern and acc.get("review_round") == 1:
@@ -256,8 +298,9 @@ async def run_modification_stream(
                 return
             continue  # 无顾虑，继续
 
-        acc.update(upd)
         yield _stage_event(node, acc, upd)
+        yield {"type": "stage_summary", "node": node, "summary": _stage_summary(node, acc, upd)}
+        acc.update(upd)
 
     if not planner_done:
         # planner 事件未触发（不应出现）
@@ -311,8 +354,9 @@ async def run_confirm_stream(
         upd = (event.get("data") or {}).get("output")
         if not isinstance(upd, dict):
             continue
-        acc.update(upd)
         yield _stage_event(node, acc, upd)
+        yield {"type": "stage_summary", "node": node, "summary": _stage_summary(node, acc, upd)}
+        acc.update(upd)
 
     final = TravelPlanState(**acc)
     success = final.final_plan is not None
@@ -367,6 +411,7 @@ async def run_stream(
             # 节点完成后更新累积状态（不再重复推送 stage，避免前端出现重复条目）
             upd = (event.get("data") or {}).get("output")
             if isinstance(upd, dict):
+                yield {"type": "stage_summary", "node": node, "summary": _stage_summary(node, acc, upd)}
                 acc.update(upd)
 
     final = TravelPlanState(**acc)
