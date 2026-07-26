@@ -131,6 +131,45 @@ def _route_spot_count(route: Any) -> int:
     return sum(len(day.get("spots", [])) for day in route if isinstance(day, dict))
 
 
+def _preview_names(items: Any, limit: int = 3) -> str:
+    """Pick a few verified item names for a public progress update."""
+    if not isinstance(items, list):
+        return ""
+    names = [str(item.get("name") or "").strip() for item in items if isinstance(item, dict)]
+    names = list(dict.fromkeys(name for name in names if name))
+    return "、".join(names[:limit])
+
+
+def _meal_candidate_preview(entries: Any, limit: int = 3) -> str:
+    if not isinstance(entries, list):
+        return ""
+    candidates: list[dict[str, Any]] = []
+    for entry in entries:
+        if not isinstance(entry, dict):
+            continue
+        for period in ("lunch", "dinner"):
+            value = entry.get(period)
+            if isinstance(value, dict):
+                candidates.extend(value.get("candidates") or [])
+    return _preview_names(candidates, limit)
+
+
+def _meal_pick_preview(meals: Any, limit: int = 2) -> str:
+    if not isinstance(meals, list):
+        return ""
+    lines: list[str] = []
+    for meal in meals[:limit]:
+        if not isinstance(meal, dict):
+            continue
+        lunch = (meal.get("lunch") or {}).get("name") if isinstance(meal.get("lunch"), dict) else ""
+        dinner = (meal.get("dinner") or {}).get("name") if isinstance(meal.get("dinner"), dict) else ""
+        day = meal.get("day") or len(lines) + 1
+        picks = " / ".join(part for part in (lunch, dinner) if part)
+        if picks:
+            lines.append(f"第 {day} 天：{picks}")
+    return "；".join(lines)
+
+
 def _stage_summary(node: str, state_before: dict[str, Any], update: dict[str, Any]) -> str:
     """Build a factual completion report using only structured state fields."""
     state = {**state_before, **update}
@@ -143,7 +182,10 @@ def _stage_summary(node: str, state_before: dict[str, Any], update: dict[str, An
     if node == "query_rewrite":
         return "已结合本次需求和用户偏好，整理检索约束。"
     if node == "attraction_search":
-        return f"已建立 {len(state.get('pois') or [])} 个候选景点池。"
+        pois = state.get("pois") or []
+        sample = _preview_names(pois)
+        suffix = f"示例：{sample}。" if sample else ""
+        return f"已建立 {len(pois)} 个候选景点池。{suffix}"
     if node == "planner":
         return (f"第 {state.get('review_round') or 1} 轮行程草案已生成："
                 f"{len(state.get('route') or []) or days} 天、{_route_spot_count(state.get('route'))} 个景点。")
@@ -155,9 +197,15 @@ def _stage_summary(node: str, state_before: dict[str, Any], update: dict[str, An
     if node == "time_check":
         return f"已完成开放时间核验：发现 {len(state.get('time_violations') or [])} 项时间冲突。"
     if node == "meal_search":
-        return f"已找到 {len(state.get('meal_candidates') or [])} 个行程周边餐饮候选。"
+        entries = state.get("meal_candidates") or []
+        sample = _meal_candidate_preview(entries)
+        suffix = f"候选示例：{sample}。" if sample else ""
+        return f"已完成 {len(entries)} 天路线周边餐厅搜索。{suffix}"
     if node == "meal_recommend":
-        return f"已完成 {len(state.get('meals') or [])} 天的午晚餐推荐。"
+        meals = state.get("meals") or []
+        sample = _meal_pick_preview(meals)
+        suffix = f"推荐：{sample}。" if sample else ""
+        return f"已完成 {len(meals)} 天的午晚餐推荐。{suffix}"
     if node == "spot_tips":
         return f"已生成 {len(state.get('spot_tips') or {})} 条景点游玩提示。"
     if node == "finalize":
