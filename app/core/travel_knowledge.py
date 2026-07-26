@@ -5,7 +5,6 @@ from __future__ import annotations
 import argparse
 import logging
 import os
-import shutil
 from pathlib import Path
 from typing import Any
 
@@ -70,11 +69,15 @@ def load_documents() -> list[dict[str, str]]:
 
 def build_index(rebuild: bool = False) -> int:
     """Load, split, embed, and persist all project travel documents in Chroma."""
-    if rebuild and _STORE_DIR.exists():
-        shutil.rmtree(_STORE_DIR)
     collection = _collection()
     if collection is None:
         return 0
+    if rebuild:
+        # Delete through Chroma instead of removing the SQLite directory. The
+        # latter fails on Windows when the running API process holds the file.
+        existing_ids = collection.get(include=[]).get("ids") or []
+        if existing_ids:
+            collection.delete(ids=existing_ids)
     if not rebuild and collection.count() > 0:
         return collection.count()
 
