@@ -14,6 +14,7 @@ MessageStatus = Literal["pending", "running", "done", "failed", "retrying"]
 
 class AgentMessage(BaseModel):
     task_id: str
+    session_id: str | None = None
     task_type: str
     from_agent: str = Field(alias="from")
     to_agent: str = Field(alias="to")

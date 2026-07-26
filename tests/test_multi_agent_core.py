@@ -3,6 +3,7 @@ from app.multi_agent_core.messages import AgentMessage
 from app.multi_agent_core.supervisor import Supervisor
 from app.multi_agent_core.tools import FixturePoiTool
 from app.multi_agent_core.tools import ToolPermissionError, ToolRegistry
+from app.multi_agent_core.memory import SQLiteAgentMemoryStore
 
 
 def make_supervisor() -> Supervisor:
@@ -109,3 +110,19 @@ def test_model_adapter_receives_private_memory_and_role_prompt():
 
     assert "Extract the destination" in captured["system_prompt"]
     assert captured["memory"] == []
+
+
+def test_sqlite_memory_is_isolated_by_session_and_agent(tmp_path):
+    store = SQLiteAgentMemoryStore(tmp_path / "agent_memory.db")
+    intent = IntentAgent(memory_store=store)
+    planner = PlannerAgent(memory_store=store)
+
+    intent.run(AgentMessage(
+        task_id="task-a", session_id="session-a", task_type="intent_extract",
+        **{"from": "supervisor", "to": "intent_agent"},
+        content={"user_request": "visit Beijing", "destination_hint": "Beijing"},
+    ))
+
+    assert len(store.load("session-a", "intent_agent")) == 2
+    assert store.load("session-a", "planner_agent") == []
+    assert store.load("session-b", "intent_agent") == []

@@ -30,6 +30,7 @@ awesomefrontend/sky-bg.png
 data/app.db
 data/semantic_memory/
 data/travel_knowledge/
+data/multi_agent_memory.db
 tmp/
 server.*.log
 demos/demo-home.html

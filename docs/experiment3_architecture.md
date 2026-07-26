@@ -48,6 +48,7 @@ flowchart LR
 | 不同 Agent 工具权限不混用 | 通过 | `ToolRegistry` + `allowed_tools={"poi_search"}`；有越权测试 |
 | Agent 失败重试/降级 | 通过 | `max_attempts=2`；失败返回 `status=failed`、`error_code` 和调度日志 |
 | 私有 memory 隔离 | 通过（实验核心） | 每个 Agent 实例独立 `private_memory`；测试验证对象不是同一实例 |
+| 私有 memory 持久化 | 通过（实验核心） | SQLite 按 `session_id + agent_name` 隔离；重启 demo 后可恢复同一 Agent 的历史 |
 | 网页主链路私有 memory | 尚未完全迁移 | 主 FloatTrip LangGraph 仍共享 `TravelPlanState`，见下方边界说明 |
 
 ## 现场演示命令
@@ -63,6 +64,12 @@ cd "C:\Users\31071\Desktop\暑期4+\Trip_Agent"
 2. `[result]`：Agent 返回结果；
 3. `PRIVATE MEMORY CONTENTS`：四个 Agent 的记忆内容不同；
 4. `dispatch_log`：结构化消息、返工或失败记录。
+
+传入固定会话标识以验证持久化：
+
+```powershell
+.\.venv\Scripts\python.exe -m app.multi_agent_core.demo_run --offline --session-id demo-session
+```
 
 ## 必须如实说明的边界
 

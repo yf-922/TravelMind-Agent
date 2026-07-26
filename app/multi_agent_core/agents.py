@@ -7,6 +7,7 @@ from abc import ABC, abstractmethod
 from typing import Any, Callable, Protocol
 
 from app.multi_agent_core.messages import AgentMessage
+from app.multi_agent_core.memory import AgentMemoryStore, InMemoryAgentMemoryStore
 
 
 class PoiTool(Protocol):
@@ -23,19 +24,32 @@ class BaseAgent(ABC):
         *,
         model: Callable[[str, list[dict[str, str]], dict[str, Any]], dict[str, Any]] | None = None,
         allowed_tools: set[str] | None = None,
+        memory_store: AgentMemoryStore | None = None,
     ) -> None:
         self.name = name
         self.system_prompt = system_prompt
         self.private_memory: list[dict[str, str]] = []
+        self.memory_store = memory_store or InMemoryAgentMemoryStore()
         self.model = model
         self.allowed_tools = frozenset(allowed_tools or set())
 
-    def _remember(self, role: str, content: str) -> None:
-        self.private_memory.append({"role": role, "content": content})
+    def _session_id(self, message: AgentMessage) -> str:
+        return message.session_id or message.task_id
+
+    def _activate_memory(self, message: AgentMessage) -> str:
+        session_id = self._session_id(message)
+        self.private_memory = self.memory_store.load(session_id, self.name)
+        return session_id
+
+    def _remember(self, session_id: str, role: str, content: str) -> None:
+        entry = {"role": role, "content": content}
+        self.memory_store.append(session_id, self.name, entry)
+        self.private_memory.append(entry)
 
     def _reply(self, message: AgentMessage, payload: dict[str, Any]) -> AgentMessage:
-        self._remember("user", json.dumps(message.content, ensure_ascii=False))
-        self._remember("assistant", json.dumps(payload, ensure_ascii=False))
+        session_id = self._activate_memory(message)
+        self._remember(session_id, "user", json.dumps(message.content, ensure_ascii=False))
+        self._remember(session_id, "assistant", json.dumps(payload, ensure_ascii=False))
         return AgentMessage(
             task_id=message.task_id,
             task_type=message.task_type,
@@ -50,6 +64,7 @@ class BaseAgent(ABC):
         """Optional model seam: production callers can inject an LLM adapter; tests stay offline."""
         if self.model is None:
             return None
+        self._activate_memory(message)
         payload = self.model(self.system_prompt, list(self.private_memory), message.content)
         if not isinstance(payload, dict):
             raise TypeError(f"{self.name} model must return a dict")
@@ -61,11 +76,12 @@ class BaseAgent(ABC):
 
 
 class IntentAgent(BaseAgent):
-    def __init__(self, *, model=None) -> None:
+    def __init__(self, *, model=None, memory_store: AgentMemoryStore | None = None) -> None:
         super().__init__(
             "intent_agent",
             "Extract the destination and stable travel constraints. Do not plan an itinerary or search POIs.",
             model=model,
+            memory_store=memory_store,
         )
 
     def run(self, message: AgentMessage) -> AgentMessage:
@@ -82,12 +98,13 @@ class IntentAgent(BaseAgent):
 
 
 class POIResearchAgent(BaseAgent):
-    def __init__(self, tool: PoiTool, *, model=None) -> None:
+    def __init__(self, tool: PoiTool, *, model=None, memory_store: AgentMemoryStore | None = None) -> None:
         super().__init__(
             "poi_research_agent",
             "Verify travel places with the POI tool. Never invent a place, coordinate, or address.",
             model=model,
             allowed_tools={"poi_search"},
+            memory_store=memory_store,
         )
         self.tool = tool
 
@@ -111,11 +128,12 @@ class POIResearchAgent(BaseAgent):
 
 
 class PlannerAgent(BaseAgent):
-    def __init__(self, *, model=None) -> None:
+    def __init__(self, *, model=None, memory_store: AgentMemoryStore | None = None) -> None:
         super().__init__(
             "planner_agent",
             "Create an itinerary only from verified POI candidates. Do not judge your own plan.",
             model=model,
+            memory_store=memory_store,
         )
 
     def run(self, message: AgentMessage) -> AgentMessage:
@@ -135,11 +153,12 @@ class PlannerAgent(BaseAgent):
 
 
 class ReviewerAgent(BaseAgent):
-    def __init__(self, *, model=None) -> None:
+    def __init__(self, *, model=None, memory_store: AgentMemoryStore | None = None) -> None:
         super().__init__(
             "reviewer_agent",
             "Review a draft against verified candidates. Do not rewrite the itinerary.",
             model=model,
+            memory_store=memory_store,
         )
 
     def run(self, message: AgentMessage) -> AgentMessage:

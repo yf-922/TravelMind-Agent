@@ -34,9 +34,10 @@ class Supervisor:
             return "done" if review_passed else "planner_agent"
         return "stop"
 
-    def _dispatch(self, task_id: str, task_type: str, to: str, content: dict[str, Any], attempt: int = 0) -> AgentMessage:
+    def _dispatch(self, task_id: str, session_id: str, task_type: str, to: str, content: dict[str, Any], attempt: int = 0) -> AgentMessage:
         message = AgentMessage(
             task_id=task_id,
+            session_id=session_id,
             task_type=task_type,
             **{"from": "supervisor", "to": to},
             content=content,
@@ -60,6 +61,7 @@ class Supervisor:
                 if current_attempt + 1 >= self.max_attempts:
                     failed = AgentMessage(
                         task_id=task_id,
+                        session_id=session_id,
                         task_type=task_type,
                         **{"from": to, "to": "supervisor"},
                         content={"error": "worker failed after retries"},
@@ -72,30 +74,31 @@ class Supervisor:
                     return failed
         raise RuntimeError("unreachable supervisor retry state")
 
-    def run_trip(self, user_request: str, destination_hint: str) -> dict[str, Any]:
+    def run_trip(self, user_request: str, destination_hint: str, *, session_id: str | None = None) -> dict[str, Any]:
         # A dispatch trace belongs to one user task. Worker memories remain private
         # on their own instances and are never copied into this task log.
         self.dispatch_log = []
         task_id = f"trip-{uuid4()}"
-        intent = self._dispatch(task_id, "intent_extract", "intent_agent", {
+        active_session_id = session_id or task_id
+        intent = self._dispatch(task_id, active_session_id, "intent_extract", "intent_agent", {
             "user_request": user_request,
             "destination_hint": destination_hint,
         })
         if intent.status == "failed":
             return self._failure_result(task_id, "intent_agent", "intent extraction failed", intent)
-        research = self._dispatch(task_id, "poi_research", "poi_research_agent", {
+        research = self._dispatch(task_id, active_session_id, "poi_research", "poi_research_agent", {
             "destination": intent.content["destination"],
             "place_query": user_request,
         })
         if research.status == "failed":
             return self._failure_result(task_id, "poi_research_agent", "POI research failed", research)
-        plan = self._dispatch(task_id, "itinerary_plan", "planner_agent", {
+        plan = self._dispatch(task_id, active_session_id, "itinerary_plan", "planner_agent", {
             "intent": intent.content,
             "candidates": research.content["candidates"],
         })
         if plan.status == "failed":
             return self._failure_result(task_id, "planner_agent", "planning failed", plan)
-        review = self._dispatch(task_id, "itinerary_review", "reviewer_agent", {
+        review = self._dispatch(task_id, active_session_id, "itinerary_review", "reviewer_agent", {
             "itinerary": plan.content["itinerary"],
             "candidates": research.content["candidates"],
         })
@@ -105,12 +108,12 @@ class Supervisor:
         # Advanced conditional route: a rejected draft is repaired once, then reviewed again.
         next_agent = self.route_after(review, review_passed=bool(review.content.get("approved")))
         if next_agent == "planner_agent":
-            plan = self._dispatch(task_id, "itinerary_revise", "planner_agent", {
+            plan = self._dispatch(task_id, active_session_id, "itinerary_revise", "planner_agent", {
                 "intent": intent.content,
                 "candidates": research.content["candidates"],
                 "review_instruction": review.content["revision_instruction"],
             }, attempt=1)
-            review = self._dispatch(task_id, "itinerary_review", "reviewer_agent", {
+            review = self._dispatch(task_id, active_session_id, "itinerary_review", "reviewer_agent", {
                 "itinerary": plan.content["itinerary"],
                 "candidates": research.content["candidates"],
             }, attempt=1)
