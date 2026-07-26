@@ -94,6 +94,7 @@ function PlanPage({ onRequestLogin, currentUsername, onPhaseChange, onPlanReady,
   const [stageLabel, setStageLabel] = React.useState("");
   const [liveNarration, setLiveNarration] = React.useState("旅行助手已出发，正在整理你的需求…");
   const [stageReport, setStageReport] = React.useState("");
+  const [stageReports, setStageReports] = React.useState({});
   const [missingFields, setMissingFields] = React.useState([]);
   const [threadId, setThreadId] = React.useState(null);
   const [concernModal, setConcernModal] = React.useState(null);
@@ -194,6 +195,7 @@ function PlanPage({ onRequestLogin, currentUsername, onPhaseChange, onPlanReady,
     narrationIndexRef.current = 0;
     setLiveNarration("旅行助手已出发，正在整理你的需求…");
     setStageReport("");
+    setStageReports({});
   };
 
   React.useEffect(() => {
@@ -212,6 +214,7 @@ function PlanPage({ onRequestLogin, currentUsername, onPhaseChange, onPlanReady,
       setActiveNode("plan_review");
       setStageLabel("");
       setLogs([]);
+      setStageReports({});
     } else {
       resetJourney();
     }
@@ -224,6 +227,11 @@ function PlanPage({ onRequestLogin, currentUsername, onPhaseChange, onPlanReady,
         if (!ev.summary) return;
         setStageReport(ev.summary);
         setLiveNarration(ev.summary);
+        const step = NODE_TO_STEP[ev.node] || ev.node;
+        setStageReports(prev => ({
+          ...prev,
+          [step]: prev[step] ? `${prev[step]} → ${ev.summary}` : ev.summary,
+        }));
         setLogs(prev => [...prev, `✓ ${ev.summary}`]);
       },
       onResult: (ev) => {
@@ -273,6 +281,11 @@ function PlanPage({ onRequestLogin, currentUsername, onPhaseChange, onPlanReady,
         if (!ev.summary) return;
         setStageReport(ev.summary);
         setLiveNarration(ev.summary);
+        const step = NODE_TO_STEP[ev.node] || ev.node;
+        setStageReports(prev => ({
+          ...prev,
+          [step]: prev[step] ? `${prev[step]} → ${ev.summary}` : ev.summary,
+        }));
         setLogs(prev => [...prev, `✓ ${ev.summary}`]);
       },
       onResult: (ev) => {
@@ -330,7 +343,9 @@ function PlanPage({ onRequestLogin, currentUsername, onPhaseChange, onPlanReady,
                 <div key={s.key} className={`j-step ${cls}`}>
                   <span className="j-ico">{isDone ? "✓" : JOURNEY_STEPS.indexOf(s) + 1}</span>
                   <span>{s.label}</span>
-                  <span className="j-detail">{isActive && stageLabel ? stageLabel : s.detail}</span>
+                  <span className="j-detail" title={stageReports[s.key] || s.detail}>
+                    {stageReports[s.key] || (isActive && stageLabel ? stageLabel : s.detail)}
+                  </span>
                 </div>
               );
             })}

@@ -410,7 +410,8 @@ img { display: block; }
 .j-step.active .j-ico { border-color: var(--accent); color: var(--accent); animation: pulse 1.2s ease infinite; }
 .j-step.done { color: var(--ink-2); }
 .j-step.done .j-ico { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
-.j-step .j-detail { margin-left: auto; font-size: .78rem; color: var(--ink-3); font-weight: 400; opacity: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.j-step .j-detail { margin-left: auto; max-width: 66%; font-size: .78rem; color: var(--ink-3); font-weight: 400; opacity: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.j-step.done .j-detail { color: #238657; }
 .j-step.done .j-detail, .j-step.active .j-detail { opacity: 1; }
 @keyframes pulse { 0%,100% { box-shadow: 0 0 0 0 var(--accent-soft); } 50% { box-shadow: 0 0 0 6px var(--accent-soft); } }
 
