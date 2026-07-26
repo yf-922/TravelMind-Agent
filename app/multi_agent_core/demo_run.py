@@ -35,6 +35,10 @@ def main() -> None:
     print("\n=== PRIVATE MEMORY COUNTS ===")
     for name, agent in supervisor.agents.items():
         print(f"{name}: {len(agent.private_memory)} entries")
+    print("\n=== PRIVATE MEMORY CONTENTS ===")
+    for name, agent in supervisor.agents.items():
+        print(f"\n[{name}] system_prompt={agent.system_prompt}")
+        print(json.dumps(agent.private_memory, ensure_ascii=False, indent=2))
 
 
 if __name__ == "__main__":
