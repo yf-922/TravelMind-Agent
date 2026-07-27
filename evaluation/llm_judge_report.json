@@ -1,0 +1,161 @@
+{
+  "generated_at": "2026-07-27T13:16:51.086106+00:00",
+  "judge_metadata": {
+    "prompt_version": "travelmind-judge-v1",
+    "provider": "deepseek",
+    "model_override": null
+  },
+  "total_cases": 10,
+  "judged_cases": 10,
+  "judge_pass_rate": 0.8,
+  "average_judge_latency_ms": 2995.37,
+  "failure_categories": {
+    "constraint_miss": 2
+  },
+  "records": [
+    {
+      "case_id": "E2E-01",
+      "judge": {
+        "groundedness": 5,
+        "constraint_satisfaction": 5,
+        "route_completeness": 5,
+        "reviewer_consistency": 5,
+        "clarity": 5,
+        "pass_case": true,
+        "failure_categories": [],
+        "reason": "所有景点（北京 Museum、北京 Old Town、北京 Park）均来自候选池，无候选池外景点；行程非空且包含3个景点，可交付；用户请求为\"北京文化一日游\"，行程覆盖北京文化类景点，满足请求；Reviewer 结论 approved 与行程一致；输出清晰有序。各项均不低于3分，无候选池外景点，故 pass_case=true。"
+      },
+      "latency_ms": 4771.18
+    },
+    {
+      "case_id": "E2E-02",
+      "judge": {
+        "groundedness": 5,
+        "constraint_satisfaction": 3,
+        "route_completeness": 5,
+        "reviewer_consistency": 5,
+        "clarity": 5,
+        "pass_case": false,
+        "failure_categories": [
+          "constraint_miss"
+        ],
+        "reason": "用户请求\"重庆慢节奏一日游，想吃本地小吃\"，行程包含重庆 Museum、重庆 Old Town、重庆 Park 三个景点，均来自候选池（groundedness=5），行程非空且可交付（route_completeness=5），reviewer 结论与行程一致（reviewer_consistency=5），输出清晰（clarity=5）。但用户明确要求\"想吃本地小吃\"，行程中没有任何餐饮安排或小吃相关的景点/活动，未响应用户关于本地小吃的需求，因此 constraint_satisfaction=3，不满足 pass 条件。"
+      },
+      "latency_ms": 3219.42
+    },
+    {
+      "case_id": "E2E-03",
+      "judge": {
+        "groundedness": 5,
+        "constraint_satisfaction": 3,
+        "route_completeness": 5,
+        "reviewer_consistency": 5,
+        "clarity": 5,
+        "pass_case": false,
+        "failure_categories": [
+          "constraint_miss"
+        ],
+        "reason": "用户请求\"北京亲子轻松游，少走路\"，行程包含北京 Museum、北京 Old Town、北京 Park 三个景点，均来自候选池，groundedness=5。行程非空且可交付，route_completeness=5。Reviewer 结论 approved 与行程一致，reviewer_consistency=5。输出清晰，clarity=5。但用户明确要求\"少走路\"，行程中三个景点（北京 Museum、北京 Old Town、北京 Park）未提供任何关于步行距离、交通方式或轻松程度的说明，也未对\"少走路\"这一核心约束做针对性安排或解释，因此 constraint_satisfaction 评为 3，存在明确不足。由于 constraint_satisfaction=3 未达到全部不低于3的条件，pass_case=false。"
+      },
+      "latency_ms": 3304.39
+    },
+    {
+      "case_id": "E2E-04",
+      "judge": {
+        "groundedness": 5,
+        "constraint_satisfaction": 5,
+        "route_completeness": 5,
+        "reviewer_consistency": 5,
+        "clarity": 5,
+        "pass_case": true,
+        "failure_categories": [],
+        "reason": "所有景点（重庆 Museum、重庆 Old Town、重庆 Park）均来自候选池，无候选池外景点；行程非空且可交付；用户请求为“重庆雨天也能去的地方”，行程中的三个景点均为室内或可避雨场所，满足请求；Reviewer 结论 approved 与行程一致；输出清晰。各项均不低于3分，无候选池外景点，故 pass_case=true。"
+      },
+      "latency_ms": 2740.6
+    },
+    {
+      "case_id": "E2E-05",
+      "judge": {
+        "groundedness": 5,
+        "constraint_satisfaction": 4,
+        "route_completeness": 5,
+        "reviewer_consistency": 5,
+        "clarity": 5,
+        "pass_case": true,
+        "failure_categories": [],
+        "reason": "所有景点（北京 Museum、北京 Old Town、北京 Park）均来自候选池，groundedness=5；行程非空且包含3个景点，route_completeness=5；用户请求\"北京第一次旅行，安排经典景点\"，行程安排了北京三个景点，基本满足但未明确说明为何是\"经典\"，constraint_satisfaction=4；reviewer 结论 approved 与行程一致，reviewer_consistency=5；输出清晰，clarity=5。所有项≥3且无候选池外景点，pass_case=true。"
+      },
+      "latency_ms": 2756.79
+    },
+    {
+      "case_id": "E2E-06",
+      "judge": {
+        "groundedness": 5,
+        "constraint_satisfaction": 5,
+        "route_completeness": 5,
+        "reviewer_consistency": 5,
+        "clarity": 5,
+        "pass_case": true,
+        "failure_categories": [],
+        "reason": "所有景点（重庆 Museum、重庆 Old Town、重庆 Park）均来自候选池，无候选池外景点；行程非空且包含3个景点，可交付；用户请求“不要排得太满”，3个景点在半日内合理，满足约束；reviewer 结论 approved 与行程一致；输出清晰。各项均不低于3分，无候选池外景点，故 pass_case=true。"
+      },
+      "latency_ms": 2454.49
+    },
+    {
+      "case_id": "E2E-07",
+      "judge": {
+        "groundedness": 5,
+        "constraint_satisfaction": 4,
+        "route_completeness": 5,
+        "reviewer_consistency": 5,
+        "clarity": 5,
+        "pass_case": true,
+        "failure_categories": [],
+        "reason": "所有景点（北京 Museum、北京 Old Town、北京 Park）均来自候选池，groundedness=5。行程非空且包含3个有序景点，route_completeness=5。用户请求为\"北京预算有限的城市漫步\"，行程提供了北京三个景点，基本满足城市漫步需求，但未明确体现\"预算有限\"的约束（如免费或低价景点说明），constraint_satisfaction=4。Reviewer 结论 approved 与行程一致，reviewer_consistency=5。输出清晰，clarity=5。所有评分项均≥3，无候选池外景点，pass_case=true。"
+      },
+      "latency_ms": 2778.87
+    },
+    {
+      "case_id": "E2E-08",
+      "judge": {
+        "groundedness": 5,
+        "constraint_satisfaction": 4,
+        "route_completeness": 5,
+        "reviewer_consistency": 5,
+        "clarity": 5,
+        "pass_case": true,
+        "failure_categories": [],
+        "reason": "所有景点（重庆 Museum、重庆 Old Town、重庆 Park）均来自候选池，groundedness=5。行程非空且包含3个景点，route_completeness=5。用户请求\"重庆朋友同行，安排有代表性的景点\"得到响应，景点均为重庆代表性景点，但未明确体现\"朋友同行\"的社交偏好，略有不足，constraint_satisfaction=4。Reviewer 结论 approved 与行程一致，reviewer_consistency=5。输出清晰，clarity=5。所有项均≥3且无候选池外景点，pass_case=true。"
+      },
+      "latency_ms": 2878.35
+    },
+    {
+      "case_id": "E2E-09",
+      "judge": {
+        "groundedness": 5,
+        "constraint_satisfaction": 4,
+        "route_completeness": 5,
+        "reviewer_consistency": 5,
+        "clarity": 5,
+        "pass_case": true,
+        "failure_categories": [],
+        "reason": "所有景点（北京 Museum、北京 Old Town、北京 Park）均来自候选池，无候选池外景点；行程非空且包含3个景点，可交付；用户请求为\"北京历史建筑参观路线\"，行程中的景点名称与历史建筑主题基本相关，但未明确说明每个景点与历史建筑的关联，略有不足但整体满足；reviewer 结论 approved 与行程一致；输出清晰。groundedness=5, constraint_satisfaction=4, route_completeness=5, reviewer_consistency=5, clarity=5，均不低于3，pass_case=true。"
+      },
+      "latency_ms": 2673.41
+    },
+    {
+      "case_id": "E2E-10",
+      "judge": {
+        "groundedness": 5,
+        "constraint_satisfaction": 5,
+        "route_completeness": 5,
+        "reviewer_consistency": 5,
+        "clarity": 5,
+        "pass_case": true,
+        "failure_categories": [],
+        "reason": "所有景点（重庆 Museum、重庆 Old Town、重庆 Park）均来自候选池，无候选池外景点；行程非空且包含3个有序景点，可执行；用户请求“重庆第一次来，给我一条可执行路线”已满足；reviewer 结论 approved 与行程一致；输出清晰。"
+      },
+      "latency_ms": 2376.2
+    }
+  ]
+}

@@ -33,3 +33,18 @@
 ## 本次结果与局限
 
 JSON 文件记录成功率、每条延迟、调度链路与失败分类。该基线验证的是多 Agent 编排正确性，不等同于真实 LLM 的旅游建议质量；真实线上评测应额外记录高德/票价/天气工具的错误率，以及由人工或 LLM-as-Judge 给出的约束满足评分。
+
+## LLM-as-Judge（已实现）
+
+- 脚本：`python scripts/run_llm_judge.py`；小额试运行：`python scripts/run_llm_judge.py --limit 1`。
+- 固定项：Golden Set、Prompt 版本 `travelmind-judge-v1`、temperature=0、Pydantic 评分 Schema。
+- 评分维度：候选池事实一致性、需求满足、行程完整性、Reviewer 一致性、表达清晰度，各 1-5 分。
+- 产物：`evaluation/llm_judge_report.json`，保存模型提供方、模型覆盖项、每条评分、理由、失败分类与 Judge 延迟。
+- 注意：它是辅助评审，不替代人工抽查；应抽查至少 3 条评分理由是否引用了真实输入。
+
+### 首轮真实运行结果（2026-07-27）
+
+- Judge：DeepSeek（项目当前默认配置），10 条均成功得到结构化评分，平均 Judge 延迟约 3.00 秒。
+- Judge 通过率：80%（8/10）。
+- 失败分类：`constraint_miss` 2 条，均为“慢节奏/餐饮偏好”等自然语言约束在离线 Fixture 行程中只得到 3 分的基本满足判定。
+- 下一步：把偏好字段显式传给 Planner；为餐饮、慢节奏、亲子、雨天等约束分别增加可自动断言的字段；抽查这 2 条失败理由并与人工评分对照。
