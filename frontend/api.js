@@ -424,9 +424,15 @@ async function fetchTransportPlan(from, to, city, fromName, toName) {
     dest_lng: to.lng, dest_lat: to.lat,
     city: city || "", from_name: fromName || "上一站", to_name: toName || "下一站",
   });
-  const r = await fetch(`/api/route/plan?${params}`, { headers: authHeaders() });
-  if (!r.ok) throw new Error("交通方案获取失败");
-  return r.json();
+  const ctrl = new AbortController();
+  const timer = window.setTimeout(() => ctrl.abort(), 9000);
+  try {
+    const r = await fetch(`/api/route/plan?${params}`, { headers: authHeaders(), signal: ctrl.signal });
+    if (!r.ok) throw new Error("交通方案获取失败");
+    return r.json();
+  } finally {
+    window.clearTimeout(timer);
+  }
 }
 
 async function restoreFullRoute(container, mapPoints) {

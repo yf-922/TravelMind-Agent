@@ -13,7 +13,6 @@ logger = logging.getLogger(__name__)
 
 from app.llm.factory import build_structured_llm
 from app.providers.amap.poi import ATTRACTION_TYPE, poi_to_spot, search_around_pois, search_city_pois
-from app.providers.amap.direction import plan_transport_leg
 from app.planning.schemas import (
     DayMealPick,
     IntentExtraction,
@@ -843,7 +842,7 @@ def _build_travel_leg(distance_km: float, from_name: str, to_name: str) -> dict[
             "from": from_name, "to": to_name, "mode": "walk", "mode_label": "步行",
             "distance_km": distance_km, "duration_min": minutes, "estimated_cost": 0,
             "instruction": f"步行约 {minutes} 分钟；点击导航查看入口与实时步行路线。",
-            "estimate": True,
+            "source": "estimate", "estimate": True,
         }
     if distance_km <= 12:
         minutes = max(18, round(distance_km / 22 * 60 + 12))
@@ -852,7 +851,7 @@ def _build_travel_leg(distance_km: float, from_name: str, to_name: str) -> dict[
             "from": from_name, "to": to_name, "mode": "transit", "mode_label": "地铁/公交",
             "distance_km": distance_km, "duration_min": minutes, "estimated_cost": fare,
             "instruction": "优先地铁或公交；具体线路和上下车站请点击导航，以高德实时结果为准。",
-            "estimate": True,
+            "source": "estimate", "estimate": True,
         }
     minutes = max(25, round(distance_km / 28 * 60 + 5))
     taxi_cost = round(13 + max(0, distance_km - 3) * 2.3)
@@ -860,7 +859,7 @@ def _build_travel_leg(distance_km: float, from_name: str, to_name: str) -> dict[
         "from": from_name, "to": to_name, "mode": "taxi_or_car", "mode_label": "打车/租车",
         "distance_km": distance_km, "duration_min": minutes, "estimated_cost": taxi_cost,
         "instruction": "跨区距离较远，建议打车；若当天有多个远距离点，可比较租车日租价与停车条件。",
-        "estimate": True,
+        "source": "estimate", "estimate": True,
     }
 
 
@@ -954,11 +953,8 @@ def _finalize_impl(state: TravelPlanState) -> dict[str, Any]:
                 timeline[i]["dist_from_prev_km"] = distance
                 from_name = str(timeline[i - 1].get("name") or "上一站")
                 to_name = str(timeline[i].get("name") or "下一站")
-                live_plan = plan_transport_leg(
-                    prev_loc, cur_loc, state.destination or "", amap_key(), distance
-                )
                 timeline[i]["travel_from_prev"] = {
-                    **(live_plan or _build_travel_leg(distance, from_name, to_name)),
+                    **_build_travel_leg(distance, from_name, to_name),
                     "from": from_name,
                     "to": to_name,
                 }

@@ -4,9 +4,16 @@ from __future__ import annotations
 
 import json
 import math
+import threading
+import time
 import urllib.parse
 import urllib.request
 from typing import Any
+
+
+_PLAN_CACHE: dict[tuple[Any, ...], tuple[float, dict[str, Any]]] = {}
+_PLAN_CACHE_LOCK = threading.Lock()
+_PLAN_CACHE_TTL = 30 * 60
 
 
 def _fetch_json(url: str, timeout: float = 10.0) -> dict[str, Any]:
@@ -152,11 +159,25 @@ def plan_transport_leg(
     straight_distance_km: float,
 ) -> dict[str, Any] | None:
     """按距离选择路径服务；任何接口错误均返回 None，让主流程安全降级。"""
+    cache_key = (
+        round(origin["lng"], 5), round(origin["lat"], 5),
+        round(destination["lng"], 5), round(destination["lat"], 5), city.strip(),
+    )
+    now = time.monotonic()
+    with _PLAN_CACHE_LOCK:
+        cached = _PLAN_CACHE.get(cache_key)
+        if cached and cached[0] > now:
+            return dict(cached[1])
     try:
         if straight_distance_km <= 1.2:
-            return _walk_plan(origin, destination, api_key)
-        if straight_distance_km <= 25:
-            return _transit_plan(origin, destination, city, api_key)
-        return _driving_plan(origin, destination, api_key)
+            plan = _walk_plan(origin, destination, api_key)
+        elif straight_distance_km <= 25:
+            plan = _transit_plan(origin, destination, city, api_key)
+        else:
+            plan = _driving_plan(origin, destination, api_key)
+        if plan:
+            with _PLAN_CACHE_LOCK:
+                _PLAN_CACHE[cache_key] = (now + _PLAN_CACHE_TTL, dict(plan))
+        return plan
     except (OSError, ValueError, KeyError, json.JSONDecodeError):
         return None

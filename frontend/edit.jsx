@@ -17,17 +17,17 @@ function buildTravelEstimate(distance, fromName, toName) {
   if (d <= 1.2) {
     const mins = Math.max(3, Math.round(d / 4.5 * 60));
     return { from: fromName, to: toName, mode: "walk", mode_label: "步行", distance_km: d,
-      duration_min: mins, estimated_cost: 0, instruction: `步行约 ${mins} 分钟；点击导航查看入口与实时步行路线。`, estimate: true };
+      duration_min: mins, estimated_cost: 0, instruction: `步行约 ${mins} 分钟；点击导航查看入口与实时步行路线。`, source: "estimate", estimate: true };
   }
   if (d <= 12) {
     const mins = Math.max(18, Math.round(d / 22 * 60 + 12));
     return { from: fromName, to: toName, mode: "transit", mode_label: "地铁/公交", distance_km: d,
       duration_min: mins, estimated_cost: Math.min(8, Math.max(2, 2 + Math.ceil(d / 6))),
-      instruction: "优先地铁或公交；具体线路和上下车站请点击导航，以高德实时结果为准。", estimate: true };
+      instruction: "优先地铁或公交；具体线路和上下车站请点击导航，以高德实时结果为准。", source: "estimate", estimate: true };
   }
   return { from: fromName, to: toName, mode: "taxi_or_car", mode_label: "打车/租车", distance_km: d,
     duration_min: Math.max(25, Math.round(d / 28 * 60 + 5)), estimated_cost: Math.round(13 + Math.max(0, d - 3) * 2.3),
-    instruction: "跨区距离较远，建议打车；若当天有多个远距离点，可比较租车日租价与停车条件。", estimate: true };
+    instruction: "跨区距离较远，建议打车；若当天有多个远距离点，可比较租车日租价与停车条件。", source: "estimate", estimate: true };
 }
 
 // 原地重算一天 timeline 的 dist_from_prev_km（规则与后端 _recalc_dists 一致）

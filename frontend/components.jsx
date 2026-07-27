@@ -349,21 +349,43 @@ function MealCard({ item }) {
   );
 }
 
+function previewTransportEstimate(dist) {
+  const d = Number(dist);
+  if (!(d > 0)) return null;
+  if (d <= 1.2) {
+    const mins = Math.max(3, Math.round(d / 4.5 * 60));
+    return { mode: "walk", mode_label: "步行", duration_min: mins, estimated_cost: 0,
+      instruction: `先按距离估算步行约 ${mins} 分钟。`, source: "estimate" };
+  }
+  if (d <= 12) {
+    return { mode: "transit", mode_label: "地铁/公交",
+      duration_min: Math.max(18, Math.round(d / 22 * 60 + 12)),
+      estimated_cost: Math.min(8, Math.max(2, 2 + Math.ceil(d / 6))),
+      instruction: "正在补充具体线路，当前先按距离显示公共交通估算。", source: "estimate" };
+  }
+  return { mode: "taxi_or_car", mode_label: "打车/租车",
+    duration_min: Math.max(25, Math.round(d / 28 * 60 + 5)),
+    estimated_cost: Math.round(13 + Math.max(0, d - 3) * 2.3),
+    instruction: "当前先按距离显示打车估算。", source: "estimate" };
+}
+
 // 导航行：夹在任意相邻两个 item 之间
 function NavRow({ itemA, itemB, city, onNav, isActive }) {
   const hasCoords = itemA?.location?.lat && itemA?.location?.lng
     && itemB?.location?.lat && itemB?.location?.lng;
-  const [loadedTravel, setLoadedTravel] = React.useState(itemB.travel || null);
-  const travel = itemB.travel || loadedTravel;
+  const [loadedTravel, setLoadedTravel] = React.useState(null);
+  const [routeStatus, setRouteStatus] = React.useState("idle");
+  const travel = loadedTravel || itemB.travel || previewTransportEstimate(itemB.dist);
   React.useEffect(() => {
     let alive = true;
-    if (!itemB.travel && hasCoords) {
+    if (hasCoords && itemB.travel?.source !== "amap") {
+      setRouteStatus("loading");
       fetchTransportPlan(itemA.location, itemB.location, city, itemA.name, itemB.name)
-        .then(plan => { if (alive) setLoadedTravel(plan); })
-        .catch(() => {});
+        .then(plan => { if (alive) { setLoadedTravel(plan); setRouteStatus("done"); } })
+        .catch(() => { if (alive) setRouteStatus("failed"); });
     }
     return () => { alive = false; };
-  }, [itemA.name, itemB.name, city]); // eslint-disable-line
+  }, [itemA.name, itemB.name, city, itemB.travel?.source]); // eslint-disable-line
   if (!hasCoords) return null;
   const dist = itemB.dist;
   const routeMode = travel?.mode === "walk" ? "walk" : travel?.mode === "transit" ? "bus" : "car";
@@ -386,7 +408,12 @@ function NavRow({ itemA, itemB, city, onNav, isActive }) {
             </span>
           )}
           {travel?.instruction && <span className="nav-instruction">{travel.instruction}</span>}
-          {!travel && <span className="nav-instruction">正在生成地铁/公交方案…</span>}
+          {routeStatus === "loading" && (
+            <span className="nav-route-status">正在后台补充具体线路，当前先显示估算方案…</span>
+          )}
+          {routeStatus === "failed" && (
+            <span className="nav-route-status failed">具体线路暂不可用，已保留估算方案。</span>
+          )}
         </div>
         <div className="nav-actions">
           <button
