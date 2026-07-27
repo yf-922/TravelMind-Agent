@@ -418,6 +418,12 @@ async function drawNavPairRoute(container, from, to) {
   return true;
 }
 
+async function getHistoryItemLivePrices(id, signal) {
+  const r = await fetch(`/api/history/${id}/live-prices`, { headers: authHeaders(), signal });
+  if (!r.ok) throw new Error(`实时价格查询失败（HTTP ${r.status}）`);
+  return r.json();
+}
+
 // 浏览器对同一域名的并发连接数有限。一个行程可能同时渲染十几段路线，
 // 若全部立刻请求，后面的请求会在连接队列里耗尽超时时间。
 // 这里只让 3 段真实路线同时查询，并在真正开始请求后再计算超时。
@@ -711,7 +717,7 @@ Object.assign(window, {
   getAuth, setAuth, clearAuth, authHeaders,
   loginApi, registerApi, checkAuth,
   streamPlan, confirmModification,
-  getHistory, getHistoryItem,
+  getHistory, getHistoryItem, getHistoryItemLivePrices,
   getProfile, saveProfile,
   getConfig, ensureAMap, initAmapForDay, destroyAmap,
   optimizeDay, revertDay,

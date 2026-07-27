@@ -45,6 +45,7 @@ function App() {
       if (!a) { setShowAuthModal(true); return; }
       getHistoryItem(viewId).then(data => {
         if (data?.plan) {
+          data.plan.__refresh_live_prices = true;
           const adapted = adaptPlan(data.plan, a.username);
           setDetailPlan(adapted);
           setDetailPlanId(viewId);
@@ -138,6 +139,7 @@ function App() {
   };
 
   const onOpenHistoryPlan = (rawPlan, planId) => {
+    rawPlan.__refresh_live_prices = true;
     const adapted = adaptPlan(rawPlan, authUser);
     setDetailPlan(adapted);
     setDetailPlanId(planId);

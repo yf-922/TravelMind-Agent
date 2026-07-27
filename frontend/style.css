@@ -1175,6 +1175,21 @@ img { display: block; }
 .meal-price-source.estimate { background: #fff3df; }
 .meal-price-source.estimate strong { color: #94501d; }
 .budget-grid b small { display: block; margin-top: 2px; color: #94501d; font-size: .62rem; font-weight: 700; }
+.live-price-refresh {
+  max-width: 760px; margin: 18px auto 14px; padding: 10px 14px;
+  display: flex; align-items: center; gap: 9px; border-radius: 10px;
+  background: #fff3df; color: #7a4219; font-size: .8rem; border: 1px solid #e7c18f;
+}
+.live-price-refresh.done { background: #eaf7ef; color: #23734e; border-color: #abd5bd; }
+.live-price-refresh.failed { background: #fff0ec; color: #9a351f; border-color: #e4ad9d; }
+.live-price-refresh-dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; flex: 0 0 auto; }
+.live-price-refresh.loading .live-price-refresh-dot { animation: journey-pulse 1.2s ease-in-out infinite; }
+.trip-opening {
+  position: absolute; inset: 0; z-index: 8; display: grid; place-items: center;
+  background: rgba(36, 30, 23, .72); color: #fff; font-size: .9rem; font-weight: 800;
+  letter-spacing: .08em; backdrop-filter: blur(2px);
+}
+.history-open-error { margin: -20px 0 18px; padding: 10px 13px; border-radius: 9px; background: #fff0ec; color: #9a351f; font-size: .82rem; }
 .nav-row-main { min-width: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; }
 .nav-mode { color: var(--accent-deep); font-size: 11px; font-weight: 800; padding: 2px 7px; border-radius: 4px; background: var(--accent-soft); }
 .nav-metrics { color: var(--ink-2); font-size: 11px; font-weight: 700; }

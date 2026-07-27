@@ -514,6 +514,27 @@ function TripDetailPage({ plan: planProp, planId: planIdProp, onRequestModify, o
   const [activeNavPair, setActiveNavPair] = React.useState(null);
   const [nearbyTarget, setNearbyTarget] = React.useState(null);
   const [themeInput, setThemeInput] = React.useState("");
+  const [livePriceStatus, setLivePriceStatus] = React.useState("idle");
+
+  React.useEffect(() => {
+    if (!planIdProp || !planProp?._raw?.__refresh_live_prices) return;
+    const controller = new AbortController();
+    let alive = true;
+    setLivePriceStatus("loading");
+    getHistoryItemLivePrices(planIdProp, controller.signal)
+      .then(data => {
+        if (!alive || !data?.plan) return;
+        const adapted = adaptPlan(data.plan, currentUsername);
+        adapted.logs = data.plan.history || planProp.logs || [];
+        setPlan(adapted);
+        setLivePriceStatus("done");
+        window.setTimeout(() => { if (alive) setLivePriceStatus("idle"); }, 5000);
+      })
+      .catch(error => {
+        if (alive && error?.name !== "AbortError") setLivePriceStatus("failed");
+      });
+    return () => { alive = false; controller.abort(); };
+  }, [planIdProp, planProp?._raw?.__refresh_live_prices, currentUsername]); // eslint-disable-line
 
   React.useEffect(() => {
     setPlan(planProp);
@@ -839,6 +860,16 @@ function TripDetailPage({ plan: planProp, planId: planIdProp, onRequestModify, o
           onPickMeal={handlePickMeal} />
       )}
     <div className="page page-fade trip-detail-page">
+      {livePriceStatus !== "idle" && (
+        <div className={`live-price-refresh ${livePriceStatus}`} role="status" aria-live="polite">
+          <span className="live-price-refresh-dot"></span>
+          <strong>
+            {livePriceStatus === "loading" && "行程已打开，正在后台实时核验门票与餐饮价格…"}
+            {livePriceStatus === "done" && "实时价格已更新，预算已重新计算"}
+            {livePriceStatus === "failed" && "实时价格暂时查询失败，行程内容仍可正常查看"}
+          </strong>
+        </div>
+      )}
       <div className="result-grid">
         <div>
           <div className="plan-cover">
@@ -1028,6 +1059,8 @@ function TripDetailPage({ plan: planProp, planId: planIdProp, onRequestModify, o
 function HistoryPage({ onOpenPlan, currentUsername }) {
   const [trips, setTrips] = React.useState(null);
   const [loading, setLoading] = React.useState(true);
+  const [openingId, setOpeningId] = React.useState(null);
+  const [openError, setOpenError] = React.useState("");
 
   React.useEffect(() => {
     getHistory().then(data => {
@@ -1037,10 +1070,18 @@ function HistoryPage({ onOpenPlan, currentUsername }) {
   }, []);
 
   const open = async (trip) => {
+    if (openingId) return;
+    setOpeningId(trip.id);
+    setOpenError("");
     try {
       const data = await getHistoryItem(trip.id);
       if (data && data.plan) onOpenPlan && onOpenPlan(data.plan, trip.id);
-    } catch {}
+      else setOpenError("行程读取失败，请稍后重试");
+    } catch (error) {
+      setOpenError(error?.message || "行程读取失败，请稍后重试");
+    } finally {
+      setOpeningId(null);
+    }
   };
 
   return (
@@ -1054,6 +1095,8 @@ function HistoryPage({ onOpenPlan, currentUsername }) {
           <div className="head-note">共 {trips.length} 期 · 点击封面回看<br />每一趟都是一期独立的「刊物」</div>
         )}
       </div>
+
+      {openError && <div className="history-open-error" role="alert">⚠ {openError}</div>}
 
       {loading && (
         <div className="skeleton-grid">
@@ -1090,6 +1133,7 @@ function HistoryPage({ onOpenPlan, currentUsername }) {
               <div key={t.id} className="trip-cover"
                 onClick={() => open(t)} role="button" tabIndex={0}
                 onKeyDown={(e) => e.key === "Enter" && open(t)}>
+                {openingId === t.id && <div className="trip-opening">正在打开…</div>}
                 <div className="tc-img" style={{ backgroundImage: `url('${imgUrl}')` }}></div>
                 <div className="tc-shade"></div>
                 <div className="tc-top">

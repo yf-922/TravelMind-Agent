@@ -42,6 +42,22 @@ def get_itinerary(plan_id: str, authorization: str | None = Header(default=None)
         if row["user_id"] != user_id:
             raise HTTPException(403, "无权访问")
         data = load_itinerary(plan_id, conn)
+    return data
+
+
+@router.get("/{plan_id}/live-prices")
+def get_itinerary_live_prices(plan_id: str, authorization: str | None = Header(default=None)):
+    """后台实时补全门票与餐饮估算；与快速打开行程的接口分离。"""
+    user_id = _require_user(authorization)
+    with get_conn() as conn:
+        row = conn.execute(
+            "SELECT user_id FROM itineraries WHERE id=?", (plan_id,)
+        ).fetchone()
+        if not row:
+            raise HTTPException(404, "行程不存在")
+        if row["user_id"] != user_id:
+            raise HTTPException(403, "无权访问")
+        data = load_itinerary(plan_id, conn)
     if data and isinstance(data.get("plan"), dict):
         enrich_plan_ticket_budget(data["plan"])
     return data
