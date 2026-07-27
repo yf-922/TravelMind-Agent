@@ -956,6 +956,10 @@ function TripDetailPage({ plan: planProp, planId: planIdProp, onRequestModify, o
 
           {!editing && <DayBudget budget={day.budget} mobilityAdvice={day.mobility_advice} />}
 
+          {!editing && plan.hotel_info && dayIdx === 0 && (
+            <div className="mobility-advice">住宿预算：{plan.hotel_info.nightly_price != null ? `约 ¥${Number(plan.hotel_info.nightly_price).toFixed(0)}/间夜 × ${plan.hotel_info.nights} 晚 = ¥${Number(plan.hotel_info.estimated_total).toFixed(0)}` : "本次高德未返回可用房价"}（按房间计，不混入人均日预算）</div>
+          )}
+
           {editing ? (
             <>
               <EditToolbar canUndo={undoStack.length > 0} canRedo={redoStack.length > 0}

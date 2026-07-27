@@ -561,6 +561,7 @@ function projectPoints(timeline) {
 function adaptPlan(backendPlan, username) {
   const dest = backendPlan.destination || "旅行";
   const prefs = backendPlan.preferences || {};
+  const hotelInfo = backendPlan.hotel && typeof backendPlan.hotel === "object" ? backendPlan.hotel : null;
   // preferences 字段可能是字符串（"历史、古迹"）或数组，统一转数组
   // 同时过滤掉 LLM 偶尔吐出的占位垃圾值（"null"/"无" 等），避免污染标题与 badge
   const JUNK_PREF = new Set(["null", "undefined", "none", "无", "暂无", "没有", "不限"]);
@@ -609,7 +610,13 @@ function adaptPlan(backendPlan, username) {
         dist: it.dist_from_prev_km != null ? it.dist_from_prev_km : null,
         travel: it.travel_from_prev || null,
       };
-      if (it.type === "attraction") {
+      if (it.type === "hotel") {
+        return {
+          ...base, type: "hotel", name: it.name, location: it.location || null,
+          address: it.address || null, tel: it.tel || null, rating: it.rating,
+          cost: it.cost ?? null, hotelInfo: it.hotel_info || hotelInfo,
+        };
+      } else if (it.type === "attraction") {
         return {
           ...base,
           type: "attraction",
@@ -707,7 +714,8 @@ function adaptPlan(backendPlan, username) {
     logs: backendPlan.history || [],
     username: username || "旅行者",
     candidate_spots: backendPlan.candidate_spots || [],
-    hotel: backendPlan.hotel || "",
+    hotel: hotelInfo?.name || backendPlan.hotel || "",
+    hotel_info: hotelInfo,
     notes: backendPlan.notes || "",
     budget_summary: backendPlan.budget_summary || null,
   };

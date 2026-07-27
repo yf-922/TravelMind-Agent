@@ -492,12 +492,26 @@ function DayBudget({ budget, mobilityAdvice }) {
   );
 }
 
+function HotelCard({ item }) {
+  const info = item.hotelInfo || {};
+  const price = info.nightly_price ?? item.cost;
+  return <div className="tl-node"><div className="t-card"><div className="t-body">
+    <div className="t-title">🏨 {item.name}<span className="period-tag morning">出发点</span></div>
+    <div className="t-meta">
+      {item.rating != null && <span className="star">★ {Number(item.rating).toFixed(1)}</span>}
+      {price != null && <span>约 ¥{Number(price).toFixed(0)}/间夜</span>}
+    </div>
+    {item.address && <div className="t-addr">{item.address}</div>}
+    <div className="t-note">当天路线从酒店出发；价格来自本次高德查询，预订前请复核。</div>
+  </div></div></div>;
+}
+
 // 时间轴：左侧时间槽 + 轴线，相邻两项之间插入导航行
 function Timeline({ items, city, onNav, activeNavKey }) {
   return (
     <div className="timeline">
       {items.map((item, i) => {
-        const isMeal = item.type !== "attraction";
+        const isMeal = item.type !== "attraction" && item.type !== "hotel";
         const prevItem = i > 0 ? items[i - 1] : null;
         const navKey = i > 0 ? String(i) : null;
         return (
@@ -514,7 +528,9 @@ function Timeline({ items, city, onNav, activeNavKey }) {
             <div className="tl-row">
               <div className="tl-when">{isMeal ? "" : (item.start || "")}</div>
               <div className="tl-spine tl-spine-dot"><span className={`tl-dot${isMeal ? " meal" : ""}`}></span></div>
-              {isMeal
+              {item.type === "hotel"
+                ? <HotelCard item={item} />
+                : isMeal
                 ? <MealCard item={item} />
                 : <AttractionCard item={item} onNearby={onNav ? (it) => onNav("nearby:" + i, null, it) : undefined} />
               }

@@ -15,6 +15,7 @@ from app.llm.factory import build_structured_llm
 from app.providers.amap.poi import ATTRACTION_TYPE, poi_to_spot, search_around_pois, search_city_pois
 from app.providers.pricing import enrich_restaurant_prices, resolve_attraction_price
 from app.providers.tickets.live import lookup_live_ticket_prices
+from app.providers.hotels import recommend_chain_hotel
 from app.planning.schemas import (
     DayMealPick,
     IntentExtraction,
@@ -873,6 +874,8 @@ def _build_day_budget(timeline: list[dict[str, Any]]) -> dict[str, Any]:
     transport = 0.0
     unknown: list[str] = []
     for item in timeline:
+        if item.get("type") == "hotel":
+            continue
         price = _money_value(item.get("cost"))
         if item.get("type") == "attraction":
             if price is None:
@@ -949,6 +952,20 @@ def _finalize_impl(state: TravelPlanState) -> dict[str, Any]:
     """组装 final_plan：逐天时刻表 + 午晚餐 + 图片url + haversine 距离。"""
     spot_info    = {s["name"]: s for s in state.pois}
     meals_by_day = {m["day"]: m for m in state.meals}
+    hotel = recommend_chain_hotel(state.destination or "", amap_key()) if state.destination else None
+    hotel_summary: dict[str, Any] | None = None
+    if hotel:
+        nights = max(1, (state.days or 1) - 1)
+        nightly_price = hotel.get("nightly_price")
+        hotel_summary = {
+            "name": hotel.get("name"), "location": hotel.get("location"),
+            "address": hotel.get("address"), "tel": hotel.get("tel"),
+            "rating": hotel.get("rating"), "nightly_price": nightly_price,
+            "nights": nights,
+            "estimated_total": round(float(nightly_price) * nights, 2) if nightly_price is not None else None,
+            "price_source": "本次高德酒店查询" if nightly_price is not None else "本次高德酒店查询未返回价格",
+            "note": "按连锁酒店候选中本次可见价格优先推荐；房价会随日期、房型和入住人数变化，请在预订页复核。",
+        }
 
     ticket_requests: list[tuple[str, date | str | None]] = []
     for route_day in state.route:
@@ -970,6 +987,14 @@ def _finalize_impl(state: TravelPlanState) -> dict[str, Any]:
 
         meal     = meals_by_day.get(day_no, {})
         timeline: list[dict[str, Any]] = []
+
+        if hotel_summary and hotel_summary.get("location"):
+            timeline.append({
+                "type": "hotel", "name": hotel_summary["name"],
+                "location": hotel_summary["location"], "address": hotel_summary.get("address"),
+                "tel": hotel_summary.get("tel"), "rating": hotel_summary.get("rating"),
+                "cost": hotel_summary.get("nightly_price"), "hotel_info": hotel_summary,
+            })
 
         # 用名称相等（非 `is`）避免 LangGraph 序列化/反序列化后身份比较失效
         morning_anchor_name   = (last_spot_of_period(day, "morning") or {}).get("name")
@@ -1064,6 +1089,7 @@ def _finalize_impl(state: TravelPlanState) -> dict[str, Any]:
         # 不是给用户的常规提醒。
         "route_issues": list(state.reviewer_issues or []),
         "days": days_out,
+        "hotel": hotel_summary,
     }
     final_plan["budget_summary"] = {
         "currency": "CNY",
@@ -1075,6 +1101,9 @@ def _finalize_impl(state: TravelPlanState) -> dict[str, Any]:
         "known_subtotal": round(sum(d["budget"]["known_subtotal"] for d in days_out), 2),
         "estimated_subtotal": round(sum(d["budget"].get("estimated_subtotal", d["budget"]["known_subtotal"]) for d in days_out), 2),
         "unknown_items": [item for d in days_out for item in d["budget"]["unknown_items"]],
+        "lodging_nightly": hotel_summary.get("nightly_price") if hotel_summary else None,
+        "lodging_nights": hotel_summary.get("nights") if hotel_summary else 0,
+        "lodging_estimated_total": hotel_summary.get("estimated_total") if hotel_summary else None,
         "note": "按人估算；门票来自本次实时网页查询，未知价格未计入合计。",
     }
     placed_names = {s["name"] for day_r in state.route for s in day_r.get("spots", [])}
