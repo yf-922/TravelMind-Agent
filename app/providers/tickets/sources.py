@@ -15,4 +15,9 @@ OFFICIAL_TICKET_SOURCES = {
     "什刹海公园": ("北京旅游网·什刹海风景区", "https://s.visitbeijing.com.cn/attraction/117800", "free_page"),
     "什刹海风景区": ("北京旅游网·什刹海风景区", "https://s.visitbeijing.com.cn/attraction/117800", "free_page"),
     "什刹海旅游风景区": ("北京旅游网·什刹海风景区", "https://s.visitbeijing.com.cn/attraction/117800", "free_page"),
+    "天坛": ("天坛公园官方网站", "https://www.tiantanpark.cn/index.html", "tiantan"),
+    "天坛公园": ("天坛公园官方网站", "https://www.tiantanpark.cn/index.html", "tiantan"),
+    "恭王府": ("恭王府博物馆官方网站", "https://www.gongwangfu.com/", "gongwangfu"),
+    "恭王府博物馆": ("恭王府博物馆官方网站", "https://www.gongwangfu.com/", "gongwangfu"),
+    "南锣鼓巷": ("北京旅游网·南锣鼓巷", "https://s.visitbeijing.com.cn/attraction/117821", "free_page"),
 }

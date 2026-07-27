@@ -438,7 +438,7 @@ function NavRow({ itemA, itemB, city, onNav, isActive }) {
           <span className="nav-row-label">{itemA.name} → {itemB.name}</span>
           {travel && (
             <span className="nav-metrics">
-              约 {travel.duration_min} 分钟 · {travel.estimated_cost ? `¥${travel.estimated_cost}/人` : "免费"}
+              约 {travel.duration_min} 分钟{Number(travel.estimated_cost) > 0 ? ` · ¥${travel.estimated_cost}/人` : ""}
             </span>
           )}
           {travel?.instruction && <span className="nav-instruction">{travel.instruction}</span>}

@@ -79,6 +79,23 @@ def _parse_official_page(
         if match:
             price = float(match.group(1))
             return _result(price, f"实时查询·成人日常门票 ¥{price:g}", source_name, source_url, "牡丹花节等活动期间页面显示可能执行活动票价，请出行前复核。")
+    elif parser_name == "tiantan":
+        season = "旺季" if peak else "淡季"
+        # 官网页面、公告或其嵌入票务文案均可命中；只接受明确的成人大门票字段。
+        patterns = (
+            rf"{season}.{{0,100}}?(?:大门票|门票).{{0,24}}?(\d+(?:\.\d+)?)\s*元",
+            rf"(?:大门票|门票).{{0,80}}?{season}.{{0,48}}?(\d+(?:\.\d+)?)\s*元",
+        )
+        for pattern in patterns:
+            match = re.search(pattern, text)
+            if match:
+                price = float(match.group(1))
+                return _result(price, f"官网实时查询·{season}成人大门票 ¥{price:g}", source_name, source_url, "联票及祈年殿、回音壁等园内项目可能另计，以本次官网页面为准。")
+    elif parser_name == "gongwangfu":
+        match = re.search(r"(?:成人(?:票)?|全价票|门票).{0,80}?(\d+(?:\.\d+)?)\s*元", text)
+        if match:
+            price = float(match.group(1))
+            return _result(price, f"官网实时查询·成人门票 ¥{price:g}", source_name, source_url, "讲解、特展等服务可能另计，请以预约购票页为准。")
     elif parser_name == "free_page" and re.search(r"门票价格.{0,12}免费|免费开放|无需门票", text):
         return _result(0, "实时查询·免费开放", source_name, source_url, "收费场馆、游船、活动和其他消费另计。")
     return None

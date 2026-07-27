@@ -41,3 +41,26 @@ def test_ticket_lookup_fetches_official_page_every_time(monkeypatch):
     assert first["price"] == second["price"] == 30
     assert first["live_query"] is True
     assert len(calls) == 2
+
+
+def test_tiantan_ticket_uses_current_official_page(monkeypatch):
+    page = "天坛公园票务说明：旺季成人大门票 15元，淡季成人大门票 10元。"
+    monkeypatch.setattr(live, "http_get_text", lambda *_args, **_kwargs: page)
+
+    result = live.lookup_live_ticket_price("天坛公园", "2026-07-27")
+
+    assert result is not None
+    assert result["price"] == 15
+    assert result["live_query"] is True
+    assert "天坛" in result["source_name"]
+
+
+def test_gongwangfu_ticket_uses_current_official_page(monkeypatch):
+    page = "恭王府博物馆预约购票：全价票 40元。"
+    monkeypatch.setattr(live, "http_get_text", lambda *_args, **_kwargs: page)
+
+    result = live.lookup_live_ticket_price("恭王府博物馆", "2026-07-27")
+
+    assert result is not None
+    assert result["price"] == 40
+    assert result["live_query"] is True
