@@ -292,10 +292,16 @@ function AttractionCard({ item, onNearby }) {
           {item.ticketInfo && (
             <div className="t-ticket-source">
               <span>{item.ticketInfo.price_label}</span>
-              <a href={item.ticketInfo.source_url} target="_blank" rel="noreferrer">
-                来源：{item.ticketInfo.source_name}
-              </a>
-              <span>核验于 {item.ticketInfo.verified_at}</span>
+              {item.ticketInfo.source_url ? (
+                <a href={item.ticketInfo.source_url} target="_blank" rel="noreferrer">
+                  来源：{item.ticketInfo.source_name}
+                </a>
+              ) : <span>来源：{item.ticketInfo.source_name}</span>}
+              <span>
+                {item.ticketInfo.live_query ? "本次联网查询" : "核验于"} {item.ticketInfo.queried_at
+                  ? new Date(item.ticketInfo.queried_at).toLocaleString("zh-CN", { hour12: false })
+                  : item.ticketInfo.verified_at}
+              </span>
               {item.ticketInfo.note && <small>{item.ticketInfo.note}</small>}
             </div>
           )}
@@ -352,6 +358,13 @@ function MealCard({ item }) {
             {item.category && <span>{item.category}</span>}
             {item.addr && <span>{item.addr}</span>}
           </div>
+          {item.costInfo && (
+            <div className={`meal-price-source${item.costInfo.estimate ? " estimate" : ""}`}>
+              <strong>{item.costInfo.price_label}</strong>
+              <span>{item.costInfo.source_name}</span>
+              {item.costInfo.observed_at && <span>记录于 {item.costInfo.observed_at}</span>}
+            </div>
+          )}
           {item.open && <div className="t-address">🕐 {item.open}</div>}
           {item.tel && <div className="t-address">📞 {item.tel}</div>}
           {item.reason && <div className="reason-box">{item.reason}</div>}
@@ -455,13 +468,19 @@ function DayBudget({ budget, mobilityAdvice }) {
       <div className="budget-head">
         <div>
           <div className="budget-eyebrow">当日人均费用</div>
-          <strong>已知小计 ¥{Number(budget.known_subtotal || 0).toFixed(0)}</strong>
+          <strong>预计小计 ¥{Number(budget.estimated_subtotal ?? budget.known_subtotal ?? 0).toFixed(0)}</strong>
         </div>
         <span>估算</span>
       </div>
       <div className="budget-grid">
         <div><span>门票</span><b>¥{Number(budget.ticket_known || 0).toFixed(0)}</b></div>
-        <div><span>餐饮</span><b>¥{Number(budget.meal_known || 0).toFixed(0)}</b></div>
+        <div>
+          <span>餐饮</span>
+          <b>
+            ¥{Number((budget.meal_known || 0) + (budget.meal_estimated || 0)).toFixed(0)}
+            {budget.meal_estimated > 0 && <small>含估算 ¥{Number(budget.meal_estimated).toFixed(0)}</small>}
+          </b>
+        </div>
         <div><span>交通</span><b>¥{Number(budget.transport_estimated || 0).toFixed(0)}</b></div>
       </div>
       {budget.unknown_items?.length > 0 && (

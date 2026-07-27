@@ -58,3 +58,26 @@ def http_get_json(url: str, timeout: int = 15) -> dict[str, Any]:
             last_error = exc
             time.sleep(0.8 * (attempt + 1))
     raise RuntimeError(f"请求失败：{redact_url(url)}；原因：{last_error}")
+
+
+def http_get_text(url: str, timeout: int = 8, retries: int = 2) -> str:
+    """实时获取网页文本；不缓存，供票价官网查询使用。"""
+    request = urllib.request.Request(
+        url,
+        headers={
+            "User-Agent": USER_AGENT,
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.7",
+            "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.7",
+        },
+    )
+    last_error: Exception | None = None
+    for attempt in range(max(1, retries)):
+        try:
+            with urllib.request.urlopen(request, timeout=timeout) as response:
+                charset = response.headers.get_content_charset() or "utf-8"
+                return response.read(2_000_000).decode(charset, errors="replace")
+        except Exception as exc:
+            last_error = exc
+            if attempt + 1 < retries:
+                time.sleep(0.4 * (attempt + 1))
+    raise RuntimeError(f"网页请求失败：{redact_url(url)}；原因：{last_error}")

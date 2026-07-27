@@ -1166,6 +1166,15 @@ img { display: block; }
 .t-ticket-source > span:first-child { color: #23734e; font-weight: 800; }
 .t-ticket-source a { color: var(--accent-deep); text-decoration: underline; text-underline-offset: 2px; }
 .t-ticket-source small { flex-basis: 100%; color: var(--ink-3); font-size: .68rem; }
+.meal-price-source {
+  display: flex; flex-wrap: wrap; gap: 5px 9px; margin-top: 7px;
+  padding: 6px 9px; border-radius: 8px; background: color-mix(in srgb, #2f9e66 8%, var(--card));
+  color: var(--ink-3); font-size: .69rem; line-height: 1.45;
+}
+.meal-price-source strong { color: #23734e; }
+.meal-price-source.estimate { background: #fff3df; }
+.meal-price-source.estimate strong { color: #94501d; }
+.budget-grid b small { display: block; margin-top: 2px; color: #94501d; font-size: .62rem; font-weight: 700; }
 .nav-row-main { min-width: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; }
 .nav-mode { color: var(--accent-deep); font-size: 11px; font-weight: 800; padding: 2px 7px; border-radius: 4px; background: var(--accent-soft); }
 .nav-metrics { color: var(--ink-2); font-size: 11px; font-weight: 700; }

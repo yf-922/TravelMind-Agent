@@ -630,6 +630,7 @@ function adaptPlan(backendPlan, username) {
           name: it.name,
           rating: it.rating,
           cost: it.cost,
+          costInfo: it.cost_info || null,
           addr: it.address,
           reason: it.reason,
           no_restaurant: it.no_restaurant || !it.name,

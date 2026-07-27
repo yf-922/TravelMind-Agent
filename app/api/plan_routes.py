@@ -423,10 +423,12 @@ def _refresh_budget_summary(plan: dict) -> None:
         "currency": "CNY", "unit": "per_person",
         "ticket_known": round(sum(b.get("ticket_known", 0) for b in budgets), 2),
         "meal_known": round(sum(b.get("meal_known", 0) for b in budgets), 2),
+        "meal_estimated": round(sum(b.get("meal_estimated", 0) for b in budgets), 2),
         "transport_estimated": round(sum(b.get("transport_estimated", 0) for b in budgets), 2),
         "known_subtotal": round(sum(b.get("known_subtotal", 0) for b in budgets), 2),
+        "estimated_subtotal": round(sum(b.get("estimated_subtotal", b.get("known_subtotal", 0)) for b in budgets), 2),
         "unknown_items": [item for b in budgets for item in b.get("unknown_items", [])],
-        "note": "按人估算；不含住宿和购物，未知价格未计入合计。",
+        "note": "按人估算；门票来自本次实时网页查询，餐饮缺价项会明确标记为估算。",
     }
 
 

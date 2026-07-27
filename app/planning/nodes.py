@@ -13,7 +13,8 @@ logger = logging.getLogger(__name__)
 
 from app.llm.factory import build_structured_llm
 from app.providers.amap.poi import ATTRACTION_TYPE, poi_to_spot, search_around_pois, search_city_pois
-from app.providers.tickets.catalog import enrich_attraction_ticket
+from app.providers.pricing import enrich_restaurant_prices, resolve_attraction_price
+from app.providers.tickets.live import lookup_live_ticket_prices
 from app.planning.schemas import (
     DayMealPick,
     IntentExtraction,
@@ -617,6 +618,7 @@ def meal_search_node(state: TravelPlanState) -> dict[str, Any]:
                 continue
             raw   = search_around_pois(center, api_key, types="餐饮服务", radius=1000, offset=20)
             cands = [r for r in (restaurant_to_dict(p) for p in raw) if r][:20]
+            cands = enrich_restaurant_prices(cands, state.destination or "")
             if not cands:
                 warnings.append(f"Day{day_no} {meal}（{anchor['name']} 周边）无餐饮")
             entry[meal] = {"anchor": anchor["name"], "center": center, "candidates": cands}
@@ -867,6 +869,7 @@ def _build_travel_leg(distance_km: float, from_name: str, to_name: str) -> dict[
 def _build_day_budget(timeline: list[dict[str, Any]]) -> dict[str, Any]:
     ticket = 0.0
     meals = 0.0
+    meal_estimates = 0.0
     transport = 0.0
     unknown: list[str] = []
     for item in timeline:
@@ -879,28 +882,52 @@ def _build_day_budget(timeline: list[dict[str, Any]]) -> dict[str, Any]:
         elif item.get("name"):
             if price is None:
                 unknown.append(f"{item.get('name')}餐费")
+            elif (item.get("cost_info") or {}).get("estimate"):
+                meal_estimates += price
             else:
                 meals += price
         leg = item.get("travel_from_prev")
         if isinstance(leg, dict):
             transport += float(leg.get("estimated_cost") or 0)
     subtotal = ticket + meals + transport
+    estimated_subtotal = subtotal + meal_estimates
     return {
         "currency": "CNY", "unit": "per_person", "ticket_known": round(ticket, 2),
-        "meal_known": round(meals, 2), "transport_estimated": round(transport, 2),
-        "known_subtotal": round(subtotal, 2), "unknown_items": unknown,
-        "note": "按人估算；不含住宿和购物，实时票价与交通费用以实际支付为准。",
+        "meal_known": round(meals, 2), "meal_estimated": round(meal_estimates, 2),
+        "transport_estimated": round(transport, 2),
+        "known_subtotal": round(subtotal, 2), "estimated_subtotal": round(estimated_subtotal, 2),
+        "unknown_items": unknown,
+        "note": "按人估算；餐厅缺价时采用附近中位数或品类基线，实际支付可能浮动。",
     }
 
 
 def enrich_plan_ticket_budget(plan: dict[str, Any]) -> dict[str, Any]:
-    """为旧行程补全可信票价并重算预算，便于历史数据随目录升级。"""
+    """重新联网查询旧行程门票并重算预算，不复用历史票价。"""
+    ticket_requests = [
+        (str(item.get("name") or ""), day.get("date"))
+        for day in plan.get("days", [])
+        for item in (day.get("timeline") or [])
+        if item.get("type") == "attraction" and item.get("name")
+    ]
+    live_tickets = lookup_live_ticket_prices(ticket_requests)
     for day in plan.get("days", []):
         visit_date = day.get("date")
         timeline = day.get("timeline") or []
+        city = str(plan.get("destination") or "")
         for index, item in enumerate(timeline):
             if item.get("type") == "attraction":
-                timeline[index] = enrich_attraction_ticket(item, visit_date)
+                timeline[index] = resolve_attraction_price(
+                    item, visit_date, city,
+                    live_tickets.get((str(item.get("name") or ""), str(visit_date or ""))),
+                    live_lookup_done=True,
+                )
+        meal_indexes = [
+            index for index, item in enumerate(timeline)
+            if item.get("type") in {"lunch", "dinner"} and item.get("name")
+        ]
+        enriched_meals = enrich_restaurant_prices([timeline[index] for index in meal_indexes], city)
+        for index, meal in zip(meal_indexes, enriched_meals):
+            timeline[index] = meal
         day["budget"] = _build_day_budget(timeline)
 
     budgets = [day.get("budget") for day in plan.get("days", []) if isinstance(day.get("budget"), dict)]
@@ -908,10 +935,12 @@ def enrich_plan_ticket_budget(plan: dict[str, Any]) -> dict[str, Any]:
         "currency": "CNY", "unit": "per_person",
         "ticket_known": round(sum(b.get("ticket_known", 0) for b in budgets), 2),
         "meal_known": round(sum(b.get("meal_known", 0) for b in budgets), 2),
+        "meal_estimated": round(sum(b.get("meal_estimated", 0) for b in budgets), 2),
         "transport_estimated": round(sum(b.get("transport_estimated", 0) for b in budgets), 2),
         "known_subtotal": round(sum(b.get("known_subtotal", 0) for b in budgets), 2),
+        "estimated_subtotal": round(sum(b.get("estimated_subtotal", b.get("known_subtotal", 0)) for b in budgets), 2),
         "unknown_items": [item for b in budgets for item in b.get("unknown_items", [])],
-        "note": "按人估算；不含住宿和购物。票价目录保留来源与核验日期，出行前请再次确认。",
+        "note": "按人估算；门票来自本次实时网页查询，餐饮缺价项会明确标记为估算。",
     }
     return plan
 
@@ -920,6 +949,17 @@ def _finalize_impl(state: TravelPlanState) -> dict[str, Any]:
     """组装 final_plan：逐天时刻表 + 午晚餐 + 图片url + haversine 距离。"""
     spot_info    = {s["name"]: s for s in state.pois}
     meals_by_day = {m["day"]: m for m in state.meals}
+
+    ticket_requests: list[tuple[str, date | str | None]] = []
+    for route_day in state.route:
+        visit_date = None
+        if state.travel_start_date and route_day.get("day"):
+            visit_date = state.travel_start_date + timedelta(days=route_day["day"] - 1)
+        ticket_requests.extend(
+            (str(spot.get("name") or ""), visit_date)
+            for spot in route_day.get("spots", []) if spot.get("name")
+        )
+    live_tickets = lookup_live_ticket_prices(ticket_requests)
 
     days_out: list[dict[str, Any]] = []
     for day in state.route:
@@ -955,7 +995,11 @@ def _finalize_impl(state: TravelPlanState) -> dict[str, Any]:
                 "tel": info.get("tel"),
                 "cost": info.get("cost"),
             }
-            timeline.append(enrich_attraction_ticket(attraction_item, the_date))
+            timeline.append(resolve_attraction_price(
+                attraction_item, the_date, state.destination or "",
+                live_tickets.get((str(spot.get("name") or ""), str(the_date or ""))),
+                live_lookup_done=True,
+            ))
             if spot.get("name") == morning_anchor_name and not lunch_inserted:
                 lunch_inserted = True
                 if meal.get("lunch"):
@@ -1026,10 +1070,12 @@ def _finalize_impl(state: TravelPlanState) -> dict[str, Any]:
         "unit": "per_person",
         "ticket_known": round(sum(d["budget"]["ticket_known"] for d in days_out), 2),
         "meal_known": round(sum(d["budget"]["meal_known"] for d in days_out), 2),
+        "meal_estimated": round(sum(d["budget"].get("meal_estimated", 0) for d in days_out), 2),
         "transport_estimated": round(sum(d["budget"]["transport_estimated"] for d in days_out), 2),
         "known_subtotal": round(sum(d["budget"]["known_subtotal"] for d in days_out), 2),
+        "estimated_subtotal": round(sum(d["budget"].get("estimated_subtotal", d["budget"]["known_subtotal"]) for d in days_out), 2),
         "unknown_items": [item for d in days_out for item in d["budget"]["unknown_items"]],
-        "note": "按人估算；不含住宿和购物，未知价格未计入合计。",
+        "note": "按人估算；门票来自本次实时网页查询，未知价格未计入合计。",
     }
     placed_names = {s["name"] for day_r in state.route for s in day_r.get("spots", [])}
     candidate_spots = [
