@@ -168,16 +168,25 @@ def plan_transport_leg(
         cached = _PLAN_CACHE.get(cache_key)
         if cached and cached[0] > now:
             return dict(cached[1])
-    try:
+    def request_plan() -> dict[str, Any] | None:
         if straight_distance_km <= 1.2:
-            plan = _walk_plan(origin, destination, api_key)
-        elif straight_distance_km <= 25:
-            plan = _transit_plan(origin, destination, city, api_key)
-        else:
-            plan = _driving_plan(origin, destination, api_key)
+            return _walk_plan(origin, destination, api_key)
+        if straight_distance_km <= 25:
+            return _transit_plan(origin, destination, city, api_key)
+        return _driving_plan(origin, destination, api_key)
+
+    # 页面首次打开时常会同时查询多段路线。个人 Key 偶发触发瞬时限流时，
+    # 高德会返回 status=0 或空方案；短暂等待后重试一次即可恢复。
+    plan = None
+    for attempt in range(2):
+        try:
+            plan = request_plan()
+        except (OSError, ValueError, KeyError, json.JSONDecodeError):
+            plan = None
         if plan:
             with _PLAN_CACHE_LOCK:
                 _PLAN_CACHE[cache_key] = (now + _PLAN_CACHE_TTL, dict(plan))
-        return plan
-    except (OSError, ValueError, KeyError, json.JSONDecodeError):
-        return None
+            return plan
+        if attempt == 0:
+            time.sleep(0.25)
+    return None

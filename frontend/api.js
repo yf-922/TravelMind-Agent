@@ -418,20 +418,57 @@ async function drawNavPairRoute(container, from, to) {
   return true;
 }
 
+// 浏览器对同一域名的并发连接数有限。一个行程可能同时渲染十几段路线，
+// 若全部立刻请求，后面的请求会在连接队列里耗尽超时时间。
+// 这里只让 3 段真实路线同时查询，并在真正开始请求后再计算超时。
+const transportRequestQueue = [];
+let activeTransportRequests = 0;
+// 高德个人 Key 的并发额度有限，3 个并发兼顾速度和成功率。
+const MAX_TRANSPORT_REQUESTS = 3;
+
+function acquireTransportRequestSlot() {
+  if (activeTransportRequests < MAX_TRANSPORT_REQUESTS) {
+    activeTransportRequests += 1;
+    return Promise.resolve();
+  }
+  return new Promise(resolve => transportRequestQueue.push(resolve));
+}
+
+function releaseTransportRequestSlot() {
+  const next = transportRequestQueue.shift();
+  if (next) next();
+  else activeTransportRequests = Math.max(0, activeTransportRequests - 1);
+}
+
 async function fetchTransportPlan(from, to, city, fromName, toName) {
   const params = new URLSearchParams({
     origin_lng: from.lng, origin_lat: from.lat,
     dest_lng: to.lng, dest_lat: to.lat,
     city: city || "", from_name: fromName || "上一站", to_name: toName || "下一站",
   });
+  await acquireTransportRequestSlot();
   const ctrl = new AbortController();
-  const timer = window.setTimeout(() => ctrl.abort(), 9000);
+  const timer = window.setTimeout(() => ctrl.abort(), 12000);
   try {
     const r = await fetch(`/api/route/plan?${params}`, { headers: authHeaders(), signal: ctrl.signal });
-    if (!r.ok) throw new Error("交通方案获取失败");
+    if (!r.ok) {
+      let detail = "";
+      try { detail = (await r.json()).detail || ""; } catch { /* ignore invalid error body */ }
+      const error = new Error(detail || `路线接口请求失败（HTTP ${r.status}）`);
+      error.status = r.status;
+      throw error;
+    }
     return r.json();
+  } catch (error) {
+    if (error?.name === "AbortError") {
+      const timeoutError = new Error("真实路线查询超时，请稍后重试");
+      timeoutError.code = "ROUTE_TIMEOUT";
+      throw timeoutError;
+    }
+    throw error;
   } finally {
     window.clearTimeout(timer);
+    releaseTransportRequestSlot();
   }
 }
 

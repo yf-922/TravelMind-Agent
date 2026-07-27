@@ -375,14 +375,23 @@ function NavRow({ itemA, itemB, city, onNav, isActive }) {
     && itemB?.location?.lat && itemB?.location?.lng;
   const [loadedTravel, setLoadedTravel] = React.useState(null);
   const [routeStatus, setRouteStatus] = React.useState("idle");
+  const [routeError, setRouteError] = React.useState("");
   const travel = loadedTravel || itemB.travel || previewTransportEstimate(itemB.dist);
   React.useEffect(() => {
     let alive = true;
     if (hasCoords && itemB.travel?.source !== "amap") {
       setRouteStatus("loading");
+      setRouteError("");
       fetchTransportPlan(itemA.location, itemB.location, city, itemA.name, itemB.name)
         .then(plan => { if (alive) { setLoadedTravel(plan); setRouteStatus("done"); } })
-        .catch(() => { if (alive) setRouteStatus("failed"); });
+        .catch(error => {
+          if (!alive) return;
+          let message = error?.message || "真实路线查询失败";
+          if (error?.status === 404) message = "路线接口未加载，请重启后端服务";
+          else if (error?.status === 401) message = "登录状态已过期，请重新登录";
+          setRouteError(message);
+          setRouteStatus("failed");
+        });
     }
     return () => { alive = false; };
   }, [itemA.name, itemB.name, city, itemB.travel?.source]); // eslint-disable-line
@@ -412,7 +421,7 @@ function NavRow({ itemA, itemB, city, onNav, isActive }) {
             <span className="nav-route-status">正在后台补充具体线路，当前先显示估算方案…</span>
           )}
           {routeStatus === "failed" && (
-            <span className="nav-route-status failed">具体线路暂不可用，已保留估算方案。</span>
+            <span className="nav-route-status failed">{routeError}，已保留估算方案。</span>
           )}
         </div>
         <div className="nav-actions">

@@ -48,3 +48,37 @@ def test_direction_failure_returns_none_for_safe_fallback(monkeypatch):
         "北京", "fake-key", 3.0,
     )
     assert plan is None
+
+
+def test_direction_retries_once_after_temporary_empty_response(monkeypatch):
+    calls = 0
+    payload = {
+        "status": "1",
+        "route": {"transits": [{
+            "cost": "3",
+            "duration": "1200",
+            "distance": "5000",
+            "segments": [{"walking": {"distance": "100"}, "bus": {"buslines": [{
+                "name": "地铁测试线",
+                "departure_stop": {"name": "甲站"},
+                "arrival_stop": {"name": "乙站"},
+            }]}}],
+        }]},
+    }
+
+    def fetch(_url):
+        nonlocal calls
+        calls += 1
+        return {"status": "0"} if calls == 1 else payload
+
+    monkeypatch.setattr(direction, "_fetch_json", fetch)
+    monkeypatch.setattr(direction.time, "sleep", lambda _seconds: None)
+    plan = direction.plan_transport_leg(
+        {"lng": 120.1, "lat": 30.1}, {"lng": 120.2, "lat": 30.2},
+        "杭州", "fake-key", 8.0,
+    )
+
+    assert calls == 2
+    assert plan is not None
+    assert plan["source"] == "amap"
+    assert "地铁测试线" in plan["instruction"]
