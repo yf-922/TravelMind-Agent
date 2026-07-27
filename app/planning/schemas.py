@@ -196,6 +196,8 @@ class TravelPlanState(BaseModel):
 
     # 景点游玩贴士（spot_tips 节点填充：景点名 → 贴士文本）
     spot_tips: dict[str, str] = Field(default_factory=dict)
+    # 景区入口与内部游览顺序，和普通贴士分开保存，便于前端结构化展示。
+    spot_guides: dict[str, dict[str, Any]] = Field(default_factory=dict)
 
     # Reviewer 最后一轮发现的问题（最大轮数未通过时透传给前端）
     reviewer_issues: list[str] = Field(default_factory=list)
@@ -250,6 +252,18 @@ class SpotTipItem(BaseModel):
             "以及该景点独有的游玩常识（如大熊猫清晨活跃建议早去、热门馆需提前预约）。"
             "禁止『祝您玩得开心』之类的空话套话。"
         )
+    )
+    entrance: str = Field(
+        default="",
+        description="推荐入口或到达点；只有确定时才填写具体门名，不确定时明确写需通过景区官方渠道核实",
+    )
+    visit_order: list[str] = Field(
+        default_factory=list,
+        description="景区内部推荐游览顺序，2-5个关键节点；不确定时返回空列表，不得编造",
+    )
+    recommended_duration: str = Field(
+        default="",
+        description="建议游玩时长，例如2-3小时；无法判断时留空",
     )
 
 

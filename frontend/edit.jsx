@@ -12,14 +12,37 @@ function haversineKm(a, b) {
   return 2 * R * Math.asin(Math.sqrt(h));
 }
 
+function buildTravelEstimate(distance, fromName, toName) {
+  const d = Math.max(0, Number(distance) || 0);
+  if (d <= 1.2) {
+    const mins = Math.max(3, Math.round(d / 4.5 * 60));
+    return { from: fromName, to: toName, mode: "walk", mode_label: "步行", distance_km: d,
+      duration_min: mins, estimated_cost: 0, instruction: `步行约 ${mins} 分钟；点击导航查看入口与实时步行路线。`, estimate: true };
+  }
+  if (d <= 12) {
+    const mins = Math.max(18, Math.round(d / 22 * 60 + 12));
+    return { from: fromName, to: toName, mode: "transit", mode_label: "地铁/公交", distance_km: d,
+      duration_min: mins, estimated_cost: Math.min(8, Math.max(2, 2 + Math.ceil(d / 6))),
+      instruction: "优先地铁或公交；具体线路和上下车站请点击导航，以高德实时结果为准。", estimate: true };
+  }
+  return { from: fromName, to: toName, mode: "taxi_or_car", mode_label: "打车/租车", distance_km: d,
+    duration_min: Math.max(25, Math.round(d / 28 * 60 + 5)), estimated_cost: Math.round(13 + Math.max(0, d - 3) * 2.3),
+    instruction: "跨区距离较远，建议打车；若当天有多个远距离点，可比较租车日租价与停车条件。", estimate: true };
+}
+
 // 原地重算一天 timeline 的 dist_from_prev_km（规则与后端 _recalc_dists 一致）
 function recalcDayDists(timeline) {
   const valid = (loc) => loc && typeof loc.lat === "number" && typeof loc.lng === "number";
   timeline.forEach((item, i) => {
-    if (i === 0) { delete item.dist_from_prev_km; return; }
+    if (i === 0) { delete item.dist_from_prev_km; delete item.travel_from_prev; return; }
     const prev = timeline[i - 1].location, cur = item.location;
-    if (valid(prev) && valid(cur)) item.dist_from_prev_km = Math.round(haversineKm(prev, cur) * 100) / 100;
-    else delete item.dist_from_prev_km;
+    if (valid(prev) && valid(cur)) {
+      item.dist_from_prev_km = Math.round(haversineKm(prev, cur) * 100) / 100;
+      item.travel_from_prev = buildTravelEstimate(item.dist_from_prev_km, timeline[i - 1].name, item.name);
+    } else {
+      delete item.dist_from_prev_km;
+      delete item.travel_from_prev;
+    }
   });
 }
 

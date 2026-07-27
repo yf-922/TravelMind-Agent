@@ -547,6 +547,7 @@ function adaptPlan(backendPlan, username) {
     const items = timeline.map(it => {
       const base = {
         dist: it.dist_from_prev_km != null ? it.dist_from_prev_km : null,
+        travel: it.travel_from_prev || null,
       };
       if (it.type === "attraction") {
         return {
@@ -560,6 +561,7 @@ function adaptPlan(backendPlan, username) {
           open: it.open_time,
           photo: it.photo || null,
           note: it.tip || null,  // spot_tips Agent 生成的游玩注意事项
+          guide: it.guide || null,
           location: it.location || null,
           address: it.address || null,
           tel: it.tel || null,
@@ -617,6 +619,8 @@ function adaptPlan(backendPlan, username) {
       theme: dayThemes[String(d.day || i + 1)] || d.theme || `Day ${i + 1}`,
       items,
       mapPoints,
+      budget: d.budget || null,
+      mobility_advice: d.mobility_advice || null,
     };
   });
 
@@ -643,6 +647,7 @@ function adaptPlan(backendPlan, username) {
     candidate_spots: backendPlan.candidate_spots || [],
     hotel: backendPlan.hotel || "",
     notes: backendPlan.notes || "",
+    budget_summary: backendPlan.budget_summary || null,
   };
 }
 

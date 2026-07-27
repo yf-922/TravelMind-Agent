@@ -289,6 +289,18 @@ function AttractionCard({ item, onNearby }) {
           </div>
           {item.address && <div className="t-address">📍 {item.address}</div>}
           {item.tel && <div className="t-address">📞 {item.tel}</div>}
+          {item.guide && (
+            <div className="spot-guide">
+              <div className="spot-guide-title">景区内怎么走</div>
+              {item.guide.entrance && <div><strong>入口：</strong>{item.guide.entrance}</div>}
+              {item.guide.visit_order?.length > 0 && (
+                <div><strong>顺序：</strong>{item.guide.visit_order.join(" → ")}</div>
+              )}
+              {item.guide.recommended_duration && (
+                <div><strong>建议时长：</strong>{item.guide.recommended_duration}</div>
+              )}
+            </div>
+          )}
           {item.note && <div className="tip-box">💡 {item.note}</div>}
           {onNearby && item.location && (
             <button className="nearby-btn" onClick={() => onNearby(item)}>📍 周边搜索</button>
@@ -343,6 +355,9 @@ function NavRow({ itemA, itemB, onNav, isActive }) {
     && itemB?.location?.lat && itemB?.location?.lng;
   if (!hasCoords) return null;
   const dist = itemB.dist;
+  const travel = itemB.travel;
+  const routeMode = travel?.mode === "walk" ? "walk" : travel?.mode === "transit" ? "bus" : "car";
+  const amapUrl = `https://uri.amap.com/navigation?from=${itemA.location.lng},${itemA.location.lat},${encodeURIComponent(itemA.name)}&to=${itemB.location.lng},${itemB.location.lat},${encodeURIComponent(itemB.name)}&mode=${routeMode}&policy=1&src=travelmind&coordinate=gaode&callnative=0`;
   return (
     <div className="nav-row">
       <div className="tl-when nav-row-dist">{dist ? `${dist}km` : ""}</div>
@@ -352,13 +367,50 @@ function NavRow({ itemA, itemB, onNav, isActive }) {
         <div className="tl-line" style={{ flex: 1 }}></div>
       </div>
       <div className="nav-row-content">
-        <button
-          className={`nav-row-btn${isActive ? " active" : ""}`}
-          onClick={() => onNav({ from: itemA.location, to: itemB.location })}
-        >🧭 导航</button>
-        <span className="nav-row-label">{itemA.name} → {itemB.name}</span>
+        <div className="nav-row-main">
+          <span className="nav-mode">{travel?.mode_label || "路线"}</span>
+          <span className="nav-row-label">{itemA.name} → {itemB.name}</span>
+          {travel && (
+            <span className="nav-metrics">
+              约 {travel.duration_min} 分钟 · {travel.estimated_cost ? `¥${travel.estimated_cost}/人` : "免费"}
+            </span>
+          )}
+          {travel?.instruction && <span className="nav-instruction">{travel.instruction}</span>}
+        </div>
+        <div className="nav-actions">
+          <button
+            className={`nav-row-btn${isActive ? " active" : ""}`}
+            onClick={() => onNav({ from: itemA.location, to: itemB.location })}
+          >地图预览</button>
+          <a className="nav-row-link" href={amapUrl} target="_blank" rel="noreferrer">高德实时线路</a>
+        </div>
       </div>
     </div>
+  );
+}
+
+function DayBudget({ budget, mobilityAdvice }) {
+  if (!budget) return null;
+  return (
+    <section className="budget-panel" aria-label="当日费用估算">
+      <div className="budget-head">
+        <div>
+          <div className="budget-eyebrow">当日人均费用</div>
+          <strong>已知小计 ¥{Number(budget.known_subtotal || 0).toFixed(0)}</strong>
+        </div>
+        <span>估算</span>
+      </div>
+      <div className="budget-grid">
+        <div><span>门票</span><b>¥{Number(budget.ticket_known || 0).toFixed(0)}</b></div>
+        <div><span>餐饮</span><b>¥{Number(budget.meal_known || 0).toFixed(0)}</b></div>
+        <div><span>交通</span><b>¥{Number(budget.transport_estimated || 0).toFixed(0)}</b></div>
+      </div>
+      {budget.unknown_items?.length > 0 && (
+        <div className="budget-unknown">未计价：{budget.unknown_items.slice(0, 4).join("、")}{budget.unknown_items.length > 4 ? "等" : ""}</div>
+      )}
+      {mobilityAdvice && <div className="mobility-advice">租车提示：{mobilityAdvice}</div>}
+      <div className="budget-note">{budget.note}</div>
+    </section>
   );
 }
 

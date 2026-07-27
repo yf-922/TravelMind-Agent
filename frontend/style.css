@@ -582,6 +582,13 @@ img { display: block; }
   background: var(--accent-soft); border-left: 3px solid var(--accent);
   padding: 7px 12px; border-radius: 0 8px 8px 0;
 }
+.spot-guide {
+  margin-top: 9px; padding: 9px 12px; border: 1px solid var(--line-2);
+  border-radius: 6px; background: var(--card-2); color: var(--ink-2);
+  font-size: .78rem; line-height: 1.65; display: grid; gap: 3px;
+}
+.spot-guide-title { color: var(--accent-deep); font-weight: 800; margin-bottom: 1px; }
+.spot-guide strong { color: var(--ink); }
 
 /* 提示卡(形象) */
 .tip-card {
@@ -1111,9 +1118,16 @@ img { display: block; }
 .nav-row-content {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 5px 0;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 7px 0;
+  min-width: 0;
 }
+.nav-row-main { min-width: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; }
+.nav-mode { color: var(--accent-deep); font-size: 11px; font-weight: 800; padding: 2px 7px; border-radius: 4px; background: var(--accent-soft); }
+.nav-metrics { color: var(--ink-2); font-size: 11px; font-weight: 700; }
+.nav-instruction { flex-basis: 100%; color: var(--ink-3); font-size: 11px; line-height: 1.45; }
+.nav-actions { flex: 0 0 auto; display: flex; gap: 6px; align-items: center; }
 .nav-row-btn {
   display: inline-flex;
   align-items: center;
@@ -1139,6 +1153,30 @@ img { display: block; }
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+.nav-row-link { color: var(--accent-deep); font-size: 11px; font-weight: 700; white-space: nowrap; text-decoration: underline; text-underline-offset: 3px; }
+
+.budget-panel {
+  margin: 4px 0 18px; padding: 15px 17px; border: 1px solid var(--line);
+  border-radius: 6px; background: var(--card); box-shadow: var(--sh-sm);
+}
+.budget-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 11px; }
+.budget-head strong { font-family: var(--font-display); font-size: 1.05rem; color: var(--ink); }
+.budget-head > span { color: var(--accent-deep); background: var(--accent-soft); border-radius: 4px; padding: 3px 8px; font-size: .68rem; font-weight: 800; }
+.budget-eyebrow { color: var(--ink-3); font-size: .7rem; font-weight: 700; margin-bottom: 2px; }
+.budget-grid { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--line-2); border-bottom: 1px solid var(--line-2); }
+.budget-grid > div { padding: 9px 12px; display: flex; justify-content: space-between; gap: 10px; font-size: .78rem; }
+.budget-grid > div + div { border-left: 1px solid var(--line-2); }
+.budget-grid span { color: var(--ink-3); }
+.budget-grid b { color: var(--ink); }
+.budget-unknown, .mobility-advice, .budget-note { margin-top: 8px; color: var(--ink-3); font-size: .72rem; line-height: 1.5; }
+.budget-unknown { color: var(--accent-deep); }
+.mobility-advice { color: var(--second); font-weight: 600; }
+@media (max-width: 720px) {
+  .nav-row-content { align-items: flex-start; flex-direction: column; }
+  .nav-actions { flex-wrap: wrap; }
+  .budget-grid { grid-template-columns: 1fr; }
+  .budget-grid > div + div { border-left: 0; border-top: 1px solid var(--line-2); }
 }
 
 /* 地图头部退出导航按钮 */

@@ -788,6 +788,9 @@ function TripDetailPage({ plan: planProp, planId: planIdProp, onRequestModify, o
               <h2>{plan.title}</h2>
               <div className="cover-meta">
                 <span>{plan.date_range}</span>
+                {plan.budget_summary && (
+                  <span className="cover-badge">已知预算 ¥{Number(plan.budget_summary.known_subtotal || 0).toFixed(0)}/人</span>
+                )}
                 {plan.badges.map((b) => <span key={b} className="cover-badge">{b}</span>)}
               </div>
             </div>
@@ -856,6 +859,8 @@ function TripDetailPage({ plan: planProp, planId: planIdProp, onRequestModify, o
               )
             )}
           </div>
+
+          {!editing && <DayBudget budget={day.budget} mobilityAdvice={day.mobility_advice} />}
 
           {editing ? (
             <>

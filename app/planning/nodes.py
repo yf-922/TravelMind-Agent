@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import json
 import logging
+import math
+import re
 from datetime import date, timedelta
 from typing import Annotated, Any
 
@@ -780,15 +782,29 @@ def make_spot_tips_node(model_name: str | None):
         # 名称匹配：先精确，再子串宽松兜底（LLM 偶发轻微改写名称）
         valid = set(spot_names)
         tips = {t.name: t.tip.strip() for t in result.tips if t.name in valid and t.tip.strip()}
+        guides = {
+            t.name: {
+                "entrance": t.entrance.strip(),
+                "visit_order": [step.strip() for step in t.visit_order if step.strip()],
+                "recommended_duration": t.recommended_duration.strip(),
+            }
+            for t in result.tips
+            if t.name in valid and (t.entrance.strip() or t.visit_order or t.recommended_duration.strip())
+        }
         for t in result.tips:
             if t.name not in valid and t.tip.strip():
                 for name in valid:
                     if name not in tips and (t.name in name or name in t.name):
                         tips[name] = t.tip.strip()
+                        guides[name] = {
+                            "entrance": t.entrance.strip(),
+                            "visit_order": [step.strip() for step in t.visit_order if step.strip()],
+                            "recommended_duration": t.recommended_duration.strip(),
+                        }
                         break
 
         note = f"spot_tips：为 {len(tips)}/{len(valid)} 个景点生成游玩贴士"
-        return {"spot_tips": tips, "history": state.history + [note]}
+        return {"spot_tips": tips, "spot_guides": guides, "history": state.history + [note]}
 
     return spot_tips_node
 
@@ -807,6 +823,73 @@ def make_finalize_node(memory_writer=None):
 
 def finalize_node(state: TravelPlanState) -> dict[str, Any]:
     return _finalize_impl(state)
+
+
+def _money_value(value: Any) -> float | None:
+    """Parse a POI price while keeping unknown values distinct from zero."""
+    if value is None or isinstance(value, bool):
+        return None
+    match = re.search(r"\d+(?:\.\d+)?", str(value))
+    return float(match.group()) if match else None
+
+
+def _build_travel_leg(distance_km: float, from_name: str, to_name: str) -> dict[str, Any]:
+    """Create a conservative per-person mobility estimate from verified coordinates."""
+    distance_km = round(max(0.0, distance_km), 2)
+    if distance_km <= 1.2:
+        minutes = max(3, round(distance_km / 4.5 * 60))
+        return {
+            "from": from_name, "to": to_name, "mode": "walk", "mode_label": "步行",
+            "distance_km": distance_km, "duration_min": minutes, "estimated_cost": 0,
+            "instruction": f"步行约 {minutes} 分钟；点击导航查看入口与实时步行路线。",
+            "estimate": True,
+        }
+    if distance_km <= 12:
+        minutes = max(18, round(distance_km / 22 * 60 + 12))
+        fare = min(8, max(2, 2 + math.ceil(distance_km / 6)))
+        return {
+            "from": from_name, "to": to_name, "mode": "transit", "mode_label": "地铁/公交",
+            "distance_km": distance_km, "duration_min": minutes, "estimated_cost": fare,
+            "instruction": "优先地铁或公交；具体线路和上下车站请点击导航，以高德实时结果为准。",
+            "estimate": True,
+        }
+    minutes = max(25, round(distance_km / 28 * 60 + 5))
+    taxi_cost = round(13 + max(0, distance_km - 3) * 2.3)
+    return {
+        "from": from_name, "to": to_name, "mode": "taxi_or_car", "mode_label": "打车/租车",
+        "distance_km": distance_km, "duration_min": minutes, "estimated_cost": taxi_cost,
+        "instruction": "跨区距离较远，建议打车；若当天有多个远距离点，可比较租车日租价与停车条件。",
+        "estimate": True,
+    }
+
+
+def _build_day_budget(timeline: list[dict[str, Any]]) -> dict[str, Any]:
+    ticket = 0.0
+    meals = 0.0
+    transport = 0.0
+    unknown: list[str] = []
+    for item in timeline:
+        price = _money_value(item.get("cost"))
+        if item.get("type") == "attraction":
+            if price is None:
+                unknown.append(f"{item.get('name') or '景点'}门票")
+            else:
+                ticket += price
+        elif item.get("name"):
+            if price is None:
+                unknown.append(f"{item.get('name')}餐费")
+            else:
+                meals += price
+        leg = item.get("travel_from_prev")
+        if isinstance(leg, dict):
+            transport += float(leg.get("estimated_cost") or 0)
+    subtotal = ticket + meals + transport
+    return {
+        "currency": "CNY", "unit": "per_person", "ticket_known": round(ticket, 2),
+        "meal_known": round(meals, 2), "transport_estimated": round(transport, 2),
+        "known_subtotal": round(subtotal, 2), "unknown_items": unknown,
+        "note": "按人估算；不含住宿和购物，实时票价与交通费用以实际支付为准。",
+    }
 
 
 def _finalize_impl(state: TravelPlanState) -> dict[str, Any]:
@@ -843,6 +926,7 @@ def _finalize_impl(state: TravelPlanState) -> dict[str, Any]:
                 "photo": info.get("photo"),
                 "location": info.get("location"),
                 "tip": state.spot_tips.get(spot["name"]),
+                "guide": state.spot_guides.get(spot["name"]),
                 "address": info.get("address"),
                 "tel": info.get("tel"),
                 "cost": info.get("cost"),
@@ -860,14 +944,33 @@ def _finalize_impl(state: TravelPlanState) -> dict[str, Any]:
                 else:
                     timeline.append({"type": "dinner", "name": None, "no_restaurant": True})
 
-        # 相邻地点 haversine 距离
+        # 相邻地点距离与交通建议。这里使用坐标生成保守估算，实时线路交给前端高德导航核验。
         for i in range(1, len(timeline)):
             prev_loc = timeline[i - 1].get("location")
             cur_loc  = timeline[i].get("location")
             if prev_loc and cur_loc:
-                timeline[i]["dist_from_prev_km"] = round(haversine_km(prev_loc, cur_loc), 2)
+                distance = round(haversine_km(prev_loc, cur_loc), 2)
+                timeline[i]["dist_from_prev_km"] = distance
+                timeline[i]["travel_from_prev"] = _build_travel_leg(
+                    distance,
+                    str(timeline[i - 1].get("name") or "上一站"),
+                    str(timeline[i].get("name") or "下一站"),
+                )
 
-        days_out.append({"day": day_no, "date": the_date, "theme": day.get("theme"), "timeline": timeline})
+        budget = _build_day_budget(timeline)
+        long_legs = [
+            item["travel_from_prev"] for item in timeline
+            if isinstance(item.get("travel_from_prev"), dict)
+            and item["travel_from_prev"].get("mode") == "taxi_or_car"
+        ]
+        mobility_advice = (
+            "当天存在多段跨区路线，建议比较打车总价、租车日租价和停车条件。"
+            if len(long_legs) >= 2 else None
+        )
+        days_out.append({
+            "day": day_no, "date": the_date, "theme": day.get("theme"),
+            "timeline": timeline, "budget": budget, "mobility_advice": mobility_advice,
+        })
 
     final_plan = {
         "query": state.query,
@@ -890,6 +993,16 @@ def _finalize_impl(state: TravelPlanState) -> dict[str, Any]:
         # 不是给用户的常规提醒。
         "route_issues": list(state.reviewer_issues or []),
         "days": days_out,
+    }
+    final_plan["budget_summary"] = {
+        "currency": "CNY",
+        "unit": "per_person",
+        "ticket_known": round(sum(d["budget"]["ticket_known"] for d in days_out), 2),
+        "meal_known": round(sum(d["budget"]["meal_known"] for d in days_out), 2),
+        "transport_estimated": round(sum(d["budget"]["transport_estimated"] for d in days_out), 2),
+        "known_subtotal": round(sum(d["budget"]["known_subtotal"] for d in days_out), 2),
+        "unknown_items": [item for d in days_out for item in d["budget"]["unknown_items"]],
+        "note": "按人估算；不含住宿和购物，未知价格未计入合计。",
     }
     placed_names = {s["name"] for day_r in state.route for s in day_r.get("spots", [])}
     candidate_spots = [

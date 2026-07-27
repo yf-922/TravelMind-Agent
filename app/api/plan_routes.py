@@ -21,6 +21,7 @@ from app.core.memory import (
 )
 from app.planning.graph import run_confirm_stream
 from app.planning.helpers import amap_key, haversine_km, restaurant_to_dict
+from app.planning.nodes import _build_day_budget, _build_travel_leg
 from app.providers.amap.poi import (
     ATTRACTION_TYPE,
     normalize_address,
@@ -127,16 +128,7 @@ def _optimize_day_timeline(timeline: list[dict]) -> tuple[list[dict], float, flo
     result: list[dict] = [dict(item) for item in build_sequence(best_perm)]
 
     # ── 重算 dist_from_prev_km ──────────────────────────────────
-    for i in range(len(result)):
-        if i == 0:
-            result[i].pop("dist_from_prev_km", None)
-        else:
-            prev_loc = result[i - 1].get("location")
-            cur_loc  = result[i].get("location")
-            if prev_loc and cur_loc:
-                result[i]["dist_from_prev_km"] = round(haversine_km(prev_loc, cur_loc), 2)
-            else:
-                result[i].pop("dist_from_prev_km", None)
+    _recalc_dists(result)
 
     # ── 按位置交换时段：原 daytime 第 i 个时段赋给优化后第 i 个 daytime 景点 ──
     # evening 景点和 meals 保留原始时间不动
@@ -196,6 +188,8 @@ def optimize_day(req: OptimizeDayRequest, authorization: str | None = Header(def
 
     # 原地更新 plan 并写回 DB
     day_obj["timeline"] = optimized_timeline
+    day_obj["budget"] = _build_day_budget(optimized_timeline)
+    _refresh_budget_summary(plan)
     with get_conn() as conn:
         ok = update_plan_json(req.plan_id, user_id, plan, conn)
     if not ok:
@@ -240,7 +234,10 @@ def revert_day(req: RevertDayRequest, authorization: str | None = Header(default
     if not day_obj:
         raise HTTPException(status_code=400, detail=f"第 {req.day} 天不存在")
 
+    _recalc_dists(req.original_timeline)
     day_obj["timeline"] = req.original_timeline
+    day_obj["budget"] = _build_day_budget(req.original_timeline)
+    _refresh_budget_summary(plan)
     with get_conn() as conn:
         ok = update_plan_json(req.plan_id, user_id, plan, conn)
     if not ok:
@@ -402,13 +399,34 @@ def _recalc_dists(timeline: list[dict]) -> None:
     for i, item in enumerate(timeline):
         if i == 0:
             item.pop("dist_from_prev_km", None)
+            item.pop("travel_from_prev", None)
             continue
         prev_loc = timeline[i - 1].get("location")
         cur_loc = item.get("location")
         if _valid_location(prev_loc) and _valid_location(cur_loc):
-            item["dist_from_prev_km"] = round(haversine_km(prev_loc, cur_loc), 2)
+            distance = round(haversine_km(prev_loc, cur_loc), 2)
+            item["dist_from_prev_km"] = distance
+            item["travel_from_prev"] = _build_travel_leg(
+                distance,
+                str(timeline[i - 1].get("name") or "上一站"),
+                str(item.get("name") or "下一站"),
+            )
         else:
             item.pop("dist_from_prev_km", None)
+            item.pop("travel_from_prev", None)
+
+
+def _refresh_budget_summary(plan: dict) -> None:
+    budgets = [d.get("budget") for d in plan.get("days", []) if isinstance(d.get("budget"), dict)]
+    plan["budget_summary"] = {
+        "currency": "CNY", "unit": "per_person",
+        "ticket_known": round(sum(b.get("ticket_known", 0) for b in budgets), 2),
+        "meal_known": round(sum(b.get("meal_known", 0) for b in budgets), 2),
+        "transport_estimated": round(sum(b.get("transport_estimated", 0) for b in budgets), 2),
+        "known_subtotal": round(sum(b.get("known_subtotal", 0) for b in budgets), 2),
+        "unknown_items": [item for b in budgets for item in b.get("unknown_items", [])],
+        "note": "按人估算；不含住宿和购物，未知价格未计入合计。",
+    }
 
 
 class TimelineDayPayload(BaseModel):
@@ -456,6 +474,9 @@ def save_timeline(
                 raise HTTPException(status_code=422, detail="景点条目缺少 name")
         _recalc_dists(payload.timeline)
         day_obj["timeline"] = payload.timeline
+        day_obj["budget"] = _build_day_budget(payload.timeline)
+
+    _refresh_budget_summary(plan)
 
     with get_conn() as conn:
         ok = update_plan_json(plan_id, user_id, plan, conn)
