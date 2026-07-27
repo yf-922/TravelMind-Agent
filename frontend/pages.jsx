@@ -517,7 +517,9 @@ function TripDetailPage({ plan: planProp, planId: planIdProp, onRequestModify, o
   const [livePriceStatus, setLivePriceStatus] = React.useState("idle");
 
   React.useEffect(() => {
-    if (!planIdProp || !planProp?._raw?.__refresh_live_prices) return;
+    // 详情页一旦拥有已保存行程的 ID，就后台实时核验价格。
+    // 不依赖页面跳转时附带的标记，避免历史卡片/直链场景漏掉刷新。
+    if (!planIdProp) return;
     const controller = new AbortController();
     let alive = true;
     setLivePriceStatus("loading");
