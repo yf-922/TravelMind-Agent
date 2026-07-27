@@ -619,7 +619,8 @@ function adaptPlan(backendPlan, username) {
           location: it.location || null,
           address: it.address || null,
           tel: it.tel || null,
-          cost: it.cost || null,
+          cost: it.cost ?? null,
+          ticketInfo: it.ticket_info || null,
         };
       } else {
         // lunch / dinner

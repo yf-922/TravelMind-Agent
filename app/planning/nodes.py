@@ -13,6 +13,7 @@ logger = logging.getLogger(__name__)
 
 from app.llm.factory import build_structured_llm
 from app.providers.amap.poi import ATTRACTION_TYPE, poi_to_spot, search_around_pois, search_city_pois
+from app.providers.tickets.catalog import enrich_attraction_ticket
 from app.planning.schemas import (
     DayMealPick,
     IntentExtraction,
@@ -892,6 +893,29 @@ def _build_day_budget(timeline: list[dict[str, Any]]) -> dict[str, Any]:
     }
 
 
+def enrich_plan_ticket_budget(plan: dict[str, Any]) -> dict[str, Any]:
+    """为旧行程补全可信票价并重算预算，便于历史数据随目录升级。"""
+    for day in plan.get("days", []):
+        visit_date = day.get("date")
+        timeline = day.get("timeline") or []
+        for index, item in enumerate(timeline):
+            if item.get("type") == "attraction":
+                timeline[index] = enrich_attraction_ticket(item, visit_date)
+        day["budget"] = _build_day_budget(timeline)
+
+    budgets = [day.get("budget") for day in plan.get("days", []) if isinstance(day.get("budget"), dict)]
+    plan["budget_summary"] = {
+        "currency": "CNY", "unit": "per_person",
+        "ticket_known": round(sum(b.get("ticket_known", 0) for b in budgets), 2),
+        "meal_known": round(sum(b.get("meal_known", 0) for b in budgets), 2),
+        "transport_estimated": round(sum(b.get("transport_estimated", 0) for b in budgets), 2),
+        "known_subtotal": round(sum(b.get("known_subtotal", 0) for b in budgets), 2),
+        "unknown_items": [item for b in budgets for item in b.get("unknown_items", [])],
+        "note": "按人估算；不含住宿和购物。票价目录保留来源与核验日期，出行前请再次确认。",
+    }
+    return plan
+
+
 def _finalize_impl(state: TravelPlanState) -> dict[str, Any]:
     """组装 final_plan：逐天时刻表 + 午晚餐 + 图片url + haversine 距离。"""
     spot_info    = {s["name"]: s for s in state.pois}
@@ -915,7 +939,7 @@ def _finalize_impl(state: TravelPlanState) -> dict[str, Any]:
 
         for spot in day.get("spots", []):
             info = spot_info.get(spot["name"], {})
-            timeline.append({
+            attraction_item = {
                 "type": "attraction",
                 "name": spot["name"],
                 "start_time": spot.get("start_time"),
@@ -930,7 +954,8 @@ def _finalize_impl(state: TravelPlanState) -> dict[str, Any]:
                 "address": info.get("address"),
                 "tel": info.get("tel"),
                 "cost": info.get("cost"),
-            })
+            }
+            timeline.append(enrich_attraction_ticket(attraction_item, the_date))
             if spot.get("name") == morning_anchor_name and not lunch_inserted:
                 lunch_inserted = True
                 if meal.get("lunch"):

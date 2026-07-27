@@ -284,9 +284,21 @@ function AttractionCard({ item, onNearby }) {
           <div className="t-meta">
             {item.start && <span>{item.start}{item.end ? ` – ${item.end}` : ""}</span>}
             {item.rating != null && <span className="star">★ {Number(item.rating).toFixed(1)}</span>}
-            {item.cost && <span>💰 ¥{item.cost}/人</span>}
+            {item.cost != null && (
+              <span>💰 {Number(item.cost) === 0 ? "免费" : `¥${item.cost}/人`}</span>
+            )}
             {item.open && <span className="t-open">开放 {item.open}</span>}
           </div>
+          {item.ticketInfo && (
+            <div className="t-ticket-source">
+              <span>{item.ticketInfo.price_label}</span>
+              <a href={item.ticketInfo.source_url} target="_blank" rel="noreferrer">
+                来源：{item.ticketInfo.source_name}
+              </a>
+              <span>核验于 {item.ticketInfo.verified_at}</span>
+              {item.ticketInfo.note && <small>{item.ticketInfo.note}</small>}
+            </div>
+          )}
           {item.address && <div className="t-address">📍 {item.address}</div>}
           {item.tel && <div className="t-address">📞 {item.tel}</div>}
           {item.guide && (

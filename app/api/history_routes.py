@@ -7,6 +7,7 @@ from fastapi import APIRouter, Header, HTTPException
 from app.core.auth import decode_token
 from app.core.database import get_conn
 from app.core.memory import list_itineraries, load_itinerary
+from app.planning.nodes import enrich_plan_ticket_budget
 
 router = APIRouter(prefix="/api/history", tags=["history"])
 
@@ -41,4 +42,6 @@ def get_itinerary(plan_id: str, authorization: str | None = Header(default=None)
         if row["user_id"] != user_id:
             raise HTTPException(403, "无权访问")
         data = load_itinerary(plan_id, conn)
+    if data and isinstance(data.get("plan"), dict):
+        enrich_plan_ticket_budget(data["plan"])
     return data
