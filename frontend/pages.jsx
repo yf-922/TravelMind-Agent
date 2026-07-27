@@ -324,7 +324,7 @@ function PlanPage({ onRequestLogin, currentUsername, onPhaseChange, onPlanReady,
           <JourneyLoading steps={JOURNEY_STEPS} activeNode={activeNode} doneNodes={doneNodes} />
           <div className="journey-live" aria-live="polite">
             <span className="journey-live-dot"></span>
-            <span className="journey-live-title">旅行助手播报</span>
+            <span className="journey-live-title" style={{ color: "#6f2a0e" }}>旅行助手播报</span>
             <span>{liveNarration}</span>
           </div>
           {stageReport && (
