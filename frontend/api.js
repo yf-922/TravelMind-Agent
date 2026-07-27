@@ -418,6 +418,17 @@ async function drawNavPairRoute(container, from, to) {
   return true;
 }
 
+async function fetchTransportPlan(from, to, city, fromName, toName) {
+  const params = new URLSearchParams({
+    origin_lng: from.lng, origin_lat: from.lat,
+    dest_lng: to.lng, dest_lat: to.lat,
+    city: city || "", from_name: fromName || "上一站", to_name: toName || "下一站",
+  });
+  const r = await fetch(`/api/route/plan?${params}`, { headers: authHeaders() });
+  if (!r.ok) throw new Error("交通方案获取失败");
+  return r.json();
+}
+
 async function restoreFullRoute(container, mapPoints) {
   let AMap;
   try { AMap = await ensureAMap(); } catch { return false; }
@@ -661,6 +672,6 @@ Object.assign(window, {
   optimizeDay, revertDay,
   searchPoi, saveTimeline,
   searchNearby, savePlanMetadata,
-  drawNavPairRoute, restoreFullRoute,
+  drawNavPairRoute, restoreFullRoute, fetchTransportPlan,
   adaptPlan,
 });

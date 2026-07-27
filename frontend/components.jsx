@@ -350,12 +350,22 @@ function MealCard({ item }) {
 }
 
 // 导航行：夹在任意相邻两个 item 之间
-function NavRow({ itemA, itemB, onNav, isActive }) {
+function NavRow({ itemA, itemB, city, onNav, isActive }) {
   const hasCoords = itemA?.location?.lat && itemA?.location?.lng
     && itemB?.location?.lat && itemB?.location?.lng;
+  const [loadedTravel, setLoadedTravel] = React.useState(itemB.travel || null);
+  const travel = itemB.travel || loadedTravel;
+  React.useEffect(() => {
+    let alive = true;
+    if (!itemB.travel && hasCoords) {
+      fetchTransportPlan(itemA.location, itemB.location, city, itemA.name, itemB.name)
+        .then(plan => { if (alive) setLoadedTravel(plan); })
+        .catch(() => {});
+    }
+    return () => { alive = false; };
+  }, [itemA.name, itemB.name, city]); // eslint-disable-line
   if (!hasCoords) return null;
   const dist = itemB.dist;
-  const travel = itemB.travel;
   const routeMode = travel?.mode === "walk" ? "walk" : travel?.mode === "transit" ? "bus" : "car";
   const amapUrl = `https://uri.amap.com/navigation?from=${itemA.location.lng},${itemA.location.lat},${encodeURIComponent(itemA.name)}&to=${itemB.location.lng},${itemB.location.lat},${encodeURIComponent(itemB.name)}&mode=${routeMode}&policy=1&src=travelmind&coordinate=gaode&callnative=0`;
   return (
@@ -376,6 +386,7 @@ function NavRow({ itemA, itemB, onNav, isActive }) {
             </span>
           )}
           {travel?.instruction && <span className="nav-instruction">{travel.instruction}</span>}
+          {!travel && <span className="nav-instruction">正在生成地铁/公交方案…</span>}
         </div>
         <div className="nav-actions">
           <button
@@ -415,7 +426,7 @@ function DayBudget({ budget, mobilityAdvice }) {
 }
 
 // 时间轴：左侧时间槽 + 轴线，相邻两项之间插入导航行
-function Timeline({ items, onNav, activeNavKey }) {
+function Timeline({ items, city, onNav, activeNavKey }) {
   return (
     <div className="timeline">
       {items.map((item, i) => {
@@ -428,6 +439,7 @@ function Timeline({ items, onNav, activeNavKey }) {
               <NavRow
                 itemA={prevItem}
                 itemB={item}
+                city={city}
                 onNav={(pair) => onNav(activeNavKey === navKey ? null : navKey, pair)}
                 isActive={activeNavKey === navKey}
               />

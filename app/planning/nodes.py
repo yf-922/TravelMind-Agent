@@ -13,6 +13,7 @@ logger = logging.getLogger(__name__)
 
 from app.llm.factory import build_structured_llm
 from app.providers.amap.poi import ATTRACTION_TYPE, poi_to_spot, search_around_pois, search_city_pois
+from app.providers.amap.direction import plan_transport_leg
 from app.planning.schemas import (
     DayMealPick,
     IntentExtraction,
@@ -951,11 +952,16 @@ def _finalize_impl(state: TravelPlanState) -> dict[str, Any]:
             if prev_loc and cur_loc:
                 distance = round(haversine_km(prev_loc, cur_loc), 2)
                 timeline[i]["dist_from_prev_km"] = distance
-                timeline[i]["travel_from_prev"] = _build_travel_leg(
-                    distance,
-                    str(timeline[i - 1].get("name") or "上一站"),
-                    str(timeline[i].get("name") or "下一站"),
+                from_name = str(timeline[i - 1].get("name") or "上一站")
+                to_name = str(timeline[i].get("name") or "下一站")
+                live_plan = plan_transport_leg(
+                    prev_loc, cur_loc, state.destination or "", amap_key(), distance
                 )
+                timeline[i]["travel_from_prev"] = {
+                    **(live_plan or _build_travel_leg(distance, from_name, to_name)),
+                    "from": from_name,
+                    "to": to_name,
+                }
 
         budget = _build_day_budget(timeline)
         long_legs = [

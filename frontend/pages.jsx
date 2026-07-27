@@ -890,7 +890,7 @@ function TripDetailPage({ plan: planProp, planId: planIdProp, onRequestModify, o
                 }} />
             </>
           ) : (
-            <Timeline items={day.items} key={dayIdx} onNav={handleNav} activeNavKey={activeNavKey} />
+            <Timeline items={day.items} city={plan.destination} key={dayIdx} onNav={handleNav} activeNavKey={activeNavKey} />
           )}
 
           <div className="tip-card">

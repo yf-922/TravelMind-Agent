@@ -29,6 +29,7 @@ from app.providers.amap.poi import (
     search_around_pois,
     search_city_pois,
 )
+from app.providers.amap.direction import plan_transport_leg
 from pydantic import BaseModel
 
 router = APIRouter()
@@ -645,3 +646,30 @@ def route_walking(
                     pass
 
     return {"coords": coords, "distance": path.get("distance"), "duration": path.get("duration")}
+
+
+@router.get("/api/route/plan")
+def route_plan(
+    origin_lng: float,
+    origin_lat: float,
+    dest_lng: float,
+    dest_lat: float,
+    city: str,
+    from_name: str = "上一站",
+    to_name: str = "下一站",
+    authorization: str | None = Header(default=None),
+):
+    """返回可直接展示的步行/公交地铁/驾车方案；高德失败时返回估算降级。"""
+    if not authorization or not authorization.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="需要登录")
+    if not decode_token(authorization[7:]):
+        raise HTTPException(status_code=401, detail="token 无效或已过期")
+    origin = {"lng": origin_lng, "lat": origin_lat}
+    destination = {"lng": dest_lng, "lat": dest_lat}
+    distance = round(haversine_km(origin, destination), 2)
+    plan = plan_transport_leg(origin, destination, city.strip(), amap_key(), distance)
+    return {
+        **(plan or _build_travel_leg(distance, from_name, to_name)),
+        "from": from_name,
+        "to": to_name,
+    }
