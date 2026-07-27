@@ -96,6 +96,9 @@ function PlanPage({ onRequestLogin, currentUsername, onPhaseChange, onPlanReady,
   const [stageReport, setStageReport] = React.useState("");
   const [stageReports, setStageReports] = React.useState({});
   const [missingFields, setMissingFields] = React.useState([]);
+  const [supplementalStartDate, setSupplementalStartDate] = React.useState("");
+  const [supplementalEndDate, setSupplementalEndDate] = React.useState("");
+  const [dateValidationError, setDateValidationError] = React.useState("");
   const [threadId, setThreadId] = React.useState(null);
   const [concernModal, setConcernModal] = React.useState(null);
   const [pendingModState, setPendingModState] = React.useState(null);
@@ -105,6 +108,14 @@ function PlanPage({ onRequestLogin, currentUsername, onPhaseChange, onPlanReady,
   // 旅程已走到的最远站点下标：planner⇄reviewer / planner⇄time_check 循环时只前进不后退
   const maxStepRef = React.useRef(-1);
   const narrationIndexRef = React.useRef(0);
+  const startDateRef = React.useRef(null);
+
+  const hasDateMissing = missingFields.some(field => String(field).includes("日期"));
+
+  React.useEffect(() => {
+    if (!hasDateMissing) return;
+    window.setTimeout(() => startDateRef.current?.focus(), 80);
+  }, [hasDateMissing]);
 
   const narrationPool = (node) => ({
     intent: [
@@ -269,6 +280,22 @@ function PlanPage({ onRequestLogin, currentUsername, onPhaseChange, onPlanReady,
     doStream({ query: q, thread_id: threadId || undefined });
   };
 
+  const continueWithDates = () => {
+    if (!supplementalStartDate || !supplementalEndDate) {
+      setDateValidationError("请同时选择开始日期和结束日期");
+      return;
+    }
+    if (supplementalEndDate < supplementalStartDate) {
+      setDateValidationError("结束日期不能早于开始日期");
+      return;
+    }
+    const enrichedQuery = `${query.trim()}，出行日期为 ${supplementalStartDate} 至 ${supplementalEndDate}`;
+    setQuery(enrichedQuery);
+    setDateValidationError("");
+    setMissingFields([]);
+    doStream({ query: enrichedQuery, thread_id: threadId || undefined });
+  };
+
   const confirmConcern = async () => {
     const { pending_id, parent_plan_id } = concernModal;
     setConcernModal(null);
@@ -393,7 +420,7 @@ function PlanPage({ onRequestLogin, currentUsername, onPhaseChange, onPlanReady,
               </div>
             </div>
           )}
-          <div className="query-card">
+          <div className={`query-card${missingFields.length ? " has-missing" : ""}`}>
             <div className="query-label"><span className="mode-dot"></span>描述你的旅行需求（含目的地、日期、偏好）</div>
             <textarea
               className="query-textarea"
@@ -403,12 +430,46 @@ function PlanPage({ onRequestLogin, currentUsername, onPhaseChange, onPlanReady,
               onKeyDown={(e) => { if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) startPlan(); }}
             />
             {missingFields.length > 0 && (
-              <div className="missing-hints">
-                {missingFields.map(f => (
-                  <span key={f} className="missing-hint">
-                    ⚠ 缺少{f}
-                  </span>
-                ))}
+              <div className="missing-alert" role="alert" aria-live="assertive">
+                <div className="missing-alert-icon" aria-hidden="true">!</div>
+                <div className="missing-alert-body">
+                  <strong>{hasDateMissing ? "还差出行日期，暂时不能开始规划" : "旅行信息还不完整"}</strong>
+                  <p>
+                    {hasDateMissing
+                      ? "请在这里补充开始和结束日期，系统会接着刚才的需求继续规划。"
+                      : `请在上面的需求描述中补充：${missingFields.join("、")}。`}
+                  </p>
+                  <div className="missing-field-list">
+                    {missingFields.map(f => <span key={f}>缺少：{f}</span>)}
+                  </div>
+                  {hasDateMissing && (
+                    <div className="date-completion">
+                      <label>
+                        <span>开始日期</span>
+                        <input
+                          ref={startDateRef}
+                          type="date"
+                          value={supplementalStartDate}
+                          onChange={e => { setSupplementalStartDate(e.target.value); setDateValidationError(""); }}
+                        />
+                      </label>
+                      <span className="date-arrow" aria-hidden="true">→</span>
+                      <label>
+                        <span>结束日期</span>
+                        <input
+                          type="date"
+                          min={supplementalStartDate || undefined}
+                          value={supplementalEndDate}
+                          onChange={e => { setSupplementalEndDate(e.target.value); setDateValidationError(""); }}
+                        />
+                      </label>
+                      <button className="date-continue-btn" onClick={continueWithDates}>
+                        补充日期并继续规划 <span>→</span>
+                      </button>
+                    </div>
+                  )}
+                  {dateValidationError && <div className="date-validation-error">⚠ {dateValidationError}</div>}
+                </div>
               </div>
             )}
             {errMsg && <div style={{ marginTop: 8, fontSize: ".85rem", color: "var(--accent)" }}>{errMsg}</div>}
@@ -418,8 +479,8 @@ function PlanPage({ onRequestLogin, currentUsername, onPhaseChange, onPlanReady,
                   <button key={ex} className="chip" onClick={() => setQuery(ex)}>{ex.slice(0, 14)}…</button>
                 ))}
               </div>
-              <button className="go-btn" onClick={startPlan} disabled={!query.trim()}>
-                开始规划 <span className="arrow">→</span>
+              <button className="go-btn" onClick={startPlan} disabled={!query.trim() || hasDateMissing}>
+                {hasDateMissing ? "请先补充日期" : missingFields.length > 0 ? "提交补充信息" : "开始规划"} <span className="arrow">→</span>
               </button>
             </div>
           </div>
