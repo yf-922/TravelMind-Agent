@@ -384,7 +384,7 @@ img { display: block; }
 .journey-head .sub { font-size: .82rem; color: var(--ink-3); white-space: nowrap; }
 @media (max-width: 720px) { .journey-head .sub { display: none; } }
 .journey-live { margin: 2px 34px 8px; padding: 10px 13px; border: 1px solid color-mix(in srgb, var(--accent) 28%, var(--card)); border-radius: 10px; background: color-mix(in srgb, var(--accent) 8%, var(--card)); color: var(--ink-2); font-size: .86rem; display: flex; align-items: center; gap: 8px; line-height: 1.45; }
-.journey-live-title { color: var(--accent-ink); font-weight: 800; white-space: nowrap; }
+.journey-live-title { color: var(--accent-deep); font-weight: 800; white-space: nowrap; }
 .journey-live-dot { width: 8px; height: 8px; border-radius: 999px; background: var(--accent); flex: 0 0 auto; animation: journey-pulse 1.4s ease-in-out infinite; }
 .journey-report { margin: 0 34px 10px; padding: 8px 13px; border-radius: 10px; background: color-mix(in srgb, #2f9e66 10%, var(--card)); color: var(--ink-2); font-size: .82rem; display: flex; align-items: center; gap: 8px; line-height: 1.45; }
 .journey-report-check { color: #238657; font-weight: 900; font-size: 1rem; }
