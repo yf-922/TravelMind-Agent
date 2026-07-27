@@ -1,0 +1,147 @@
+{
+  "report_version": "v1-offline-fixture",
+  "generated_at": "2026-07-27T12:56:58.033852+00:00",
+  "scope": "集中式 Supervisor 多 Agent 核心；Fixture POI，未调用外部 LLM/API",
+  "total_cases": 10,
+  "passed_cases": 10,
+  "success_rate": 1.0,
+  "average_latency_ms": 0.11,
+  "failure_categories": {},
+  "records": [
+    {
+      "case_id": "E2E-01",
+      "input": "帮我规划北京文化一日游",
+      "passed": true,
+      "latency_ms": 0.28,
+      "agent_trace": [
+        "intent_agent",
+        "poi_research_agent",
+        "planner_agent",
+        "reviewer_agent"
+      ],
+      "failure_category": null
+    },
+    {
+      "case_id": "E2E-02",
+      "input": "重庆慢节奏一日游，想吃本地小吃",
+      "passed": true,
+      "latency_ms": 0.11,
+      "agent_trace": [
+        "intent_agent",
+        "poi_research_agent",
+        "planner_agent",
+        "reviewer_agent"
+      ],
+      "failure_category": null
+    },
+    {
+      "case_id": "E2E-03",
+      "input": "北京亲子轻松游，少走路",
+      "passed": true,
+      "latency_ms": 0.1,
+      "agent_trace": [
+        "intent_agent",
+        "poi_research_agent",
+        "planner_agent",
+        "reviewer_agent"
+      ],
+      "failure_category": null
+    },
+    {
+      "case_id": "E2E-04",
+      "input": "重庆雨天也能去的地方",
+      "passed": true,
+      "latency_ms": 0.09,
+      "agent_trace": [
+        "intent_agent",
+        "poi_research_agent",
+        "planner_agent",
+        "reviewer_agent"
+      ],
+      "failure_category": null
+    },
+    {
+      "case_id": "E2E-05",
+      "input": "北京第一次旅行，安排经典景点",
+      "passed": true,
+      "latency_ms": 0.09,
+      "agent_trace": [
+        "intent_agent",
+        "poi_research_agent",
+        "planner_agent",
+        "reviewer_agent"
+      ],
+      "failure_category": null
+    },
+    {
+      "case_id": "E2E-06",
+      "input": "重庆周末半日游，不要排得太满",
+      "passed": true,
+      "latency_ms": 0.09,
+      "agent_trace": [
+        "intent_agent",
+        "poi_research_agent",
+        "planner_agent",
+        "reviewer_agent"
+      ],
+      "failure_category": null
+    },
+    {
+      "case_id": "E2E-07",
+      "input": "北京预算有限的城市漫步",
+      "passed": true,
+      "latency_ms": 0.09,
+      "agent_trace": [
+        "intent_agent",
+        "poi_research_agent",
+        "planner_agent",
+        "reviewer_agent"
+      ],
+      "failure_category": null
+    },
+    {
+      "case_id": "E2E-08",
+      "input": "重庆朋友同行，安排有代表性的景点",
+      "passed": true,
+      "latency_ms": 0.09,
+      "agent_trace": [
+        "intent_agent",
+        "poi_research_agent",
+        "planner_agent",
+        "reviewer_agent"
+      ],
+      "failure_category": null
+    },
+    {
+      "case_id": "E2E-09",
+      "input": "北京历史建筑参观路线",
+      "passed": true,
+      "latency_ms": 0.09,
+      "agent_trace": [
+        "intent_agent",
+        "poi_research_agent",
+        "planner_agent",
+        "reviewer_agent"
+      ],
+      "failure_category": null
+    },
+    {
+      "case_id": "E2E-10",
+      "input": "重庆第一次来，给我一条可执行路线",
+      "passed": true,
+      "latency_ms": 0.09,
+      "agent_trace": [
+        "intent_agent",
+        "poi_research_agent",
+        "planner_agent",
+        "reviewer_agent"
+      ],
+      "failure_category": null
+    }
+  ],
+  "next_optimization": [
+    "接入真实 LLM 后，对同一 Golden Set 记录结构化输出校验与 LLM-as-Judge 分数。",
+    "将高德 POI、天气、票价接口的超时、限流和空结果分别注入，统计降级成功率。",
+    "补充真实用户失败请求，并按目的地缺失、日期缺失、候选池不足、工具失败分类回归。"
+  ]
+}
