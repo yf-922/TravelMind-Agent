@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1030" viewBox="0 0 1600 1030">
+  <defs>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#1d4ed8"/></marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#0f766e"/></marker>
+    <marker id="arrow-gray" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#64748b"/></marker>
+    <style>
+      .title{font-family:Arial,'Microsoft YaHei',sans-serif;font-size:34px;font-weight:700;fill:#102a43}
+      .sub{font-family:Arial,'Microsoft YaHei',sans-serif;font-size:18px;fill:#486581}
+      .box-title{font-family:Arial,'Microsoft YaHei',sans-serif;font-size:22px;font-weight:700;fill:#102a43}
+      .box-text{font-family:Arial,'Microsoft YaHei',sans-serif;font-size:16px;fill:#334e68}
+      .label{font-family:Arial,'Microsoft YaHei',sans-serif;font-size:15px;font-weight:700;fill:#1d4ed8}
+      .small{font-family:Arial,'Microsoft YaHei',sans-serif;font-size:14px;fill:#52606d}
+    </style>
+  </defs>
+  <rect width="1600" height="1030" fill="#f8fafc"/>
+  <text x="60" y="58" class="title">TravelMind 实验二：多智能体概要架构与记忆边界</text>
+  <text x="60" y="88" class="sub">实线蓝色：控制/结构化消息流　实线绿色：工具数据流　虚线灰色：私有记忆读写（不跨 Agent 共享）</text>
+
+  <rect x="60" y="142" width="210" height="100" rx="10" fill="#e0f2fe" stroke="#0284c7" stroke-width="2"/>
+  <text x="165" y="184" text-anchor="middle" class="box-title">用户 / 前端</text>
+  <text x="165" y="212" text-anchor="middle" class="box-text">旅行需求、确认操作</text>
+
+  <rect x="390" y="128" width="310" height="130" rx="12" fill="#dbeafe" stroke="#1d4ed8" stroke-width="3"/>
+  <text x="545" y="173" text-anchor="middle" class="box-title">Supervisor 调度中枢</text>
+  <text x="545" y="203" text-anchor="middle" class="box-text">任务分发 · 条件路由 · 有限重试</text>
+  <text x="545" y="229" text-anchor="middle" class="box-text">只保存 dispatch_log，不读取私有记忆</text>
+  <path d="M270 192 H390" stroke="#1d4ed8" stroke-width="3" marker-end="url(#arrow-blue)"/>
+  <text x="292" y="178" class="label">用户请求</text>
+
+  <rect x="390" y="340" width="250" height="116" rx="10" fill="#eef2ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="515" y="382" text-anchor="middle" class="box-title">Intent Agent</text>
+  <text x="515" y="409" text-anchor="middle" class="box-text">抽取目的地、日期、偏好</text>
+  <text x="515" y="434" text-anchor="middle" class="small">不检索 POI，不排路线</text>
+
+  <rect x="720" y="340" width="250" height="116" rx="10" fill="#ecfdf5" stroke="#0f766e" stroke-width="2"/>
+  <text x="845" y="382" text-anchor="middle" class="box-title">POI Research Agent</text>
+  <text x="845" y="409" text-anchor="middle" class="box-text">检索并核验候选景点</text>
+  <text x="845" y="434" text-anchor="middle" class="small">唯一拥有 poi_search 权限</text>
+
+  <rect x="1050" y="340" width="220" height="116" rx="10" fill="#fff7ed" stroke="#ea580c" stroke-width="2"/>
+  <text x="1160" y="382" text-anchor="middle" class="box-title">Planner Agent</text>
+  <text x="1160" y="409" text-anchor="middle" class="box-text">只按候选池生成行程</text>
+  <text x="1160" y="434" text-anchor="middle" class="small">不自审，不直接查 POI</text>
+
+  <rect x="1340" y="340" width="200" height="116" rx="10" fill="#fdf2f8" stroke="#db2777" stroke-width="2"/>
+  <text x="1440" y="382" text-anchor="middle" class="box-title">Reviewer Agent</text>
+  <text x="1440" y="409" text-anchor="middle" class="box-text">审核候选池与完整性</text>
+  <text x="1440" y="434" text-anchor="middle" class="small">只提出返工意见</text>
+
+  <path d="M545 258 V320 H515 V340" stroke="#1d4ed8" stroke-width="3" fill="none" marker-end="url(#arrow-blue)"/>
+  <path d="M640 398 H720" stroke="#1d4ed8" stroke-width="3" marker-end="url(#arrow-blue)"/>
+  <path d="M970 398 H1050" stroke="#1d4ed8" stroke-width="3" marker-end="url(#arrow-blue)"/>
+  <path d="M1270 398 H1340" stroke="#1d4ed8" stroke-width="3" marker-end="url(#arrow-blue)"/>
+  <text x="655" y="384" class="label">intent_extract 结果</text>
+  <text x="981" y="384" class="label">候选池</text>
+  <text x="1278" y="384" class="label">行程草案</text>
+
+  <rect x="720" y="525" width="250" height="100" rx="10" fill="#ecfdf5" stroke="#0f766e" stroke-width="2"/>
+  <text x="845" y="565" text-anchor="middle" class="box-title">高德 POI 工具</text>
+  <text x="845" y="592" text-anchor="middle" class="box-text">真实地点候选与地址</text>
+  <path d="M845 456 V525" stroke="#0f766e" stroke-width="3" marker-end="url(#arrow-green)"/>
+  <text x="857" y="496" class="label" fill="#0f766e">poi_search</text>
+
+  <rect x="1050" y="525" width="220" height="100" rx="10" fill="#f0fdfa" stroke="#0f766e" stroke-width="2"/>
+  <text x="1160" y="565" text-anchor="middle" class="box-title">旅行知识 RAG</text>
+  <text x="1160" y="592" text-anchor="middle" class="box-text">只读参考资料</text>
+  <path d="M1160 525 V456" stroke="#0f766e" stroke-width="3" marker-end="url(#arrow-green)"/>
+
+  <path d="M1440 456 V492 H1160 V456" stroke="#1d4ed8" stroke-width="3" fill="none" marker-end="url(#arrow-blue)"/>
+  <text x="1295" y="486" class="label">不通过：最多一次返工</text>
+  <path d="M1440 456 V650 H700 V258" stroke="#1d4ed8" stroke-width="3" fill="none" marker-end="url(#arrow-blue)"/>
+  <text x="995" y="644" class="label">通过：输出行程、预算、地图</text>
+
+  <rect x="90" y="735" width="1420" height="230" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="120" y="775" class="box-title">私有记忆与数据边界（SQLite：session_id + agent_name）</text>
+  <rect x="145" y="815" width="235" height="86" rx="8" fill="#f1f5f9" stroke="#64748b" stroke-width="1.5"/>
+  <text x="262" y="850" text-anchor="middle" class="box-title">Intent Memory</text><text x="262" y="876" text-anchor="middle" class="small">意图抽取历史</text>
+  <rect x="465" y="815" width="235" height="86" rx="8" fill="#f1f5f9" stroke="#64748b" stroke-width="1.5"/>
+  <text x="582" y="850" text-anchor="middle" class="box-title">Research Memory</text><text x="582" y="876" text-anchor="middle" class="small">检索任务与工具结果</text>
+  <rect x="785" y="815" width="235" height="86" rx="8" fill="#f1f5f9" stroke="#64748b" stroke-width="1.5"/>
+  <text x="902" y="850" text-anchor="middle" class="box-title">Planner Memory</text><text x="902" y="876" text-anchor="middle" class="small">草案与返工上下文</text>
+  <rect x="1105" y="815" width="235" height="86" rx="8" fill="#f1f5f9" stroke="#64748b" stroke-width="1.5"/>
+  <text x="1222" y="850" text-anchor="middle" class="box-title">Reviewer Memory</text><text x="1222" y="876" text-anchor="middle" class="small">审核记录</text>
+  <path d="M515 456 V815 H380" stroke="#64748b" stroke-width="2" stroke-dasharray="8 7" fill="none" marker-end="url(#arrow-gray)"/>
+  <path d="M845 456 V815 H700" stroke="#64748b" stroke-width="2" stroke-dasharray="8 7" fill="none" marker-end="url(#arrow-gray)"/>
+  <path d="M1160 456 V815 H1020" stroke="#64748b" stroke-width="2" stroke-dasharray="8 7" fill="none" marker-end="url(#arrow-gray)"/>
+  <path d="M1440 456 V815 H1340" stroke="#64748b" stroke-width="2" stroke-dasharray="8 7" fill="none" marker-end="url(#arrow-gray)"/>
+  <text x="1380" y="940" class="small">红线：Agent 不直接读取其他 Agent 的私有记忆</text>
+</svg>
