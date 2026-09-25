@@ -2,6 +2,24 @@
 
 > 基于开源项目 [FloatTrip](https://github.com/shouzhuoshouzhuo/FloatTrip) 的课程二次开发。面向“输入旅行需求，生成可解释的行程方案”的场景，重点实现多智能体协作、工具调用、个性化记忆与可复现测试。
 
+## 二次开发边界与可验证材料
+
+原项目提供基础的旅行规划页面、POI/天气查询和初始规划流程。本仓库的主要增量集中在：
+
+- 使用 LangGraph 重构 Planner、Reviewer、Time Check、POI Search 等节点，增加风险门控、失败重试和用户修改后的 checkpoint 局部重规划；
+- 将原直线距离判断替换为高德路线 API 的实际步行/驾车距离核验，距离查询失败时明确标记“未核验”，不伪造道路距离；
+- 使用 SQLite + Chroma 实现结构化/语义个性化记忆，使用 Pydantic 约束 Agent 间结构化消息；
+- 增加天气/POI Cache-Aside、可并行查询、FastAPI + SSE 流式进度、单次执行 Trace 和失败降级状态；
+- 增加 39 条编排消融案例、真实 API 响应回放、故障轨迹测试和 GitHub Actions 离线 CI。
+
+可验证材料：
+
+- `docker compose up --build`：一键启动 API + Redis；
+- `http://127.0.0.1:8765/docs`：FastAPI Swagger 接口文档；
+- `evaluation/*.md` / `evaluation/*.json`：消融、回放、RAG、记忆和故障评测报告；
+- `scripts/evaluate_risk_gate.py`、`tests/eval/ablation.py`：可复现评测入口；
+- `.github/workflows/ci.yml`：GitHub Actions 编译检查、评测资产校验和 `pytest -q`。
+
 ## 项目能力
 
 - 解析目的地、日期、预算、偏好等旅行约束，缺少关键字段时提示用户补充。
@@ -145,11 +163,14 @@ tests/                 # 单元、集成、端到端和评测测试
 
 # 免费预估在线评测的逻辑调用和重试后供应商请求上限
 .\.venv\Scripts\python.exe -m tests.eval.run_eval --dry-run
+
+# 异常输入发现集：固定随机种子，检查 malformed 路线是否被安全拦截
+.\.venv\Scripts\python.exe tests\eval\run_adversarial_risk_gate.py
 ```
 
 离线测试用于验证结构化输出、调度、隔离与降级路径；涉及真实地图、天气、票价的数据必须在配置 Key 后实时调用，不能将本地测试数据当作实时事实。
 
-消融评测固定比较三种编排：仅 Planner、Planner + 独立 Reviewer、Planner + Reviewer + Time Check。当前 39 条分层离线案例的总体通过率分别为 23%、67%、90%，平均调用节点为 1.0、2.0、3.0；该结果用于量化硬约束节点的增益和成本，不代表线上真实 LLM 通过率。
+消融评测固定比较三种编排：仅 Planner、Planner + 独立 Reviewer、Planner + Reviewer + Time Check。当前 39 条分层离线案例的通过数分别为 9/39、26/39、35/39，平均调用节点为 1.0、2.0、3.0；该结果用于量化硬约束节点的增益和成本，不代表线上真实 LLM 通过率。真实 API 响应回放目前为保存样本，不等同于线上压测或 SLA。
 
 ## 工程化运行与可观测性
 
