@@ -430,7 +430,7 @@ def _route_risk_flags(state: TravelPlanState) -> list[str]:
                 habit_risk = True
         if slow_pace and len(day_spots) > 2:
             habit_risk = True
-    if structural_risk:
+    if structural_risk and "route_structure" not in flags:
         flags.append("route_structure")
     if habit_risk:
         flags.append("habit_constraint")
