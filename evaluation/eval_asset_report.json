@@ -1,0 +1,57 @@
+{
+  "manifest": {
+    "valid": true,
+    "cases": 30,
+    "errors": [],
+    "tiers": {
+      "capability": 26,
+      "regression": 4
+    },
+    "destinations": {
+      "三亚": 5,
+      "上海": 7,
+      "丽江": 6,
+      "南京": 8,
+      "景德镇": 4
+    },
+    "weather_scenarios": {
+      "all_rain": 5,
+      "beyond": 2,
+      "single_rain": 5,
+      "sunny": 18
+    },
+    "pool_scenarios": {
+      "full": 24,
+      "outdoor_only": 2,
+      "tight_hours": 1,
+      "top_4": 1,
+      "top_5": 2
+    }
+  },
+  "fixtures": {
+    "found": 30,
+    "expected": 30,
+    "missing_ids": [],
+    "unexpected_ids": [],
+    "errors": [],
+    "execution_ready": true,
+    "provenance": {
+      "poi_sources": [
+        "AMap Web Service Place Text API v3"
+      ],
+      "capture_batches": 1,
+      "captured_at": [
+        "2026-09-14T15:04:00.960324+00:00"
+      ],
+      "total_poi_rows_across_cases": 523,
+      "weather_source": "synthetic frozen evaluation scenario"
+    }
+  },
+  "online_eval_budget": {
+    "one_trial_without_judge_provider_attempts": 1170,
+    "one_trial_with_judge_provider_attempts": 1350,
+    "five_trials_with_judge_provider_attempts": 6750,
+    "type": "conservative_upper_bound"
+  },
+  "validator_external_calls_made": false
+}

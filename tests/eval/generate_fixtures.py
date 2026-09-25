@@ -3,15 +3,17 @@
 天气场景 / indoor 标注 / 负样本筛选由脚本决定（见各处注释说明理由）。
 
 运行：
-    python -m tests.eval.generate_fixtures
+    python -m tests.eval.generate_fixtures --dry-run
+    python -m tests.eval.generate_fixtures --max-api-calls 60 --allow-external-calls
 """
 
 from __future__ import annotations
 
+import argparse
 import json
 import re
 import sys
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 
@@ -20,7 +22,9 @@ FIXTURES_DIR = Path(__file__).resolve().parent / "fixtures"
 sys.path.insert(0, str(ROOT))
 
 from app.core.env import load_local_env
-from app.planning.helpers import amap_key, fetch_city_spots, filter_by_rating
+from app.core.eval_safety import require_call_budget, require_external_calls
+from app.planning.helpers import amap_key, filter_by_rating
+from app.providers.amap.poi import poi_to_spot, search_attraction_pois
 
 load_local_env()
 
@@ -368,9 +372,52 @@ SPECS: list[dict[str, Any]] = [
 
 assert len(SPECS) == 30, f"预期30个规格，实际{len(SPECS)}个"
 
+# fetch_city_spots uses three keyword searches per city. The AMap text-search
+# helper may retry a rate-limit response up to three times, so budget provider
+# attempts rather than incorrectly treating one city as one HTTP request.
+SEARCHES_PER_CITY = 3
+ATTEMPTS_PER_SEARCH = 4
+
+
+def estimate_amap_attempts(city_count: int) -> int:
+    return max(0, city_count) * SEARCHES_PER_CITY * ATTEMPTS_PER_SEARCH
+
+
+def fetch_balanced_city_spots(city: str, api_key: str, max_spots: int = 30) -> list[dict[str, Any]]:
+    """Fetch every declared channel, then round-robin merge unique POIs."""
+    channel_rows: list[list[dict[str, Any]]] = []
+    for suffix in ("必去景点", "热门景区", "博物馆"):
+        converted = [
+            spot for raw in search_attraction_pois(city, api_key, keywords=f"{city}{suffix}")
+            if (spot := poi_to_spot(raw)) is not None
+        ]
+        channel_rows.append(converted)
+
+    merged: list[dict[str, Any]] = []
+    seen: set[str] = set()
+    position = 0
+    while len(merged) < max_spots and any(position < len(rows) for rows in channel_rows):
+        for rows in channel_rows:
+            if position >= len(rows):
+                continue
+            spot = rows[position]
+            name = str(spot.get("name") or "").strip()
+            if name and name not in seen:
+                seen.add(name)
+                merged.append(spot)
+                if len(merged) >= max_spots:
+                    break
+        position += 1
+    return merged
+
 
 # ── 构造单个 fixture ─────────────────────────────────────────────
-def build_fixture(spec: dict[str, Any], raw_pois: list[dict]) -> dict:
+def build_fixture(
+    spec: dict[str, Any],
+    raw_pois: list[dict],
+    *,
+    captured_at: str | None = None,
+) -> dict:
     # 1. 打 indoor 标签
     labeled = [{**p, "indoor": label_indoor(p["name"])} for p in raw_pois]
     # 2. 按模式筛选
@@ -401,6 +448,14 @@ def build_fixture(spec: dict[str, Any], raw_pois: list[dict]) -> dict:
         "expectations": {
             "outdoor_on_bad_day_max": spec["outdoor_max"],
         },
+        "provenance": {
+            "poi_source": "AMap Web Service Place Text API v3",
+            "poi_captured_at": captured_at,
+            "poi_query_channels": ["必去景点", "热门景区", "博物馆"],
+            "poi_rating_threshold": 4.5,
+            "weather_source": "synthetic frozen evaluation scenario",
+            "indoor_label_source": "deterministic name-keyword heuristic",
+        },
     }
     if weather_note:
         fx["weather_note"] = weather_note
@@ -409,15 +464,54 @@ def build_fixture(spec: dict[str, Any], raw_pois: list[dict]) -> dict:
 
 # ── 主流程 ───────────────────────────────────────────────────────
 def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--allow-external-calls",
+        action="store_true",
+        help="confirm that calling AMap and consuming API quota is intentional",
+    )
+    parser.add_argument("--max-api-calls", type=int, default=None,
+                        help="本次批准的高德 API 请求上限（执行时必填）")
+    parser.add_argument("--dry-run", action="store_true",
+                        help="只输出城市和请求预算，不调用高德")
+    args = parser.parse_args()
+    cities = sorted({s["destination"] for s in SPECS})
+    amap_attempts_upper_bound = estimate_amap_attempts(len(cities))
+    print(json.dumps({
+        "preflight": {
+            "cases": len(SPECS),
+            "cities": cities,
+            "amap_searches_upper_bound": len(cities) * SEARCHES_PER_CITY,
+            "amap_provider_attempts_upper_bound": amap_attempts_upper_bound,
+        }
+    }, ensure_ascii=False))
+    if args.dry_run:
+        return
+    require_external_calls(
+        parser,
+        allowed=args.allow_external_calls,
+        operation="fixture generation",
+    )
+    require_call_budget(
+        parser,
+        estimated_upper_bound=amap_attempts_upper_bound,
+        maximum=args.max_api_calls,
+        flag="--max-api-calls",
+        resource="AMap provider request attempt",
+    )
     key = amap_key()
     FIXTURES_DIR.mkdir(exist_ok=True)
+    captured_at = datetime.now(timezone.utc).isoformat()
 
-    # 1. 按城市抓景点（每城只调一次 API）
-    cities = sorted({s["destination"] for s in SPECS})
+    # 1. 按城市抓景点（三个检索通道全部执行，再均衡合并）
     city_pois: dict[str, list[dict]] = {}
-    print(f"🌐 正在调高德 API 抓取 {len(cities)} 个城市景点数据…\n")
+    print(
+        f"[fetch] 正在调高德 API 抓取 {len(cities)} 个城市景点数据"
+        f"（最多 {len(cities) * SEARCHES_PER_CITY} 次搜索 / "
+        f"{amap_attempts_upper_bound} 次含重试请求尝试）…\n"
+    )
     for city in cities:
-        raw = fetch_city_spots(city, key, max_spots=30)
+        raw = fetch_balanced_city_spots(city, key, max_spots=30)
         kept, _ = filter_by_rating(raw, 4.5)
         city_pois[city] = kept
         indoor_n = sum(1 for p in kept if label_indoor(p["name"]))
@@ -426,10 +520,10 @@ def main() -> None:
     print()
 
     # 2. 生成所有 fixture
-    print(f"📝 正在生成 {len(SPECS)} 个 fixture…\n")
+    print(f"[write] 正在生成 {len(SPECS)} 个 fixture…\n")
     for spec in SPECS:
         raw_pois = city_pois[spec["destination"]]
-        fx = build_fixture(spec, raw_pois)
+        fx = build_fixture(spec, raw_pois, captured_at=captured_at)
         out = FIXTURES_DIR / f"{spec['id']}.json"
         out.write_text(json.dumps(fx, ensure_ascii=False, indent=2), encoding="utf-8")
 
@@ -437,12 +531,12 @@ def main() -> None:
         indoor_n = sum(1 for p in fx["pois"] if p.get("indoor"))
         weather_n = len(fx["weather_forecast"])
         bad_n = sum(1 for w in fx["weather_forecast"] if w.get("is_bad"))
-        print(f"  ✓ {spec['id']}")
+        print(f"  [ok] {spec['id']}")
         print(f"      tier={spec['tier']}  days={spec['days']}  "
               f"pool={pool_n}个（室内{indoor_n}/露天{pool_n - indoor_n}）  "
               f"天气={weather_n}天（雨{bad_n}天）  模式={spec['pool']}")
 
-    print(f"\n✅ 完成！共生成 {len(SPECS)} 个 fixture，写入 {FIXTURES_DIR}")
+    print(f"\n[done] 共生成 {len(SPECS)} 个 fixture，写入 {FIXTURES_DIR}")
     print("\n三个负样本说明：")
     print("  outdoor_only：只保留 indoor=False 的景点，配合全雨天气 → 考验天气权衡")
     print("  top_4/top_5 ：只取评分最高的N个景点 → 候选池远小于 days×max_per_day")

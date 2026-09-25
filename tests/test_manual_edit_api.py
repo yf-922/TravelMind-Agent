@@ -41,6 +41,55 @@ class TestSearchCityPois:
             poi_mod.search_city_pois("南京", "k", keywords="x", types="餐饮服务")
 
 
+class TestRoadRouteOptimization:
+    def test_使用道路距离矩阵而不是直线距离排序(self, monkeypatch):
+        import app.api.plan_routes as plan_routes
+
+        names_by_lng = {1.0: "A", 2.0: "B", 3.0: "C"}
+        road_km = {
+            ("A", "B"): 10.0,
+            ("B", "C"): 10.0,
+            ("B", "A"): 1.0,
+            ("A", "C"): 2.0,
+            ("C", "A"): 4.0,
+            ("C", "B"): 4.0,
+        }
+
+        def fake_route(origin, destination, key, mode):
+            pair = (names_by_lng[origin["lng"]], names_by_lng[destination["lng"]])
+            return {
+                "mode": mode,
+                "distance_km": road_km[pair],
+                "duration_min": 5,
+                "source": "amap",
+            }
+
+        monkeypatch.setattr(plan_routes, "plan_route_distance", fake_route)
+        timeline = [
+            {"type": "attraction", "name": "A", "period": "morning", "location": {"lat": 0.0, "lng": 1.0}},
+            {"type": "attraction", "name": "B", "period": "afternoon", "location": {"lat": 0.0, "lng": 2.0}},
+            {"type": "attraction", "name": "C", "period": "evening", "location": {"lat": 0.0, "lng": 3.0}},
+        ]
+
+        optimized, original_km, optimized_km = plan_routes._optimize_day_timeline(timeline, "test-key")
+
+        assert [item["name"] for item in optimized] == ["B", "A", "C"]
+        assert original_km == 20.0
+        assert optimized_km == 3.0
+
+    def test_道路距离不完整时拒绝伪优化(self, monkeypatch):
+        import app.api.plan_routes as plan_routes
+
+        monkeypatch.setattr(plan_routes, "plan_route_distance", lambda *args, **kwargs: None)
+        timeline = [
+            {"type": "attraction", "name": "A", "period": "morning", "location": {"lat": 1.0, "lng": 1.0}},
+            {"type": "attraction", "name": "B", "period": "afternoon", "location": {"lat": 2.0, "lng": 2.0}},
+        ]
+
+        with pytest.raises(RuntimeError, match="道路距离不完整"):
+            plan_routes._optimize_day_timeline(timeline, "test-key")
+
+
 # ─── API 路由测试基建 ────────────────────────────────────────
 
 @pytest.fixture()
@@ -223,10 +272,26 @@ class TestSaveTimeline:
                        json={"days": [{"day": 1, "timeline": [{"type": "attraction"}]}]}, headers=headers)
         assert r.status_code == 422
 
-    def test_保存成功_服务端重算距离_持久化(self, client):
+    def test_保存成功_服务端重算道路距离_持久化(self, client, monkeypatch):
         from app.core.database import get_conn
         from app.core.memory import load_itinerary
-        from app.planning.helpers import haversine_km
+        import app.api.plan_routes as plan_routes
+
+        monkeypatch.setattr(plan_routes, "amap_key", lambda: "test-key")
+        monkeypatch.setattr(
+            plan_routes,
+            "plan_route_distance",
+            lambda origin, destination, key, mode: {
+                "mode": mode,
+                "mode_label": "驾车",
+                "distance_km": 1.23,
+                "duration_min": 6,
+                "estimated_cost": 0,
+                "instruction": "测试道路路线",
+                "source": "amap",
+                "estimate": False,
+            },
+        )
 
         uid, headers = make_auth()
         pid = make_plan(uid)
@@ -247,15 +312,39 @@ class TestSaveTimeline:
 
         saved = r.json()["plan"]["days"][0]["timeline"]
         assert [it["name"] for it in saved] == ["夫子庙", "老门东小吃", "中山陵"]
-        # 首条无距离；其余距离 = 服务端 haversine 重算（伪造的 999 被丢弃）
+        # 首条无距离；其余距离来自服务端道路 API（伪造的 999 被丢弃）
         assert "dist_from_prev_km" not in saved[0]
-        expect = round(haversine_km({"lat": 32.021, "lng": 118.788}, {"lat": 32.02, "lng": 118.79}), 2)
-        assert saved[1]["dist_from_prev_km"] == expect
+        assert saved[1]["dist_from_prev_km"] == 1.23
+        assert saved[1]["travel_from_prev"]["source"] == "amap"
 
         # 已持久化：重新加载与响应一致
         with get_conn() as conn:
             reloaded = load_itinerary(pid, conn)["plan"]
         assert reloaded["days"][0]["timeline"] == saved
+
+    def test_道路接口失败不回退直线距离(self, client, monkeypatch):
+        import app.api.plan_routes as plan_routes
+
+        monkeypatch.setattr(plan_routes, "amap_key", lambda: "test-key")
+        monkeypatch.setattr(plan_routes, "plan_route_distance", lambda *args, **kwargs: None)
+
+        uid, headers = make_auth()
+        pid = make_plan(uid)
+        timeline = [
+            {"type": "attraction", "name": "A", "location": {"lat": 32.0, "lng": 118.7}},
+            {"type": "attraction", "name": "B", "location": {"lat": 32.1, "lng": 118.8},
+             "dist_from_prev_km": 999},
+        ]
+        r = client.put(
+            f"/api/plan/{pid}/timeline",
+            json={"days": [{"day": 1, "timeline": timeline}]},
+            headers=headers,
+        )
+
+        assert r.status_code == 200
+        saved = r.json()["plan"]["days"][0]["timeline"]
+        assert "dist_from_prev_km" not in saved[1]
+        assert saved[1]["travel_from_prev"]["source"] == "unavailable"
 
     def test_残缺location不致500(self, client):
         uid, headers = make_auth()

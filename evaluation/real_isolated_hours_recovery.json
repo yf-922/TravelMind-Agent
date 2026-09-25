@@ -1,0 +1,248 @@
+{
+  "measurement_type": "real-provider-injected-fault-recovery",
+  "generated_at": "2026-09-25T05:38:37.432629+00:00",
+  "configuration": {
+    "provider": "grok",
+    "model": "grok-4.6",
+    "prompt_code_fingerprint": "1ca037d1d8cf58da",
+    "python": "3.12.8"
+  },
+  "modes": [
+    {
+      "mode": "time_check_only",
+      "passed": 1,
+      "runs": 1,
+      "pass_rate": 1.0,
+      "elapsed_total_ms": 50877.361
+    },
+    {
+      "mode": "planner_reviewer_time_check",
+      "passed": 1,
+      "runs": 1,
+      "pass_rate": 1.0,
+      "elapsed_total_ms": 68103.094
+    }
+  ],
+  "records": [
+    {
+      "scenario": "opening_hours_only",
+      "fixture_id": "nanjing-3d-tighthours-negative",
+      "mode": "time_check_only",
+      "objective_pass": true,
+      "checks": {
+        "g1_closed_pool": {
+          "passed": true,
+          "detail": "无越界景点"
+        },
+        "g2_time_check": {
+          "passed": true,
+          "detail": "time_check 无违规"
+        },
+        "g4_structure": {
+          "passed": true,
+          "detail": "结构合法"
+        },
+        "g5_coverage": {
+          "passed": true,
+          "detail": "每天均有景点"
+        },
+        "g6_weather": {
+          "passed": true,
+          "detail": "无雨雪天"
+        },
+        "g9_walking_distance": {
+          "passed": true,
+          "detail": "用户未指定步行上限"
+        },
+        "g10_habit_constraints": {
+          "passed": true,
+          "detail": "明确习惯约束满足"
+        },
+        "g7_convergence": {
+          "passed": true,
+          "detail": "reviewer=✅(2/3轮)，time_check=✅(2轮)"
+        },
+        "g8_time_check_efficiency": {
+          "passed": false,
+          "detail": "time_check 用了 2 轮，残留违规 0 处"
+        }
+      },
+      "elapsed_ms": 50877.361,
+      "review_round": 2,
+      "time_check_round": 2,
+      "dialogue": [
+        "[第1轮] Planner：故障恢复评测的共同冻结草案。",
+        "[time_check 第1轮] 发现 1 处冲突：\n- Day3 南京牛首山文化旅游区：安排 18:00 入园至 19:00，但景点 16:30 停止入园、17:30 闭园",
+        "[第2轮] Planner：仅将 Day3 牛首山由 18:00–19:00 改为 13:00–16:30（16:30 前入园、17:30 前结束），Day1/Day2 原样保留。（系统已规范化候选景点名：水墨大埶旅游区→水墨大埝旅游区）",
+        "[time_check 第2轮] 无违规"
+      ],
+      "route": [
+        {
+          "day": 1,
+          "spots": [
+            {
+              "name": "中山陵景区",
+              "period": "morning",
+              "start_time": "10:00",
+              "end_time": "13:30"
+            },
+            {
+              "name": "古鸡鸣寺",
+              "period": "afternoon",
+              "start_time": "15:00",
+              "end_time": "17:15"
+            }
+          ],
+          "theme": "玄武山陵与古寺半日"
+        },
+        {
+          "day": 2,
+          "spots": [
+            {
+              "name": "不老村",
+              "period": "morning",
+              "start_time": "10:00",
+              "end_time": "13:00"
+            },
+            {
+              "name": "水墨大埝旅游区",
+              "period": "afternoon",
+              "start_time": "14:00",
+              "end_time": "17:00"
+            }
+          ],
+          "theme": "浦口乡野渔光"
+        },
+        {
+          "day": 3,
+          "spots": [
+            {
+              "name": "南京牛首山文化旅游区",
+              "period": "afternoon",
+              "start_time": "13:00",
+              "end_time": "16:30"
+            }
+          ],
+          "theme": "牛首山文化与自然"
+        }
+      ]
+    },
+    {
+      "scenario": "opening_hours_only",
+      "fixture_id": "nanjing-3d-tighthours-negative",
+      "mode": "planner_reviewer_time_check",
+      "objective_pass": true,
+      "checks": {
+        "g1_closed_pool": {
+          "passed": true,
+          "detail": "无越界景点"
+        },
+        "g2_time_check": {
+          "passed": true,
+          "detail": "time_check 无违规"
+        },
+        "g4_structure": {
+          "passed": true,
+          "detail": "结构合法"
+        },
+        "g5_coverage": {
+          "passed": true,
+          "detail": "每天均有景点"
+        },
+        "g6_weather": {
+          "passed": true,
+          "detail": "无雨雪天"
+        },
+        "g9_walking_distance": {
+          "passed": true,
+          "detail": "用户未指定步行上限"
+        },
+        "g10_habit_constraints": {
+          "passed": true,
+          "detail": "明确习惯约束满足"
+        },
+        "g7_convergence": {
+          "passed": true,
+          "detail": "reviewer=✅(2/3轮)，time_check=✅(1轮)"
+        },
+        "g8_time_check_efficiency": {
+          "passed": true,
+          "detail": "time_check 用了 1 轮，残留违规 0 处"
+        }
+      },
+      "elapsed_ms": 68103.094,
+      "review_round": 2,
+      "time_check_round": 1,
+      "dialogue": [
+        "[第1轮] Planner：故障恢复评测的共同冻结草案。",
+        "[第1轮] Reviewer 打回（72分）：Day3 将「南京牛首山文化旅游区」放在 evening 18:00–19:00 仅1小时，既不符合日间山岳景区的夜间合理性，也导致当天节奏过空、游览时长不足。请改为 morning 或 afternoon（首个景点不早于10:00），并给足约3–4小时游览；可保持单点一天，不必再塞点。Day1/Day2 可维持。",
+        "[第2轮] Planner：Day3 牛首山改为 10:00–14:00 约4小时日间游览，Day1/Day2 维持不变。（系统已规范化候选景点名：水墨大埖旅游区→水墨大埝旅游区）",
+        "[第2轮] Reviewer 通过（90分）：(无意见)",
+        "[time_check 第1轮] 无违规"
+      ],
+      "route": [
+        {
+          "day": 1,
+          "spots": [
+            {
+              "name": "中山陵景区",
+              "period": "morning",
+              "start_time": "10:00",
+              "end_time": "13:30"
+            },
+            {
+              "name": "古鸡鸣寺",
+              "period": "afternoon",
+              "start_time": "15:00",
+              "end_time": "17:15"
+            }
+          ],
+          "theme": "玄武山陵与古寺半日"
+        },
+        {
+          "day": 2,
+          "spots": [
+            {
+              "name": "不老村",
+              "period": "morning",
+              "start_time": "10:00",
+              "end_time": "13:00"
+            },
+            {
+              "name": "水墨大埝旅游区",
+              "period": "afternoon",
+              "start_time": "14:00",
+              "end_time": "17:00"
+            }
+          ],
+          "theme": "浦口乡野渔光"
+        },
+        {
+          "day": 3,
+          "spots": [
+            {
+              "name": "南京牛首山文化旅游区",
+              "period": "afternoon",
+              "start_time": "10:00",
+              "end_time": "14:00"
+            }
+          ],
+          "theme": "牛首山文化与自然"
+        }
+      ]
+    }
+  ],
+  "llm_usage": {
+    "calls_total": 7,
+    "failed_total": 0,
+    "input_tokens": 8662,
+    "output_tokens": 2692,
+    "total_tokens": 11354,
+    "estimated_calls": 7,
+    "usage_exact_ratio": 0.0,
+    "latency_sum_ms": 114134.14,
+    "estimated_cost_usd": 0.0,
+    "cost_rates_configured": false
+  },
+  "boundary": "Both modes start from identical real-Planner drafts with deterministic injected faults. This measures recovery robustness, not natural-request quality or failure prevalence."
+}

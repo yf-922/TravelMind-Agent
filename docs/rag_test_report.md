@@ -28,6 +28,14 @@ The automated acceptance set is implemented in `tests/test_travel_knowledge.py`.
 
 Initial test: English reference documents were queried in Chinese. Retrieval was biased toward the Chongqing document, and the transport and unsupported-price questions were not ranked first.
 
-Fix: rewrote the three sources in Chinese, changed chunk overlap to keep a whole preceding paragraph, and added hybrid retrieval. Chroma performs semantic candidate recall, then a deterministic keyword-overlap score reranks concise Chinese questions.
+Fix: rewrote the three sources in Chinese, changed chunk overlap to keep a whole preceding paragraph, and added explicit hybrid retrieval. Chroma and the local lexical index now recall independently, then Reciprocal Rank Fusion (RRF) merges and de-duplicates candidates while retaining vector rank, keyword rank, channel provenance and source citation. When Chroma is unavailable, the tool reports a keyword-only fallback instead of claiming hybrid retrieval.
+
+The checked-in offline report intentionally runs the deterministic `keyword` mode. It is a retrieval-contract baseline over three curated documents, not evidence that the hybrid mode improves online answer quality.
+
+The current set has 30 cases: 24 answerable queries and 6 no-answer/out-of-domain queries. Keyword retrieval scored Hit@1 100%, Recall@3 100%, and no-answer accuracy 100%. Hybrid retrieval scored Hit@1 95.8%, Recall@3 100%, and no-answer accuracy 100%. The first hybrid run falsely returned a nearest neighbour for all no-answer queries; adding a lexical floor and a stricter vector-only distance gate fixed that regression. The honest conclusion remains that hybrid has not shown a quality advantage on this corpus.
 
 Residual risk: the sources are project-curated guidance, not live authorities. The agent must not use this RAG corpus to state current ticket prices, real-time traffic, opening rules, or policy changes. Those claims still require live tools or official sources.
+
+## Local latency note
+
+On 2026-09-14, a 40-query local microbenchmark over this three-document corpus measured keyword-only retrieval at P50 0.422 ms (max 0.710 ms) and Chroma-backed hybrid retrieval at P50 180.310 ms (max 236.923 ms). This is a machine-local diagnostic, not an end-to-end service SLA. The difference is the local embedding/vector query cost; the mode is therefore explicit and can be switched to deterministic keyword fallback for offline or degraded operation.

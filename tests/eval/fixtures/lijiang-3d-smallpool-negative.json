@@ -1,0 +1,132 @@
+{
+  "id": "lijiang-3d-smallpool-negative",
+  "tier": "capability",
+  "destination": "丽江",
+  "query": "丽江3天游（负样本：候选景点池极小，只有5个景点）",
+  "travel_start_date": "2026-09-25",
+  "travel_end_date": "2026-09-27",
+  "days": 3,
+  "attraction_preference": "自然风光、古镇",
+  "habit_preference": "正常作息",
+  "max_per_day": 3,
+  "min_rating": 4.5,
+  "max_review_rounds": 3,
+  "pois": [
+    {
+      "name": "丽江古城",
+      "rating": 4.9,
+      "open_time": "周一至周日 00:00-24:00",
+      "location": {
+        "lng": 100.235517,
+        "lat": 26.870507
+      },
+      "photo": "http://store.is.autonavi.com/showpic/79301b10705b92ec03da88565b18e0f5",
+      "adname": "古城区",
+      "address": "民主路与福慧路交叉口东南",
+      "tel": "0888-5111118",
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "束河古镇",
+      "rating": 4.8,
+      "open_time": "周一至周日 00:00-24:00",
+      "location": {
+        "lng": 100.205679,
+        "lat": 26.9196
+      },
+      "photo": "http://store.is.autonavi.com/showpic/9196b3570203be7ec07ba065498c084a",
+      "adname": "古城区",
+      "address": "束河镇",
+      "tel": null,
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "玉龙雪山国家级风景名胜区",
+      "rating": 4.8,
+      "open_time": "周一至周日 07:00-18:00 最晚进入16:00；景区根据客流量不定期调整开放时间",
+      "location": {
+        "lng": 100.258558,
+        "lat": 27.098052
+      },
+      "photo": "http://store.is.autonavi.com/showpic/8fde6fb2316745f771ad7e539f3bdba3",
+      "adname": "玉龙纳西族自治县",
+      "address": "旅游环线",
+      "tel": "0888-5131068",
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "白沙古镇",
+      "rating": 4.8,
+      "open_time": "周一至周日 00:00-24:00",
+      "location": {
+        "lng": 100.216933,
+        "lat": 26.953303
+      },
+      "photo": "http://store.is.autonavi.com/showpic/eee4299d485c00aef3770e6a68a30103",
+      "adname": "玉龙纳西族自治县",
+      "address": "白沙镇",
+      "tel": null,
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "丽江千古情景区",
+      "rating": 4.7,
+      "open_time": "14:00-21:00",
+      "location": {
+        "lng": 100.218666,
+        "lat": 26.827705
+      },
+      "photo": "http://store.is.autonavi.com/showpic/5bddd03c43846b7fc5c3e51c3b9b85df",
+      "adname": "玉龙纳西族自治县",
+      "address": "黄山街道玉兴西路88号",
+      "tel": "4008888518",
+      "cost": "[]",
+      "indoor": true
+    }
+  ],
+  "weather_forecast": [
+    {
+      "date": "2026-09-25",
+      "day_weather": "晴",
+      "night_weather": "晴",
+      "day_temp": "20",
+      "night_temp": "10",
+      "is_bad": false
+    },
+    {
+      "date": "2026-09-26",
+      "day_weather": "晴",
+      "night_weather": "晴",
+      "day_temp": "20",
+      "night_temp": "10",
+      "is_bad": false
+    },
+    {
+      "date": "2026-09-27",
+      "day_weather": "晴",
+      "night_weather": "晴",
+      "day_temp": "20",
+      "night_temp": "10",
+      "is_bad": false
+    }
+  ],
+  "expectations": {
+    "outdoor_on_bad_day_max": 0
+  },
+  "provenance": {
+    "poi_source": "AMap Web Service Place Text API v3",
+    "poi_captured_at": "2026-09-14T15:04:00.960324+00:00",
+    "poi_query_channels": [
+      "必去景点",
+      "热门景区",
+      "博物馆"
+    ],
+    "poi_rating_threshold": 4.5,
+    "weather_source": "synthetic frozen evaluation scenario",
+    "indoor_label_source": "deterministic name-keyword heuristic"
+  }
+}

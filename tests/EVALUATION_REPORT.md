@@ -36,7 +36,7 @@ JSON 文件记录成功率、每条延迟、调度链路与失败分类。该基
 
 ## LLM-as-Judge（已实现）
 
-- 脚本：`python scripts/run_llm_judge.py`；小额试运行：`python scripts/run_llm_judge.py --limit 1`。
+- 脚本：`python scripts/run_llm_judge.py --allow-external-calls`；小额试运行：`python scripts/run_llm_judge.py --limit 1 --allow-external-calls`。
 - 固定项：Golden Set、Prompt 版本 `travelmind-judge-v1`、temperature=0、Pydantic 评分 Schema。
 - 评分维度：候选池事实一致性、需求满足、行程完整性、Reviewer 一致性、表达清晰度，各 1-5 分。
 - 产物：`evaluation/llm_judge_report.json`，保存模型提供方、模型覆盖项、每条评分、理由、失败分类与 Judge 延迟。

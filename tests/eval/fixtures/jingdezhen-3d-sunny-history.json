@@ -1,0 +1,267 @@
+{
+  "id": "jingdezhen-3d-sunny-history",
+  "tier": "capability",
+  "destination": "景德镇",
+  "query": "景德镇3天陶瓷文化历史游，古窑和博物馆为主",
+  "travel_start_date": "2026-10-05",
+  "travel_end_date": "2026-10-07",
+  "days": 3,
+  "attraction_preference": "陶瓷文化、历史窑址",
+  "habit_preference": "正常作息",
+  "max_per_day": 3,
+  "min_rating": 4.5,
+  "max_review_rounds": 3,
+  "pois": [
+    {
+      "name": "冷水尖风景区",
+      "rating": 4.5,
+      "open_time": "周一至周日 07:00-18:00",
+      "location": {
+        "lng": 117.168235,
+        "lat": 29.200098
+      },
+      "photo": "https://aos-comment.amap.com/B031E0HYEZ/comment/F47A9D5D_AC5B_415B_8068_961F33E0F64B_L0_001_1473_1964_1730702933918_10600727.jpg",
+      "adname": "昌江区",
+      "address": "鱼山镇礼城村冷水尖旅游区",
+      "tel": "13907987777",
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "景德镇古窑民俗博览区",
+      "rating": 4.7,
+      "open_time": "周一至周日 08:00-17:00",
+      "location": {
+        "lng": 117.184813,
+        "lat": 29.28343
+      },
+      "photo": "http://store.is.autonavi.com/showpic/97b8d07cd46ce47967363a813344ffa8",
+      "adname": "昌江区",
+      "address": "瓷都大道古窑路1号",
+      "tel": "0798-8382828;4001181728",
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "浮梁古县衙",
+      "rating": 4.5,
+      "open_time": "周一至周日 08:00-18:00",
+      "location": {
+        "lng": 117.251149,
+        "lat": 29.366887
+      },
+      "photo": "http://store.is.autonavi.com/showpic/0422282ee27a98ea873d6ab7c51999ff",
+      "adname": "浮梁县",
+      "address": "县衙路",
+      "tel": "0798-2620150;0798-2621157",
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "景德镇陶源谷·三宝旅游度假区·三宝国际陶艺村",
+      "rating": 4.7,
+      "open_time": "周一至周日 00:00-24:00",
+      "location": {
+        "lng": 117.26534,
+        "lat": 29.247141
+      },
+      "photo": "http://store.is.autonavi.com/showpic/798edd800c3a27c36d824df129b6a785",
+      "adname": "珠山区",
+      "address": "经开区三宝村四家里",
+      "tel": "0798-8496513",
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "瑶里古镇风景区",
+      "rating": 4.7,
+      "open_time": "周一至周日 00:00-24:00",
+      "location": {
+        "lng": 117.577684,
+        "lat": 29.540982
+      },
+      "photo": "http://store.is.autonavi.com/showpic/a95d3a4757633fbdd9df9bea1a34c657",
+      "adname": "浮梁县",
+      "address": "瑶里镇",
+      "tel": "0798-2601228;0798-2601393",
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "皇窑",
+      "rating": 4.5,
+      "open_time": "1月至4月,11月至12月 周一至周日 08:30-17:00 最晚进入16:30；5月至10月 周一至周日 08:00-17:30 最晚进入17:00",
+      "location": {
+        "lng": 117.30216,
+        "lat": 29.323633
+      },
+      "photo": "https://store.is.autonavi.com/showpic/09e2626d67710d850000002385766704?type=pic",
+      "adname": "浮梁县",
+      "address": "高岭大道668号",
+      "tel": "4000798289",
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "浮梁县新平村瓷宫",
+      "rating": 4.7,
+      "open_time": "周一至周日 08:00-17:30 最晚进入17:00",
+      "location": {
+        "lng": 117.277241,
+        "lat": 29.390573
+      },
+      "photo": "https://store.is.autonavi.com/showpic/9910b003292e05a30000002987624782?type=pic",
+      "adname": "浮梁县",
+      "address": "新港公路",
+      "tel": null,
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "洪岩仙境·地下瓷世界",
+      "rating": 4.5,
+      "open_time": "1月至4月,11月至12月 周一至周日 08:30-16:30；5月至10月 周一至周日 08:30-17:30 最晚进入17:30",
+      "location": {
+        "lng": 117.479478,
+        "lat": 29.031447
+      },
+      "photo": "http://store.is.autonavi.com/showpic/a68df195cc068faafbf1a2f42243cfdc",
+      "adname": "乐平市",
+      "address": "洪岩镇",
+      "tel": "0798-6655580",
+      "cost": "[]",
+      "indoor": true
+    },
+    {
+      "name": "东湖公园",
+      "rating": 4.5,
+      "open_time": "周一至周日 00:00-24:00",
+      "location": {
+        "lng": 117.14341,
+        "lat": 28.962372
+      },
+      "photo": "https://aos-comment.amap.com/B031E13S9W/comment/363A09D3_4295_429A_B09E_6617765D63AC_L0_001_1170_86_1758026335310_84016885.jpg",
+      "adname": "乐平市",
+      "address": "洎阳街道东风南路与乐平大道交叉口",
+      "tel": null,
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "陶溪川文创街区",
+      "rating": 4.8,
+      "open_time": "周一至周日 10:00-22:00",
+      "location": {
+        "lng": 117.236957,
+        "lat": 29.296921
+      },
+      "photo": "https://store.is.autonavi.com/showpic/da16186fe43004cf0000003593390155",
+      "adname": "珠山区",
+      "address": "里村街道新厂西路351号",
+      "tel": null,
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "西河湾沙滩公园",
+      "rating": 4.6,
+      "open_time": "周一至周日 00:00-24:00",
+      "location": {
+        "lng": 117.172783,
+        "lat": 29.301308
+      },
+      "photo": "https://store.is.autonavi.com/showpic/ba0d31459a4bdcd00000002471332718?type=pic",
+      "adname": "昌江区",
+      "address": "紫晶路与爱心路交叉口西北160米",
+      "tel": null,
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "景德镇陶阳里历史文化旅游区",
+      "rating": 4.8,
+      "open_time": "08:30-22:00开放；除夕08:30-16:00开放",
+      "location": {
+        "lng": 117.204535,
+        "lat": 29.296459
+      },
+      "photo": "https://store.is.autonavi.com/showpic/5c5c817dfb2287b40000004840378129?type=pic",
+      "adname": "珠山区",
+      "address": "东门游客服务中心",
+      "tel": "0798-8226233",
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "景德镇陶源谷旅游度假区·陶侃剧场",
+      "rating": 4.6,
+      "open_time": "周一至周日 09:00-21:00",
+      "location": {
+        "lng": 117.26389,
+        "lat": 29.26036
+      },
+      "photo": "https://aos-comment.amap.com/B0JATNSY9X/comment/202603_04-16092_1772611764041_42485275.jpg",
+      "adname": "珠山区",
+      "address": "竟成镇三宝路798号三宝国际文创中心",
+      "tel": null,
+      "cost": "83.00",
+      "indoor": true
+    },
+    {
+      "name": "受气瓶",
+      "rating": 4.6,
+      "open_time": null,
+      "location": {
+        "lng": 117.263898,
+        "lat": 29.260579
+      },
+      "photo": "https://aos-comment.amap.com/B0K04ZF63X/comment/content_media_external_file_307463_ss__1772274571862_04409824.jpg",
+      "adname": "珠山区",
+      "address": "陶源谷旅游度假区·陶咖talkacoffee",
+      "tel": null,
+      "cost": "[]",
+      "indoor": false
+    }
+  ],
+  "weather_forecast": [
+    {
+      "date": "2026-10-05",
+      "day_weather": "晴",
+      "night_weather": "晴",
+      "day_temp": "22",
+      "night_temp": "14",
+      "is_bad": false
+    },
+    {
+      "date": "2026-10-06",
+      "day_weather": "晴",
+      "night_weather": "晴",
+      "day_temp": "22",
+      "night_temp": "14",
+      "is_bad": false
+    },
+    {
+      "date": "2026-10-07",
+      "day_weather": "晴",
+      "night_weather": "晴",
+      "day_temp": "22",
+      "night_temp": "14",
+      "is_bad": false
+    }
+  ],
+  "expectations": {
+    "outdoor_on_bad_day_max": 0
+  },
+  "provenance": {
+    "poi_source": "AMap Web Service Place Text API v3",
+    "poi_captured_at": "2026-09-14T15:04:00.960324+00:00",
+    "poi_query_channels": [
+      "必去景点",
+      "热门景区",
+      "博物馆"
+    ],
+    "poi_rating_threshold": 4.5,
+    "weather_source": "synthetic frozen evaluation scenario",
+    "indoor_label_source": "deterministic name-keyword heuristic"
+  }
+}

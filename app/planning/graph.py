@@ -13,16 +13,19 @@ from app.planning.nodes import (
     finalize_node,
     make_finalize_node,
     make_intent_node,
-    make_meal_recommend_node,
+    make_meal_enrichment_node,
     make_planner_node,
     make_query_rewrite_node,
     make_reviewer_node,
     make_spot_tips_node,
     make_time_check_node,
-    meal_search_node,
+    route_distance_check_node,
+    route_risk_gate_node,
+    weather_search_node,
     route_after_intent,
     route_after_planner,
     route_after_review,
+    route_after_risk_gate,
     route_after_time_check,
 )
 
@@ -39,26 +42,41 @@ def build_graph(
 
     g.add_node("query_rewrite",    make_query_rewrite_node(model_name, user_id))
     g.add_node("intent",           make_intent_node(model_name, profile_hint=profile_hint))
+    g.add_node("weather_search",   weather_search_node)
     g.add_node("attraction_search", attraction_search_node)
     g.add_node("planner",          make_planner_node(model_name))
+    g.add_node("route_distance_check", route_distance_check_node)
+    g.add_node("risk_gate", route_risk_gate_node)
     g.add_node("reviewer",         make_reviewer_node(model_name))
     g.add_node("time_check",       make_time_check_node(model_name))
-    g.add_node("meal_search",      meal_search_node)
-    g.add_node("meal_recommend",   make_meal_recommend_node(model_name))
+    g.add_node("meal_enrichment",  make_meal_enrichment_node(model_name))
     g.add_node("spot_tips",        make_spot_tips_node(model_name))
     g.add_node("finalize",         make_finalize_node(memory_writer))
 
     g.add_edge(START,   "intent")
     g.add_conditional_edges(
         "intent", route_after_intent,
-        {"query_rewrite": "query_rewrite", END: END}
+        {
+            "query_rewrite": "query_rewrite",
+            "weather_search": "weather_search",
+            END: END,
+        }
     )
-    g.add_edge("query_rewrite",    "attraction_search")
+    # query_rewrite 与 weather_search 都只依赖 intent 的输出，可以并行执行。
+    # attraction_search 使用两者结果，因此设置多前驱屏障，确保天气/改写都完成后再检索。
+    g.add_edge("query_rewrite", "attraction_search")
+    g.add_edge("weather_search", "attraction_search")
     g.add_edge("attraction_search", "planner")
     # planner 输出：time_check_done=False 时进 reviewer 走主循环；True 时进 time_check 重新核查
     g.add_conditional_edges(
         "planner", route_after_planner,
-        {"reviewer": "reviewer", "time_check": "time_check"},
+        {"reviewer": "route_distance_check", "time_check": "route_distance_check"},
+    )
+    g.add_edge("route_distance_check", "risk_gate")
+    g.add_conditional_edges(
+        "risk_gate", route_after_risk_gate,
+        {"reviewer": "reviewer", "time_check": "time_check",
+         "meal_search": "meal_enrichment", "spot_tips": "spot_tips"},
     )
     # reviewer：通过或达最大轮数 → time_check 阶段；否则打回 planner
     g.add_conditional_edges(
@@ -68,10 +86,11 @@ def build_graph(
     # time_check：无违规/达上限 → meal_search；有违规且未达上限 → planner 修正
     g.add_conditional_edges(
         "time_check", route_after_time_check,
-        {"planner": "planner", "meal_search": "meal_search"},
+        {"planner": "planner", "reviewer": "reviewer", "meal_search": "meal_enrichment", "spot_tips": "spot_tips"},
     )
-    g.add_edge("meal_search",    "meal_recommend")
-    g.add_edge("meal_recommend", "spot_tips")
+    # The dependent search -> recommend meal subflow and attraction tips are
+    # independent branches. Finalize waits for both.
+    g.add_edge("meal_enrichment", "finalize")
     g.add_edge("spot_tips",      "finalize")
     g.add_edge("finalize",       END)
 
@@ -88,12 +107,16 @@ def build_graph(
 _NODE_LABELS: dict[str, str] = {
     "query_rewrite":     "🔎 正在结合用户画像改写查询",
     "intent":            "🧭 正在理解出行意图（目的地 / 日期 / 偏好）",
+    "weather_search":    "🌦 正在查询出行天气",
     "attraction_search": "🗺 正在调用高德搜索景点池",
     "planner":           "✍️ 正在规划逐日行程",
+    "route_distance_check": "🛣 正在核验道路步行/驾车距离",
+    "risk_gate": "🧮 正在评估是否需要升级审核",
     "reviewer":          "🔍 正在评审行程",
     "time_check":        "⏱ 正在核查景点开放时间",
     "meal_search":       "🍽 正在搜索周边餐厅",
     "meal_recommend":    "🍴 正在为每天挑选餐厅",
+    "meal_enrichment":   "🍽 正在检索并推荐沿线餐厅",
     "spot_tips":         "💡 正在为每个景点生成游玩贴士",
     "finalize":          "📦 正在收敛生成最终行程",
 }
@@ -177,8 +200,10 @@ def _stage_summary(node: str, state_before: dict[str, Any], update: dict[str, An
     days = state.get("days") or 0
 
     if node == "intent":
-        weather = "天气信息已获取" if state.get("weather_forecast") else "天气暂不可用，已启用提示降级"
-        return f"已识别：{destination}，{days} 天行程；{weather}。"
+        return f"已识别：{destination}，{days} 天行程。"
+    if node == "weather_search":
+        weather = "已获取天气预报" if state.get("weather_forecast") else (state.get("weather_note") or "天气暂不可用")
+        return weather + "。"
     if node == "query_rewrite":
         return "已结合本次需求和用户偏好，整理检索约束。"
     if node == "attraction_search":
@@ -189,6 +214,13 @@ def _stage_summary(node: str, state_before: dict[str, Any], update: dict[str, An
     if node == "planner":
         return (f"第 {state.get('review_round') or 1} 轮行程草案已生成："
                 f"{len(state.get('route') or []) or days} 天、{_route_spot_count(state.get('route'))} 个景点。")
+    if node == "route_distance_check":
+        return state.get("route_distance_note") or "道路距离核验已完成。"
+    if node == "risk_gate":
+        flags = state.get("route_risk_flags") or []
+        if state.get("review_skipped"):
+            return "低风险路线，跳过 Reviewer/Time Check，直接进入结果增强。"
+        return f"检测到 {len(flags)} 项风险，已升级到独立审核。"
     if node == "reviewer":
         issues = state.get("reviewer_issues") or []
         if state.get("approved"):
@@ -206,6 +238,11 @@ def _stage_summary(node: str, state_before: dict[str, Any], update: dict[str, An
         sample = _meal_pick_preview(meals)
         suffix = f"推荐：{sample}。" if sample else ""
         return f"已完成 {len(meals)} 天的午晚餐推荐。{suffix}"
+    if node == "meal_enrichment":
+        meals = state.get("meals") or []
+        sample = _meal_pick_preview(meals)
+        suffix = f"推荐：{sample}。" if sample else ""
+        return f"已完成 {len(meals)} 天的沿线餐厅检索与推荐。{suffix}"
     if node == "spot_tips":
         return f"已生成 {len(state.get('spot_tips') or {})} 条景点游玩提示。"
     if node == "finalize":
@@ -215,48 +252,67 @@ def _stage_summary(node: str, state_before: dict[str, Any], update: dict[str, An
 
 # ─── 修改模式专用迷你图 ────────────────────────────────────────
 
-def _route_after_review_for_modification(state: TravelPlanState) -> str:
-    """修改流程专用：reviewer 通过/达最大轮数 → 直接进 meal_search（不走 time_check）。"""
-    if state.approved or state.review_round > state.max_review_rounds:
-        return "meal_search"
-    return "planner"
-
-
 def build_modification_graph(model_name: str | None = None, memory_writer=None):
-    """迷你图：planner ⇄ reviewer（最多 2 轮）→ meal_search → meal_recommend → finalize。
-    跳过 intent / attraction_search，直接从 checkpoint 恢复状态。
-    修改流程暂不接入 time_check 节点。
-    """
+    """从 checkpoint 重规划，并重新核验道路距离、审查意见和开放时间。"""
     g = StateGraph(TravelPlanState)
     g.add_node("planner",        make_planner_node(model_name))
+    g.add_node("route_distance_check", route_distance_check_node)
+    g.add_node("risk_gate", route_risk_gate_node)
     g.add_node("reviewer",       make_reviewer_node(model_name))
-    g.add_node("meal_search",    meal_search_node)
-    g.add_node("meal_recommend", make_meal_recommend_node(model_name))
+    g.add_node("time_check",     make_time_check_node(model_name))
+    g.add_node("meal_enrichment", make_meal_enrichment_node(model_name))
     g.add_node("spot_tips",      make_spot_tips_node(model_name))
     g.add_node("finalize",       make_finalize_node(memory_writer))
     g.add_edge(START, "planner")
-    g.add_edge("planner", "reviewer")
+    g.add_edge("planner", "route_distance_check")
+    g.add_edge("route_distance_check", "risk_gate")
     g.add_conditional_edges(
-        "reviewer", _route_after_review_for_modification,
-        {"planner": "planner", "meal_search": "meal_search"},
+        "risk_gate", route_after_risk_gate,
+        {"reviewer": "reviewer", "time_check": "time_check",
+         "meal_search": "meal_enrichment", "spot_tips": "spot_tips"},
     )
-    g.add_edge("meal_search",    "meal_recommend")
-    g.add_edge("meal_recommend", "spot_tips")
+    g.add_conditional_edges(
+        "reviewer", route_after_review,
+        {"planner": "planner", "time_check": "time_check"},
+    )
+    g.add_conditional_edges(
+        "time_check", route_after_time_check,
+        {"planner": "planner", "reviewer": "reviewer", "meal_search": "meal_enrichment", "spot_tips": "spot_tips"},
+    )
+    g.add_edge("meal_enrichment", "finalize")
     g.add_edge("spot_tips",      "finalize")
     g.add_edge("finalize",       END)
     return g.compile()
 
 
 def build_confirm_graph(model_name: str | None = None, memory_writer=None):
-    """确认后续跑图：meal_search → meal_recommend → spot_tips → finalize。"""
+    """确认后仍执行道路距离、Reviewer 和开放时间核验，再生成最终行程。"""
     g = StateGraph(TravelPlanState)
-    g.add_node("meal_search",    meal_search_node)
-    g.add_node("meal_recommend", make_meal_recommend_node(model_name))
+    g.add_node("route_distance_check", route_distance_check_node)
+    g.add_node("risk_gate", route_risk_gate_node)
+    g.add_node("reviewer",       make_reviewer_node(model_name))
+    g.add_node("planner",        make_planner_node(model_name))
+    g.add_node("time_check",     make_time_check_node(model_name))
+    g.add_node("meal_enrichment", make_meal_enrichment_node(model_name))
     g.add_node("spot_tips",      make_spot_tips_node(model_name))
     g.add_node("finalize",       make_finalize_node(memory_writer))
-    g.add_edge(START,            "meal_search")
-    g.add_edge("meal_search",    "meal_recommend")
-    g.add_edge("meal_recommend", "spot_tips")
+    g.add_edge(START,            "route_distance_check")
+    g.add_edge("route_distance_check", "risk_gate")
+    g.add_conditional_edges(
+        "risk_gate", route_after_risk_gate,
+        {"reviewer": "reviewer", "time_check": "time_check",
+         "meal_search": "meal_enrichment", "spot_tips": "spot_tips"},
+    )
+    g.add_conditional_edges(
+        "reviewer", route_after_review,
+        {"planner": "planner", "time_check": "time_check"},
+    )
+    g.add_edge("planner", "route_distance_check")
+    g.add_conditional_edges(
+        "time_check", route_after_time_check,
+        {"planner": "planner", "reviewer": "reviewer", "meal_search": "meal_enrichment", "spot_tips": "spot_tips"},
+    )
+    g.add_edge("meal_enrichment", "finalize")
     g.add_edge("spot_tips",      "finalize")
     g.add_edge("finalize",   END)
     return g.compile()
@@ -287,24 +343,38 @@ async def run_modification_stream(
         attraction_preference=checkpoint.get("attraction_preference"),
         food_preference=checkpoint.get("food_preference"),
         habit_preference=checkpoint.get("habit_preference"),
+        max_walking_km=checkpoint.get("max_walking_km"),
+        rain_indoor_priority=bool(checkpoint.get("rain_indoor_priority", False)),
         weather_forecast=checkpoint.get("weather_forecast", []),
         weather_note=checkpoint.get("weather_note"),
+        route_distance_legs=checkpoint.get("route_distance_legs", []),
+        route_distance_mode=checkpoint.get("route_distance_mode"),
+        route_distance_note=checkpoint.get("route_distance_note"),
+        route_risk_flags=checkpoint.get("route_risk_flags", []),
+        route_risk_score=int(checkpoint.get("route_risk_score", 0) or 0),
+        review_required=bool(checkpoint.get("review_required", True)),
+        time_check_required=bool(checkpoint.get("time_check_required", True)),
+        review_skipped=bool(checkpoint.get("review_skipped", False)),
         max_per_day=checkpoint.get("max_per_day", 3),
         route_modify_opinion=f"【用户修改意见】{modification_notes}",
         max_review_rounds=2,
         **{k: v for k, v in overrides.items()
            if k not in ("model_name", "max_per_day", "route_modify_opinion", "max_review_rounds")},
     )
-    config = {"recursion_limit": 2 * (2 + 1) + 10}  # 最多 2 轮 reviewer，留余量
+    config = {"recursion_limit": 2 * (2 + 1) + 2 * init.max_time_check_rounds + 14}
 
     acc: dict[str, Any] = init.model_dump()
     planner_done = False
 
     async for event in app.astream_events(init, config=config, version="v2"):
-        if event.get("event") != "on_chain_end":
-            continue
+        ev_type = event.get("event")
         node = event.get("name")
         if node not in _NODE_LABELS:
+            continue
+        if ev_type == "on_chain_start":
+            yield _stage_event(node, acc, {})
+            continue
+        if ev_type != "on_chain_end":
             continue
         upd = (event.get("data") or {}).get("output")
         if not isinstance(upd, dict):
@@ -316,7 +386,6 @@ async def run_modification_stream(
             # _stage_event 对 planner 的轮次计算假设 acc 是节点运行前的状态
             # （review_round 尚未递增），update 之后再算会多加 1
             planner_done = True
-            yield _stage_event(node, acc, upd)
             yield {"type": "stage_summary", "node": node, "summary": _stage_summary(node, acc, upd)}
             acc.update(upd)
             concern = acc.get("modification_concern") or ""
@@ -333,8 +402,13 @@ async def run_modification_stream(
                     "attraction_preference": init.attraction_preference,
                     "food_preference":       init.food_preference,
                     "habit_preference":      init.habit_preference,
+                    "max_walking_km":        init.max_walking_km,
+                    "rain_indoor_priority":  init.rain_indoor_priority,
                     "weather_forecast": init.weather_forecast,
                     "weather_note":     init.weather_note,
+                    "route_distance_legs": acc.get("route_distance_legs", []),
+                    "route_distance_mode": acc.get("route_distance_mode"),
+                    "route_distance_note": acc.get("route_distance_note"),
                     "max_per_day":      init.max_per_day,
                     "query":            init.query,
                 }
@@ -346,7 +420,6 @@ async def run_modification_stream(
                 return
             continue  # 无顾虑，继续
 
-        yield _stage_event(node, acc, upd)
         yield {"type": "stage_summary", "node": node, "summary": _stage_summary(node, acc, upd)}
         acc.update(upd)
 
@@ -385,24 +458,32 @@ async def run_confirm_stream(
         attraction_preference=pending_state.get("attraction_preference"),
         food_preference=pending_state.get("food_preference"),
         habit_preference=pending_state.get("habit_preference"),
+        max_walking_km=pending_state.get("max_walking_km"),
+        rain_indoor_priority=bool(pending_state.get("rain_indoor_priority", False)),
         weather_forecast=pending_state.get("weather_forecast", []),
         weather_note=pending_state.get("weather_note"),
+        route_distance_legs=pending_state.get("route_distance_legs", []),
+        route_distance_mode=pending_state.get("route_distance_mode"),
+        route_distance_note=pending_state.get("route_distance_note"),
         max_per_day=pending_state.get("max_per_day", 3),
         **{k: v for k, v in overrides.items() if k not in ("model_name", "max_per_day")},
     )
-    config = {"recursion_limit": 20}
+    config = {"recursion_limit": 2 * (init.max_review_rounds + 1) + 2 * init.max_time_check_rounds + 14}
 
     acc: dict[str, Any] = init.model_dump()
     async for event in app.astream_events(init, config=config, version="v2"):
-        if event.get("event") != "on_chain_end":
-            continue
+        ev_type = event.get("event")
         node = event.get("name")
         if node not in _NODE_LABELS:
+            continue
+        if ev_type == "on_chain_start":
+            yield _stage_event(node, acc, {})
+            continue
+        if ev_type != "on_chain_end":
             continue
         upd = (event.get("data") or {}).get("output")
         if not isinstance(upd, dict):
             continue
-        yield _stage_event(node, acc, upd)
         yield {"type": "stage_summary", "node": node, "summary": _stage_summary(node, acc, upd)}
         acc.update(upd)
 

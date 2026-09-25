@@ -82,3 +82,49 @@ def test_direction_retries_once_after_temporary_empty_response(monkeypatch):
     assert plan is not None
     assert plan["source"] == "amap"
     assert "地铁测试线" in plan["instruction"]
+
+
+def test_route_distance_uses_actual_walking_endpoint(monkeypatch):
+    direction._PLAN_CACHE.clear()
+    payload = {
+        "status": "1",
+        "route": {"paths": [{"distance": "1800", "duration": "1500", "steps": []}]},
+    }
+    seen: list[str] = []
+
+    def fetch(url):
+        seen.append(url)
+        return payload
+
+    monkeypatch.setattr(direction, "_fetch_json", fetch)
+    monkeypatch.setattr(direction.time, "sleep", lambda _seconds: None)
+    plan = direction.plan_route_distance(
+        {"lng": 118.78, "lat": 32.04},
+        {"lng": 118.80, "lat": 32.05},
+        "fake-key",
+        mode="walk",
+    )
+
+    assert plan is not None
+    assert plan["mode"] == "walk"
+    assert plan["distance_km"] == 1.8
+    assert "/v3/direction/walking?" in seen[0]
+
+
+def test_route_distance_uses_actual_driving_endpoint(monkeypatch):
+    direction._PLAN_CACHE.clear()
+    monkeypatch.setattr(direction, "_fetch_json", lambda _url: {
+        "status": "1",
+        "route": {"paths": [{"distance": "26800", "duration": "2400"}]},
+    })
+    monkeypatch.setattr(direction.time, "sleep", lambda _seconds: None)
+    plan = direction.plan_route_distance(
+        {"lng": 118.78, "lat": 32.04},
+        {"lng": 118.90, "lat": 32.10},
+        "fake-key",
+        mode="drive",
+    )
+
+    assert plan is not None
+    assert plan["mode"] == "taxi_or_car"
+    assert plan["distance_km"] == 26.8

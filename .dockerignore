@@ -1,0 +1,8 @@
+.git
+.venv
+__pycache__
+*.pyc
+.env.local
+data
+node_modules
+实验提交材料

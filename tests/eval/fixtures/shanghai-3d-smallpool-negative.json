@@ -1,0 +1,132 @@
+{
+  "id": "shanghai-3d-smallpool-negative",
+  "tier": "capability",
+  "destination": "上海",
+  "query": "上海3天游（负样本：候选景点池极小，只有5个景点，考验规划弹性）",
+  "travel_start_date": "2026-08-20",
+  "travel_end_date": "2026-08-22",
+  "days": 3,
+  "attraction_preference": "历史建筑、近代史",
+  "habit_preference": "正常作息",
+  "max_per_day": 3,
+  "min_rating": 4.5,
+  "max_review_rounds": 3,
+  "pois": [
+    {
+      "name": "上海迪士尼度假区",
+      "rating": 4.9,
+      "open_time": "09-11至09-13 周一至周日 08:30-21:30；09-14至09-17 周一至周日 08:30-20:30；09-18至09-20 周一至周日 08:30-21:30；09-21至09-24 周一至周日 08:30-20:30；09-25至09-26 周一至周日 08:30-21:30",
+      "location": {
+        "lng": 121.667003,
+        "lat": 31.141447
+      },
+      "photo": "http://store.is.autonavi.com/showpic/4f83bd890aba5ab4f0d859e5e25a94f7",
+      "adname": "浦东新区",
+      "address": "黄赵路310号",
+      "tel": "4001800000",
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "上海城隍庙",
+      "rating": 4.8,
+      "open_time": "周一至周日 08:30-16:30",
+      "location": {
+        "lng": 121.492466,
+        "lat": 31.225879
+      },
+      "photo": "http://store.is.autonavi.com/showpic/518f824f343115a063effa52ea4cb224",
+      "adname": "黄浦区",
+      "address": "方浜中路249号",
+      "tel": "021-63284494",
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "上海动物园",
+      "rating": 4.8,
+      "open_time": "周一至周日 08:00-17:00",
+      "location": {
+        "lng": 121.363009,
+        "lat": 31.193277
+      },
+      "photo": "http://store.is.autonavi.com/showpic/b61ca9d1298e702a3d27f9dde7412e74",
+      "adname": "长宁区",
+      "address": "虹桥路2381号",
+      "tel": "021-62109210",
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "上海欢乐谷",
+      "rating": 4.8,
+      "open_time": "7月3日-8月30日 09:30-22:00开放(21:00停止入园)；8月31日-9月11日 09:30-19:30开放(18:30停止入园)；9月12日-11月15日 周一至周四 09:30-21:30开放(20:30停止入园)；9月12日-11月15日 周五至周日 09:30-22:00开放(21:00停止入园)；特殊营业时间:中秋节,国庆节 09:30-22:00开放(21:00停止入园)；10月23日-10月29日 09:30-23:00开放(22:00停止入园)；10月31日-11月1日 周六至周日 09:30-23:30开放(22:30停止入园)；具体开放时间以官方通知为准",
+      "location": {
+        "lng": 121.214778,
+        "lat": 31.09607
+      },
+      "photo": "http://store.is.autonavi.com/showpic/8e3e4fa5f850dc050d238fae192df376",
+      "adname": "松江区",
+      "address": "林湖路888号",
+      "tel": "4006688022",
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "上海野生动物园",
+      "rating": 4.8,
+      "open_time": "9月1日至9月30日 周一至周五 09:00-17:00开放(16:00停止入园)；周六至周日 09:00-21:00开放(19:30停止入园)；特殊营业时间:9月25日至9月27日 09:00-21:00开放(19:30停止入园)；9月20日 09:00-17:00开放(16:00停止入园)；具体开放时间以官方通知为准",
+      "location": {
+        "lng": 121.721793,
+        "lat": 31.055337
+      },
+      "photo": "http://store.is.autonavi.com/showpic/9d30c2aa49204e31b02d420d4411bd16",
+      "adname": "浦东新区",
+      "address": "南六公路178号",
+      "tel": "021-58036000",
+      "cost": "[]",
+      "indoor": false
+    }
+  ],
+  "weather_forecast": [
+    {
+      "date": "2026-08-20",
+      "day_weather": "晴",
+      "night_weather": "晴",
+      "day_temp": "33",
+      "night_temp": "26",
+      "is_bad": false
+    },
+    {
+      "date": "2026-08-21",
+      "day_weather": "晴",
+      "night_weather": "晴",
+      "day_temp": "33",
+      "night_temp": "26",
+      "is_bad": false
+    },
+    {
+      "date": "2026-08-22",
+      "day_weather": "晴",
+      "night_weather": "晴",
+      "day_temp": "33",
+      "night_temp": "26",
+      "is_bad": false
+    }
+  ],
+  "expectations": {
+    "outdoor_on_bad_day_max": 0
+  },
+  "provenance": {
+    "poi_source": "AMap Web Service Place Text API v3",
+    "poi_captured_at": "2026-09-14T15:04:00.960324+00:00",
+    "poi_query_channels": [
+      "必去景点",
+      "热门景区",
+      "博物馆"
+    ],
+    "poi_rating_threshold": 4.5,
+    "weather_source": "synthetic frozen evaluation scenario",
+    "indoor_label_source": "deterministic name-keyword heuristic"
+  }
+}

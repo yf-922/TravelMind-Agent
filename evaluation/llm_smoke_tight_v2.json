@@ -1,0 +1,42 @@
+{
+  "execution": {
+    "generated_at": "2026-09-15T04:30:09.226420+00:00",
+    "provider": "grok",
+    "preflight": {
+      "cases": 1,
+      "trials": 1,
+      "judge_enabled": true,
+      "logical_invocations_upper_bound": 15,
+      "provider_attempts_upper_bound": 45,
+      "llm_calls_upper_bound": 45,
+      "attempts_per_invocation": 3,
+      "assumption": "worst-case logical graph invocations multiplied by invoke_structured retry attempts",
+      "per_case": [
+        {
+          "id": "nanjing-3d-tighthours-negative",
+          "trials": 1,
+          "max_review_rounds": 3,
+          "include_time_check": true,
+          "logical_invocations_upper_bound": 15,
+          "provider_attempts_upper_bound": 45
+        }
+      ],
+      "input_source": "generated_fixtures",
+      "execution_ready": true
+    },
+    "actual_llm_usage": {
+      "calls_total": 1,
+      "failed_total": 1,
+      "input_tokens": 1613,
+      "output_tokens": 0,
+      "total_tokens": 1613,
+      "estimated_calls": 1,
+      "usage_exact_ratio": 0.0,
+      "latency_sum_ms": 45759.666,
+      "estimated_cost_usd": 0.0,
+      "cost_rates_configured": false
+    },
+    "completed_cases": 0
+  },
+  "cases": []
+}

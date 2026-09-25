@@ -103,6 +103,8 @@ function PlanPage({ onRequestLogin, currentUsername, onPhaseChange, onPlanReady,
   const [concernModal, setConcernModal] = React.useState(null);
   const [pendingModState, setPendingModState] = React.useState(null);
   const [errMsg, setErrMsg] = React.useState("");
+  const [elapsedSeconds, setElapsedSeconds] = React.useState(0);
+  const [runId, setRunId] = React.useState(null);
   const [profile, setProfile] = React.useState(null);
   const abortRef = React.useRef(null);
   // 旅程已走到的最远站点下标：planner⇄reviewer / planner⇄time_check 循环时只前进不后退
@@ -167,6 +169,16 @@ function PlanPage({ onRequestLogin, currentUsername, onPhaseChange, onPlanReady,
 
   React.useEffect(() => () => abortRef.current && abortRef.current(), []);
 
+  React.useEffect(() => {
+    if (phase !== "loading") return;
+    const startedAt = Date.now();
+    setElapsedSeconds(0);
+    const timer = window.setInterval(() => {
+      setElapsedSeconds(Math.floor((Date.now() - startedAt) / 1000));
+    }, 1000);
+    return () => window.clearInterval(timer);
+  }, [phase]);
+
   // 拉取用户画像，在新建规划页展示，引导用户参考自身偏好斟酌措辞
   // 依赖 currentUsername：用户登录后立即刷新展示，登出则清空（无需重新进入本页）
   React.useEffect(() => {
@@ -230,9 +242,11 @@ function PlanPage({ onRequestLogin, currentUsername, onPhaseChange, onPlanReady,
       resetJourney();
     }
     setErrMsg("");
+    setRunId(null);
 
     streamPlan(body, {
       onAbort: (fn) => { abortRef.current = fn; },
+      onRun: (ev) => setRunId(ev.run_id || null),
       onStage: handleStage,
       onStageSummary: (ev) => {
         if (!ev.summary) return;
@@ -303,6 +317,7 @@ function PlanPage({ onRequestLogin, currentUsername, onPhaseChange, onPlanReady,
     resetJourney();
     confirmModification(pending_id, parent_plan_id, {
       onAbort: (fn) => { abortRef.current = fn; },
+      onRun: (ev) => setRunId(ev.run_id || null),
       onStage: handleStage,
       onStageSummary: (ev) => {
         if (!ev.summary) return;
@@ -346,13 +361,29 @@ function PlanPage({ onRequestLogin, currentUsername, onPhaseChange, onPlanReady,
         <div className="journey">
           <div className="journey-head">
             <h2>正在为你规划这趟旅程</h2>
-            <span className="sub">多位 Agent 接力工作中 · 通常需要 1–2 分钟</span>
+            <span className="sub">
+              多位 Agent 接力工作中 · 已用时 {elapsedSeconds} 秒
+              {runId ? ` · ${runId.slice(0, 8)}` : ""}
+            </span>
+            <button
+              type="button"
+              className="journey-cancel"
+              title="取消本次规划"
+              onClick={() => {
+                abortRef.current && abortRef.current();
+                setErrMsg("已取消本次规划");
+                setPhase("idle");
+              }}
+            >取消</button>
           </div>
           <JourneyLoading steps={JOURNEY_STEPS} activeNode={activeNode} doneNodes={doneNodes} />
           <div className="journey-live" aria-live="polite">
             <span className="journey-live-dot"></span>
             <span className="journey-live-title" style={{ color: "#6f2a0e" }}>旅行助手播报</span>
             <span>{liveNarration}</span>
+            {elapsedSeconds >= 30 && (
+              <span className="journey-slow">当前阶段响应较慢，超时后会自动结束。</span>
+            )}
           </div>
           {stageReport && (
             <div className="journey-report" aria-live="polite">

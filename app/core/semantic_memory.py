@@ -91,7 +91,9 @@ def _sync_store_user_memories(user_id: str, raw_query: str, model_name: str | No
     collection = _collection()
     if collection is None or not user_id or not raw_query.strip():
         return
-    llm = build_structured_llm(SemanticMemoryExtraction, model=model_name, temperature=0)
+    llm = build_structured_llm(
+        SemanticMemoryExtraction, model=model_name, temperature=0, task_type="memory_extract"
+    )
     extracted = invoke_structured(llm, [("system", _EXTRACTION_SYSTEM), ("human", raw_query)])
     memories = _clean_memories(extracted.memories)
     if not memories:

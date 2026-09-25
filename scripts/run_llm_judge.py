@@ -14,6 +14,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT_ROOT))
 
 from app.evaluation.llm_judge import judge_itinerary, judge_metadata
+from app.core.eval_safety import require_external_calls
 from app.multi_agent_core.agents import IntentAgent, POIResearchAgent, PlannerAgent, ReviewerAgent
 from app.multi_agent_core.supervisor import Supervisor
 from app.multi_agent_core.tools import FixturePoiTool
@@ -31,7 +32,14 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--model", default=None, help="可选：覆盖 .env.local 中的默认模型")
     parser.add_argument("--limit", type=int, default=None, help="仅跑前 N 条，便于小额试运行")
+    parser.add_argument("--allow-external-calls", action="store_true",
+                        help="确认调用真实 LLM Judge 并消耗 API 额度")
     args = parser.parse_args()
+    require_external_calls(
+        parser,
+        allowed=args.allow_external_calls,
+        operation="LLM-as-Judge evaluation",
+    )
     records = []
     for case_id, request, destination in CASES[:args.limit]:
         result = make_supervisor().run_trip(request, destination, session_id=case_id)

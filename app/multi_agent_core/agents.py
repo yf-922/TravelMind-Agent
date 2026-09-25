@@ -8,6 +8,7 @@ from typing import Any, Callable, Protocol
 
 from app.multi_agent_core.messages import AgentMessage
 from app.multi_agent_core.memory import AgentMemoryStore, InMemoryAgentMemoryStore
+from app.multi_agent_core.tools import ToolRegistry
 
 
 class PoiTool(Protocol):
@@ -98,7 +99,14 @@ class IntentAgent(BaseAgent):
 
 
 class POIResearchAgent(BaseAgent):
-    def __init__(self, tool: PoiTool, *, model=None, memory_store: AgentMemoryStore | None = None) -> None:
+    def __init__(
+        self,
+        tool: PoiTool,
+        *,
+        model=None,
+        memory_store: AgentMemoryStore | None = None,
+        tool_registry: ToolRegistry | None = None,
+    ) -> None:
         super().__init__(
             "poi_research_agent",
             "Verify travel places with the POI tool. Never invent a place, coordinate, or address.",
@@ -107,18 +115,48 @@ class POIResearchAgent(BaseAgent):
             memory_store=memory_store,
         )
         self.tool = tool
+        self.tool_registry = tool_registry or ToolRegistry()
+        self.tool_registry.register(
+            "poi_search",
+            tool.search,
+            description="Search verified destination POIs",
+            input_schema={
+                "type": "object",
+                "properties": {
+                    "city": {"type": "string"},
+                    "query": {"type": "string"},
+                },
+                "required": ["city"],
+            },
+        )
 
-    def use_poi_tool(self, city: str, query: str = "") -> list[dict[str, Any]]:
-        if "poi_search" not in self.allowed_tools:
-            raise PermissionError(f"{self.name} cannot use poi_search")
-        return self.tool.search(city, query)
+    def use_poi_tool(
+        self,
+        city: str,
+        query: str = "",
+        *,
+        task_id: str = "",
+        trace_id: str = "",
+    ) -> list[dict[str, Any]]:
+        return self.tool_registry.call(
+            self,
+            "poi_search",
+            city=city,
+            query=query,
+            audit_context={"task_id": task_id, "trace_id": trace_id},
+        )
 
     def run(self, message: AgentMessage) -> AgentMessage:
         city = str(message.content.get("destination", "")).strip()
         query = str(message.content.get("place_query", "")).strip()
         if not city:
             return self._reply(message, {"candidates": [], "error": "destination is required"})
-        candidates = self.use_poi_tool(city, query)
+        candidates = self.use_poi_tool(
+            city,
+            query,
+            task_id=message.task_id,
+            trace_id=message.trace_id,
+        )
         return self._reply(message, {
             "destination": city,
             "candidates": candidates,

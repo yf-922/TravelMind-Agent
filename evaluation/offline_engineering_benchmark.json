@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "external_calls": false,
+  "post_intent_fanout": {
+    "measurement_type": "production-langgraph-with-delayed-fake-nodes",
+    "runs": 5,
+    "parallel_nodes": [
+      "query_rewrite",
+      "weather_search"
+    ],
+    "fake_delay_ms_per_node": 40.0,
+    "serial_baseline_ms": {
+      "mean": 92.205,
+      "p50": 92.113,
+      "p95": 94.313,
+      "max": 94.313
+    },
+    "current_fanout_ms": {
+      "mean": 52.346,
+      "p50": 51.796,
+      "p95": 54.06,
+      "max": 54.06
+    },
+    "p50_speedup": 1.778,
+    "pass": true,
+    "pass_criterion": "p50 speedup >= 1.5x through the compiled production graph"
+  },
+  "enrichment_fanout": {
+    "measurement_type": "production-langgraph-with-delayed-fake-nodes",
+    "runs": 5,
+    "parallel_nodes": [
+      "meal_enrichment",
+      "spot_tips"
+    ],
+    "fake_delay_ms_per_node": 40.0,
+    "serial_baseline_ms": {
+      "mean": 94.31,
+      "p50": 96.321,
+      "p95": 96.991,
+      "max": 96.991
+    },
+    "current_fanout_ms": {
+      "mean": 54.498,
+      "p50": 54.379,
+      "p95": 58.49,
+      "max": 58.49
+    },
+    "p50_speedup": 1.771,
+    "pass": true,
+    "pass_criterion": "p50 speedup >= 1.5x through the compiled production graph"
+  },
+  "road_distance": {
+    "measurement_type": "production-node-with-delayed-fake-provider",
+    "runs": 5,
+    "route_legs": 8,
+    "fake_provider_delay_ms_per_leg": 20.0,
+    "serial_baseline_ms": {
+      "mean": 163.824,
+      "p50": 163.719,
+      "p95": 165.138,
+      "max": 165.138
+    },
+    "current_concurrent_ms": {
+      "mean": 27.631,
+      "p50": 28.508,
+      "p95": 29.062,
+      "max": 29.062
+    },
+    "p50_speedup": 5.743,
+    "pass": true,
+    "pass_criterion": "p50 speedup >= 2.0x with identical completed route legs"
+  },
+  "checkpoint_replan": {
+    "measurement_type": "deterministic-stage-cost-simulation",
+    "baseline_label": "simulated full replay; not historical production data",
+    "runs": 5,
+    "unit_delay_ms": 2.0,
+    "full_replay_ms": {
+      "mean": 94.384,
+      "p50": 93.871,
+      "p95": 95.778,
+      "max": 95.778
+    },
+    "checkpoint_local_replan_ms": {
+      "mean": 64.603,
+      "p50": 64.757,
+      "p95": 65.282,
+      "max": 65.282
+    },
+    "p50_latency_reduction_ratio": 0.31,
+    "avoided_nodes": [
+      "intent",
+      "query_rewrite",
+      "weather_search",
+      "attraction_search"
+    ],
+    "simulated_llm_input_tokens": {
+      "full_replay": 9900,
+      "checkpoint_local_replan": 8400,
+      "avoided": 1500,
+      "reduction_ratio": 0.152,
+      "disclaimer": "fixed budget assumptions, not provider-reported token usage"
+    },
+    "pass": true,
+    "pass_criterion": "modeled p50 latency reduction >= 20%"
+  }
+}

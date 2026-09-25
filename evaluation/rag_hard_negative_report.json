@@ -1,0 +1,829 @@
+{
+  "schema_version": 1,
+  "measurement_type": "deterministic-offline-retrieval",
+  "retriever_requested": "keyword",
+  "retriever": "keyword",
+  "top_k": 3,
+  "case_count": 38,
+  "answerable_cases": 24,
+  "no_answer_cases": 6,
+  "generation_only_cases": 8,
+  "by_difficulty": {
+    "adversarial": {
+      "total": 5,
+      "graded": 5,
+      "passed": 5
+    },
+    "in_domain_unknown": {
+      "total": 8,
+      "graded": 0,
+      "passed": 0
+    },
+    "multi_step": {
+      "total": 8,
+      "graded": 8,
+      "passed": 8
+    },
+    "no_answer": {
+      "total": 6,
+      "graded": 6,
+      "passed": 6
+    },
+    "normal": {
+      "total": 7,
+      "graded": 7,
+      "passed": 7
+    },
+    "paraphrase": {
+      "total": 4,
+      "graded": 4,
+      "passed": 4
+    }
+  },
+  "metrics": {
+    "hit_at_1": 1.0,
+    "recall_at_k": 1.0,
+    "mrr": 1.0,
+    "no_answer_accuracy": 1.0,
+    "false_positive_rate": 0.0,
+    "case_accuracy": 1.0,
+    "generation_only_context_rate": 0.875,
+    "no_result_rate": 0.184,
+    "citation_render_integrity": 1.0
+  },
+  "cases": [
+    {
+      "id": "rag-01",
+      "difficulty": "normal",
+      "expected_sources": [
+        "chongqing_visitor_guide"
+      ],
+      "retrieved_sources": [
+        "chongqing_visitor_guide"
+      ],
+      "retrieval_mode": "keyword",
+      "answerable": true,
+      "expected_behavior": "answer",
+      "missing_fact": null,
+      "hit_at_1": true,
+      "hit_at_k": true,
+      "correct_rejection": false,
+      "false_positive": false,
+      "case_passed": true,
+      "reciprocal_rank": 1.0,
+      "citation_render_integrity": 1.0
+    },
+    {
+      "id": "rag-02",
+      "difficulty": "normal",
+      "expected_sources": [
+        "chongqing_visitor_guide"
+      ],
+      "retrieved_sources": [
+        "chongqing_visitor_guide"
+      ],
+      "retrieval_mode": "keyword",
+      "answerable": true,
+      "expected_behavior": "answer",
+      "missing_fact": null,
+      "hit_at_1": true,
+      "hit_at_k": true,
+      "correct_rejection": false,
+      "false_positive": false,
+      "case_passed": true,
+      "reciprocal_rank": 1.0,
+      "citation_render_integrity": 1.0
+    },
+    {
+      "id": "rag-03",
+      "difficulty": "multi_step",
+      "expected_sources": [
+        "chongqing_visitor_guide"
+      ],
+      "retrieved_sources": [
+        "chongqing_visitor_guide"
+      ],
+      "retrieval_mode": "keyword",
+      "answerable": true,
+      "expected_behavior": "answer",
+      "missing_fact": null,
+      "hit_at_1": true,
+      "hit_at_k": true,
+      "correct_rejection": false,
+      "false_positive": false,
+      "case_passed": true,
+      "reciprocal_rank": 1.0,
+      "citation_render_integrity": 1.0
+    },
+    {
+      "id": "rag-04",
+      "difficulty": "normal",
+      "expected_sources": [
+        "chongqing_visitor_guide"
+      ],
+      "retrieved_sources": [
+        "chongqing_visitor_guide"
+      ],
+      "retrieval_mode": "keyword",
+      "answerable": true,
+      "expected_behavior": "answer",
+      "missing_fact": null,
+      "hit_at_1": true,
+      "hit_at_k": true,
+      "correct_rejection": false,
+      "false_positive": false,
+      "case_passed": true,
+      "reciprocal_rank": 1.0,
+      "citation_render_integrity": 1.0
+    },
+    {
+      "id": "rag-05",
+      "difficulty": "normal",
+      "expected_sources": [
+        "transport_and_pacing"
+      ],
+      "retrieved_sources": [
+        "transport_and_pacing"
+      ],
+      "retrieval_mode": "keyword",
+      "answerable": true,
+      "expected_behavior": "answer",
+      "missing_fact": null,
+      "hit_at_1": true,
+      "hit_at_k": true,
+      "correct_rejection": false,
+      "false_positive": false,
+      "case_passed": true,
+      "reciprocal_rank": 1.0,
+      "citation_render_integrity": 1.0
+    },
+    {
+      "id": "rag-06",
+      "difficulty": "normal",
+      "expected_sources": [
+        "chongqing_visitor_guide",
+        "transport_and_pacing"
+      ],
+      "retrieved_sources": [
+        "transport_and_pacing",
+        "chongqing_visitor_guide"
+      ],
+      "retrieval_mode": "keyword",
+      "answerable": true,
+      "expected_behavior": "answer",
+      "missing_fact": null,
+      "hit_at_1": true,
+      "hit_at_k": true,
+      "correct_rejection": false,
+      "false_positive": false,
+      "case_passed": true,
+      "reciprocal_rank": 1.0,
+      "citation_render_integrity": 1.0
+    },
+    {
+      "id": "rag-07",
+      "difficulty": "multi_step",
+      "expected_sources": [
+        "transport_and_pacing"
+      ],
+      "retrieved_sources": [
+        "transport_and_pacing",
+        "chongqing_visitor_guide",
+        "responsible_trip_checklist"
+      ],
+      "retrieval_mode": "keyword",
+      "answerable": true,
+      "expected_behavior": "answer",
+      "missing_fact": null,
+      "hit_at_1": true,
+      "hit_at_k": true,
+      "correct_rejection": false,
+      "false_positive": false,
+      "case_passed": true,
+      "reciprocal_rank": 1.0,
+      "citation_render_integrity": 1.0
+    },
+    {
+      "id": "rag-08",
+      "difficulty": "multi_step",
+      "expected_sources": [
+        "transport_and_pacing"
+      ],
+      "retrieved_sources": [
+        "transport_and_pacing"
+      ],
+      "retrieval_mode": "keyword",
+      "answerable": true,
+      "expected_behavior": "answer",
+      "missing_fact": null,
+      "hit_at_1": true,
+      "hit_at_k": true,
+      "correct_rejection": false,
+      "false_positive": false,
+      "case_passed": true,
+      "reciprocal_rank": 1.0,
+      "citation_render_integrity": 1.0
+    },
+    {
+      "id": "rag-09",
+      "difficulty": "adversarial",
+      "expected_sources": [
+        "responsible_trip_checklist"
+      ],
+      "retrieved_sources": [
+        "responsible_trip_checklist"
+      ],
+      "retrieval_mode": "keyword",
+      "answerable": true,
+      "expected_behavior": "answer",
+      "missing_fact": null,
+      "hit_at_1": true,
+      "hit_at_k": true,
+      "correct_rejection": false,
+      "false_positive": false,
+      "case_passed": true,
+      "reciprocal_rank": 1.0,
+      "citation_render_integrity": 1.0
+    },
+    {
+      "id": "rag-10",
+      "difficulty": "adversarial",
+      "expected_sources": [
+        "responsible_trip_checklist"
+      ],
+      "retrieved_sources": [
+        "responsible_trip_checklist"
+      ],
+      "retrieval_mode": "keyword",
+      "answerable": true,
+      "expected_behavior": "answer",
+      "missing_fact": null,
+      "hit_at_1": true,
+      "hit_at_k": true,
+      "correct_rejection": false,
+      "false_positive": false,
+      "case_passed": true,
+      "reciprocal_rank": 1.0,
+      "citation_render_integrity": 1.0
+    },
+    {
+      "id": "rag-11",
+      "difficulty": "multi_step",
+      "expected_sources": [
+        "responsible_trip_checklist"
+      ],
+      "retrieved_sources": [
+        "responsible_trip_checklist"
+      ],
+      "retrieval_mode": "keyword",
+      "answerable": true,
+      "expected_behavior": "answer",
+      "missing_fact": null,
+      "hit_at_1": true,
+      "hit_at_k": true,
+      "correct_rejection": false,
+      "false_positive": false,
+      "case_passed": true,
+      "reciprocal_rank": 1.0,
+      "citation_render_integrity": 1.0
+    },
+    {
+      "id": "rag-12",
+      "difficulty": "normal",
+      "expected_sources": [
+        "responsible_trip_checklist"
+      ],
+      "retrieved_sources": [
+        "responsible_trip_checklist",
+        "chongqing_visitor_guide",
+        "transport_and_pacing"
+      ],
+      "retrieval_mode": "keyword",
+      "answerable": true,
+      "expected_behavior": "answer",
+      "missing_fact": null,
+      "hit_at_1": true,
+      "hit_at_k": true,
+      "correct_rejection": false,
+      "false_positive": false,
+      "case_passed": true,
+      "reciprocal_rank": 1.0,
+      "citation_render_integrity": 1.0
+    },
+    {
+      "id": "rag-13",
+      "difficulty": "paraphrase",
+      "expected_sources": [
+        "chongqing_visitor_guide"
+      ],
+      "retrieved_sources": [
+        "chongqing_visitor_guide",
+        "transport_and_pacing"
+      ],
+      "retrieval_mode": "keyword",
+      "answerable": true,
+      "expected_behavior": "answer",
+      "missing_fact": null,
+      "hit_at_1": true,
+      "hit_at_k": true,
+      "correct_rejection": false,
+      "false_positive": false,
+      "case_passed": true,
+      "reciprocal_rank": 1.0,
+      "citation_render_integrity": 1.0
+    },
+    {
+      "id": "rag-14",
+      "difficulty": "paraphrase",
+      "expected_sources": [
+        "chongqing_visitor_guide"
+      ],
+      "retrieved_sources": [
+        "chongqing_visitor_guide"
+      ],
+      "retrieval_mode": "keyword",
+      "answerable": true,
+      "expected_behavior": "answer",
+      "missing_fact": null,
+      "hit_at_1": true,
+      "hit_at_k": true,
+      "correct_rejection": false,
+      "false_positive": false,
+      "case_passed": true,
+      "reciprocal_rank": 1.0,
+      "citation_render_integrity": 1.0
+    },
+    {
+      "id": "rag-15",
+      "difficulty": "multi_step",
+      "expected_sources": [
+        "chongqing_visitor_guide"
+      ],
+      "retrieved_sources": [
+        "chongqing_visitor_guide"
+      ],
+      "retrieval_mode": "keyword",
+      "answerable": true,
+      "expected_behavior": "answer",
+      "missing_fact": null,
+      "hit_at_1": true,
+      "hit_at_k": true,
+      "correct_rejection": false,
+      "false_positive": false,
+      "case_passed": true,
+      "reciprocal_rank": 1.0,
+      "citation_render_integrity": 1.0
+    },
+    {
+      "id": "rag-16",
+      "difficulty": "adversarial",
+      "expected_sources": [
+        "chongqing_visitor_guide",
+        "transport_and_pacing"
+      ],
+      "retrieved_sources": [
+        "chongqing_visitor_guide",
+        "transport_and_pacing"
+      ],
+      "retrieval_mode": "keyword",
+      "answerable": true,
+      "expected_behavior": "answer",
+      "missing_fact": null,
+      "hit_at_1": true,
+      "hit_at_k": true,
+      "correct_rejection": false,
+      "false_positive": false,
+      "case_passed": true,
+      "reciprocal_rank": 1.0,
+      "citation_render_integrity": 1.0
+    },
+    {
+      "id": "rag-17",
+      "difficulty": "multi_step",
+      "expected_sources": [
+        "chongqing_visitor_guide"
+      ],
+      "retrieved_sources": [
+        "chongqing_visitor_guide"
+      ],
+      "retrieval_mode": "keyword",
+      "answerable": true,
+      "expected_behavior": "answer",
+      "missing_fact": null,
+      "hit_at_1": true,
+      "hit_at_k": true,
+      "correct_rejection": false,
+      "false_positive": false,
+      "case_passed": true,
+      "reciprocal_rank": 1.0,
+      "citation_render_integrity": 1.0
+    },
+    {
+      "id": "rag-18",
+      "difficulty": "paraphrase",
+      "expected_sources": [
+        "transport_and_pacing"
+      ],
+      "retrieved_sources": [
+        "transport_and_pacing",
+        "chongqing_visitor_guide",
+        "responsible_trip_checklist"
+      ],
+      "retrieval_mode": "keyword",
+      "answerable": true,
+      "expected_behavior": "answer",
+      "missing_fact": null,
+      "hit_at_1": true,
+      "hit_at_k": true,
+      "correct_rejection": false,
+      "false_positive": false,
+      "case_passed": true,
+      "reciprocal_rank": 1.0,
+      "citation_render_integrity": 1.0
+    },
+    {
+      "id": "rag-19",
+      "difficulty": "normal",
+      "expected_sources": [
+        "transport_and_pacing"
+      ],
+      "retrieved_sources": [
+        "transport_and_pacing",
+        "chongqing_visitor_guide"
+      ],
+      "retrieval_mode": "keyword",
+      "answerable": true,
+      "expected_behavior": "answer",
+      "missing_fact": null,
+      "hit_at_1": true,
+      "hit_at_k": true,
+      "correct_rejection": false,
+      "false_positive": false,
+      "case_passed": true,
+      "reciprocal_rank": 1.0,
+      "citation_render_integrity": 1.0
+    },
+    {
+      "id": "rag-20",
+      "difficulty": "multi_step",
+      "expected_sources": [
+        "transport_and_pacing"
+      ],
+      "retrieved_sources": [
+        "transport_and_pacing",
+        "chongqing_visitor_guide"
+      ],
+      "retrieval_mode": "keyword",
+      "answerable": true,
+      "expected_behavior": "answer",
+      "missing_fact": null,
+      "hit_at_1": true,
+      "hit_at_k": true,
+      "correct_rejection": false,
+      "false_positive": false,
+      "case_passed": true,
+      "reciprocal_rank": 1.0,
+      "citation_render_integrity": 1.0
+    },
+    {
+      "id": "rag-21",
+      "difficulty": "paraphrase",
+      "expected_sources": [
+        "responsible_trip_checklist"
+      ],
+      "retrieved_sources": [
+        "responsible_trip_checklist"
+      ],
+      "retrieval_mode": "keyword",
+      "answerable": true,
+      "expected_behavior": "answer",
+      "missing_fact": null,
+      "hit_at_1": true,
+      "hit_at_k": true,
+      "correct_rejection": false,
+      "false_positive": false,
+      "case_passed": true,
+      "reciprocal_rank": 1.0,
+      "citation_render_integrity": 1.0
+    },
+    {
+      "id": "rag-22",
+      "difficulty": "adversarial",
+      "expected_sources": [
+        "responsible_trip_checklist"
+      ],
+      "retrieved_sources": [
+        "responsible_trip_checklist"
+      ],
+      "retrieval_mode": "keyword",
+      "answerable": true,
+      "expected_behavior": "answer",
+      "missing_fact": null,
+      "hit_at_1": true,
+      "hit_at_k": true,
+      "correct_rejection": false,
+      "false_positive": false,
+      "case_passed": true,
+      "reciprocal_rank": 1.0,
+      "citation_render_integrity": 1.0
+    },
+    {
+      "id": "rag-23",
+      "difficulty": "adversarial",
+      "expected_sources": [
+        "responsible_trip_checklist"
+      ],
+      "retrieved_sources": [
+        "responsible_trip_checklist",
+        "chongqing_visitor_guide"
+      ],
+      "retrieval_mode": "keyword",
+      "answerable": true,
+      "expected_behavior": "answer",
+      "missing_fact": null,
+      "hit_at_1": true,
+      "hit_at_k": true,
+      "correct_rejection": false,
+      "false_positive": false,
+      "case_passed": true,
+      "reciprocal_rank": 1.0,
+      "citation_render_integrity": 1.0
+    },
+    {
+      "id": "rag-24",
+      "difficulty": "multi_step",
+      "expected_sources": [
+        "chongqing_visitor_guide",
+        "responsible_trip_checklist"
+      ],
+      "retrieved_sources": [
+        "responsible_trip_checklist",
+        "chongqing_visitor_guide"
+      ],
+      "retrieval_mode": "keyword",
+      "answerable": true,
+      "expected_behavior": "answer",
+      "missing_fact": null,
+      "hit_at_1": true,
+      "hit_at_k": true,
+      "correct_rejection": false,
+      "false_positive": false,
+      "case_passed": true,
+      "reciprocal_rank": 1.0,
+      "citation_render_integrity": 1.0
+    },
+    {
+      "id": "rag-25",
+      "difficulty": "no_answer",
+      "expected_sources": [],
+      "retrieved_sources": [],
+      "retrieval_mode": "keyword",
+      "answerable": false,
+      "expected_behavior": "empty_retrieval",
+      "missing_fact": null,
+      "hit_at_1": false,
+      "hit_at_k": false,
+      "correct_rejection": true,
+      "false_positive": false,
+      "case_passed": true,
+      "reciprocal_rank": 0.0,
+      "citation_render_integrity": 0.0
+    },
+    {
+      "id": "rag-26",
+      "difficulty": "no_answer",
+      "expected_sources": [],
+      "retrieved_sources": [],
+      "retrieval_mode": "keyword",
+      "answerable": false,
+      "expected_behavior": "empty_retrieval",
+      "missing_fact": null,
+      "hit_at_1": false,
+      "hit_at_k": false,
+      "correct_rejection": true,
+      "false_positive": false,
+      "case_passed": true,
+      "reciprocal_rank": 0.0,
+      "citation_render_integrity": 0.0
+    },
+    {
+      "id": "rag-27",
+      "difficulty": "no_answer",
+      "expected_sources": [],
+      "retrieved_sources": [],
+      "retrieval_mode": "keyword",
+      "answerable": false,
+      "expected_behavior": "empty_retrieval",
+      "missing_fact": null,
+      "hit_at_1": false,
+      "hit_at_k": false,
+      "correct_rejection": true,
+      "false_positive": false,
+      "case_passed": true,
+      "reciprocal_rank": 0.0,
+      "citation_render_integrity": 0.0
+    },
+    {
+      "id": "rag-28",
+      "difficulty": "no_answer",
+      "expected_sources": [],
+      "retrieved_sources": [],
+      "retrieval_mode": "keyword",
+      "answerable": false,
+      "expected_behavior": "empty_retrieval",
+      "missing_fact": null,
+      "hit_at_1": false,
+      "hit_at_k": false,
+      "correct_rejection": true,
+      "false_positive": false,
+      "case_passed": true,
+      "reciprocal_rank": 0.0,
+      "citation_render_integrity": 0.0
+    },
+    {
+      "id": "rag-29",
+      "difficulty": "no_answer",
+      "expected_sources": [],
+      "retrieved_sources": [],
+      "retrieval_mode": "keyword",
+      "answerable": false,
+      "expected_behavior": "empty_retrieval",
+      "missing_fact": null,
+      "hit_at_1": false,
+      "hit_at_k": false,
+      "correct_rejection": true,
+      "false_positive": false,
+      "case_passed": true,
+      "reciprocal_rank": 0.0,
+      "citation_render_integrity": 0.0
+    },
+    {
+      "id": "rag-30",
+      "difficulty": "no_answer",
+      "expected_sources": [],
+      "retrieved_sources": [],
+      "retrieval_mode": "keyword",
+      "answerable": false,
+      "expected_behavior": "empty_retrieval",
+      "missing_fact": null,
+      "hit_at_1": false,
+      "hit_at_k": false,
+      "correct_rejection": true,
+      "false_positive": false,
+      "case_passed": true,
+      "reciprocal_rank": 0.0,
+      "citation_render_integrity": 0.0
+    },
+    {
+      "id": "rag-hard-01",
+      "difficulty": "in_domain_unknown",
+      "expected_sources": [],
+      "retrieved_sources": [
+        "chongqing_visitor_guide"
+      ],
+      "retrieval_mode": "keyword",
+      "answerable": false,
+      "expected_behavior": "abstain",
+      "missing_fact": "实时排队人数",
+      "hit_at_1": false,
+      "hit_at_k": false,
+      "correct_rejection": false,
+      "false_positive": false,
+      "case_passed": null,
+      "reciprocal_rank": 0.0,
+      "citation_render_integrity": 1.0
+    },
+    {
+      "id": "rag-hard-02",
+      "difficulty": "in_domain_unknown",
+      "expected_sources": [],
+      "retrieved_sources": [
+        "chongqing_visitor_guide"
+      ],
+      "retrieval_mode": "keyword",
+      "answerable": false,
+      "expected_behavior": "abstain",
+      "missing_fact": "明日票价",
+      "hit_at_1": false,
+      "hit_at_k": false,
+      "correct_rejection": false,
+      "false_positive": false,
+      "case_passed": null,
+      "reciprocal_rank": 0.0,
+      "citation_render_integrity": 1.0
+    },
+    {
+      "id": "rag-hard-03",
+      "difficulty": "in_domain_unknown",
+      "expected_sources": [],
+      "retrieved_sources": [
+        "chongqing_visitor_guide"
+      ],
+      "retrieval_mode": "keyword",
+      "answerable": false,
+      "expected_behavior": "abstain",
+      "missing_fact": "临时交通管制时刻",
+      "hit_at_1": false,
+      "hit_at_k": false,
+      "correct_rejection": false,
+      "false_positive": false,
+      "case_passed": null,
+      "reciprocal_rank": 0.0,
+      "citation_render_integrity": 1.0
+    },
+    {
+      "id": "rag-hard-04",
+      "difficulty": "in_domain_unknown",
+      "expected_sources": [],
+      "retrieved_sources": [
+        "chongqing_visitor_guide"
+      ],
+      "retrieval_mode": "keyword",
+      "answerable": false,
+      "expected_behavior": "abstain",
+      "missing_fact": "实时交通耗时",
+      "hit_at_1": false,
+      "hit_at_k": false,
+      "correct_rejection": false,
+      "false_positive": false,
+      "case_passed": null,
+      "reciprocal_rank": 0.0,
+      "citation_render_integrity": 1.0
+    },
+    {
+      "id": "rag-hard-05",
+      "difficulty": "in_domain_unknown",
+      "expected_sources": [],
+      "retrieved_sources": [
+        "chongqing_visitor_guide"
+      ],
+      "retrieval_mode": "keyword",
+      "answerable": false,
+      "expected_behavior": "abstain",
+      "missing_fact": "临时闭园公告",
+      "hit_at_1": false,
+      "hit_at_k": false,
+      "correct_rejection": false,
+      "false_positive": false,
+      "case_passed": null,
+      "reciprocal_rank": 0.0,
+      "citation_render_integrity": 1.0
+    },
+    {
+      "id": "rag-hard-06",
+      "difficulty": "in_domain_unknown",
+      "expected_sources": [],
+      "retrieved_sources": [],
+      "retrieval_mode": "keyword",
+      "answerable": false,
+      "expected_behavior": "abstain",
+      "missing_fact": "实时餐厅空位",
+      "hit_at_1": false,
+      "hit_at_k": false,
+      "correct_rejection": false,
+      "false_positive": false,
+      "case_passed": null,
+      "reciprocal_rank": 0.0,
+      "citation_render_integrity": 0.0
+    },
+    {
+      "id": "rag-hard-07",
+      "difficulty": "in_domain_unknown",
+      "expected_sources": [],
+      "retrieved_sources": [
+        "chongqing_visitor_guide"
+      ],
+      "retrieval_mode": "keyword",
+      "answerable": false,
+      "expected_behavior": "abstain",
+      "missing_fact": "逐小时天气预报",
+      "hit_at_1": false,
+      "hit_at_k": false,
+      "correct_rejection": false,
+      "false_positive": false,
+      "case_passed": null,
+      "reciprocal_rank": 0.0,
+      "citation_render_integrity": 1.0
+    },
+    {
+      "id": "rag-hard-08",
+      "difficulty": "in_domain_unknown",
+      "expected_sources": [],
+      "retrieved_sources": [
+        "chongqing_visitor_guide"
+      ],
+      "retrieval_mode": "keyword",
+      "answerable": false,
+      "expected_behavior": "clarify",
+      "missing_fact": "景点名称与开放时间",
+      "hit_at_1": false,
+      "hit_at_k": false,
+      "correct_rejection": false,
+      "false_positive": false,
+      "case_passed": null,
+      "reciprocal_rank": 0.0,
+      "citation_render_integrity": 1.0
+    }
+  ],
+  "boundary": "No LLM generation is graded. In-domain unknowns need generated-answer abstention or clarification checks and are ungraded here. Citation render integrity checks the evaluator's own formatting, not model faithfulness."
+}

@@ -151,6 +151,52 @@ def _driving_plan(origin: dict[str, float], destination: dict[str, float], api_k
     }
 
 
+def plan_route_distance(
+    origin: dict[str, float],
+    destination: dict[str, float],
+    api_key: str,
+    *,
+    mode: str = "walk",
+) -> dict[str, Any] | None:
+    """Return an actual road distance for a single leg.
+
+    ``mode='walk'`` uses Amap's walking route and ``mode='drive'`` uses its
+    driving route. Unlike the legacy transport selector, this function never
+    chooses a mode from straight-line distance: the caller's constraint
+    determines the requested route type. Failures return ``None`` so callers
+    can expose an explicit degraded state instead of treating a geometric
+    distance as a road distance.
+    """
+    normalized_mode = "drive" if mode in {"drive", "driving", "car", "taxi_or_car"} else "walk"
+    cache_key = (
+        "distance", normalized_mode,
+        round(origin["lng"], 5), round(origin["lat"], 5),
+        round(destination["lng"], 5), round(destination["lat"], 5),
+    )
+    now = time.monotonic()
+    with _PLAN_CACHE_LOCK:
+        cached = _PLAN_CACHE.get(cache_key)
+        if cached and cached[0] > now:
+            return dict(cached[1])
+
+    for attempt in range(2):
+        try:
+            result = (
+                _driving_plan(origin, destination, api_key)
+                if normalized_mode == "drive"
+                else _walk_plan(origin, destination, api_key)
+            )
+        except (OSError, ValueError, KeyError, json.JSONDecodeError):
+            result = None
+        if result:
+            with _PLAN_CACHE_LOCK:
+                _PLAN_CACHE[cache_key] = (now + _PLAN_CACHE_TTL, dict(result))
+            return result
+        if attempt == 0:
+            time.sleep(0.25)
+    return None
+
+
 def plan_transport_leg(
     origin: dict[str, float],
     destination: dict[str, float],

@@ -1,0 +1,62 @@
+{
+  "measurement_type": "real-provider-online-ablation",
+  "configuration": {
+    "provider": "grok",
+    "model": "grok-4.6",
+    "prompt_code_fingerprint": "abdb00bf6b86cbd5",
+    "python": "3.12.8"
+  },
+  "cases": [
+    "nanjing-3d-sunny-history",
+    "nanjing-3d-singlerain-history",
+    "nanjing-3d-tighthours-negative"
+  ],
+  "repeats_per_case": 1,
+  "statistically_stable": false,
+  "modes": [
+    {
+      "mode": "planner_only",
+      "runs": 3,
+      "passed": 3,
+      "pass_rate": 1.0,
+      "judge_mean": 4.467,
+      "estimated_tokens_total": 9242,
+      "elapsed_mean_ms": 62260.265,
+      "failed_runs": 0,
+      "node_calls_mean": 1,
+      "estimated_tokens_mean": 3080.7,
+      "provider_latency_mean_ms": 59185.112,
+      "llm_attempts": 6
+    },
+    {
+      "mode": "planner_reviewer",
+      "runs": 3,
+      "passed": 3,
+      "pass_rate": 1.0,
+      "judge_mean": 4.333,
+      "estimated_tokens_total": 14287,
+      "elapsed_mean_ms": 70355.064,
+      "failed_runs": 0,
+      "node_calls_mean": 2,
+      "estimated_tokens_mean": 4762.3,
+      "provider_latency_mean_ms": 69254.488,
+      "llm_attempts": 9
+    },
+    {
+      "mode": "planner_reviewer_time_check",
+      "runs": 3,
+      "passed": 3,
+      "pass_rate": 1.0,
+      "judge_mean": 4.267,
+      "estimated_tokens_total": 24182,
+      "elapsed_mean_ms": 126229.387,
+      "failed_runs": 0,
+      "node_calls_mean": 3.667,
+      "estimated_tokens_mean": 8060.7,
+      "provider_latency_mean_ms": 124021.327,
+      "llm_attempts": 16
+    }
+  ],
+  "conclusion": "no_observed_multi_agent_quality_gain",
+  "boundary": "One run per case. Token values are estimates because provider usage metadata was unavailable; no statistical significance is claimed."
+}

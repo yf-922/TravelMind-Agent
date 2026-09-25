@@ -1,0 +1,230 @@
+{
+  "scope": "deterministic_contract_ablation",
+  "metrics": {
+    "planner_only": {
+      "cases": 3,
+      "overall_pass_rate": 0.333,
+      "closed_pool_pass_rate": 0.667,
+      "no_duplicate_pass_rate": 0.667,
+      "time_valid_pass_rate": 0.667,
+      "avg_calls": 1.0
+    },
+    "planner_reviewer": {
+      "cases": 3,
+      "overall_pass_rate": 0.667,
+      "closed_pool_pass_rate": 1.0,
+      "no_duplicate_pass_rate": 1.0,
+      "time_valid_pass_rate": 0.667,
+      "avg_calls": 2.0
+    },
+    "planner_reviewer_time_check": {
+      "cases": 3,
+      "overall_pass_rate": 1.0,
+      "closed_pool_pass_rate": 1.0,
+      "no_duplicate_pass_rate": 1.0,
+      "time_valid_pass_rate": 1.0,
+      "avg_calls": 3.0
+    }
+  },
+  "records": {
+    "planner_only": [
+      {
+        "case_id": "unknown_and_duplicate",
+        "checks": {
+          "closed_pool": false,
+          "no_duplicate": false,
+          "time_valid": true,
+          "overall": false
+        },
+        "calls": 1,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 600,
+            "end_min": 720
+          },
+          {
+            "name": "Unknown",
+            "start_min": 780,
+            "end_min": 840
+          },
+          {
+            "name": "Museum",
+            "start_min": 900,
+            "end_min": 960
+          }
+        ]
+      },
+      {
+        "case_id": "opening_time_conflict",
+        "checks": {
+          "closed_pool": true,
+          "no_duplicate": true,
+          "time_valid": false,
+          "overall": false
+        },
+        "calls": 1,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 480,
+            "end_min": 1140
+          },
+          {
+            "name": "Park",
+            "start_min": 780,
+            "end_min": 900
+          }
+        ]
+      },
+      {
+        "case_id": "already_valid",
+        "checks": {
+          "closed_pool": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 1,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 600,
+            "end_min": 720
+          },
+          {
+            "name": "Park",
+            "start_min": 780,
+            "end_min": 900
+          }
+        ]
+      }
+    ],
+    "planner_reviewer": [
+      {
+        "case_id": "unknown_and_duplicate",
+        "checks": {
+          "closed_pool": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 2,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 600,
+            "end_min": 720
+          }
+        ]
+      },
+      {
+        "case_id": "opening_time_conflict",
+        "checks": {
+          "closed_pool": true,
+          "no_duplicate": true,
+          "time_valid": false,
+          "overall": false
+        },
+        "calls": 2,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 480,
+            "end_min": 1140
+          },
+          {
+            "name": "Park",
+            "start_min": 780,
+            "end_min": 900
+          }
+        ]
+      },
+      {
+        "case_id": "already_valid",
+        "checks": {
+          "closed_pool": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 2,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 600,
+            "end_min": 720
+          },
+          {
+            "name": "Park",
+            "start_min": 780,
+            "end_min": 900
+          }
+        ]
+      }
+    ],
+    "planner_reviewer_time_check": [
+      {
+        "case_id": "unknown_and_duplicate",
+        "checks": {
+          "closed_pool": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 3,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 600,
+            "end_min": 720
+          }
+        ]
+      },
+      {
+        "case_id": "opening_time_conflict",
+        "checks": {
+          "closed_pool": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 3,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 540,
+            "end_min": 1080
+          },
+          {
+            "name": "Park",
+            "start_min": 780,
+            "end_min": 900
+          }
+        ]
+      },
+      {
+        "case_id": "already_valid",
+        "checks": {
+          "closed_pool": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 3,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 600,
+            "end_min": 720
+          },
+          {
+            "name": "Park",
+            "start_min": 780,
+            "end_min": 900
+          }
+        ]
+      }
+    ]
+  }
+}

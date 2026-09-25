@@ -1,0 +1,417 @@
+{
+  "id": "lijiang-3d-allrain-history",
+  "tier": "capability",
+  "destination": "丽江",
+  "query": "丽江3天全程雨，以室内纳西文化体验和博物馆为主",
+  "travel_start_date": "2026-09-15",
+  "travel_end_date": "2026-09-17",
+  "days": 3,
+  "attraction_preference": "纳西文化、历史古迹",
+  "habit_preference": "正常作息",
+  "max_per_day": 3,
+  "min_rating": 4.5,
+  "max_review_rounds": 3,
+  "pois": [
+    {
+      "name": "丽江古城",
+      "rating": 4.9,
+      "open_time": "周一至周日 00:00-24:00",
+      "location": {
+        "lng": 100.235517,
+        "lat": 26.870507
+      },
+      "photo": "http://store.is.autonavi.com/showpic/79301b10705b92ec03da88565b18e0f5",
+      "adname": "古城区",
+      "address": "民主路与福慧路交叉口东南",
+      "tel": "0888-5111118",
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "丽江千古情景区",
+      "rating": 4.7,
+      "open_time": "14:00-21:00",
+      "location": {
+        "lng": 100.218666,
+        "lat": 26.827705
+      },
+      "photo": "http://store.is.autonavi.com/showpic/5bddd03c43846b7fc5c3e51c3b9b85df",
+      "adname": "玉龙纳西族自治县",
+      "address": "黄山街道玉兴西路88号",
+      "tel": "4008888518",
+      "cost": "[]",
+      "indoor": true
+    },
+    {
+      "name": "长江第一湾",
+      "rating": 4.5,
+      "open_time": "周一至周日 00:00-24:00",
+      "location": {
+        "lng": 99.961103,
+        "lat": 26.867727
+      },
+      "photo": "http://store.is.autonavi.com/showpic/9fa29ef3e08141b7a1aea8085384b340",
+      "adname": "玉龙纳西族自治县",
+      "address": "石鼓镇与香格里拉县南部沙松碧村之间",
+      "tel": "13908882559",
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "丽江拉市海湿地公园",
+      "rating": 4.5,
+      "open_time": "周一至周日 08:00-19:00 最晚进入18:00",
+      "location": {
+        "lng": 100.130743,
+        "lat": 26.859422
+      },
+      "photo": "http://store.is.autonavi.com/showpic/51a84a0fb329dcf95516986150c2b857",
+      "adname": "玉龙纳西族自治县",
+      "address": "海北段",
+      "tel": "0888-8880077",
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "束河古镇",
+      "rating": 4.8,
+      "open_time": "周一至周日 00:00-24:00",
+      "location": {
+        "lng": 100.205679,
+        "lat": 26.9196
+      },
+      "photo": "http://store.is.autonavi.com/showpic/9196b3570203be7ec07ba065498c084a",
+      "adname": "古城区",
+      "address": "束河镇",
+      "tel": null,
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "玉龙雪山国家级风景名胜区蓝月谷",
+      "rating": 4.7,
+      "open_time": "周一至周日 07:00-18:30",
+      "location": {
+        "lng": 100.245886,
+        "lat": 27.124436
+      },
+      "photo": "http://store.is.autonavi.com/showpic/ecb9b1773fe7563172dcbe750695fe32",
+      "adname": "玉龙纳西族自治县",
+      "address": "雪山景区内",
+      "tel": "0888-5131111;0888-5111764",
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "玉龙雪山国家级风景名胜区",
+      "rating": 4.8,
+      "open_time": "周一至周日 07:00-18:00 最晚进入16:00；景区根据客流量不定期调整开放时间",
+      "location": {
+        "lng": 100.258558,
+        "lat": 27.098052
+      },
+      "photo": "http://store.is.autonavi.com/showpic/8fde6fb2316745f771ad7e539f3bdba3",
+      "adname": "玉龙纳西族自治县",
+      "address": "旅游环线",
+      "tel": "0888-5131068",
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "丽江玉水寨风景区",
+      "rating": 4.5,
+      "open_time": "周一至周日 08:30-18:00",
+      "location": {
+        "lng": 100.201622,
+        "lat": 26.999757
+      },
+      "photo": "http://store.is.autonavi.com/showpic/5422ff8ff0a6f21839761032f930c57a",
+      "adname": "玉龙纳西族自治县",
+      "address": "白沙镇",
+      "tel": "0888-5190108",
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "泸沽湖风景区观景台",
+      "rating": 4.6,
+      "open_time": "周一至周日 00:00-24:00",
+      "location": {
+        "lng": 100.808137,
+        "lat": 27.6558
+      },
+      "photo": "https://aos-comment.amap.com/B03780000M/comment/13C66206_EF47_4FEB_9557_1A213A7A6235_L0_001_1512_201_1768310453506_56636007.jpg",
+      "adname": "宁蒗彝族自治县",
+      "address": "宁泸公路",
+      "tel": null,
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "观音峡",
+      "rating": 4.5,
+      "open_time": "周一至周日 08:00-18:00 最晚进入17:00",
+      "location": {
+        "lng": 100.267984,
+        "lat": 26.76879
+      },
+      "photo": "http://store.is.autonavi.com/showpic/5472e8bf141d599b13992c5e168a9460",
+      "adname": "古城区",
+      "address": "七河乡",
+      "tel": "0888-5369688;0888-5369766",
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "白沙古镇",
+      "rating": 4.8,
+      "open_time": "周一至周日 00:00-24:00",
+      "location": {
+        "lng": 100.216933,
+        "lat": 26.953303
+      },
+      "photo": "http://store.is.autonavi.com/showpic/eee4299d485c00aef3770e6a68a30103",
+      "adname": "玉龙纳西族自治县",
+      "address": "白沙镇",
+      "tel": null,
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "蓝月湖",
+      "rating": 4.5,
+      "open_time": "周一至周日 07:00-16:00 最晚进入16:00",
+      "location": {
+        "lng": 100.249229,
+        "lat": 27.12483
+      },
+      "photo": "https://store.is.autonavi.com/showpic/6565ea1e1ef0a02f0000002900484390?type=pic",
+      "adname": "玉龙纳西族自治县",
+      "address": "大具乡",
+      "tel": "0888-5131111",
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "泸沽湖里格半岛",
+      "rating": 4.6,
+      "open_time": "00:00-24:00",
+      "location": {
+        "lng": 100.751663,
+        "lat": 27.727104
+      },
+      "photo": "https://store.is.autonavi.com/showpic/089ec5d71bf698ab0000001280754232?type=pic",
+      "adname": "宁蒗彝族自治县",
+      "address": "泸沽湖风景区内",
+      "tel": "0888-5886045",
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "丽江古城-狮子山(狮山路)",
+      "rating": 4.6,
+      "open_time": "周一至周日 09:00-22:30",
+      "location": {
+        "lng": 100.230484,
+        "lat": 26.869842
+      },
+      "photo": "http://store.is.autonavi.com/showpic/8037b99e62b773ee2024f08d20c394e4",
+      "adname": "古城区",
+      "address": "大研镇新华街",
+      "tel": "0888-5106290;0888-5182712",
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "丽江虎跳峡景区",
+      "rating": 4.7,
+      "open_time": "周一至周日 08:00-18:00",
+      "location": {
+        "lng": 100.098488,
+        "lat": 27.172817
+      },
+      "photo": "http://store.is.autonavi.com/showpic/f25574d1c078dd3dd78ea0074a5e207f",
+      "adname": "玉龙纳西族自治县",
+      "address": "虎跳峡路",
+      "tel": "0888-3077007;0888-3077008",
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "丽江之眼观景台",
+      "rating": 4.7,
+      "open_time": "周一至周日 00:00-24:00",
+      "location": {
+        "lng": 100.236102,
+        "lat": 26.874554
+      },
+      "photo": "https://aos-comment.amap.com/B0FFI19RKS/comment/content_media_external_images_media_5952_1732693323282_55480665.jpg",
+      "adname": "古城区",
+      "address": "丽江古城内(北侧)",
+      "tel": null,
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "指云寺",
+      "rating": 4.5,
+      "open_time": "周一至周日 08:00-21:00",
+      "location": {
+        "lng": 100.102302,
+        "lat": 26.858164
+      },
+      "photo": "http://store.is.autonavi.com/showpic/8ab7f46187a68283cea27252985da4cb",
+      "adname": "玉龙纳西族自治县",
+      "address": "拉市乡海南村",
+      "tel": null,
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "大研花巷",
+      "rating": 4.7,
+      "open_time": "周一至周日 00:00-24:00",
+      "location": {
+        "lng": 100.236291,
+        "lat": 26.874511
+      },
+      "photo": "http://store.is.autonavi.com/showpic/33ac6a8863379e8a7e967b74dd849435",
+      "adname": "古城区",
+      "address": "大研街道金虹路6号(近古城北门)",
+      "tel": null,
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "狮子山万古楼景区",
+      "rating": 4.5,
+      "open_time": "周一至周日 09:00-22:00",
+      "location": {
+        "lng": 100.231338,
+        "lat": 26.870249
+      },
+      "photo": "http://store.is.autonavi.com/showpic/22a6146f697cc1df097b4584e51b464d",
+      "adname": "古城区",
+      "address": "大研镇新华街丽江古城-狮子山(狮山路)(东北角)",
+      "tel": "0888-5106290",
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "龙女湖",
+      "rating": 4.5,
+      "open_time": "周一至周日 00:00-24:00；全天开放",
+      "location": {
+        "lng": 100.224039,
+        "lat": 27.020879
+      },
+      "photo": "https://aos-comment.amap.com/comment/content_service_dbe3f7e620de595dca68f119ffe7e3e5_1767849303895_76432021.jpg",
+      "adname": "玉龙纳西族自治县",
+      "address": "玉龙雪山南麓白沙镇雪嵩村",
+      "tel": null,
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "丽江市红太阳广场",
+      "rating": 4.6,
+      "open_time": "周一至周日 00:00-24:00",
+      "location": {
+        "lng": 100.231883,
+        "lat": 26.879309
+      },
+      "photo": "https://store.is.autonavi.com/showpic/960d64b788c5ab8f0182941799ea8c42",
+      "adname": "古城区",
+      "address": "民主路215号",
+      "tel": null,
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "中济海公园",
+      "rating": 4.6,
+      "open_time": "周一至周日 00:00-24:00",
+      "location": {
+        "lng": 100.208667,
+        "lat": 26.894586
+      },
+      "photo": "https://store.is.autonavi.com/showpic/fd6b373cb7a539dc0000005787822201?type=pic",
+      "adname": "古城区",
+      "address": "束河街道雪山路180号",
+      "tel": null,
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "泸沽湖风景名胜区-里拜情人滩",
+      "rating": 4.6,
+      "open_time": "周一至周日 00:00-24:00",
+      "location": {
+        "lng": 100.750042,
+        "lat": 27.703251
+      },
+      "photo": "https://aos-comment.amap.com/B03420OVL2/comment/42d6451ea9704f7e4fe33c6fe0389ffe_2048_2048_80.jpg",
+      "adname": "宁蒗彝族自治县",
+      "address": "泸沽湖镇泸沽湖风景区内",
+      "tel": null,
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "格姆女神山索道",
+      "rating": 4.5,
+      "open_time": "1月至3月 周一至周日 08:30-17:00；4月至12月 周一至周日 08:00-17:30",
+      "location": {
+        "lng": 100.759798,
+        "lat": 27.737447
+      },
+      "photo": "https://store.is.autonavi.com/showpic/be46bd509ea7b34f0000003020844212?type=pic",
+      "adname": "宁蒗彝族自治县",
+      "address": "小落水村格姆女神山",
+      "tel": "13225078303",
+      "cost": "[]",
+      "indoor": false
+    }
+  ],
+  "weather_forecast": [
+    {
+      "date": "2026-09-15",
+      "day_weather": "中雨",
+      "night_weather": "小雨",
+      "day_temp": "10",
+      "night_temp": "6",
+      "is_bad": true
+    },
+    {
+      "date": "2026-09-16",
+      "day_weather": "中雨",
+      "night_weather": "小雨",
+      "day_temp": "10",
+      "night_temp": "6",
+      "is_bad": true
+    },
+    {
+      "date": "2026-09-17",
+      "day_weather": "中雨",
+      "night_weather": "小雨",
+      "day_temp": "10",
+      "night_temp": "6",
+      "is_bad": true
+    }
+  ],
+  "expectations": {
+    "outdoor_on_bad_day_max": 0
+  },
+  "provenance": {
+    "poi_source": "AMap Web Service Place Text API v3",
+    "poi_captured_at": "2026-09-14T15:04:00.960324+00:00",
+    "poi_query_channels": [
+      "必去景点",
+      "热门景区",
+      "博物馆"
+    ],
+    "poi_rating_threshold": 4.5,
+    "weather_source": "synthetic frozen evaluation scenario",
+    "indoor_label_source": "deterministic name-keyword heuristic"
+  }
+}

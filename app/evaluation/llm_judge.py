@@ -34,7 +34,7 @@ def judge_itinerary(
     itinerary: list[dict[str, Any]], review: dict[str, Any], model: str | None = None,
 ) -> JudgeScore:
     """temperature=0 + versioned prompt + structured schema，使评分可复跑、可比较。"""
-    llm = build_structured_llm(JudgeScore, model=model, temperature=0)
+    llm = build_structured_llm(JudgeScore, model=model, temperature=0, task_type="judge")
     payload = {
         "user_request": user_request, "destination_hint": destination,
         "candidate_names": [item.get("name") for item in candidates],

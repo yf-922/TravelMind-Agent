@@ -1,0 +1,10 @@
+[
+  {"id": "rag-hard-01", "difficulty": "in_domain_unknown", "query": "今天洪崖洞入口实时排队人数是多少？", "expected_sources": [], "expected_behavior": "abstain", "missing_fact": "实时排队人数"},
+  {"id": "rag-hard-02", "difficulty": "in_domain_unknown", "query": "明天重庆洪崖洞的门票价格精确到元是多少？", "expected_sources": [], "expected_behavior": "abstain", "missing_fact": "明日票价"},
+  {"id": "rag-hard-03", "difficulty": "in_domain_unknown", "query": "2026年国庆节解放碑附近临时交通管制从几点开始？", "expected_sources": [], "expected_behavior": "abstain", "missing_fact": "临时交通管制时刻"},
+  {"id": "rag-hard-04", "difficulty": "in_domain_unknown", "query": "今天重庆市内从洪崖洞到解放碑打车准确需要多少分钟？", "expected_sources": [], "expected_behavior": "abstain", "missing_fact": "实时交通耗时"},
+  {"id": "rag-hard-05", "difficulty": "in_domain_unknown", "query": "明天重庆洪崖洞是否因天气临时关闭？请给出官方公告。", "expected_sources": [], "expected_behavior": "abstain", "missing_fact": "临时闭园公告"},
+  {"id": "rag-hard-06", "difficulty": "in_domain_unknown", "query": "今天解放碑附近哪家餐厅还有空位，能保证订到吗？", "expected_sources": [], "expected_behavior": "abstain", "missing_fact": "实时餐厅空位"},
+  {"id": "rag-hard-07", "difficulty": "in_domain_unknown", "query": "重庆下周末的逐小时天气和降雨概率是多少？", "expected_sources": [], "expected_behavior": "abstain", "missing_fact": "逐小时天气预报"},
+  {"id": "rag-hard-08", "difficulty": "in_domain_unknown", "query": "重庆远郊这个没给名字的景点明天开门吗？", "expected_sources": [], "expected_behavior": "clarify", "missing_fact": "景点名称与开放时间"}
+]

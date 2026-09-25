@@ -6,7 +6,7 @@
 用法：
     python -m tests.eval.capture_pool --dest 南京 --days 3 \
         --start 2026-06-10 --pref 历史古迹 --habit "不喜欢早起" \
-        --id nanjing-3d-history --tier capability
+        --id nanjing-3d-history --tier capability --allow-external-calls
 """
 
 from __future__ import annotations
@@ -17,6 +17,7 @@ from datetime import date, timedelta
 from pathlib import Path
 
 from app.planning.helpers import amap_key, fetch_city_spots, filter_by_rating
+from app.core.eval_safety import require_external_calls
 
 FIXTURES_DIR = Path(__file__).resolve().parent / "fixtures"
 
@@ -34,7 +35,14 @@ def main() -> None:
     ap.add_argument("--max-spots", type=int, default=30)
     ap.add_argument("--id", type=str, default=None)
     ap.add_argument("--tier", type=str, default="capability", choices=["regression", "capability"])
+    ap.add_argument("--allow-external-calls", action="store_true",
+                    help="确认调用高德并消耗 API 额度")
     args = ap.parse_args()
+    require_external_calls(
+        ap,
+        allowed=args.allow_external_calls,
+        operation="POI fixture capture",
+    )
 
     key = amap_key()
     spots = fetch_city_spots(args.dest, key, max_spots=args.max_spots)

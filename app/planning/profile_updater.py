@@ -39,7 +39,9 @@ def _sync_profile_update(user_id: str, raw_query: str, model_name: str | None) -
     with get_conn() as conn:
         existing = get_user_profile(user_id, conn)
 
-    llm = build_structured_llm(ProfileUpdateResult, model=model_name, temperature=0)
+    llm = build_structured_llm(
+        ProfileUpdateResult, model=model_name, temperature=0, task_type="profile_extract"
+    )
     result = invoke_structured(llm, [
         ("system", PROFILE_UPDATER_SYSTEM),
         ("human", (

@@ -39,3 +39,8 @@ demos/demo-result.html
 demos/itinerary-redesign-mock.html
 docs/superpowers/plans/2026-06-13-trip-detail-enhancements.md
 docs/superpowers/specs/2026-06-11-sweep-preview-design.md
+
+# The frozen 30-case POI golden set is a versioned evaluation input.
+!tests/eval/
+!tests/eval/fixtures/
+!tests/eval/fixtures/*.json

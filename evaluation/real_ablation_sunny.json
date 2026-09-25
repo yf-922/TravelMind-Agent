@@ -1,0 +1,629 @@
+{
+  "execution": {
+    "generated_at": "2026-09-21T08:22:36.006905+00:00",
+    "configuration": {
+      "provider": "grok",
+      "model": "grok-4.6",
+      "prompt_code_fingerprint": "abdb00bf6b86cbd5",
+      "python": "3.12.8"
+    },
+    "budget": {
+      "cases": 1,
+      "trials_per_case": 1,
+      "modes": [
+        "planner_only",
+        "planner_reviewer",
+        "planner_reviewer_time_check"
+      ],
+      "total_runs": 3,
+      "judge_enabled": true,
+      "logical_invocations_upper_bound": 27,
+      "provider_attempts_upper_bound": 81,
+      "llm_calls_upper_bound": 81,
+      "attempts_per_invocation": 3,
+      "by_mode": {
+        "planner_only": {
+          "logical_invocations_upper_bound": 2,
+          "provider_attempts_upper_bound": 6
+        },
+        "planner_reviewer": {
+          "logical_invocations_upper_bound": 10,
+          "provider_attempts_upper_bound": 30
+        },
+        "planner_reviewer_time_check": {
+          "logical_invocations_upper_bound": 15,
+          "provider_attempts_upper_bound": 45
+        }
+      },
+      "assumption": "worst-case graph and judge invocations multiplied by invoke_structured retry attempts"
+    },
+    "cases": [
+      "nanjing-3d-sunny-history"
+    ],
+    "repeats": 1
+  },
+  "results": [
+    {
+      "mode": "planner_only",
+      "runs": 1,
+      "passed_runs": 1,
+      "pass_rate": 1.0,
+      "pass_at_k_rate": 1.0,
+      "pass_pow_k_rate": 1.0,
+      "failed_runs": 0,
+      "judge_avg": {
+        "preference_fit": 4.0,
+        "habit_fit": 5.0,
+        "theme_coherence": 4.0,
+        "route_reasonableness": 5.0,
+        "weather_adaptation": 3.0
+      },
+      "judge_overall": 4.2,
+      "review_rounds_mean": 1.0,
+      "false_approval_rate": 0.0,
+      "false_rejection_rate": 0.0,
+      "rebuttal_rate": 0.0,
+      "ignore_rate": 0.0,
+      "node_calls": {
+        "planner": 1,
+        "reviewer": 0,
+        "time_check": 0
+      },
+      "node_calls_per_run": 1.0,
+      "llm_usage": {
+        "calls_total": 2,
+        "failed_total": 0,
+        "input_tokens": 2360,
+        "output_tokens": 674,
+        "total_tokens": 3034,
+        "estimated_calls": 2,
+        "usage_exact_ratio": 0.0,
+        "latency_sum_ms": 66511.234,
+        "estimated_cost_usd": 0.0,
+        "cost_rates_configured": false
+      },
+      "tokens_per_run": 3034.0,
+      "latency_ms_per_run": 66511.234,
+      "end_to_end_latency_ms": {
+        "p50": 70065.978,
+        "p95": 70065.978,
+        "max": 70065.978
+      }
+    },
+    {
+      "mode": "planner_reviewer",
+      "runs": 1,
+      "passed_runs": 1,
+      "pass_rate": 1.0,
+      "pass_at_k_rate": 1.0,
+      "pass_pow_k_rate": 1.0,
+      "failed_runs": 0,
+      "judge_avg": {
+        "preference_fit": 4.0,
+        "habit_fit": 5.0,
+        "theme_coherence": 4.0,
+        "route_reasonableness": 5.0,
+        "weather_adaptation": 3.0
+      },
+      "judge_overall": 4.2,
+      "review_rounds_mean": 1.0,
+      "false_approval_rate": 0.0,
+      "false_rejection_rate": 0.0,
+      "rebuttal_rate": 0.0,
+      "ignore_rate": 0.0,
+      "node_calls": {
+        "planner": 1,
+        "reviewer": 1,
+        "time_check": 0
+      },
+      "node_calls_per_run": 2.0,
+      "llm_usage": {
+        "calls_total": 3,
+        "failed_total": 0,
+        "input_tokens": 3892,
+        "output_tokens": 852,
+        "total_tokens": 4744,
+        "estimated_calls": 3,
+        "usage_exact_ratio": 0.0,
+        "latency_sum_ms": 55934.497,
+        "estimated_cost_usd": 0.0,
+        "cost_rates_configured": false
+      },
+      "tokens_per_run": 4744.0,
+      "latency_ms_per_run": 55934.497,
+      "end_to_end_latency_ms": {
+        "p50": 57032.809,
+        "p95": 57032.809,
+        "max": 57032.809
+      }
+    },
+    {
+      "mode": "planner_reviewer_time_check",
+      "runs": 1,
+      "passed_runs": 1,
+      "pass_rate": 1.0,
+      "pass_at_k_rate": 1.0,
+      "pass_pow_k_rate": 1.0,
+      "failed_runs": 0,
+      "judge_avg": {
+        "preference_fit": 4.0,
+        "habit_fit": 5.0,
+        "theme_coherence": 4.0,
+        "route_reasonableness": 5.0,
+        "weather_adaptation": 4.0
+      },
+      "judge_overall": 4.4,
+      "review_rounds_mean": 1.0,
+      "false_approval_rate": 0.0,
+      "false_rejection_rate": 0.0,
+      "rebuttal_rate": 0.0,
+      "ignore_rate": 0.0,
+      "node_calls": {
+        "planner": 1,
+        "reviewer": 1,
+        "time_check": 1
+      },
+      "node_calls_per_run": 3.0,
+      "llm_usage": {
+        "calls_total": 4,
+        "failed_total": 0,
+        "input_tokens": 4592,
+        "output_tokens": 1275,
+        "total_tokens": 5867,
+        "estimated_calls": 4,
+        "usage_exact_ratio": 0.0,
+        "latency_sum_ms": 80984.53,
+        "estimated_cost_usd": 0.0,
+        "cost_rates_configured": false
+      },
+      "tokens_per_run": 5867.0,
+      "latency_ms_per_run": 80984.53,
+      "end_to_end_latency_ms": {
+        "p50": 83037.719,
+        "p95": 83037.719,
+        "max": 83037.719
+      }
+    }
+  ],
+  "trials": {
+    "planner_only": [
+      {
+        "code": {
+          "results": {
+            "g1_closed_pool": {
+              "passed": true,
+              "detail": "无越界景点"
+            },
+            "g2_time_check": {
+              "passed": true,
+              "detail": "time_check 无违规"
+            },
+            "g4_structure": {
+              "passed": true,
+              "detail": "结构合法"
+            },
+            "g5_coverage": {
+              "passed": true,
+              "detail": "每天均有景点"
+            },
+            "g6_weather": {
+              "passed": true,
+              "detail": "无雨雪天"
+            },
+            "g9_walking_distance": {
+              "passed": true,
+              "detail": "用户未指定步行上限"
+            },
+            "g10_habit_constraints": {
+              "passed": true,
+              "detail": "明确习惯约束满足"
+            },
+            "g7_convergence": {
+              "passed": false,
+              "detail": "reviewer=❌(1/3轮)，time_check=❌(0轮)"
+            },
+            "g8_time_check_efficiency": {
+              "passed": true,
+              "detail": "time_check 用了 0 轮，残留违规 0 处"
+            }
+          },
+          "objective_pass": true
+        },
+        "judge": {
+          "scores": {
+            "preference_fit": 4,
+            "habit_fit": 5,
+            "theme_coherence": 4,
+            "route_reasonableness": 5,
+            "weather_adaptation": 3
+          },
+          "avg": 4.2,
+          "comment": "每天10点后出发、仅两点，契合不早起慢节奏；古迹博物馆贴合但玄武湖偏风景；分区邻近动线顺；晴天适配尚可但行程无天气调整说明。"
+        },
+        "overall_pass": true,
+        "rounds": 1,
+        "node_calls": {
+          "planner": 1,
+          "reviewer": 0,
+          "time_check": 0
+        },
+        "reliability": {
+          "applicable": false,
+          "false_approval": false,
+          "false_rejection": false
+        },
+        "rebuttal": {
+          "transitions": 0,
+          "rebuttal_rate": 0.0,
+          "ignore_rate": 0.0
+        },
+        "error": null,
+        "_state": {
+          "route": [
+            {
+              "day": 1,
+              "spots": [
+                {
+                  "name": "总统府",
+                  "period": "morning",
+                  "start_time": "10:00",
+                  "end_time": "13:00"
+                },
+                {
+                  "name": "古鸡鸣寺",
+                  "period": "afternoon",
+                  "start_time": "15:00",
+                  "end_time": "17:15"
+                }
+              ],
+              "theme": "玄武近现代史迹与古寺"
+            },
+            {
+              "day": 2,
+              "spots": [
+                {
+                  "name": "中山陵景区",
+                  "period": "morning",
+                  "start_time": "10:00",
+                  "end_time": "14:00"
+                },
+                {
+                  "name": "玄武湖景区",
+                  "period": "afternoon",
+                  "start_time": "15:30",
+                  "end_time": "18:00"
+                }
+              ],
+              "theme": "中山陵与玄武湖晴日散步"
+            },
+            {
+              "day": 3,
+              "spots": [
+                {
+                  "name": "中国科举博物馆(江南贡院)",
+                  "period": "morning",
+                  "start_time": "10:00",
+                  "end_time": "13:30"
+                },
+                {
+                  "name": "南京夫子庙",
+                  "period": "afternoon",
+                  "start_time": "15:00",
+                  "end_time": "19:00"
+                }
+              ],
+              "theme": "秦淮科举文化与夫子庙"
+            }
+          ],
+          "approved": false,
+          "dialogue": [
+            "[第1轮] Planner：按分区②邻近组团、避开周一闭馆，每天2个点且10:00后出发，落实博物馆+古迹慢节奏。"
+          ],
+          "time_violations": []
+        },
+        "elapsed_ms": 70065.978,
+        "case_id": "nanjing-3d-sunny-history",
+        "trial": 1
+      }
+    ],
+    "planner_reviewer": [
+      {
+        "code": {
+          "results": {
+            "g1_closed_pool": {
+              "passed": true,
+              "detail": "无越界景点"
+            },
+            "g2_time_check": {
+              "passed": true,
+              "detail": "time_check 无违规"
+            },
+            "g4_structure": {
+              "passed": true,
+              "detail": "结构合法"
+            },
+            "g5_coverage": {
+              "passed": true,
+              "detail": "每天均有景点"
+            },
+            "g6_weather": {
+              "passed": true,
+              "detail": "无雨雪天"
+            },
+            "g9_walking_distance": {
+              "passed": true,
+              "detail": "用户未指定步行上限"
+            },
+            "g10_habit_constraints": {
+              "passed": true,
+              "detail": "明确习惯约束满足"
+            },
+            "g7_convergence": {
+              "passed": false,
+              "detail": "reviewer=✅(1/3轮)，time_check=❌(0轮)"
+            },
+            "g8_time_check_efficiency": {
+              "passed": true,
+              "detail": "time_check 用了 0 轮，残留违规 0 处"
+            }
+          },
+          "objective_pass": true
+        },
+        "judge": {
+          "scores": {
+            "preference_fit": 4,
+            "habit_fit": 5,
+            "theme_coherence": 4,
+            "route_reasonableness": 5,
+            "weather_adaptation": 3
+          },
+          "avg": 4.2,
+          "comment": "三日均10点后出发、每天两点，贴合不早起慢节奏；主线古迹博物馆到位，玄武湖略偏偏好且行程未写天气适配说明。"
+        },
+        "overall_pass": true,
+        "rounds": 1,
+        "node_calls": {
+          "planner": 1,
+          "reviewer": 1,
+          "time_check": 0
+        },
+        "reliability": {
+          "applicable": true,
+          "reviewer_approved": true,
+          "objective_pass": true,
+          "false_approval": false,
+          "false_rejection": false,
+          "agree": true
+        },
+        "rebuttal": {
+          "transitions": 0,
+          "adopt": 0,
+          "rebut": 0,
+          "ignore": 0,
+          "rebuttal_rate": 0.0,
+          "ignore_rate": 0.0,
+          "rebutted": false,
+          "health": "n/a"
+        },
+        "error": null,
+        "_state": {
+          "route": [
+            {
+              "day": 1,
+              "spots": [
+                {
+                  "name": "总统府",
+                  "period": "morning",
+                  "start_time": "10:00",
+                  "end_time": "13:00"
+                },
+                {
+                  "name": "古鸡鸣寺",
+                  "period": "afternoon",
+                  "start_time": "14:30",
+                  "end_time": "17:00"
+                }
+              ],
+              "theme": "民国总统府与鸡鸣古寺"
+            },
+            {
+              "day": 2,
+              "spots": [
+                {
+                  "name": "中山陵景区",
+                  "period": "morning",
+                  "start_time": "10:00",
+                  "end_time": "13:30"
+                },
+                {
+                  "name": "玄武湖景区",
+                  "period": "afternoon",
+                  "start_time": "15:00",
+                  "end_time": "17:30"
+                }
+              ],
+              "theme": "中山陵园与玄武湖晴日"
+            },
+            {
+              "day": 3,
+              "spots": [
+                {
+                  "name": "中国科举博物馆(江南贡院)",
+                  "period": "morning",
+                  "start_time": "10:00",
+                  "end_time": "13:00"
+                },
+                {
+                  "name": "南京夫子庙",
+                  "period": "afternoon",
+                  "start_time": "14:00",
+                  "end_time": "17:30"
+                }
+              ],
+              "theme": "江南贡院科举博物馆与夫子庙"
+            }
+          ],
+          "approved": true,
+          "dialogue": [
+            "[第1轮] Planner：按分区②主城历史轴排三日、每天2点且10点后出发，闭馆景点避开周一。",
+            "[第1轮] Reviewer 通过（92分）：(无意见)"
+          ],
+          "time_violations": []
+        },
+        "elapsed_ms": 57032.809,
+        "case_id": "nanjing-3d-sunny-history",
+        "trial": 1
+      }
+    ],
+    "planner_reviewer_time_check": [
+      {
+        "code": {
+          "results": {
+            "g1_closed_pool": {
+              "passed": true,
+              "detail": "无越界景点"
+            },
+            "g2_time_check": {
+              "passed": true,
+              "detail": "time_check 无违规"
+            },
+            "g4_structure": {
+              "passed": true,
+              "detail": "结构合法"
+            },
+            "g5_coverage": {
+              "passed": true,
+              "detail": "每天均有景点"
+            },
+            "g6_weather": {
+              "passed": true,
+              "detail": "无雨雪天"
+            },
+            "g9_walking_distance": {
+              "passed": true,
+              "detail": "用户未指定步行上限"
+            },
+            "g10_habit_constraints": {
+              "passed": true,
+              "detail": "明确习惯约束满足"
+            },
+            "g7_convergence": {
+              "passed": true,
+              "detail": "reviewer=✅(1/3轮)，time_check=✅(1轮)"
+            },
+            "g8_time_check_efficiency": {
+              "passed": true,
+              "detail": "time_check 用了 1 轮，残留违规 0 处"
+            }
+          },
+          "objective_pass": true
+        },
+        "judge": {
+          "scores": {
+            "preference_fit": 4,
+            "habit_fit": 5,
+            "theme_coherence": 4,
+            "route_reasonableness": 5,
+            "weather_adaptation": 4
+          },
+          "avg": 4.4,
+          "comment": "三日均10点起步、每天两景，契合不早起与慢节奏；秦淮与总统府线贴合古迹博物馆，第三日湖景广场偏弱但仍分区顺畅且点出晴天与周一闭馆。"
+        },
+        "overall_pass": true,
+        "rounds": 1,
+        "node_calls": {
+          "planner": 1,
+          "reviewer": 1,
+          "time_check": 1
+        },
+        "reliability": {
+          "applicable": true,
+          "reviewer_approved": true,
+          "objective_pass": true,
+          "false_approval": false,
+          "false_rejection": false,
+          "agree": true
+        },
+        "rebuttal": {
+          "transitions": 0,
+          "adopt": 0,
+          "rebut": 0,
+          "ignore": 0,
+          "rebuttal_rate": 0.0,
+          "ignore_rate": 0.0,
+          "rebutted": false,
+          "health": "n/a"
+        },
+        "error": null,
+        "_state": {
+          "route": [
+            {
+              "day": 1,
+              "spots": [
+                {
+                  "name": "南京夫子庙",
+                  "period": "morning",
+                  "start_time": "10:00",
+                  "end_time": "13:00"
+                },
+                {
+                  "name": "中国科举博物馆(江南贡院)",
+                  "period": "afternoon",
+                  "start_time": "14:00",
+                  "end_time": "18:00"
+                }
+              ],
+              "theme": "秦淮文庙与科举博物馆慢游"
+            },
+            {
+              "day": 2,
+              "spots": [
+                {
+                  "name": "总统府",
+                  "period": "morning",
+                  "start_time": "10:00",
+                  "end_time": "14:00"
+                },
+                {
+                  "name": "古鸡鸣寺",
+                  "period": "afternoon",
+                  "start_time": "15:00",
+                  "end_time": "17:00"
+                }
+              ],
+              "theme": "近代史迹与鸡鸣古寺"
+            },
+            {
+              "day": 3,
+              "spots": [
+                {
+                  "name": "玄武湖景区",
+                  "period": "morning",
+                  "start_time": "10:00",
+                  "end_time": "13:30"
+                },
+                {
+                  "name": "莲花广场",
+                  "period": "afternoon",
+                  "start_time": "14:30",
+                  "end_time": "16:30"
+                }
+              ],
+              "theme": "玄武湖周边晴天散步（周一闭馆避开总统府与中山陵）"
+            }
+          ],
+          "approved": true,
+          "dialogue": [
+            "[第1轮] Planner：三日均分区②、每天2景、10:00起步；周一避开总统府/中山陵闭馆，以夫子庙-贡院、总统府-鸡鸣寺、玄武湖-莲花广场落实历史+博物馆慢游。",
+            "[第1轮] Reviewer 通过（90分）：(无意见)",
+            "[time_check 第1轮] 无违规"
+          ],
+          "time_violations": []
+        },
+        "elapsed_ms": 83037.719,
+        "case_id": "nanjing-3d-sunny-history",
+        "trial": 1
+      }
+    ]
+  }
+}

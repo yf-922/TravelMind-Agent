@@ -51,7 +51,7 @@ async function checkAuth() {
 
 /* ── Planning SSE ─────────────────────────────────── */
 async function streamPlan(body, callbacks, url = "/api/plan/stream") {
-  const { onStage, onStageSummary, onResult, onMissingFields, onWarning, onError, onAbort } = callbacks;
+  const { onRun, onStage, onStageSummary, onResult, onMissingFields, onWarning, onError, onAbort } = callbacks;
   const ctrl = new AbortController();
   if (onAbort) onAbort(() => ctrl.abort());
 
@@ -85,7 +85,9 @@ async function streamPlan(body, callbacks, url = "/api/plan/stream") {
         if (!line) continue;
         try {
           const ev = JSON.parse(line);
-          if (ev.type === "stage") {
+          if (ev.type === "run") {
+            onRun && onRun(ev);
+          } else if (ev.type === "stage") {
             onStage && onStage(ev);
           } else if (ev.type === "stage_summary") {
             onStageSummary && onStageSummary(ev);

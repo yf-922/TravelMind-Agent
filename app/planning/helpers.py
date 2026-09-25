@@ -12,7 +12,33 @@ from typing import Any
 
 logger = logging.getLogger(__name__)
 
+
+# 仅识别用户明确标注的景点名，避免把“适合孩子的博物馆”这类自然语言偏好
+# 误当成具体 POI 去请求地图接口。未加引号的模糊需求仍交给 Planner 处理。
+_EXPLICIT_PLACE_RE = re.compile(
+    r"(?:想去|换成|改成|增加|加入|安排)(?:去|成)?\s*[“\"「]([^”\"」]{2,60})[”\"」]"
+)
+
+
+def extract_explicit_place_requests(text: str) -> list[str]:
+    """Extract quoted place names from a modification request, preserving order."""
+    seen: set[str] = set()
+    result: list[str] = []
+    for raw in _EXPLICIT_PLACE_RE.findall(text or ""):
+        name = raw.strip()
+        if name and name not in seen:
+            seen.add(name)
+            result.append(name)
+    return result
+
+
+def missing_explicit_places(text: str, pois: list[dict[str, Any]]) -> list[str]:
+    """Return explicitly requested quoted places absent from the current candidate pool."""
+    names = {str(item.get("name") or "").strip() for item in pois}
+    return [name for name in extract_explicit_place_requests(text) if name not in names]
+
 from app.core.env import load_local_env
+from app.core.llm_usage import extract_usage, record_call
 from app.providers.amap.poi import (
     parse_location,
     normalize_address,
@@ -257,19 +283,23 @@ def open_time_violations(route: list[dict[str, Any]], pois: list[dict[str, Any]]
     bad: list[str] = []
     for day in route:
         for spot in day.get("spots", []):
-            rng = _TIME_RANGE_RE.search(open_map.get(spot["name"], ""))
-            if not rng:
+            ranges = list(_TIME_RANGE_RE.finditer(open_map.get(spot["name"], "")))
+            if not ranges:
                 continue
-            o_start = int(rng.group(1)) * 60 + int(rng.group(2))
-            o_end = int(rng.group(3)) * 60 + int(rng.group(4))
             s_start = _to_minutes(spot.get("start_time", ""))
             s_end = _to_minutes(spot.get("end_time", ""))
             if s_start is None or s_end is None:
                 continue
-            if s_start < o_start or s_end > o_end:
+            inside_any_window = any(
+                s_start >= int(rng.group(1)) * 60 + int(rng.group(2))
+                and s_end <= int(rng.group(3)) * 60 + int(rng.group(4))
+                for rng in ranges
+            )
+            if not inside_any_window:
+                rendered_ranges = " / ".join(rng.group(0) for rng in ranges)
                 bad.append(
                     f"Day{day.get('day')} {spot['name']} 游玩 {spot.get('start_time')}-{spot.get('end_time')}"
-                    f" 超出开放 {rng.group(0)}"
+                    f" 超出开放 {rendered_ranges}"
                 )
     return bad
 
@@ -308,8 +338,17 @@ def dinner_anchor_spot(day: dict[str, Any]) -> dict[str, Any] | None:
 
 # ─── 结构化 LLM 调用（含 None 重试守卫）────────────────────────
 
+def _is_transient_llm_error(exc: Exception) -> bool:
+    """Return whether retrying a provider failure is likely to help."""
+    name = type(exc).__name__.lower()
+    if any(token in name for token in ("timeout", "connection", "ratelimit")):
+        return True
+    status = getattr(exc, "status_code", None)
+    return status == 429 or (isinstance(status, int) and status >= 500)
+
+
 def invoke_structured(llm: Any, messages: list[tuple[str, str]], *, retries: int = 3) -> Any:
-    """调用结构化输出 LLM，对偶发返回 None 做重试。
+    """调用结构化输出 LLM，对 None 和瞬时供应商错误做有界重试。
 
     DeepSeek function_calling 模式偶尔返回 None；重试若干次，
     仍失败则抛出明确错误而非 AttributeError。
@@ -333,8 +372,41 @@ def invoke_structured(llm: Any, messages: list[tuple[str, str]], *, retries: int
 
     for attempt in range(retries):
         t0 = time.perf_counter()
-        result = llm.invoke(messages)
+        result = None
+        try:
+            result = llm.invoke(messages)
+        except Exception as exc:
+            elapsed = time.perf_counter() - t0
+            record_call(
+                schema=label,
+                model=str(getattr(llm, "model_name", None) or getattr(llm, "model", None) or "unknown"),
+                input_chars=total_chars,
+                latency_ms=elapsed * 1000,
+                success=False,
+            )
+            if attempt + 1 < retries and _is_transient_llm_error(exc):
+                logger.warning(
+                    "[invoke_structured] %s 第 %d 次调用发生瞬时错误 %s（耗时 %.2fs），准备重试…",
+                    label, attempt + 1, type(exc).__name__, elapsed,
+                )
+                continue
+            raise
         elapsed = time.perf_counter() - t0
+        output_for_estimate = None
+        if result is not None:
+            try:
+                output_for_estimate = result.model_dump_json() if hasattr(result, "model_dump_json") else result
+            except Exception:
+                output_for_estimate = result
+        record_call(
+            schema=label,
+            model=str(getattr(llm, "model_name", None) or getattr(llm, "model", None) or "unknown"),
+            input_chars=total_chars,
+            output=output_for_estimate,
+            usage=extract_usage(result),
+            latency_ms=elapsed * 1000,
+            success=result is not None,
+        )
 
         if result is not None:
             if attempt > 0:

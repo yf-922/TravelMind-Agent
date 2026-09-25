@@ -14,7 +14,7 @@ from typing import Any
 
 from pydantic import BaseModel, Field
 
-from app.llm.deepseek import build_structured_deepseek
+from app.llm.factory import build_structured_llm
 from app.planning.helpers import invoke_structured
 
 _ROUND_RE = re.compile(r"^\[第(\d+)轮\]\s*(Planner|Reviewer)")
@@ -108,7 +108,7 @@ def planner_rebuttal(state: Any, objective_pass: bool, model_name: str | None = 
         "需要分类的转移（每条给一个标签，round_from 为打回的 Reviewer 轮次）：\n" +
         "\n".join(f"- 第{r}轮 Reviewer 打回 → 第{r + 1}轮 Planner 回应" for r, _, _ in pairs)
     )
-    llm = build_structured_deepseek(RebuttalAnalysis, model=model_name, temperature=0)
+    llm = build_structured_llm(RebuttalAnalysis, model=model_name, temperature=0)
     try:
         res: RebuttalAnalysis = invoke_structured(llm, [("system", REBUTTAL_SYSTEM), ("human", prompt)])
     except Exception as exc:  # noqa: BLE001

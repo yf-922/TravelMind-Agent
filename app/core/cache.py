@@ -70,6 +70,18 @@ def set_cached(key: str, value: Any, ttl_seconds: int) -> None:
         logger.debug("缓存写入失败 [%s]：%s", key, exc)
 
 
+def redis_status() -> dict[str, str]:
+    """Return a non-throwing readiness status for operators."""
+    client = _get_redis()
+    if client is None:
+        return {"status": "disabled", "detail": "REDIS_URL is not configured or Redis is unavailable"}
+    try:
+        client.ping()
+        return {"status": "ok", "detail": "connected"}
+    except Exception as exc:  # noqa: BLE001
+        return {"status": "degraded", "detail": str(exc)}
+
+
 # ─── 缓存键命名工具 ──────────────────────────────────────────
 
 def weather_cache_key(city: str) -> str:

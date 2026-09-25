@@ -4,5 +4,6 @@
 真实调用 LLM 跑 planner⇄reviewer 循环，用代码打分器 + LLM 评委衡量质量。
 
 运行：
-    python -m tests.eval.run_eval --k 5
+    python -m tests.eval.run_eval --dry-run
+    python -m tests.eval.run_eval --k 1 --max-cases 1 --max-llm-calls 30 --allow-external-calls
 """

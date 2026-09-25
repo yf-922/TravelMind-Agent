@@ -22,6 +22,14 @@ class IntentExtraction(BaseModel):
     habit_preference: str = Field(
         default="", description="游玩习惯/节奏，如『早出晚归/慢节奏/每天景点别太多/睡到自然醒』；没有则空"
     )
+    max_walking_km: float | None = Field(
+        default=None, ge=0, le=50,
+        description="用户明确可接受的单段最大步行距离（公里）；未提及则 null，不要猜测",
+    )
+    rain_indoor_priority: bool = Field(
+        default=False,
+        description="用户明确要求雨天优先室内景点时为 true，否则 false",
+    )
 
 
 class SpotPlan(BaseModel):
@@ -161,6 +169,8 @@ class TravelPlanState(BaseModel):
     attraction_preference: Optional[str] = None
     food_preference: Optional[str] = None
     habit_preference: Optional[str] = None
+    max_walking_km: Optional[float] = Field(default=None, ge=0, le=50)
+    rain_indoor_priority: bool = False
     days: int = 0
     missing_fields: list[str] = Field(default_factory=list)
 
@@ -173,6 +183,22 @@ class TravelPlanState(BaseModel):
 
     # 高德景点搜索
     pois: list[dict[str, Any]] = Field(default_factory=list)
+
+    # 路线服务核验：Planner 生成路线后，使用高德道路距离检查步行/驾车约束。
+    # 每项包含 day/from/to/mode/distance_km/duration_min/source；无 Key 或接口失败时为空，
+    # 由 Reviewer 明确知道“道路距离未核验”，而不是把直线距离冒充真实路程。
+    route_distance_legs: list[dict[str, Any]] = Field(default_factory=list)
+    route_distance_mode: Optional[str] = None
+    route_distance_note: Optional[str] = None
+
+    # Deterministic risk gate: low-risk drafts can skip expensive LLM audits;
+    # flagged drafts are escalated to Reviewer and/or Time Check.
+    route_risk_flags: list[str] = Field(default_factory=list)
+    route_risk_score: int = 0
+    review_required: bool = True
+    time_check_required: bool = True
+    review_skipped: bool = False
+    risk_gate_rechecked: bool = False
 
     # Planner / Reviewer 循环
     route: list[dict[str, Any]] = Field(default_factory=list)
@@ -189,6 +215,12 @@ class TravelPlanState(BaseModel):
     # 天气（意图识别后拉取）
     weather_forecast: list[dict[str, Any]] = Field(default_factory=list)
     weather_note: Optional[str] = None      # 超出预报范围/接口失败时的降级说明
+
+    # 可降级依赖的结构化状态：ok / partial / degraded / skipped。
+    time_check_status: str = "ok"
+    meal_search_status: str = "ok"
+    meal_recommend_status: str = "ok"
+    spot_tips_status: str = "ok"
 
     # 餐饮（一次成型）
     meal_candidates: list[dict[str, Any]] = Field(default_factory=list)

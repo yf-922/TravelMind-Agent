@@ -8,6 +8,7 @@ from uuid import uuid4
 
 from app.multi_agent_core.agents import BaseAgent
 from app.multi_agent_core.messages import AgentMessage
+from app.multi_agent_core.protocols import AgentCard, agent_card
 
 logger = logging.getLogger(__name__)
 
@@ -33,6 +34,25 @@ class Supervisor:
         if result.task_type == "itinerary_review":
             return "done" if review_passed else "planner_agent"
         return "stop"
+
+    def agent_cards(self) -> list[AgentCard]:
+        """Expose A2A-style capability cards without exposing private memory."""
+        return [
+            agent_card(
+                agent.name,
+                agent.system_prompt,
+                skills=sorted(agent.allowed_tools),
+                accepted_task_types=[
+                    task_type for task_type, target in {
+                        "intent_extract": "intent_agent",
+                        "poi_research": "poi_research_agent",
+                        "itinerary_plan": "planner_agent",
+                        "itinerary_review": "reviewer_agent",
+                    }.items() if target == agent.name
+                ],
+            )
+            for agent in self.agents.values()
+        ]
 
     def _dispatch(self, task_id: str, session_id: str, task_type: str, to: str, content: dict[str, Any], attempt: int = 0) -> AgentMessage:
         message = AgentMessage(
@@ -125,7 +145,17 @@ class Supervisor:
             "itinerary": plan.content["itinerary"],
             "review": review.content,
             "dispatch_log": [message.model_dump(by_alias=True) for message in self.dispatch_log],
+            "tool_trace": self._tool_trace(task_id),
         }
+
+    def _tool_trace(self, task_id: str) -> list[dict[str, Any]]:
+        records: list[dict[str, Any]] = []
+        for agent in self.agents.values():
+            registry = getattr(agent, "tool_registry", None)
+            for record in getattr(registry, "audit_log", []):
+                if record.task_id == task_id:
+                    records.append(record.model_dump())
+        return records
 
     def _failure_result(self, task_id: str, agent: str, message: str, failure: AgentMessage) -> dict[str, Any]:
         """Return an actionable partial result instead of crashing on a worker failure."""
@@ -136,4 +166,5 @@ class Supervisor:
             "error": message,
             "error_code": failure.error_code,
             "dispatch_log": [entry.model_dump(by_alias=True) for entry in self.dispatch_log],
+            "tool_trace": self._tool_trace(task_id),
         }

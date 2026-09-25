@@ -2,10 +2,8 @@
 query_rewrite 评估入口。
 
 用法：
-    python -m tests.eval_query_rewrite.run_eval
-    python -m tests.eval_query_rewrite.run_eval --only conflict-food-query-wins
-    python -m tests.eval_query_rewrite.run_eval --k 3
-    python -m tests.eval_query_rewrite.run_eval --k 3 --out qr_eval_report.md
+    python -m tests.eval_query_rewrite.run_eval --dry-run
+    python -m tests.eval_query_rewrite.run_eval --only conflict-food-query-wins --k 1 --max-llm-calls 3 --allow-external-calls
 """
 
 from __future__ import annotations
@@ -23,6 +21,7 @@ if str(_ROOT) not in sys.path:
 
 from tests.eval_query_rewrite.fixtures import FIXTURES, FIXTURE_INDEX
 from tests.eval_query_rewrite.harness import run_single
+from app.core.eval_safety import require_call_budget, require_external_calls
 
 
 # ─── 格式化辅助 ────────────────────────────────────────────────────────────────
@@ -129,9 +128,39 @@ def main():
     parser.add_argument("--k", type=int, default=1, help="每个用例重复次数（默认 1）")
     parser.add_argument("--model", default=None, help="DeepSeek 模型名（默认用环境变量）")
     parser.add_argument("--out", default=None, help="报告输出路径（.md）")
+    parser.add_argument("--max-cases", type=int, default=None, help="最多执行前 N 个用例")
+    parser.add_argument("--max-llm-calls", type=int, default=None,
+                        help="本次批准的 LLM 调用上限（在线执行必填）")
+    parser.add_argument("--dry-run", action="store_true", help="只输出预算预估，不调用 LLM")
+    parser.add_argument("--allow-external-calls", action="store_true",
+                        help="确认调用真实 LLM 并消耗 API 额度")
     args = parser.parse_args()
+    if not 1 <= args.k <= 20:
+        parser.error("--k must be between 1 and 20")
+    if args.max_cases is not None and not 1 <= args.max_cases <= len(FIXTURES):
+        parser.error(f"--max-cases must be between 1 and {len(FIXTURES)}")
 
     fixtures = [FIXTURE_INDEX[args.only]] if args.only else FIXTURES
+    if args.max_cases is not None:
+        fixtures = fixtures[:args.max_cases]
+    logical_invocations = len(fixtures) * args.k
+    call_upper_bound = logical_invocations * 3
+    print(
+        f"预检：{len(fixtures)} 个用例 × {args.k} 次，"
+        f"逻辑调用 {logical_invocations}，供应商请求尝试上限 {call_upper_bound}"
+    )
+    if args.dry_run:
+        return
+    require_external_calls(
+        parser,
+        allowed=args.allow_external_calls,
+        operation="query rewrite evaluation",
+    )
+    require_call_budget(
+        parser,
+        estimated_upper_bound=call_upper_bound,
+        maximum=args.max_llm_calls,
+    )
 
     header = ["", "═" * 60, "eval_query_rewrite", "═" * 60]
     all_lines: list[str] = list(header)

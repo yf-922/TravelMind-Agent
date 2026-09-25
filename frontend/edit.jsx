@@ -2,43 +2,19 @@
 
 /* ── 纯函数工具 ──────────────────────────────────── */
 
-// 与后端 helpers.haversine_km 同公式；仅用于编辑态即时显示，落库以服务端重算为准
-function haversineKm(a, b) {
-  const R = 6371.0088;
-  const rad = (x) => (x * Math.PI) / 180;
-  const dlat = rad(b.lat - a.lat), dlon = rad(b.lng - a.lng);
-  const h = Math.sin(dlat / 2) ** 2 +
-    Math.cos(rad(a.lat)) * Math.cos(rad(b.lat)) * Math.sin(dlon / 2) ** 2;
-  return 2 * R * Math.asin(Math.sqrt(h));
-}
-
-function buildTravelEstimate(distance, fromName, toName) {
-  const d = Math.max(0, Number(distance) || 0);
-  if (d <= 1.2) {
-    const mins = Math.max(3, Math.round(d / 4.5 * 60));
-    return { from: fromName, to: toName, mode: "walk", mode_label: "步行", distance_km: d,
-      duration_min: mins, estimated_cost: 0, instruction: `步行约 ${mins} 分钟；点击导航查看入口与实时步行路线。`, source: "estimate", estimate: true };
-  }
-  if (d <= 12) {
-    const mins = Math.max(18, Math.round(d / 22 * 60 + 12));
-    return { from: fromName, to: toName, mode: "transit", mode_label: "地铁/公交", distance_km: d,
-      duration_min: mins, estimated_cost: Math.min(8, Math.max(2, 2 + Math.ceil(d / 6))),
-      instruction: "优先地铁或公交；具体线路和上下车站请点击导航，以高德实时结果为准。", source: "estimate", estimate: true };
-  }
-  return { from: fromName, to: toName, mode: "taxi_or_car", mode_label: "打车/租车", distance_km: d,
-    duration_min: Math.max(25, Math.round(d / 28 * 60 + 5)), estimated_cost: Math.round(13 + Math.max(0, d - 3) * 2.3),
-    instruction: "跨区距离较远，建议打车；若当天有多个远距离点，可比较租车日租价与停车条件。", source: "estimate", estimate: true };
-}
-
-// 原地重算一天 timeline 的 dist_from_prev_km（规则与后端 _recalc_dists 一致）
+// 编辑顺序变化后清除旧路线。保存时由后端并发查询高德道路距离后回填。
 function recalcDayDists(timeline) {
   const valid = (loc) => loc && typeof loc.lat === "number" && typeof loc.lng === "number";
   timeline.forEach((item, i) => {
     if (i === 0) { delete item.dist_from_prev_km; delete item.travel_from_prev; return; }
     const prev = timeline[i - 1].location, cur = item.location;
     if (valid(prev) && valid(cur)) {
-      item.dist_from_prev_km = Math.round(haversineKm(prev, cur) * 100) / 100;
-      item.travel_from_prev = buildTravelEstimate(item.dist_from_prev_km, timeline[i - 1].name, item.name);
+      delete item.dist_from_prev_km;
+      item.travel_from_prev = {
+        from: timeline[i - 1].name || "上一站", to: item.name || "下一站",
+        mode: "unavailable", mode_label: "路线待核验", distance_km: null,
+        duration_min: null, source: "pending", estimate: true,
+      };
     } else {
       delete item.dist_from_prev_km;
       delete item.travel_from_prev;
@@ -48,7 +24,7 @@ function recalcDayDists(timeline) {
 
 // 拖拽换序：时间段留在位置上不跟卡走——
 // 先记录原顺序中各景点的时段，移动后按新顺序把时段逐个套回景点
-// 调用后须紧接 recalcDayDists(newTimeline) 更新相邻距离
+// 调用后须紧接 recalcDayDists(newTimeline) 清除已经失效的道路距离
 function reorderKeepTimes(timeline, from, to) {
   const slots = timeline
     .filter(it => it.type === "attraction")
@@ -200,8 +176,9 @@ function EditableTimeline({ rawTimeline, ver, onReorder, onReplace, onDelete, on
     <div className="edit-timeline">
       <div ref={listRef} key={ver} className="edit-list">
         {rawTimeline.map((raw, i) => {
-          // 通行标注随 applyEdit 重算的 dist_from_prev_km 实时更新；时间槽同理跟随 start_time
-          const note = i > 0 ? walkNote(raw.dist_from_prev_km) : null;
+          const note = i > 0
+            ? (raw.dist_from_prev_km != null ? walkNote(raw.dist_from_prev_km) : "道路距离待核验")
+            : null;
           const isMeal = raw.type !== "attraction";
           return (
             <div key={`${ver}-${i}`} className="edit-row">
@@ -250,6 +227,6 @@ function EditToolbar({ canUndo, canRedo, saving, saveErr, onUndo, onRedo, onCanc
 }
 
 Object.assign(window, {
-  haversineKm, recalcDayDists, reorderKeepTimes,
+  recalcDayDists, reorderKeepTimes,
   PoiSearchModal, TimeRangeEditor, EditCard, EditableTimeline, EditToolbar,
 });

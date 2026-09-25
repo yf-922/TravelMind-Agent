@@ -1,0 +1,623 @@
+{
+  "execution": {
+    "generated_at": "2026-09-21T08:32:40.130913+00:00",
+    "configuration": {
+      "provider": "grok",
+      "model": "grok-4.6",
+      "prompt_code_fingerprint": "abdb00bf6b86cbd5",
+      "python": "3.12.8"
+    },
+    "budget": {
+      "cases": 1,
+      "trials_per_case": 1,
+      "modes": [
+        "planner_only",
+        "planner_reviewer",
+        "planner_reviewer_time_check"
+      ],
+      "total_runs": 3,
+      "judge_enabled": true,
+      "logical_invocations_upper_bound": 27,
+      "provider_attempts_upper_bound": 81,
+      "llm_calls_upper_bound": 81,
+      "attempts_per_invocation": 3,
+      "by_mode": {
+        "planner_only": {
+          "logical_invocations_upper_bound": 2,
+          "provider_attempts_upper_bound": 6
+        },
+        "planner_reviewer": {
+          "logical_invocations_upper_bound": 10,
+          "provider_attempts_upper_bound": 30
+        },
+        "planner_reviewer_time_check": {
+          "logical_invocations_upper_bound": 15,
+          "provider_attempts_upper_bound": 45
+        }
+      },
+      "assumption": "worst-case graph and judge invocations multiplied by invoke_structured retry attempts"
+    },
+    "cases": [
+      "nanjing-3d-tighthours-negative"
+    ],
+    "repeats": 1
+  },
+  "results": [
+    {
+      "mode": "planner_only",
+      "runs": 1,
+      "passed_runs": 1,
+      "pass_rate": 1.0,
+      "pass_at_k_rate": 1.0,
+      "pass_pow_k_rate": 1.0,
+      "failed_runs": 0,
+      "judge_avg": {
+        "preference_fit": 5.0,
+        "habit_fit": 5.0,
+        "theme_coherence": 5.0,
+        "route_reasonableness": 4.0,
+        "weather_adaptation": 4.0
+      },
+      "judge_overall": 4.6,
+      "review_rounds_mean": 1.0,
+      "false_approval_rate": 0.0,
+      "false_rejection_rate": 0.0,
+      "rebuttal_rate": 0.0,
+      "ignore_rate": 0.0,
+      "node_calls": {
+        "planner": 1,
+        "reviewer": 0,
+        "time_check": 0
+      },
+      "node_calls_per_run": 1.0,
+      "llm_usage": {
+        "calls_total": 2,
+        "failed_total": 0,
+        "input_tokens": 2453,
+        "output_tokens": 620,
+        "total_tokens": 3073,
+        "estimated_calls": 2,
+        "usage_exact_ratio": 0.0,
+        "latency_sum_ms": 60560.552,
+        "estimated_cost_usd": 0.0,
+        "cost_rates_configured": false
+      },
+      "tokens_per_run": 3073.0,
+      "latency_ms_per_run": 60560.552,
+      "end_to_end_latency_ms": {
+        "p50": 63404.136,
+        "p95": 63404.136,
+        "max": 63404.136
+      }
+    },
+    {
+      "mode": "planner_reviewer",
+      "runs": 1,
+      "passed_runs": 1,
+      "pass_rate": 1.0,
+      "pass_at_k_rate": 1.0,
+      "pass_pow_k_rate": 1.0,
+      "failed_runs": 0,
+      "judge_avg": {
+        "preference_fit": 5.0,
+        "habit_fit": 5.0,
+        "theme_coherence": 5.0,
+        "route_reasonableness": 4.0,
+        "weather_adaptation": 3.0
+      },
+      "judge_overall": 4.4,
+      "review_rounds_mean": 1.0,
+      "false_approval_rate": 0.0,
+      "false_rejection_rate": 0.0,
+      "rebuttal_rate": 0.0,
+      "ignore_rate": 0.0,
+      "node_calls": {
+        "planner": 1,
+        "reviewer": 1,
+        "time_check": 0
+      },
+      "node_calls_per_run": 2.0,
+      "llm_usage": {
+        "calls_total": 3,
+        "failed_total": 0,
+        "input_tokens": 3843,
+        "output_tokens": 877,
+        "total_tokens": 4720,
+        "estimated_calls": 3,
+        "usage_exact_ratio": 0.0,
+        "latency_sum_ms": 84598.555,
+        "estimated_cost_usd": 0.0,
+        "cost_rates_configured": false
+      },
+      "tokens_per_run": 4720.0,
+      "latency_ms_per_run": 84598.555,
+      "end_to_end_latency_ms": {
+        "p50": 85702.431,
+        "p95": 85702.431,
+        "max": 85702.431
+      }
+    },
+    {
+      "mode": "planner_reviewer_time_check",
+      "runs": 1,
+      "passed_runs": 1,
+      "pass_rate": 1.0,
+      "pass_at_k_rate": 1.0,
+      "pass_pow_k_rate": 1.0,
+      "failed_runs": 0,
+      "judge_avg": {
+        "preference_fit": 5.0,
+        "habit_fit": 5.0,
+        "theme_coherence": 4.0,
+        "route_reasonableness": 3.0,
+        "weather_adaptation": 4.0
+      },
+      "judge_overall": 4.2,
+      "review_rounds_mean": 1.0,
+      "false_approval_rate": 0.0,
+      "false_rejection_rate": 0.0,
+      "rebuttal_rate": 0.0,
+      "ignore_rate": 0.0,
+      "node_calls": {
+        "planner": 1,
+        "reviewer": 1,
+        "time_check": 1
+      },
+      "node_calls_per_run": 3.0,
+      "llm_usage": {
+        "calls_total": 4,
+        "failed_total": 0,
+        "input_tokens": 4550,
+        "output_tokens": 1414,
+        "total_tokens": 5964,
+        "estimated_calls": 4,
+        "usage_exact_ratio": 0.0,
+        "latency_sum_ms": 102769.982,
+        "estimated_cost_usd": 0.0,
+        "cost_rates_configured": false
+      },
+      "tokens_per_run": 5964.0,
+      "latency_ms_per_run": 102769.982,
+      "end_to_end_latency_ms": {
+        "p50": 104828.487,
+        "p95": 104828.487,
+        "max": 104828.487
+      }
+    }
+  ],
+  "trials": {
+    "planner_only": [
+      {
+        "code": {
+          "results": {
+            "g1_closed_pool": {
+              "passed": true,
+              "detail": "无越界景点"
+            },
+            "g2_time_check": {
+              "passed": true,
+              "detail": "time_check 无违规"
+            },
+            "g4_structure": {
+              "passed": true,
+              "detail": "结构合法"
+            },
+            "g5_coverage": {
+              "passed": true,
+              "detail": "每天均有景点"
+            },
+            "g6_weather": {
+              "passed": true,
+              "detail": "无雨雪天"
+            },
+            "g9_walking_distance": {
+              "passed": true,
+              "detail": "用户未指定步行上限"
+            },
+            "g10_habit_constraints": {
+              "passed": true,
+              "detail": "明确习惯约束满足"
+            },
+            "g7_convergence": {
+              "passed": false,
+              "detail": "reviewer=❌(1/3轮)，time_check=❌(0轮)"
+            },
+            "g8_time_check_efficiency": {
+              "passed": true,
+              "detail": "time_check 用了 0 轮，残留违规 0 处"
+            }
+          },
+          "objective_pass": true
+        },
+        "judge": {
+          "scores": {
+            "preference_fit": 5,
+            "habit_fit": 5,
+            "theme_coherence": 5,
+            "route_reasonableness": 4,
+            "weather_adaptation": 4
+          },
+          "avg": 4.6,
+          "comment": "分区主题清晰、均10点起步贴合不早起，古迹与自然搭配得当；动线基本顺畅但鸡鸣寺开放时段表述含混导致下午窗口偏紧，天气全程晴好却几乎未在notes中说明热天安排。"
+        },
+        "overall_pass": true,
+        "rounds": 1,
+        "node_calls": {
+          "planner": 1,
+          "reviewer": 0,
+          "time_check": 0
+        },
+        "reliability": {
+          "applicable": false,
+          "false_approval": false,
+          "false_rejection": false
+        },
+        "rebuttal": {
+          "transitions": 0,
+          "rebuttal_rate": 0.0,
+          "ignore_rate": 0.0
+        },
+        "error": null,
+        "_state": {
+          "route": [
+            {
+              "day": 1,
+              "spots": [
+                {
+                  "name": "中山陵景区",
+                  "period": "morning",
+                  "start_time": "10:00",
+                  "end_time": "13:30"
+                },
+                {
+                  "name": "古鸡鸣寺",
+                  "period": "afternoon",
+                  "start_time": "15:00",
+                  "end_time": "17:15"
+                }
+              ],
+              "theme": "玄武山陵与古寺半日"
+            },
+            {
+              "day": 2,
+              "spots": [
+                {
+                  "name": "不老村",
+                  "period": "morning",
+                  "start_time": "10:00",
+                  "end_time": "13:00"
+                },
+                {
+                  "name": "水墨大埝旅游区",
+                  "period": "afternoon",
+                  "start_time": "14:00",
+                  "end_time": "17:00"
+                }
+              ],
+              "theme": "浦口乡野渔光"
+            },
+            {
+              "day": 3,
+              "spots": [
+                {
+                  "name": "南京牛首山文化旅游区",
+                  "period": "morning",
+                  "start_time": "10:00",
+                  "end_time": "16:00"
+                }
+              ],
+              "theme": "牛首山文化与自然"
+            }
+          ],
+          "approved": false,
+          "dialogue": [
+            "[第1轮] Planner：按分区拆成玄武、浦口、牛首山三日；首场均10:00起，避开欢乐谷无对应日期开放时段，时刻卡在闭园/停票前。（系统已规范化候选景点名：水墨大埕旅游区→水墨大埝旅游区）"
+          ],
+          "time_violations": []
+        },
+        "elapsed_ms": 63404.136,
+        "case_id": "nanjing-3d-tighthours-negative",
+        "trial": 1
+      }
+    ],
+    "planner_reviewer": [
+      {
+        "code": {
+          "results": {
+            "g1_closed_pool": {
+              "passed": true,
+              "detail": "无越界景点"
+            },
+            "g2_time_check": {
+              "passed": true,
+              "detail": "time_check 无违规"
+            },
+            "g4_structure": {
+              "passed": true,
+              "detail": "结构合法"
+            },
+            "g5_coverage": {
+              "passed": true,
+              "detail": "每天均有景点"
+            },
+            "g6_weather": {
+              "passed": true,
+              "detail": "无雨雪天"
+            },
+            "g9_walking_distance": {
+              "passed": true,
+              "detail": "用户未指定步行上限"
+            },
+            "g10_habit_constraints": {
+              "passed": true,
+              "detail": "明确习惯约束满足"
+            },
+            "g7_convergence": {
+              "passed": false,
+              "detail": "reviewer=✅(1/3轮)，time_check=❌(0轮)"
+            },
+            "g8_time_check_efficiency": {
+              "passed": true,
+              "detail": "time_check 用了 0 轮，残留违规 0 处"
+            }
+          },
+          "objective_pass": true
+        },
+        "judge": {
+          "scores": {
+            "preference_fit": 5,
+            "habit_fit": 5,
+            "theme_coherence": 5,
+            "route_reasonableness": 4,
+            "weather_adaptation": 3
+          },
+          "avg": 4.4,
+          "comment": "分区与不早起契合、闭园时刻卡得住；天气无notes说明，牛首山停留偏短且与方山跨区较远。"
+        },
+        "overall_pass": true,
+        "rounds": 1,
+        "node_calls": {
+          "planner": 1,
+          "reviewer": 1,
+          "time_check": 0
+        },
+        "reliability": {
+          "applicable": true,
+          "reviewer_approved": true,
+          "objective_pass": true,
+          "false_approval": false,
+          "false_rejection": false,
+          "agree": true
+        },
+        "rebuttal": {
+          "transitions": 0,
+          "adopt": 0,
+          "rebut": 0,
+          "ignore": 0,
+          "rebuttal_rate": 0.0,
+          "ignore_rate": 0.0,
+          "rebutted": false,
+          "health": "n/a"
+        },
+        "error": null,
+        "_state": {
+          "route": [
+            {
+              "day": 1,
+              "spots": [
+                {
+                  "name": "水墨大埝旅游区",
+                  "period": "morning",
+                  "start_time": "10:00",
+                  "end_time": "13:00"
+                },
+                {
+                  "name": "不老村",
+                  "period": "afternoon",
+                  "start_time": "14:00",
+                  "end_time": "16:45"
+                }
+              ],
+              "theme": "浦口自然乡野：水墨大垸与不老村"
+            },
+            {
+              "day": 2,
+              "spots": [
+                {
+                  "name": "中山陵景区",
+                  "period": "morning",
+                  "start_time": "10:00",
+                  "end_time": "14:30"
+                },
+                {
+                  "name": "古鸡鸣寺",
+                  "period": "afternoon",
+                  "start_time": "15:30",
+                  "end_time": "17:20"
+                }
+              ],
+              "theme": "玄武陵岛古迹：中山陵与鸡鸣寺"
+            },
+            {
+              "day": 3,
+              "spots": [
+                {
+                  "name": "江苏江宁汤山方山国家地质公园博物馆",
+                  "period": "morning",
+                  "start_time": "10:00",
+                  "end_time": "12:30"
+                },
+                {
+                  "name": "南京牛首山文化旅游区",
+                  "period": "afternoon",
+                  "start_time": "14:30",
+                  "end_time": "16:25"
+                }
+              ],
+              "theme": "江宁文化与地质：方山博物馆与牛首山"
+            }
+          ],
+          "approved": true,
+          "dialogue": [
+            "[第1轮] Planner：按分区集中：Day1浦口两处自然点、Day2玄武陵寺、Day3博物馆+牛首山；不早于10:00且卡死闭园/停票；欢乐谷因8月25–27无开放时段未排。（系统已规范化候选景点名：水墨大垸旅游区→水墨大埝旅游区）",
+            "[第1轮] Reviewer 通过（88分）：(无意见)"
+          ],
+          "time_violations": []
+        },
+        "elapsed_ms": 85702.431,
+        "case_id": "nanjing-3d-tighthours-negative",
+        "trial": 1
+      }
+    ],
+    "planner_reviewer_time_check": [
+      {
+        "code": {
+          "results": {
+            "g1_closed_pool": {
+              "passed": true,
+              "detail": "无越界景点"
+            },
+            "g2_time_check": {
+              "passed": true,
+              "detail": "time_check 无违规"
+            },
+            "g4_structure": {
+              "passed": true,
+              "detail": "结构合法"
+            },
+            "g5_coverage": {
+              "passed": true,
+              "detail": "每天均有景点"
+            },
+            "g6_weather": {
+              "passed": true,
+              "detail": "无雨雪天"
+            },
+            "g9_walking_distance": {
+              "passed": true,
+              "detail": "用户未指定步行上限"
+            },
+            "g10_habit_constraints": {
+              "passed": true,
+              "detail": "明确习惯约束满足"
+            },
+            "g7_convergence": {
+              "passed": true,
+              "detail": "reviewer=✅(1/3轮)，time_check=✅(1轮)"
+            },
+            "g8_time_check_efficiency": {
+              "passed": true,
+              "detail": "time_check 用了 1 轮，残留违规 0 处"
+            }
+          },
+          "objective_pass": true
+        },
+        "judge": {
+          "scores": {
+            "preference_fit": 5,
+            "habit_fit": 5,
+            "theme_coherence": 4,
+            "route_reasonableness": 3,
+            "weather_adaptation": 4
+          },
+          "avg": 4.2,
+          "comment": "偏好与不早起契合好、分区主题清晰，但第三天牛首山至汤山跨区过远且闭馆前余量紧，天气晴好适配却几乎无天气说明。"
+        },
+        "overall_pass": true,
+        "rounds": 1,
+        "node_calls": {
+          "planner": 1,
+          "reviewer": 1,
+          "time_check": 1
+        },
+        "reliability": {
+          "applicable": true,
+          "reviewer_approved": true,
+          "objective_pass": true,
+          "false_approval": false,
+          "false_rejection": false,
+          "agree": true
+        },
+        "rebuttal": {
+          "transitions": 0,
+          "adopt": 0,
+          "rebut": 0,
+          "ignore": 0,
+          "rebuttal_rate": 0.0,
+          "ignore_rate": 0.0,
+          "rebutted": false,
+          "health": "n/a"
+        },
+        "error": null,
+        "_state": {
+          "route": [
+            {
+              "day": 1,
+              "spots": [
+                {
+                  "name": "不老村",
+                  "period": "morning",
+                  "start_time": "10:00",
+                  "end_time": "13:00"
+                },
+                {
+                  "name": "水墨大埝旅游区",
+                  "period": "afternoon",
+                  "start_time": "14:00",
+                  "end_time": "16:45"
+                }
+              ],
+              "theme": "浦口同区自然乡野：不老村与水墨大埶"
+            },
+            {
+              "day": 2,
+              "spots": [
+                {
+                  "name": "中山陵景区",
+                  "period": "morning",
+                  "start_time": "10:00",
+                  "end_time": "13:30"
+                },
+                {
+                  "name": "古鸡鸣寺",
+                  "period": "afternoon",
+                  "start_time": "15:00",
+                  "end_time": "17:10"
+                }
+              ],
+              "theme": "玄武历史古迹：中山陵与古鸡鸣寺"
+            },
+            {
+              "day": 3,
+              "spots": [
+                {
+                  "name": "南京牛首山文化旅游区",
+                  "period": "morning",
+                  "start_time": "10:00",
+                  "end_time": "13:30"
+                },
+                {
+                  "name": "江苏江宁汤山方山国家地质公园博物馆",
+                  "period": "afternoon",
+                  "start_time": "15:00",
+                  "end_time": "16:50"
+                }
+              ],
+              "theme": "江宁文化与地质：牛首山与汤山博物馆"
+            }
+          ],
+          "approved": true,
+          "dialogue": [
+            "[第1轮] Planner：按分区集中：浦口自然两处、玄武陵寺两处；欢乐谷不在所列开放日故未排；第三天为补足分区③仅博物馆而跨区衔接牛首山，全程10:00后入园并卡在闭园/停票前。（系统已规范化候选景点名：水墨大埶旅游区→水墨大埝旅游区）",
+            "[第1轮] Reviewer 通过（88分）：(无意见)",
+            "[time_check 第1轮] 无违规"
+          ],
+          "time_violations": []
+        },
+        "elapsed_ms": 104828.487,
+        "case_id": "nanjing-3d-tighthours-negative",
+        "trial": 1
+      }
+    ]
+  }
+}

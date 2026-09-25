@@ -1,0 +1,620 @@
+{
+  "schema_version": 1,
+  "measurement_type": "deterministic-offline-retrieval",
+  "retriever_requested": "hybrid",
+  "retriever": "hybrid",
+  "top_k": 3,
+  "case_count": 30,
+  "answerable_cases": 24,
+  "no_answer_cases": 6,
+  "metrics": {
+    "hit_at_1": 0.958,
+    "recall_at_k": 1.0,
+    "mrr": 0.979,
+    "no_answer_accuracy": 1.0,
+    "false_positive_rate": 0.0,
+    "case_accuracy": 1.0,
+    "no_result_rate": 0.2,
+    "citation_validity_rate": 1.0
+  },
+  "cases": [
+    {
+      "id": "rag-01",
+      "difficulty": "normal",
+      "expected_sources": [
+        "chongqing_visitor_guide"
+      ],
+      "retrieved_sources": [
+        "chongqing_visitor_guide",
+        "transport_and_pacing",
+        "responsible_trip_checklist"
+      ],
+      "retrieval_mode": "hybrid",
+      "answerable": true,
+      "hit_at_1": true,
+      "hit_at_k": true,
+      "correct_rejection": false,
+      "false_positive": false,
+      "case_passed": true,
+      "reciprocal_rank": 1.0,
+      "citation_validity_rate": 1.0
+    },
+    {
+      "id": "rag-02",
+      "difficulty": "normal",
+      "expected_sources": [
+        "chongqing_visitor_guide"
+      ],
+      "retrieved_sources": [
+        "chongqing_visitor_guide",
+        "responsible_trip_checklist",
+        "transport_and_pacing"
+      ],
+      "retrieval_mode": "hybrid",
+      "answerable": true,
+      "hit_at_1": true,
+      "hit_at_k": true,
+      "correct_rejection": false,
+      "false_positive": false,
+      "case_passed": true,
+      "reciprocal_rank": 1.0,
+      "citation_validity_rate": 1.0
+    },
+    {
+      "id": "rag-03",
+      "difficulty": "multi_step",
+      "expected_sources": [
+        "chongqing_visitor_guide"
+      ],
+      "retrieved_sources": [
+        "chongqing_visitor_guide",
+        "transport_and_pacing",
+        "responsible_trip_checklist"
+      ],
+      "retrieval_mode": "hybrid",
+      "answerable": true,
+      "hit_at_1": true,
+      "hit_at_k": true,
+      "correct_rejection": false,
+      "false_positive": false,
+      "case_passed": true,
+      "reciprocal_rank": 1.0,
+      "citation_validity_rate": 1.0
+    },
+    {
+      "id": "rag-04",
+      "difficulty": "normal",
+      "expected_sources": [
+        "chongqing_visitor_guide"
+      ],
+      "retrieved_sources": [
+        "chongqing_visitor_guide",
+        "responsible_trip_checklist",
+        "transport_and_pacing"
+      ],
+      "retrieval_mode": "hybrid",
+      "answerable": true,
+      "hit_at_1": true,
+      "hit_at_k": true,
+      "correct_rejection": false,
+      "false_positive": false,
+      "case_passed": true,
+      "reciprocal_rank": 1.0,
+      "citation_validity_rate": 1.0
+    },
+    {
+      "id": "rag-05",
+      "difficulty": "normal",
+      "expected_sources": [
+        "transport_and_pacing"
+      ],
+      "retrieved_sources": [
+        "transport_and_pacing",
+        "responsible_trip_checklist",
+        "chongqing_visitor_guide"
+      ],
+      "retrieval_mode": "hybrid",
+      "answerable": true,
+      "hit_at_1": true,
+      "hit_at_k": true,
+      "correct_rejection": false,
+      "false_positive": false,
+      "case_passed": true,
+      "reciprocal_rank": 1.0,
+      "citation_validity_rate": 1.0
+    },
+    {
+      "id": "rag-06",
+      "difficulty": "normal",
+      "expected_sources": [
+        "chongqing_visitor_guide",
+        "transport_and_pacing"
+      ],
+      "retrieved_sources": [
+        "unknown",
+        "transport_and_pacing",
+        "chongqing_visitor_guide"
+      ],
+      "retrieval_mode": "hybrid",
+      "answerable": true,
+      "hit_at_1": false,
+      "hit_at_k": true,
+      "correct_rejection": false,
+      "false_positive": false,
+      "case_passed": true,
+      "reciprocal_rank": 0.5,
+      "citation_validity_rate": 1.0
+    },
+    {
+      "id": "rag-07",
+      "difficulty": "multi_step",
+      "expected_sources": [
+        "transport_and_pacing"
+      ],
+      "retrieved_sources": [
+        "transport_and_pacing",
+        "chongqing_visitor_guide",
+        "responsible_trip_checklist"
+      ],
+      "retrieval_mode": "hybrid",
+      "answerable": true,
+      "hit_at_1": true,
+      "hit_at_k": true,
+      "correct_rejection": false,
+      "false_positive": false,
+      "case_passed": true,
+      "reciprocal_rank": 1.0,
+      "citation_validity_rate": 1.0
+    },
+    {
+      "id": "rag-08",
+      "difficulty": "multi_step",
+      "expected_sources": [
+        "transport_and_pacing"
+      ],
+      "retrieved_sources": [
+        "transport_and_pacing",
+        "chongqing_visitor_guide",
+        "responsible_trip_checklist"
+      ],
+      "retrieval_mode": "hybrid",
+      "answerable": true,
+      "hit_at_1": true,
+      "hit_at_k": true,
+      "correct_rejection": false,
+      "false_positive": false,
+      "case_passed": true,
+      "reciprocal_rank": 1.0,
+      "citation_validity_rate": 1.0
+    },
+    {
+      "id": "rag-09",
+      "difficulty": "adversarial",
+      "expected_sources": [
+        "responsible_trip_checklist"
+      ],
+      "retrieved_sources": [
+        "responsible_trip_checklist",
+        "chongqing_visitor_guide",
+        "transport_and_pacing"
+      ],
+      "retrieval_mode": "hybrid",
+      "answerable": true,
+      "hit_at_1": true,
+      "hit_at_k": true,
+      "correct_rejection": false,
+      "false_positive": false,
+      "case_passed": true,
+      "reciprocal_rank": 1.0,
+      "citation_validity_rate": 1.0
+    },
+    {
+      "id": "rag-10",
+      "difficulty": "adversarial",
+      "expected_sources": [
+        "responsible_trip_checklist"
+      ],
+      "retrieved_sources": [
+        "responsible_trip_checklist",
+        "chongqing_visitor_guide",
+        "transport_and_pacing"
+      ],
+      "retrieval_mode": "hybrid",
+      "answerable": true,
+      "hit_at_1": true,
+      "hit_at_k": true,
+      "correct_rejection": false,
+      "false_positive": false,
+      "case_passed": true,
+      "reciprocal_rank": 1.0,
+      "citation_validity_rate": 1.0
+    },
+    {
+      "id": "rag-11",
+      "difficulty": "multi_step",
+      "expected_sources": [
+        "responsible_trip_checklist"
+      ],
+      "retrieved_sources": [
+        "responsible_trip_checklist",
+        "chongqing_visitor_guide",
+        "transport_and_pacing"
+      ],
+      "retrieval_mode": "hybrid",
+      "answerable": true,
+      "hit_at_1": true,
+      "hit_at_k": true,
+      "correct_rejection": false,
+      "false_positive": false,
+      "case_passed": true,
+      "reciprocal_rank": 1.0,
+      "citation_validity_rate": 1.0
+    },
+    {
+      "id": "rag-12",
+      "difficulty": "normal",
+      "expected_sources": [
+        "responsible_trip_checklist"
+      ],
+      "retrieved_sources": [
+        "responsible_trip_checklist",
+        "chongqing_visitor_guide",
+        "transport_and_pacing"
+      ],
+      "retrieval_mode": "hybrid",
+      "answerable": true,
+      "hit_at_1": true,
+      "hit_at_k": true,
+      "correct_rejection": false,
+      "false_positive": false,
+      "case_passed": true,
+      "reciprocal_rank": 1.0,
+      "citation_validity_rate": 1.0
+    },
+    {
+      "id": "rag-13",
+      "difficulty": "paraphrase",
+      "expected_sources": [
+        "chongqing_visitor_guide"
+      ],
+      "retrieved_sources": [
+        "chongqing_visitor_guide",
+        "transport_and_pacing",
+        "responsible_trip_checklist"
+      ],
+      "retrieval_mode": "hybrid",
+      "answerable": true,
+      "hit_at_1": true,
+      "hit_at_k": true,
+      "correct_rejection": false,
+      "false_positive": false,
+      "case_passed": true,
+      "reciprocal_rank": 1.0,
+      "citation_validity_rate": 1.0
+    },
+    {
+      "id": "rag-14",
+      "difficulty": "paraphrase",
+      "expected_sources": [
+        "chongqing_visitor_guide"
+      ],
+      "retrieved_sources": [
+        "chongqing_visitor_guide",
+        "responsible_trip_checklist",
+        "transport_and_pacing"
+      ],
+      "retrieval_mode": "hybrid",
+      "answerable": true,
+      "hit_at_1": true,
+      "hit_at_k": true,
+      "correct_rejection": false,
+      "false_positive": false,
+      "case_passed": true,
+      "reciprocal_rank": 1.0,
+      "citation_validity_rate": 1.0
+    },
+    {
+      "id": "rag-15",
+      "difficulty": "multi_step",
+      "expected_sources": [
+        "chongqing_visitor_guide"
+      ],
+      "retrieved_sources": [
+        "chongqing_visitor_guide",
+        "responsible_trip_checklist",
+        "transport_and_pacing"
+      ],
+      "retrieval_mode": "hybrid",
+      "answerable": true,
+      "hit_at_1": true,
+      "hit_at_k": true,
+      "correct_rejection": false,
+      "false_positive": false,
+      "case_passed": true,
+      "reciprocal_rank": 1.0,
+      "citation_validity_rate": 1.0
+    },
+    {
+      "id": "rag-16",
+      "difficulty": "adversarial",
+      "expected_sources": [
+        "chongqing_visitor_guide",
+        "transport_and_pacing"
+      ],
+      "retrieved_sources": [
+        "chongqing_visitor_guide",
+        "transport_and_pacing",
+        "responsible_trip_checklist"
+      ],
+      "retrieval_mode": "hybrid",
+      "answerable": true,
+      "hit_at_1": true,
+      "hit_at_k": true,
+      "correct_rejection": false,
+      "false_positive": false,
+      "case_passed": true,
+      "reciprocal_rank": 1.0,
+      "citation_validity_rate": 1.0
+    },
+    {
+      "id": "rag-17",
+      "difficulty": "multi_step",
+      "expected_sources": [
+        "chongqing_visitor_guide"
+      ],
+      "retrieved_sources": [
+        "chongqing_visitor_guide",
+        "responsible_trip_checklist",
+        "transport_and_pacing"
+      ],
+      "retrieval_mode": "hybrid",
+      "answerable": true,
+      "hit_at_1": true,
+      "hit_at_k": true,
+      "correct_rejection": false,
+      "false_positive": false,
+      "case_passed": true,
+      "reciprocal_rank": 1.0,
+      "citation_validity_rate": 1.0
+    },
+    {
+      "id": "rag-18",
+      "difficulty": "paraphrase",
+      "expected_sources": [
+        "transport_and_pacing"
+      ],
+      "retrieved_sources": [
+        "transport_and_pacing",
+        "chongqing_visitor_guide",
+        "responsible_trip_checklist"
+      ],
+      "retrieval_mode": "hybrid",
+      "answerable": true,
+      "hit_at_1": true,
+      "hit_at_k": true,
+      "correct_rejection": false,
+      "false_positive": false,
+      "case_passed": true,
+      "reciprocal_rank": 1.0,
+      "citation_validity_rate": 1.0
+    },
+    {
+      "id": "rag-19",
+      "difficulty": "normal",
+      "expected_sources": [
+        "transport_and_pacing"
+      ],
+      "retrieved_sources": [
+        "transport_and_pacing",
+        "chongqing_visitor_guide",
+        "responsible_trip_checklist"
+      ],
+      "retrieval_mode": "hybrid",
+      "answerable": true,
+      "hit_at_1": true,
+      "hit_at_k": true,
+      "correct_rejection": false,
+      "false_positive": false,
+      "case_passed": true,
+      "reciprocal_rank": 1.0,
+      "citation_validity_rate": 1.0
+    },
+    {
+      "id": "rag-20",
+      "difficulty": "multi_step",
+      "expected_sources": [
+        "transport_and_pacing"
+      ],
+      "retrieved_sources": [
+        "transport_and_pacing",
+        "chongqing_visitor_guide",
+        "responsible_trip_checklist"
+      ],
+      "retrieval_mode": "hybrid",
+      "answerable": true,
+      "hit_at_1": true,
+      "hit_at_k": true,
+      "correct_rejection": false,
+      "false_positive": false,
+      "case_passed": true,
+      "reciprocal_rank": 1.0,
+      "citation_validity_rate": 1.0
+    },
+    {
+      "id": "rag-21",
+      "difficulty": "paraphrase",
+      "expected_sources": [
+        "responsible_trip_checklist"
+      ],
+      "retrieved_sources": [
+        "responsible_trip_checklist",
+        "chongqing_visitor_guide",
+        "transport_and_pacing"
+      ],
+      "retrieval_mode": "hybrid",
+      "answerable": true,
+      "hit_at_1": true,
+      "hit_at_k": true,
+      "correct_rejection": false,
+      "false_positive": false,
+      "case_passed": true,
+      "reciprocal_rank": 1.0,
+      "citation_validity_rate": 1.0
+    },
+    {
+      "id": "rag-22",
+      "difficulty": "adversarial",
+      "expected_sources": [
+        "responsible_trip_checklist"
+      ],
+      "retrieved_sources": [
+        "responsible_trip_checklist",
+        "transport_and_pacing",
+        "chongqing_visitor_guide"
+      ],
+      "retrieval_mode": "hybrid",
+      "answerable": true,
+      "hit_at_1": true,
+      "hit_at_k": true,
+      "correct_rejection": false,
+      "false_positive": false,
+      "case_passed": true,
+      "reciprocal_rank": 1.0,
+      "citation_validity_rate": 1.0
+    },
+    {
+      "id": "rag-23",
+      "difficulty": "adversarial",
+      "expected_sources": [
+        "responsible_trip_checklist"
+      ],
+      "retrieved_sources": [
+        "responsible_trip_checklist",
+        "chongqing_visitor_guide",
+        "transport_and_pacing"
+      ],
+      "retrieval_mode": "hybrid",
+      "answerable": true,
+      "hit_at_1": true,
+      "hit_at_k": true,
+      "correct_rejection": false,
+      "false_positive": false,
+      "case_passed": true,
+      "reciprocal_rank": 1.0,
+      "citation_validity_rate": 1.0
+    },
+    {
+      "id": "rag-24",
+      "difficulty": "multi_step",
+      "expected_sources": [
+        "chongqing_visitor_guide",
+        "responsible_trip_checklist"
+      ],
+      "retrieved_sources": [
+        "responsible_trip_checklist",
+        "chongqing_visitor_guide",
+        "transport_and_pacing"
+      ],
+      "retrieval_mode": "hybrid",
+      "answerable": true,
+      "hit_at_1": true,
+      "hit_at_k": true,
+      "correct_rejection": false,
+      "false_positive": false,
+      "case_passed": true,
+      "reciprocal_rank": 1.0,
+      "citation_validity_rate": 1.0
+    },
+    {
+      "id": "rag-25",
+      "difficulty": "no_answer",
+      "expected_sources": [],
+      "retrieved_sources": [],
+      "retrieval_mode": "hybrid",
+      "answerable": false,
+      "hit_at_1": false,
+      "hit_at_k": false,
+      "correct_rejection": true,
+      "false_positive": false,
+      "case_passed": true,
+      "reciprocal_rank": 0.0,
+      "citation_validity_rate": 0.0
+    },
+    {
+      "id": "rag-26",
+      "difficulty": "no_answer",
+      "expected_sources": [],
+      "retrieved_sources": [],
+      "retrieval_mode": "hybrid",
+      "answerable": false,
+      "hit_at_1": false,
+      "hit_at_k": false,
+      "correct_rejection": true,
+      "false_positive": false,
+      "case_passed": true,
+      "reciprocal_rank": 0.0,
+      "citation_validity_rate": 0.0
+    },
+    {
+      "id": "rag-27",
+      "difficulty": "no_answer",
+      "expected_sources": [],
+      "retrieved_sources": [],
+      "retrieval_mode": "hybrid",
+      "answerable": false,
+      "hit_at_1": false,
+      "hit_at_k": false,
+      "correct_rejection": true,
+      "false_positive": false,
+      "case_passed": true,
+      "reciprocal_rank": 0.0,
+      "citation_validity_rate": 0.0
+    },
+    {
+      "id": "rag-28",
+      "difficulty": "no_answer",
+      "expected_sources": [],
+      "retrieved_sources": [],
+      "retrieval_mode": "hybrid",
+      "answerable": false,
+      "hit_at_1": false,
+      "hit_at_k": false,
+      "correct_rejection": true,
+      "false_positive": false,
+      "case_passed": true,
+      "reciprocal_rank": 0.0,
+      "citation_validity_rate": 0.0
+    },
+    {
+      "id": "rag-29",
+      "difficulty": "no_answer",
+      "expected_sources": [],
+      "retrieved_sources": [],
+      "retrieval_mode": "hybrid",
+      "answerable": false,
+      "hit_at_1": false,
+      "hit_at_k": false,
+      "correct_rejection": true,
+      "false_positive": false,
+      "case_passed": true,
+      "reciprocal_rank": 0.0,
+      "citation_validity_rate": 0.0
+    },
+    {
+      "id": "rag-30",
+      "difficulty": "no_answer",
+      "expected_sources": [],
+      "retrieved_sources": [],
+      "retrieval_mode": "hybrid",
+      "answerable": false,
+      "hit_at_1": false,
+      "hit_at_k": false,
+      "correct_rejection": true,
+      "false_positive": false,
+      "case_passed": true,
+      "reciprocal_rank": 0.0,
+      "citation_validity_rate": 0.0
+    }
+  ],
+  "boundary": "No LLM generation is graded; citation validity checks retrieval rendering only."
+}

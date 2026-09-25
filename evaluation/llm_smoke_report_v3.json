@@ -1,0 +1,78 @@
+{
+  "execution": {
+    "generated_at": "2026-09-15T04:57:21.075754+00:00",
+    "provider": "grok",
+    "preflight": {
+      "cases": 1,
+      "trials": 1,
+      "judge_enabled": true,
+      "logical_invocations_upper_bound": 15,
+      "provider_attempts_upper_bound": 45,
+      "llm_calls_upper_bound": 45,
+      "attempts_per_invocation": 3,
+      "assumption": "worst-case logical graph invocations multiplied by invoke_structured retry attempts",
+      "per_case": [
+        {
+          "id": "nanjing-3d-sunny-history",
+          "trials": 1,
+          "max_review_rounds": 3,
+          "include_time_check": true,
+          "logical_invocations_upper_bound": 15,
+          "provider_attempts_upper_bound": 45
+        }
+      ],
+      "input_source": "generated_fixtures",
+      "execution_ready": true
+    },
+    "actual_llm_usage": {
+      "calls_total": 9,
+      "failed_total": 3,
+      "input_tokens": 10414,
+      "output_tokens": 2197,
+      "total_tokens": 12611,
+      "estimated_calls": 9,
+      "usage_exact_ratio": 0.0,
+      "latency_sum_ms": 254205.061,
+      "estimated_cost_usd": 0.0,
+      "cost_rates_configured": false
+    },
+    "completed_cases": 1
+  },
+  "cases": [
+    {
+      "id": "nanjing-3d-sunny-history",
+      "tier": "regression",
+      "k": 1,
+      "pass_rate": 1.0,
+      "pass_at_k": 1,
+      "pass_pow_k": 1,
+      "rounds_mean": 2.0,
+      "code_pass_rate": {
+        "g1_closed_pool": 1.0,
+        "g2_time_check": 1.0,
+        "g4_structure": 1.0,
+        "g5_coverage": 1.0,
+        "g6_weather": 1.0,
+        "g7_convergence": 1.0,
+        "g8_time_check_efficiency": 1.0,
+        "g9_walking_distance": 1.0,
+        "g10_habit_constraints": 1.0
+      },
+      "judge_avg": {
+        "preference_fit": 4.0,
+        "habit_fit": 5.0,
+        "theme_coherence": 5.0,
+        "route_reasonableness": 5.0,
+        "weather_adaptation": 3.0
+      },
+      "false_approval_rate": 0.0,
+      "false_rejection_rate": 0.0,
+      "rebuttal_rate": 0.0,
+      "ignore_rate": 0.0,
+      "rebutted_rate": 0.0,
+      "healthy_rebut": 0,
+      "harmful_rebut": 0,
+      "failed_trials": 0
+    }
+  ]
+}

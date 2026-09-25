@@ -11,7 +11,7 @@
 tests/eval/
   fixtures/           ← 测试用例（每个 .json 一个用例，数据集在这里管理）
   graders/
-    code_graders.py   ← 确定性打分器 G1–G7（复用生产的 helpers.py）
+  code_graders.py   ← 确定性打分器 G1–G10（复用生产的 helpers.py）
     llm_judge.py      ← LLM 评委（主观质量打分）
     reviewer_reliability.py  ← reviewer 可靠性 + planner 反驳率
   harness.py          ← 从 fixture 构造状态并跑 planner⇄reviewer 循环
@@ -28,16 +28,16 @@ tests/eval/transcripts/   ← 运行后自动生成，存每个用例最后一�
 ## 快速开始
 
 ```bash
-# 0. 确保 .env.local 已配置 AMAP_API_KEY 和 DEEPSEEK_API_KEY
+# 0. 确保 .env.local 已配置 AMAP_API_KEY 和所选 LLM 提供商的 API Key
 
 # 1. 冒烟：单个用例跑 1 次，只跑代码打分（不调 LLM 评委，省钱省时）
-python -m tests.eval.run_eval --only nanjing-3d-sunny-history --k 1 --no-judge
+python -m tests.eval.run_eval --only nanjing-3d-sunny-history --k 1 --no-judge --max-llm-calls 24 --allow-external-calls
 
 # 2. 标准评估：所有用例，k=5
-python -m tests.eval.run_eval --k 5
+python -m tests.eval.run_eval --k 5 --max-llm-calls 6750 --allow-external-calls
 
 # 3. 输出 Markdown 报告
-python -m tests.eval.run_eval --k 5 --out report.md
+python -m tests.eval.run_eval --k 5 --out report.md --json-out report.json --max-llm-calls 6750 --allow-external-calls
 ```
 
 ---
@@ -58,19 +58,21 @@ python -m tests.eval.run_eval --k 5 --out report.md
 | **忽略率** | planner 既不改也不解释的比例 | 越低越好，忽略≈掩盖问题 |
 | **评委均分** | LLM 评委主观打分的 5 维平均（1-5 分） | 越高越好，≥4 算合格 |
 
-**代码打分 G1–G7**（每次 trial 都会打）：
+**代码打分 G1–G10**（每次 trial 都会打）：
 
 | 代号 | 检查内容 | 失败含义 |
 |---|---|---|
 | G1 封闭池 | 所有景点必须来自候选池 | planner 幻觉景点，硬性失败 |
 | G2 开放时间 | 游玩时段须在景点开放时间内 | 行程不可行 |
-| G3 地理跨度 | 每天最大跨度 ≤ `max_day_span_km`（默认 15km） | 路线过于分散 |
 | G4 结构合法 | 景点数 ≤ max_per_day；时段有序；evening 景点须夜间开放 | 基本结构问题 |
 | G5 覆盖 | 天数匹配、每天非空 | 规划不完整 |
 | G6 天气合规 | 雨雪天的露天景点数 ≤ 阈值（依赖 fixture 的 `indoor` 标签） | 未响应天气 |
 | G7 收敛 | `approved=True` 且用轮次 ≤ `max_review_rounds` | 未在限制内收敛 |
+| G8 时间核查效率 | 首轮核查后无残留开放时间问题 | Time Check 反复修正或仍有问题 |
+| G9 步行约束 | 用户明确设置上限时，相邻景点的高德道路步行距离不超过上限；缺少路线核验同样失败 | 未响应“少走路”约束，或把直线距离冒充步行距离 |
+| G10 明确习惯 | “不喜欢早起/睡到自然醒”首站不早于 10:00；“慢节奏/每天景点别太多”每天不超过 2 个 | 未真正落实用户作息与节奏 |
 
-`objective_pass`（客观通过）= G1–G6 全过；`overall_pass`（最终通过）= 客观通过 ∧ G7 收敛。
+`objective_pass`（客观通过）= G1、G2、G4–G6、G9、G10 全过；`overall_pass`（最终通过）= 客观通过 ∧ G7 收敛。
 
 ---
 
@@ -112,6 +114,12 @@ python -m tests.eval.run_eval --k 5 --out report.md
   "expectations": {
     "max_day_span_km":       15,   // G3 阈值
     "outdoor_on_bad_day_max": 0    // G6 阈值：雨天露天景点上限
+  },
+  "provenance": {
+    "poi_source": "AMap Web Service Place Text API v3",
+    "poi_captured_at": "ISO-8601 UTC timestamp",
+    "weather_source": "synthetic frozen evaluation scenario",
+    "indoor_label_source": "deterministic name-keyword heuristic"
   }
 }
 ```
@@ -120,7 +128,19 @@ python -m tests.eval.run_eval --k 5 --out report.md
 - `regression`：基准用例，条件宽松、景点池充裕，**预期 pass 率接近 100%**。用来防退步。
 - `capability`：能力挑战用例，有天气、偏好、景点池受限等困难。**预期通过率低**，作为提升目标。
 
-### 方式一：用脚本自动抓（推荐起步）
+### 方式一：生成完整 30 条集合（推荐）
+
+先查看调用预算，再显式批准抓取：
+
+```bash
+python -m tests.eval.generate_fixtures --dry-run
+python -m tests.eval.generate_fixtures --max-api-calls 60 --allow-external-calls
+python scripts/validate_eval_assets.py --require-fixtures --out evaluation/eval_asset_report.json
+```
+
+脚本针对 5 个城市分别执行“必去景点、热门景区、博物馆”三个检索通道，并轮询合并结果。正常为最多 15 次搜索；预算按每次搜索最多 4 次限流尝试计算，因此门禁上限为 60。天气使用冻结场景，`indoor` 使用名称关键词启发式，并在每份文件中记录来源边界。
+
+### 方式二：抓取单个 Fixture 骨架
 
 会真实调高德 API 取一次景点池，生成骨架 JSON：
 
@@ -132,7 +152,8 @@ python -m tests.eval.capture_pool \
   --pref  "历史古迹"    \   # 景点偏好
   --habit "不喜欢早起"  \   # 游玩习惯
   --id    nanjing-3d-history \  # fixture ID（同时是文件名）
-  --tier  capability
+  --tier  capability    \
+  --allow-external-calls
 ```
 
 执行后在 `fixtures/nanjing-3d-history.json` 生成骨架。**生成后必须手工完成两件事**：
@@ -155,7 +176,7 @@ python -m tests.eval.capture_pool \
 | 全程雨 | 所有天 `"is_bad": true` |
 | 酷暑高温 | `day_temp` 改成 "38"，天气字段填 "晴热" |
 
-### 方式二：完全手写
+### 方式三：完全手写
 
 适合精确控制场景的负样本（如"景点池里只有露天景点却全是雨天"这种专门刁难 planner 的边界测试）。直接复制已有 fixture 修改即可。
 
@@ -177,13 +198,13 @@ python -m tests.eval.capture_pool \
 
 ```bash
 # 1. 单个回归用例，k=1，只代码打分，确认框架跑通
-python -m tests.eval.run_eval --only nanjing-3d-sunny-history --k 1 --no-judge
+python -m tests.eval.run_eval --only nanjing-3d-sunny-history --k 1 --no-judge --max-llm-calls 24 --allow-external-calls
 
 # 2. 加 LLM 评委
-python -m tests.eval.run_eval --only nanjing-3d-sunny-history --k 1
+python -m tests.eval.run_eval --only nanjing-3d-sunny-history --k 1 --max-llm-calls 30 --allow-external-calls
 
 # 3. 跑能力用例（雨天）
-python -m tests.eval.run_eval --only nanjing-3d-rainy-history --k 1
+python -m tests.eval.run_eval --only nanjing-3d-rainy-history --k 1 --max-llm-calls 30 --allow-external-calls
 ```
 
 ### 读 transcript（发现问题时必做）
@@ -204,7 +225,7 @@ cat tests/eval/transcripts/nanjing-3d-sunny-history.json
 ### 正式评估（k=5）
 
 ```bash
-python -m tests.eval.run_eval --k 5 --out eval_report.md
+python -m tests.eval.run_eval --k 5 --out eval_report.md --json-out eval_report.json --max-llm-calls 6750 --allow-external-calls
 ```
 
 成本参考（DeepSeek-v4-flash）：每个用例每次 trial 约消耗 3-5 次 LLM 调用（含 planner/reviewer/评委/反驳分析），k=5、20 个用例约 300–500 次调用。

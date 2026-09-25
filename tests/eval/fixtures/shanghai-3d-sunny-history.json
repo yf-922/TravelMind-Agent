@@ -1,0 +1,312 @@
+{
+  "id": "shanghai-3d-sunny-history",
+  "tier": "regression",
+  "destination": "上海",
+  "query": "上海3天近代历史游，外滩老城厢为主",
+  "travel_start_date": "2026-08-10",
+  "travel_end_date": "2026-08-12",
+  "days": 3,
+  "attraction_preference": "历史建筑、近代史、外滩",
+  "habit_preference": "正常作息",
+  "max_per_day": 3,
+  "min_rating": 4.5,
+  "max_review_rounds": 3,
+  "pois": [
+    {
+      "name": "上海朱家角古镇旅游区",
+      "rating": 4.7,
+      "open_time": "周一至周日 08:30-17:00；内部收费景点的营业时间请以各个子景点详情页展示为准",
+      "location": {
+        "lng": 121.050518,
+        "lat": 31.114306
+      },
+      "photo": "http://store.is.autonavi.com/showpic/a617a73f40f366c74a6b733d8a78636d",
+      "adname": "青浦区",
+      "address": "朱家角镇课植园路555号",
+      "tel": "021-59240077;021-59245559",
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "淀山湖风景区",
+      "rating": 4.7,
+      "open_time": "周一至周日 00:00-24:00",
+      "location": {
+        "lng": 121.009195,
+        "lat": 31.131111
+      },
+      "photo": "http://store.is.autonavi.com/showpic/8afeac13c7f557a39b398da6ae9d3bbf",
+      "adname": "青浦区",
+      "address": "淀山湖",
+      "tel": "021-64393615",
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "上海失恋博物馆",
+      "rating": 4.6,
+      "open_time": "周一至周日 10:00-21:30",
+      "location": {
+        "lng": 121.483583,
+        "lat": 31.236683
+      },
+      "photo": "https://aos-comment.amap.com/B0FFKJT469/comment/754D5887_166A_4ADE_A621_98C91774C8A3_L0_001_1500_200_1769390130778_87320232.jpg",
+      "adname": "黄浦区",
+      "address": "南京东路上海悦荟广场4层(南京东路地铁站3号口步行50米)",
+      "tel": "13122788082",
+      "cost": "[]",
+      "indoor": true
+    },
+    {
+      "name": "上海城隍庙",
+      "rating": 4.8,
+      "open_time": "周一至周日 08:30-16:30",
+      "location": {
+        "lng": 121.492466,
+        "lat": 31.225879
+      },
+      "photo": "http://store.is.autonavi.com/showpic/518f824f343115a063effa52ea4cb224",
+      "adname": "黄浦区",
+      "address": "方浜中路249号",
+      "tel": "021-63284494",
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "上海动物园",
+      "rating": 4.8,
+      "open_time": "周一至周日 08:00-17:00",
+      "location": {
+        "lng": 121.363009,
+        "lat": 31.193277
+      },
+      "photo": "http://store.is.autonavi.com/showpic/b61ca9d1298e702a3d27f9dde7412e74",
+      "adname": "长宁区",
+      "address": "虹桥路2381号",
+      "tel": "021-62109210",
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "上海欢乐谷",
+      "rating": 4.8,
+      "open_time": "7月3日-8月30日 09:30-22:00开放(21:00停止入园)；8月31日-9月11日 09:30-19:30开放(18:30停止入园)；9月12日-11月15日 周一至周四 09:30-21:30开放(20:30停止入园)；9月12日-11月15日 周五至周日 09:30-22:00开放(21:00停止入园)；特殊营业时间:中秋节,国庆节 09:30-22:00开放(21:00停止入园)；10月23日-10月29日 09:30-23:00开放(22:00停止入园)；10月31日-11月1日 周六至周日 09:30-23:30开放(22:30停止入园)；具体开放时间以官方通知为准",
+      "location": {
+        "lng": 121.214778,
+        "lat": 31.09607
+      },
+      "photo": "http://store.is.autonavi.com/showpic/8e3e4fa5f850dc050d238fae192df376",
+      "adname": "松江区",
+      "address": "林湖路888号",
+      "tel": "4006688022",
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "上海迪士尼度假区",
+      "rating": 4.9,
+      "open_time": "09-11至09-13 周一至周日 08:30-21:30；09-14至09-17 周一至周日 08:30-20:30；09-18至09-20 周一至周日 08:30-21:30；09-21至09-24 周一至周日 08:30-20:30；09-25至09-26 周一至周日 08:30-21:30",
+      "location": {
+        "lng": 121.667003,
+        "lat": 31.141447
+      },
+      "photo": "http://store.is.autonavi.com/showpic/4f83bd890aba5ab4f0d859e5e25a94f7",
+      "adname": "浦东新区",
+      "address": "黄赵路310号",
+      "tel": "4001800000",
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "上海植物园",
+      "rating": 4.7,
+      "open_time": "1月至4月,11月至12月 周一至周日 06:00-17:00；5月至10月 周一至周日 06:00-18:00；1号门（龙吴路1111号）:11月～次年4月7:00-17:00，5月～10月7:00-18:00； 3号门（百色路940号）、4号门（罗城路151号）:11月～次年4月6:00-17:00，5月～10月6:00-18:00",
+      "location": {
+        "lng": 121.444271,
+        "lat": 31.147478
+      },
+      "photo": "http://store.is.autonavi.com/showpic/49b1e751e924ad56ff08a7a3b69a5b5a",
+      "adname": "徐汇区",
+      "address": "龙吴路1111号",
+      "tel": "021-54363369",
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "上海海昌海洋公园",
+      "rating": 4.7,
+      "open_time": "9月1日至9月24日 周一至周五 09:30-17:30(16:30停止入园)；周六至周日 09:00-20:30(19:30停止入园)；9月25日至9月30日 周一至周三 09:00-20:30(19:30停止入园),周五至周日 09:00-21:00(20:00停止入园)；具体开放时间以官方通知为准",
+      "location": {
+        "lng": 121.905695,
+        "lat": 30.912653
+      },
+      "photo": "http://store.is.autonavi.com/showpic/9a5ada2efcbb0817ce5da5448d833d2b",
+      "adname": "浦东新区",
+      "address": "银飞路166号",
+      "tel": "021-50606666",
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "上海长风海洋世界",
+      "rating": 4.5,
+      "open_time": "1月至6月 周一至周日 09:30-18:00 最晚进入17:15；7月至12月 周二至周六 09:00-17:30 最晚进入16:45 07-01至08-08 周一,周日 09:00-17:30 最晚进入16:45；08-09至08-10 周一,周日 全天关闭；08-11至12-31 周一,周日 09:00-17:30 最晚进入16:45",
+      "location": {
+        "lng": 121.396998,
+        "lat": 31.225042
+      },
+      "photo": "http://store.is.autonavi.com/showpic/10277b7c7e28aec19ddec4a0867a2aa5",
+      "adname": "普陀区",
+      "address": "大渡河路189号(长风公园地铁站2号口步行150米)",
+      "tel": "021-60721488;4000988966",
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "上海海洋水族馆",
+      "rating": 4.7,
+      "open_time": "全年9:00-18:00,暑期7月1日-8月31日:9:00-21:00",
+      "location": {
+        "lng": 121.501894,
+        "lat": 31.240777
+      },
+      "photo": "https://store.is.autonavi.com/showpic/c84ea7d9438f0b570000003132978372?type=pic",
+      "adname": "浦东新区",
+      "address": "陆家嘴环路1388号",
+      "tel": "021-58779988;12301",
+      "cost": "[]",
+      "indoor": true
+    },
+    {
+      "name": "金山城市沙滩",
+      "rating": 4.5,
+      "open_time": "泳期:6月20日至9月10日08:30-21:30(21:00停止入园)；非泳期:3月1日至6月19日,9月11日至10月30日 08:30-20:00(20:00停止入园)；12月1日至次年2月28日08:30-17:00(17:00停止入园)；",
+      "location": {
+        "lng": 121.351801,
+        "lat": 30.710884
+      },
+      "photo": "http://store.is.autonavi.com/showpic/fd6d7a67f5c811732d48521d4e5029b9",
+      "adname": "金山区",
+      "address": "沪杭公路7555号",
+      "tel": "021-57936507",
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "上海野生动物园",
+      "rating": 4.8,
+      "open_time": "9月1日至9月30日 周一至周五 09:00-17:00开放(16:00停止入园)；周六至周日 09:00-21:00开放(19:30停止入园)；特殊营业时间:9月25日至9月27日 09:00-21:00开放(19:30停止入园)；9月20日 09:00-17:00开放(16:00停止入园)；具体开放时间以官方通知为准",
+      "location": {
+        "lng": 121.721793,
+        "lat": 31.055337
+      },
+      "photo": "http://store.is.autonavi.com/showpic/9d30c2aa49204e31b02d420d4411bd16",
+      "adname": "浦东新区",
+      "address": "南六公路178号",
+      "tel": "021-58036000",
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "新场古镇",
+      "rating": 4.7,
+      "open_time": "周一至周日 00:00-24:00",
+      "location": {
+        "lng": 121.646758,
+        "lat": 31.024851
+      },
+      "photo": "http://store.is.autonavi.com/showpic/30d27911f3faeba720513deb35db22fd",
+      "adname": "浦东新区",
+      "address": "新场镇海泉街128号",
+      "tel": "021-58170650",
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "七宝古镇",
+      "rating": 4.7,
+      "open_time": "周一至周日 09:00-18:00",
+      "location": {
+        "lng": 121.355927,
+        "lat": 31.153315
+      },
+      "photo": "http://store.is.autonavi.com/showpic/2229cb4ecdc1907b7d6542ae106cd81b",
+      "adname": "闵行区",
+      "address": "横沥路108号",
+      "tel": "021-64610016;021-64615308",
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "碧海金沙",
+      "rating": 4.5,
+      "open_time": "周一至周日 08:30-21:00；19:30停止入园",
+      "location": {
+        "lng": 121.551519,
+        "lat": 30.819573
+      },
+      "photo": "http://store.is.autonavi.com/showpic/04acfb003ec74cdba0fde514943a643e",
+      "adname": "奉贤区",
+      "address": "海涵路6号",
+      "tel": "021-57127272;8009881979;021-57127806",
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "上海豫园",
+      "rating": 4.8,
+      "open_time": "周一全天关闭(法定节假日除外)；周二至周日 09:00-16:30(16:00停止入馆)",
+      "location": {
+        "lng": 121.492497,
+        "lat": 31.227714
+      },
+      "photo": "http://store.is.autonavi.com/showpic/faeb0264854cd82fbb315cb2ccacea0f",
+      "adname": "黄浦区",
+      "address": "福佑路168号",
+      "tel": "021-63260830",
+      "cost": "[]",
+      "indoor": false
+    }
+  ],
+  "weather_forecast": [
+    {
+      "date": "2026-08-10",
+      "day_weather": "晴",
+      "night_weather": "晴",
+      "day_temp": "33",
+      "night_temp": "26",
+      "is_bad": false
+    },
+    {
+      "date": "2026-08-11",
+      "day_weather": "晴",
+      "night_weather": "晴",
+      "day_temp": "33",
+      "night_temp": "26",
+      "is_bad": false
+    },
+    {
+      "date": "2026-08-12",
+      "day_weather": "晴",
+      "night_weather": "晴",
+      "day_temp": "33",
+      "night_temp": "26",
+      "is_bad": false
+    }
+  ],
+  "expectations": {
+    "outdoor_on_bad_day_max": 0
+  },
+  "provenance": {
+    "poi_source": "AMap Web Service Place Text API v3",
+    "poi_captured_at": "2026-09-14T15:04:00.960324+00:00",
+    "poi_query_channels": [
+      "必去景点",
+      "热门景区",
+      "博物馆"
+    ],
+    "poi_rating_threshold": 4.5,
+    "weather_source": "synthetic frozen evaluation scenario",
+    "indoor_label_source": "deterministic name-keyword heuristic"
+  }
+}

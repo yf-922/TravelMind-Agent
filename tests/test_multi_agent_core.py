@@ -3,6 +3,7 @@ from app.multi_agent_core.messages import AgentMessage
 from app.multi_agent_core.supervisor import Supervisor
 from app.multi_agent_core.tools import FixturePoiTool
 from app.multi_agent_core.tools import ToolPermissionError, ToolRegistry
+from app.multi_agent_core.trajectory import TrajectoryContract, grade_trajectory
 from app.multi_agent_core.memory import SQLiteAgentMemoryStore
 
 
@@ -36,6 +37,31 @@ def test_poi_tool_output_is_grounded_in_the_planner_draft():
 
     assert result["itinerary"]
     assert all(item["name"] in candidate_names for item in result["itinerary"])
+
+
+def test_supervisor_exposes_sanitized_auditable_tool_trace():
+    supervisor = make_supervisor()
+    result = supervisor.run_trip("Plan a private anniversary trip", "Beijing")
+
+    assert len(result["tool_trace"]) == 1
+    call = result["tool_trace"][0]
+    assert call["agent"] == "poi_research_agent"
+    assert call["tool"] == "poi_search"
+    assert call["parameters"]["city"] == "Beijing"
+    assert call["parameters"]["query"]["present"] is True
+    assert "private anniversary" not in str(call)
+
+    contract = TrajectoryContract(
+        "happy",
+        (
+            ("intent_extract", "intent_agent", 0),
+            ("poi_research", "poi_research_agent", 0),
+            ("itinerary_plan", "planner_agent", 0),
+            ("itinerary_review", "reviewer_agent", 0),
+        ),
+        "Beijing",
+    )
+    assert grade_trajectory(result, contract)["passed"] is True
 
 
 class FirstDraftNeedsRevision(PlannerAgent):
@@ -93,7 +119,8 @@ def test_tool_registry_rejects_cross_agent_tool_access():
     try:
         registry.call(ProtectedAgent(), "poi_search", "Beijing")
     except ToolPermissionError:
-        pass
+        assert registry.audit_log[-1].status == "blocked"
+        assert registry.audit_log[-1].error_code == "ToolPermissionError"
     else:
         raise AssertionError("an Agent without poi_search permission called the tool")
 

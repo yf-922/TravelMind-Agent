@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "measurement_type": "deterministic-memory-isolation",
+  "top_k": 2,
+  "semantic_memory": {
+    "case_count": 6,
+    "hit_at_k": 1.0,
+    "cross_user_leakage_rate": 0.0,
+    "metadata_filter_applied_rate": 1.0,
+    "cases": [
+      {
+        "id": "memory-01",
+        "user_id": "user-a",
+        "hit_at_k": true,
+        "returned": 2,
+        "leaked_items": 0
+      },
+      {
+        "id": "memory-02",
+        "user_id": "user-a",
+        "hit_at_k": true,
+        "returned": 2,
+        "leaked_items": 0
+      },
+      {
+        "id": "memory-03",
+        "user_id": "user-b",
+        "hit_at_k": true,
+        "returned": 2,
+        "leaked_items": 0
+      },
+      {
+        "id": "memory-04",
+        "user_id": "user-b",
+        "hit_at_k": true,
+        "returned": 2,
+        "leaked_items": 0
+      },
+      {
+        "id": "memory-05",
+        "user_id": "user-c",
+        "hit_at_k": true,
+        "returned": 2,
+        "leaked_items": 0
+      },
+      {
+        "id": "memory-06",
+        "user_id": "user-c",
+        "hit_at_k": true,
+        "returned": 2,
+        "leaked_items": 0
+      }
+    ]
+  },
+  "agent_memory": {
+    "boundaries_checked": 5,
+    "isolation_pass_rate": 1.0
+  }
+}

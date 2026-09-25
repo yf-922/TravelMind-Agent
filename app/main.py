@@ -16,17 +16,22 @@ from __future__ import annotations
 import json
 import os
 from pathlib import Path
-from typing import Optional
+from typing import Any, AsyncIterator, Optional
 
 import asyncio
+import logging
+import time
+import uuid
 
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, StreamingResponse
+from fastapi.responses import PlainTextResponse
 from fastapi.staticfiles import StaticFiles
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from app.core.auth import decode_token
+from app.core.agent_runs import agent_runs, observe_agent_events
 from app.core.database import get_conn, init_db
 from app.core.env import load_local_env
 from app.core.memory import (
@@ -43,9 +48,11 @@ from app.core.semantic_memory import (
     search_user_memories,
 )
 from app.core.thread_store import thread_store
+from app.core.cache import redis_status
+from app.core.observability import prometheus_text, request_finished, request_started
 from app.planning.graph import run_modification_stream
 from app.planning.graph import run_stream as run_plan_stream
-from app.planning.helpers import amap_key, merge_verified_poi
+from app.planning.helpers import amap_key, merge_verified_poi, missing_explicit_places
 from app.planning.profile_updater import run_profile_update_agent
 from app.providers.amap.poi import ATTRACTION_TYPE, poi_to_spot, search_city_pois
 from app.api.auth_routes import router as auth_router
@@ -56,10 +63,29 @@ from app.api.sweep_routes import router as sweep_router
 
 load_local_env()
 init_db()
+logger = logging.getLogger(__name__)
 
 # ─── 应用 ────────────────────────────────────────────────────
 
 app = FastAPI(title="AI 旅游规划助手", version="0.1.0")
+
+
+@app.middleware("http")
+async def request_observability(request: Request, call_next):
+    """Attach a request id and record latency without exposing prompt contents."""
+    request_id = request.headers.get("X-Request-ID") or uuid.uuid4().hex
+    request.state.request_id = request_id
+    started = time.perf_counter()
+    request_started()
+    status_code = 500
+    try:
+        response = await call_next(request)
+        status_code = response.status_code
+        return response
+    finally:
+        request_finished(request.url.path, status_code, (time.perf_counter() - started) * 1000)
+        if 'response' in locals():
+            response.headers["X-Request-ID"] = request_id
 
 app.include_router(auth_router)
 app.include_router(history_router)
@@ -69,10 +95,11 @@ app.include_router(sweep_router)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[origin.strip() for origin in os.getenv("CORS_ORIGINS", "http://localhost:8765").split(",") if origin.strip()],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+    expose_headers=["X-Request-ID", "X-Agent-Run-ID"],
 )
 
 
@@ -88,14 +115,21 @@ def _get_required_user_id(request: Request) -> str:
     return user_id
 
 
+async def _encode_observed_sse(
+    source: AsyncIterator[dict[str, Any]], run_id: str
+) -> AsyncIterator[str]:
+    async for event in observe_agent_events(source, run_id):
+        yield f"data: {json.dumps(event, ensure_ascii=False)}\n\n"
+
+
 # ─── API 路由 ─────────────────────────────────────────────────
 
 class PlanRequest(BaseModel):
-    query: str
-    max_per_day: int = 5
-    min_rating: float = 4.5
-    max_spots: int = 30
-    max_review_rounds: int = 3
+    query: str = Field(min_length=1, max_length=2000)
+    max_per_day: int = Field(default=5, ge=1, le=12)
+    min_rating: float = Field(default=4.5, ge=0, le=5)
+    max_spots: int = Field(default=30, ge=1, le=100)
+    max_review_rounds: int = Field(default=3, ge=0, le=8)
     # 多轮续接
     thread_id: Optional[str] = None
     # 修改规划
@@ -108,7 +142,32 @@ class PlanRequest(BaseModel):
 
 @app.get("/api/health")
 def health():
-    return {"status": "ok"}
+    """Liveness/readiness probe with dependency status for deployment checks."""
+    db_status = "ok"
+    try:
+        with get_conn() as conn:
+            conn.execute("SELECT 1").fetchone()
+    except Exception:
+        db_status = "error"
+    cache = redis_status()
+    overall = "ok" if db_status == "ok" else "degraded"
+    return {"status": overall, "database": db_status, "redis": cache["status"]}
+
+
+@app.get("/api/metrics", response_class=PlainTextResponse)
+def metrics():
+    """Prometheus-compatible counters for local demos and deployment probes."""
+    return prometheus_text()
+
+
+@app.get("/api/agent-runs/{run_id}")
+def agent_run_trace(run_id: str, request: Request):
+    """Return a privacy-safe node trace to the user who owns the run."""
+    user_id = _get_required_user_id(request)
+    trace = agent_runs.get_owned(run_id, user_id)
+    if trace is None:
+        raise HTTPException(status_code=404, detail="执行记录不存在或已过期")
+    return trace
 
 
 @app.get("/api/config")
@@ -168,8 +227,18 @@ async def create_plan_stream(req: PlanRequest, request: Request):
             "attraction_preference": state.attraction_preference,
             "food_preference":       state.food_preference,
             "habit_preference":      state.habit_preference,
+            "max_walking_km":        state.max_walking_km,
+            "rain_indoor_priority":  state.rain_indoor_priority,
             "weather_forecast": state.weather_forecast,
             "weather_note":     state.weather_note,
+            "route_distance_legs": state.route_distance_legs,
+            "route_distance_mode": state.route_distance_mode,
+            "route_distance_note": state.route_distance_note,
+            "route_risk_flags": state.route_risk_flags,
+            "route_risk_score": state.route_risk_score,
+            "review_required": state.review_required,
+            "time_check_required": state.time_check_required,
+            "review_skipped": state.review_skipped,
             "max_per_day":      state.max_per_day,
             "query":            state.query,
         }
@@ -197,6 +266,39 @@ async def create_plan_stream(req: PlanRequest, request: Request):
 
         if checkpoint:
             modification_notes = req.modification_notes
+            # 对带引号的明确景点名做保守的候选池覆盖检测。普通偏好描述不触发
+            # 外部搜索，避免把模糊语义误当成 POI；用户明确选择的景点仍走下方
+            # selected_poi_name 的严格核验路径。
+            if not req.selected_poi_name:
+                missing_places = missing_explicit_places(
+                    modification_notes, list(checkpoint.get("pois") or [])
+                )
+                for requested_name in missing_places[:3]:
+                    destination = str(checkpoint.get("destination") or "").strip()
+                    if not destination:
+                        logger.warning("[modification] skip targeted POI lookup without destination name=%s", requested_name)
+                        break
+                    try:
+                        raw_pois = search_city_pois(
+                            destination, amap_key(), keywords=requested_name,
+                            types=ATTRACTION_TYPE, offset=8,
+                        )
+                    except RuntimeError as exc:
+                        logger.warning("[modification] targeted POI lookup failed name=%s error=%s", requested_name, exc)
+                        continue
+                    verified = next(
+                        (poi_to_spot(raw) for raw in raw_pois
+                         if str(raw.get("name") or "").strip() == requested_name),
+                        None,
+                    )
+                    if verified:
+                        checkpoint = {
+                            **checkpoint,
+                            "pois": merge_verified_poi(list(checkpoint.get("pois") or []), verified),
+                        }
+                        modification_notes += (
+                            f"\n【系统已核验新增景点】{verified['name']}，已加入候选池并参与本轮重规划。"
+                        )
             if req.selected_poi_name:
                 poi_name = req.selected_poi_name.strip()
                 destination = str(checkpoint.get("destination") or "").strip()
@@ -235,32 +337,37 @@ async def create_plan_stream(req: PlanRequest, request: Request):
                 )
 
             async def gen_modification():
-                try:
-                    async for ev in run_modification_stream(
-                        checkpoint,
-                        modification_notes,
-                        memory_writer=memory_writer,
-                        **overrides,
-                    ):
-                        if ev.get("type") == "modification_warning":
-                            # 存 pending 状态到 DB，用 pending_id 替换 pending_state
-                            pending_state = ev.pop("pending_state", {})
-                            if user_id:
-                                with get_conn() as conn:
-                                    pid = save_pending_modification(user_id, pending_state, conn)
-                                ev["pending_id"] = pid
-                            ev["parent_plan_id"] = parent_plan_id
-                        elif ev.get("type") == "result" and ev.get("success") and saved_plan_id:
-                            ev["plan_id"] = saved_plan_id[0]
-                        yield f"data: {json.dumps(ev, ensure_ascii=False)}\n\n"
-                except Exception as e:  # noqa: BLE001
-                    err = {"type": "error", "message": str(e)}
-                    yield f"data: {json.dumps(err, ensure_ascii=False)}\n\n"
+                async for ev in run_modification_stream(
+                    checkpoint,
+                    modification_notes,
+                    memory_writer=memory_writer,
+                    **overrides,
+                ):
+                    if ev.get("type") == "modification_warning":
+                        # 存 pending 状态到 DB，用 pending_id 替换 pending_state
+                        pending_state = ev.pop("pending_state", {})
+                        if user_id:
+                            with get_conn() as conn:
+                                pid = save_pending_modification(user_id, pending_state, conn)
+                            ev["pending_id"] = pid
+                        ev["parent_plan_id"] = parent_plan_id
+                    elif ev.get("type") == "result" and ev.get("success") and saved_plan_id:
+                        ev["plan_id"] = saved_plan_id[0]
+                    yield ev
+
+            run_id = agent_runs.start(
+                user_id, "modification", getattr(request.state, "request_id", None)
+            )
 
             return StreamingResponse(
-                gen_modification(),
+                _encode_observed_sse(gen_modification(), run_id),
                 media_type="text/event-stream",
-                headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no", "Connection": "keep-alive"},
+                headers={
+                    "Cache-Control": "no-cache",
+                    "X-Accel-Buffering": "no",
+                    "Connection": "keep-alive",
+                    "X-Agent-Run-ID": run_id,
+                },
             )
         # 无 checkpoint（旧数据）→ 降级走普通流程，带 modification_notes
         overrides["modification_notes"] = req.modification_notes
@@ -273,43 +380,57 @@ async def create_plan_stream(req: PlanRequest, request: Request):
         with get_conn() as conn:
             profile = get_user_profile(user_id, conn)
         structured_hint = format_profile_for_prompt(profile)
-        semantic_hint = format_semantic_memories(search_user_memories(user_id, query))
+        semantic_hint = ""
+        # Chroma may download its embedding model on first use. Never perform
+        # that blocking operation on FastAPI's event loop: otherwise a single
+        # planning request can make login and health checks appear frozen.
+        try:
+            memories = await asyncio.wait_for(
+                asyncio.to_thread(search_user_memories, user_id, query),
+                timeout=min(5.0, max(1.0, float(os.getenv("MEMORY_LOOKUP_TIMEOUT_SECONDS", "2.5")))),
+            )
+            semantic_hint = format_semantic_memories(memories)
+        except TimeoutError:
+            logger.warning("[semantic_memory] lookup timed out; continuing without semantic memory")
+        except (ValueError, TypeError):
+            logger.warning("[semantic_memory] invalid lookup timeout configuration; skipping lookup")
+        except Exception:  # noqa: BLE001
+            logger.warning("[semantic_memory] lookup failed; continuing without semantic memory", exc_info=True)
         profile_hint = "\n".join(part for part in (structured_hint, semantic_hint) if part)
 
     # ── 6. 普通规划流 ─────────────────────────────────────────
     async def gen():
-        try:
-            async for ev in run_plan_stream(
-                query,
-                profile_hint=profile_hint,
-                memory_writer=memory_writer,
-                user_id=user_id,
-                **overrides,
-            ):
-                # missing_fields 时追加 thread_id 供前端续接
-                if ev.get("type") == "result" and not ev.get("success") and ev.get("missing_fields"):
-                    ev["thread_id"] = thread_store.create(query)
-                # 成功时追加 plan_id，并触发异步画像更新（只看 raw query，不看改写后的）
-                if ev.get("type") == "result" and ev.get("success") and saved_plan_id:
-                    ev["plan_id"] = saved_plan_id[0]
-                    asyncio.create_task(
-                        run_profile_update_agent(user_id, query, overrides.get("model_name"))
-                    )
-                    asyncio.create_task(
-                        run_semantic_memory_update(user_id, query, overrides.get("model_name"))
-                    )
-                yield f"data: {json.dumps(ev, ensure_ascii=False)}\n\n"
-        except Exception as e:  # noqa: BLE001
-            err = {"type": "error", "message": str(e)}
-            yield f"data: {json.dumps(err, ensure_ascii=False)}\n\n"
+        async for ev in run_plan_stream(
+            query,
+            profile_hint=profile_hint,
+            memory_writer=memory_writer,
+            user_id=user_id,
+            **overrides,
+        ):
+            # missing_fields 时追加 thread_id 供前端续接
+            if ev.get("type") == "result" and not ev.get("success") and ev.get("missing_fields"):
+                ev["thread_id"] = thread_store.create(query)
+            # 成功时追加 plan_id，并触发异步画像更新（只看 raw query，不看改写后的）
+            if ev.get("type") == "result" and ev.get("success") and saved_plan_id:
+                ev["plan_id"] = saved_plan_id[0]
+                asyncio.create_task(
+                    run_profile_update_agent(user_id, query, overrides.get("model_name"))
+                )
+                asyncio.create_task(
+                    run_semantic_memory_update(user_id, query, overrides.get("model_name"))
+                )
+            yield ev
+
+    run_id = agent_runs.start(user_id, "plan", getattr(request.state, "request_id", None))
 
     return StreamingResponse(
-        gen(),
+        _encode_observed_sse(gen(), run_id),
         media_type="text/event-stream",
         headers={
             "Cache-Control": "no-cache",
             "X-Accel-Buffering": "no",
             "Connection": "keep-alive",
+            "X-Agent-Run-ID": run_id,
         },
     )
 

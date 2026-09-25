@@ -1,0 +1,492 @@
+{
+  "id": "sanya-3d-sunny-nature",
+  "tier": "capability",
+  "destination": "三亚",
+  "query": "三亚3天海滨自然游，亚龙湾加天涯海角",
+  "travel_start_date": "2026-12-05",
+  "travel_end_date": "2026-12-07",
+  "days": 3,
+  "attraction_preference": "海滨自然、热带风光、沙滩",
+  "habit_preference": "正常作息",
+  "max_per_day": 3,
+  "min_rating": 4.5,
+  "max_review_rounds": 3,
+  "pois": [
+    {
+      "name": "三亚凤凰岭海誓山盟景区",
+      "rating": 4.6,
+      "open_time": "周一,周三至周日 09:00-23:00 最晚进入21:30；周二 13:00-23:00 最晚进入21:30",
+      "location": {
+        "lng": 109.545812,
+        "lat": 18.256983
+      },
+      "photo": "http://store.is.autonavi.com/showpic/6ceaecd8cd655a5587ac78a84f6dbe12",
+      "adname": "吉阳区",
+      "address": "凤凰岭公园狗岭路300号",
+      "tel": "0898-88665778;18117690790",
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "海月广场",
+      "rating": 4.7,
+      "open_time": "周一至周日 00:00-24:00",
+      "location": {
+        "lng": 109.494467,
+        "lat": 18.259085
+      },
+      "photo": "http://store.is.autonavi.com/showpic/b3ddf37de3181e38102cde74d6a56a42",
+      "adname": "天涯区",
+      "address": "迎宾路九号",
+      "tel": "18876725597",
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "南山大小洞天旅游区",
+      "rating": 4.7,
+      "open_time": "周一至周日 08:30-18:30 最晚进入18:30",
+      "location": {
+        "lng": 109.158067,
+        "lat": 18.30089
+      },
+      "photo": "http://store.is.autonavi.com/showpic/5991767133d0dd752bbca2d5b59e355b",
+      "adname": "崖州区",
+      "address": "崖城",
+      "tel": "0898-88830188;0898-88830335;0898-88830137",
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "亚龙湾海滩",
+      "rating": 4.8,
+      "open_time": "周一至周日 00:00-24:00",
+      "location": {
+        "lng": 109.646004,
+        "lat": 18.229188
+      },
+      "photo": "https://store.is.autonavi.com/showpic/4705f28749a0275a0000003133224363?type=pic",
+      "adname": "吉阳区",
+      "address": "吉阳镇天下第一湾景区内",
+      "tel": null,
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "三亚千古情景区",
+      "rating": 4.7,
+      "open_time": "15:00-21:30",
+      "location": {
+        "lng": 109.530925,
+        "lat": 18.291009
+      },
+      "photo": "http://store.is.autonavi.com/showpic/9f81988788b31267411bb5467adcad6e",
+      "adname": "吉阳区",
+      "address": "河东区街道迎宾路333号",
+      "tel": "4008888518",
+      "cost": "[]",
+      "indoor": true
+    },
+    {
+      "name": "三亚西岛海洋文化旅游区",
+      "rating": 4.8,
+      "open_time": "周一至周日 08:00-17:30,离岛末班船时间为19:00",
+      "location": {
+        "lng": 109.373711,
+        "lat": 18.237774
+      },
+      "photo": "http://store.is.autonavi.com/showpic/6453bbab078771ef2a5cf9837f0be30b",
+      "adname": "天涯区",
+      "address": "三亚湾路肖旗港码头",
+      "tel": "0898-88910888",
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "亚特兰蒂斯失落的空间水族馆",
+      "rating": 4.7,
+      "open_time": "4月26日-5月5日:10:00-21:00(包含大使环礁湖),最晚入园20:30",
+      "location": {
+        "lng": 109.7437,
+        "lat": 18.356474
+      },
+      "photo": "http://store.is.autonavi.com/showpic/212673c4ab1f63ce818abf0dc7e97e7d",
+      "adname": "海棠区",
+      "address": "海棠北路亚特兰蒂斯酒店",
+      "tel": "0898-88986666",
+      "cost": "[]",
+      "indoor": true
+    },
+    {
+      "name": "三亚南山文化旅游区",
+      "rating": 4.7,
+      "open_time": "周一至周日 08:00-17:00；17:00后景区室内、寺庙景观停止开放",
+      "location": {
+        "lng": 109.208349,
+        "lat": 18.298366
+      },
+      "photo": "http://store.is.autonavi.com/showpic/4e6f68323f2bc80f42d4939a250b6258",
+      "adname": "崖州区",
+      "address": "南山村",
+      "tel": "0898-88837888;12301",
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "南山文化旅游区南山海上观音",
+      "rating": 4.8,
+      "open_time": "周一至周日 08:00-17:00 最晚进入17:00",
+      "location": {
+        "lng": 109.212558,
+        "lat": 18.290676
+      },
+      "photo": "http://store.is.autonavi.com/showpic/beb7e6fd54534dfa94a833bb17b84338",
+      "adname": "崖州区",
+      "address": "观音岛2层",
+      "tel": null,
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "三亚塔赫跳伞官方旗舰店",
+      "rating": 4.8,
+      "open_time": "周一至周日 08:00-18:00",
+      "location": {
+        "lng": 109.758685,
+        "lat": 18.384566
+      },
+      "photo": "http://store.is.autonavi.com/showpic/c1067b9db6e8fa4ee1e92f12ad6dfd01",
+      "adname": "海棠区",
+      "address": "海丰村第五小组",
+      "tel": "19943230893",
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "天涯海角游览区",
+      "rating": 4.8,
+      "open_time": "3月至9月 周一至周日 08:00-18:30；1月至2月,10月至12月 周一至周日 08:00-18:00",
+      "location": {
+        "lng": 109.348143,
+        "lat": 18.294988
+      },
+      "photo": "http://store.is.autonavi.com/showpic/a73b1b6e8914654c9b83d5a8d0518a3b",
+      "adname": "天涯区",
+      "address": "天涯镇马岭山麓",
+      "tel": "0898-88910131;0898-88592908;0898-88592956",
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "椰梦长廊",
+      "rating": 4.9,
+      "open_time": "周一至周日 00:00-24:00",
+      "location": {
+        "lng": 109.475754,
+        "lat": 18.274342
+      },
+      "photo": "http://store.is.autonavi.com/showpic/3ae8064ee9eea0c147507e1f51702b35",
+      "adname": "天涯区",
+      "address": "三亚湾路116号",
+      "tel": "13976906640;18189816865",
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "蜈支洲岛旅游风景区",
+      "rating": 4.8,
+      "open_time": "周一至周日 08:30-16:30；潜水体验时间以所购项目为准。",
+      "location": {
+        "lng": 109.765947,
+        "lat": 18.310381
+      },
+      "photo": "https://store.is.autonavi.com/showpic/FB987A825D3C460684E009C9487D6AB8",
+      "adname": "海棠区",
+      "address": "林旺蜈支洲岛",
+      "tel": "4001146666",
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "后海村",
+      "rating": 4.7,
+      "open_time": "周一至周日 00:00-24:00；全天开放",
+      "location": {
+        "lng": 109.72963,
+        "lat": 18.272223
+      },
+      "photo": "http://store.is.autonavi.com/showpic/7a39e1ae245859480833b5fa03c5d216",
+      "adname": "海棠区",
+      "address": "海棠湾镇",
+      "tel": "4008330307",
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "亚龙湾国家旅游度假区",
+      "rating": 4.8,
+      "open_time": "周一至周日 00:00-24:00",
+      "location": {
+        "lng": 109.649664,
+        "lat": 18.235582
+      },
+      "photo": "http://aos-cdn-image.amap.com/sns/ugccomment/a8a27a93-ae69-4bd2-97cf-5f92f4a07119.jpg",
+      "adname": "吉阳区",
+      "address": "亚龙湾路100号",
+      "tel": "18889989351",
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "三亚·中交凤凰岛",
+      "rating": 4.6,
+      "open_time": "周一至周日 00:00-24:00",
+      "location": {
+        "lng": 109.493908,
+        "lat": 18.240317
+      },
+      "photo": "https://aos-comment.amap.com/B03830MONV/comment/0F175754_85B6_4AC5_A575_020B40FA2464_L0_001_1706_127_1769436180772_88835605.jpg",
+      "adname": "天涯区",
+      "address": "河西街道三亚湾路6号",
+      "tel": "0898-31003697;0898-32997777;4008330307",
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "鹿回头风景区",
+      "rating": 4.8,
+      "open_time": "1/1-12/31 08:00-22:30开放",
+      "location": {
+        "lng": 109.50131,
+        "lat": 18.225639
+      },
+      "photo": "http://store.is.autonavi.com/showpic/5e741e3870348298407cc04bf881b99b",
+      "adname": "吉阳区",
+      "address": "鹿岭路",
+      "tel": "0898-88210808;0898-88213740",
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "崖州湾海滩",
+      "rating": 4.7,
+      "open_time": "周一至周日 00:00-24:00",
+      "location": {
+        "lng": 109.150344,
+        "lat": 18.330973
+      },
+      "photo": "https://aos-comment.amap.com/B0GKDRT4DX/headerImg/fdc218b8eb48675cbe0ce619000f591d_2048_2048_80.jpg",
+      "adname": "崖州区",
+      "address": "新道街与30号路交叉口西340米",
+      "tel": null,
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "海棠广场",
+      "rating": 4.7,
+      "open_time": "周一至周日 08:00-18:00",
+      "location": {
+        "lng": 109.731944,
+        "lat": 18.316091
+      },
+      "photo": "http://store.is.autonavi.com/showpic/4aa363846f00088d8545498749062c86",
+      "adname": "海棠区",
+      "address": "海棠南路1号",
+      "tel": "0898-88759192;15595986566",
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "小东海",
+      "rating": 4.7,
+      "open_time": "周一至周日 00:00-24:00",
+      "location": {
+        "lng": 109.502296,
+        "lat": 18.208582
+      },
+      "photo": "http://store.is.autonavi.com/showpic/332e0e6183b6018218b506a77c229d07",
+      "adname": "吉阳区",
+      "address": "小东海旅游度假区",
+      "tel": "16720042004",
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "三角梅科博园",
+      "rating": 4.7,
+      "open_time": "周一至周日 09:00-21:00",
+      "location": {
+        "lng": 109.177727,
+        "lat": 18.327072
+      },
+      "photo": "https://store.is.autonavi.com/showpic/575e88095c77926d0000004098098368?type=pic",
+      "adname": "崖州区",
+      "address": "G98海南环岛高速与G98海南环岛高速出口交叉口西南220米",
+      "tel": null,
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "海棠河生态公园",
+      "rating": 4.6,
+      "open_time": "周一至周日 00:00-24:00",
+      "location": {
+        "lng": 109.740958,
+        "lat": 18.357606
+      },
+      "photo": "https://aos-comment.amap.com/B0J15CYIM3/comment/content_media_external_file_1000034182_ss__1766237115693_37475012.jpg",
+      "adname": "海棠区",
+      "address": "海棠北路38号",
+      "tel": null,
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "崖州古城",
+      "rating": 4.6,
+      "open_time": "周二至周日07:00-19:00周一不开放,节假日以官方通知为准",
+      "location": {
+        "lng": 109.166017,
+        "lat": 18.370693
+      },
+      "photo": "https://aos-comment.amap.com/comment/content_service__1770359756323_67134255_1770359842197_40325689.jpg",
+      "adname": "崖州区",
+      "address": "崖城村崖保路(G225)",
+      "tel": null,
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "亚龙湾风景区-天下第一湾",
+      "rating": 4.7,
+      "open_time": "周一至周日 00:00-24:00",
+      "location": {
+        "lng": 109.644393,
+        "lat": 18.229835
+      },
+      "photo": "https://aos-comment.amap.com/B0FFG1K2AH/comment/content_media_external_file_100000674_1768109431231_07359456.jpg",
+      "adname": "吉阳区",
+      "address": "亚龙湾旅游开发区",
+      "tel": null,
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "三亚湾",
+      "rating": 4.8,
+      "open_time": "周一至周日 00:00-24:00",
+      "location": {
+        "lng": 109.435993,
+        "lat": 18.287329
+      },
+      "photo": "http://store.is.autonavi.com/showpic/0c9d6c0f246e84b72ea4fe04c8ccbd9c",
+      "adname": "天涯区",
+      "address": "三亚湾路189-9号",
+      "tel": "18876725597",
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "大东海旅游区(暂停开放)",
+      "rating": 4.9,
+      "open_time": "00:00-24:00,大东海旅游区游客中心09:00-22:00,游泳区09:00-18:00",
+      "location": {
+        "lng": 109.522212,
+        "lat": 18.22082
+      },
+      "photo": "http://store.is.autonavi.com/showpic/d13e9b08dd3a19359b1102934dc08782",
+      "adname": "吉阳区",
+      "address": "榆亚大道(明月广场西南400米至大东海广场2.9公里海岸线)",
+      "tel": "19044130521",
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "临春岭森林公园(暂停开放)",
+      "rating": 4.7,
+      "open_time": "周一至周日 07:00-22:30",
+      "location": {
+        "lng": 109.526536,
+        "lat": 18.260389
+      },
+      "photo": "https://store.is.autonavi.com/showpic/f79039acdf3693d54f2666b492eb6448",
+      "adname": "吉阳区",
+      "address": "河东区街道凤凰路临春段(近艺术家新村)",
+      "tel": "0898-88704481",
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "红树林生态公园",
+      "rating": 4.5,
+      "open_time": "08:30-18:00(16:00后入园最舒适)",
+      "location": {
+        "lng": 109.523182,
+        "lat": 18.271294
+      },
+      "photo": "https://aos-comment.amap.com/B0FFHJA6FL/comment/20260313-01b675e909c81cfe269829ad-7dDMV0kzWAf8Gllo5hG47V.jpg",
+      "adname": "吉阳区",
+      "address": "河东区街道",
+      "tel": null,
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "天涯小镇",
+      "rating": 4.8,
+      "open_time": "周一至周日 00:00-24:00",
+      "location": {
+        "lng": 109.332659,
+        "lat": 18.303548
+      },
+      "photo": "https://aos-comment.amap.com/B0J0ZSDRG6/headerImg/d4075cbdde496446ae9a8606b0514d69_2048_2048_80.jpg",
+      "adname": "天涯区",
+      "address": "黄龙街212号",
+      "tel": null,
+      "cost": "[]",
+      "indoor": false
+    }
+  ],
+  "weather_forecast": [
+    {
+      "date": "2026-12-05",
+      "day_weather": "晴",
+      "night_weather": "晴",
+      "day_temp": "28",
+      "night_temp": "22",
+      "is_bad": false
+    },
+    {
+      "date": "2026-12-06",
+      "day_weather": "晴",
+      "night_weather": "晴",
+      "day_temp": "28",
+      "night_temp": "22",
+      "is_bad": false
+    },
+    {
+      "date": "2026-12-07",
+      "day_weather": "晴",
+      "night_weather": "晴",
+      "day_temp": "28",
+      "night_temp": "22",
+      "is_bad": false
+    }
+  ],
+  "expectations": {
+    "outdoor_on_bad_day_max": 0
+  },
+  "provenance": {
+    "poi_source": "AMap Web Service Place Text API v3",
+    "poi_captured_at": "2026-09-14T15:04:00.960324+00:00",
+    "poi_query_channels": [
+      "必去景点",
+      "热门景区",
+      "博物馆"
+    ],
+    "poi_rating_threshold": 4.5,
+    "weather_source": "synthetic frozen evaluation scenario",
+    "indoor_label_source": "deterministic name-keyword heuristic"
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "execution": {
+    "generated_at": "2026-09-15T04:01:57.211881+00:00",
+    "provider": "grok",
+    "preflight": {
+      "cases": 1,
+      "trials": 1,
+      "judge_enabled": true,
+      "logical_invocations_upper_bound": 10,
+      "provider_attempts_upper_bound": 30,
+      "llm_calls_upper_bound": 30,
+      "attempts_per_invocation": 3,
+      "assumption": "worst-case logical graph invocations multiplied by invoke_structured retry attempts",
+      "per_case": [
+        {
+          "id": "nanjing-3d-sunny-history",
+          "trials": 1,
+          "max_review_rounds": 3,
+          "logical_invocations_upper_bound": 10,
+          "provider_attempts_upper_bound": 30
+        }
+      ],
+      "input_source": "generated_fixtures",
+      "execution_ready": true
+    },
+    "actual_llm_usage": {
+      "calls_total": 2,
+      "failed_total": 0,
+      "input_tokens": 3373,
+      "output_tokens": 871,
+      "total_tokens": 4244,
+      "estimated_calls": 2,
+      "usage_exact_ratio": 0.0,
+      "latency_sum_ms": 55007.094,
+      "estimated_cost_usd": 0.0,
+      "cost_rates_configured": false
+    },
+    "completed_cases": 0
+  },
+  "cases": []
+}

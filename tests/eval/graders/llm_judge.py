@@ -10,7 +10,7 @@ from typing import Any
 
 from pydantic import BaseModel, Field
 
-from app.llm.deepseek import build_structured_deepseek
+from app.llm.factory import build_structured_llm
 from app.planning.helpers import (
     format_spots_for_llm,
     format_weather_for_llm,
@@ -52,7 +52,7 @@ def judge_plan(state: Any, fx: dict[str, Any], model_name: str | None = None) ->
         f"最终行程（逐天时刻表）：\n{json.dumps(state.route, ensure_ascii=False)}\n\n"
         f"Planner 版本说明：{notes or '无'}\n\n请逐维度打分。"
     )
-    llm = build_structured_deepseek(JudgeScores, model=model_name, temperature=0)
+    llm = build_structured_llm(JudgeScores, model=model_name, temperature=0)
     try:
         res: JudgeScores = invoke_structured(llm, [("system", JUDGE_SYSTEM), ("human", prompt)])
     except Exception as exc:  # noqa: BLE001

@@ -1,0 +1,514 @@
+{
+  "measurement_type": "offline-policy-replay-on-real-provider-outputs",
+  "generated_at": "2026-09-25T05:18:34.134750+00:00",
+  "natural": [
+    {
+      "case_id": "nanjing-3d-sunny-history",
+      "flags": [],
+      "review_required": false,
+      "time_check_required": false,
+      "skipped": true
+    },
+    {
+      "case_id": "nanjing-3d-singlerain-history",
+      "flags": [],
+      "review_required": false,
+      "time_check_required": false,
+      "skipped": true
+    },
+    {
+      "case_id": "nanjing-3d-tighthours-negative",
+      "flags": [],
+      "review_required": false,
+      "time_check_required": false,
+      "skipped": true
+    }
+  ],
+  "faults": [
+    {
+      "scenario": "duplicate_poi",
+      "flags": [
+        "duplicate_poi"
+      ],
+      "review_required": true,
+      "time_check_required": true,
+      "skipped": false
+    },
+    {
+      "scenario": "opening_hours",
+      "flags": [
+        "habit_constraint",
+        "opening_time_conflict"
+      ],
+      "review_required": true,
+      "time_check_required": true,
+      "skipped": false
+    }
+  ],
+  "constructed": [
+    {
+      "case_id": "sunny_indoor",
+      "fixture_id": "nanjing-1d-sunny-nightlife",
+      "expected_decision": "skip",
+      "expected_flags": [],
+      "flags": [],
+      "review_required": false,
+      "time_check_required": false,
+      "skipped": true,
+      "passed": true
+    },
+    {
+      "case_id": "sunny_outdoor",
+      "fixture_id": "nanjing-1d-sunny-nightlife",
+      "expected_decision": "skip",
+      "expected_flags": [],
+      "flags": [],
+      "review_required": false,
+      "time_check_required": false,
+      "skipped": true,
+      "passed": true
+    },
+    {
+      "case_id": "valid_two_spots",
+      "fixture_id": "nanjing-1d-sunny-nightlife",
+      "expected_decision": "skip",
+      "expected_flags": [],
+      "flags": [],
+      "review_required": false,
+      "time_check_required": false,
+      "skipped": true,
+      "passed": true
+    },
+    {
+      "case_id": "no_forecast",
+      "fixture_id": "nanjing-1d-sunny-nightlife",
+      "expected_decision": "skip",
+      "expected_flags": [],
+      "flags": [],
+      "review_required": false,
+      "time_check_required": false,
+      "skipped": true,
+      "passed": true
+    },
+    {
+      "case_id": "valid_walking_leg",
+      "fixture_id": "nanjing-1d-sunny-nightlife",
+      "expected_decision": "skip",
+      "expected_flags": [],
+      "flags": [],
+      "review_required": false,
+      "time_check_required": false,
+      "skipped": true,
+      "passed": true
+    },
+    {
+      "case_id": "unknown_hours",
+      "fixture_id": "nanjing-1d-sunny-nightlife",
+      "expected_decision": "skip",
+      "expected_flags": [
+        "opening_time_unknown"
+      ],
+      "flags": [
+        "opening_time_unknown"
+      ],
+      "review_required": false,
+      "time_check_required": false,
+      "skipped": true,
+      "passed": true
+    },
+    {
+      "case_id": "rain_indoor",
+      "fixture_id": "nanjing-3d-singlerain-history",
+      "expected_decision": "skip",
+      "expected_flags": [],
+      "flags": [],
+      "review_required": false,
+      "time_check_required": false,
+      "skipped": true,
+      "passed": true
+    },
+    {
+      "case_id": "rain_outdoor",
+      "fixture_id": "nanjing-3d-singlerain-history",
+      "expected_decision": "escalate",
+      "expected_flags": [
+        "weather_outdoor_conflict"
+      ],
+      "flags": [
+        "weather_outdoor_conflict"
+      ],
+      "review_required": true,
+      "time_check_required": true,
+      "skipped": false,
+      "passed": true
+    },
+    {
+      "case_id": "duplicate_poi",
+      "fixture_id": "nanjing-1d-sunny-nightlife",
+      "expected_decision": "escalate",
+      "expected_flags": [
+        "duplicate_poi"
+      ],
+      "flags": [
+        "duplicate_poi"
+      ],
+      "review_required": true,
+      "time_check_required": true,
+      "skipped": false,
+      "passed": true
+    },
+    {
+      "case_id": "unknown_poi",
+      "fixture_id": "nanjing-1d-sunny-nightlife",
+      "expected_decision": "escalate",
+      "expected_flags": [
+        "unknown_poi"
+      ],
+      "flags": [
+        "unknown_poi"
+      ],
+      "review_required": true,
+      "time_check_required": true,
+      "skipped": false,
+      "passed": true
+    },
+    {
+      "case_id": "missing_day",
+      "fixture_id": "nanjing-1d-sunny-nightlife",
+      "expected_decision": "escalate",
+      "expected_flags": [
+        "route_structure"
+      ],
+      "flags": [
+        "route_structure"
+      ],
+      "review_required": true,
+      "time_check_required": true,
+      "skipped": false,
+      "passed": true
+    },
+    {
+      "case_id": "empty_day",
+      "fixture_id": "nanjing-1d-sunny-nightlife",
+      "expected_decision": "escalate",
+      "expected_flags": [
+        "route_structure"
+      ],
+      "flags": [
+        "route_structure"
+      ],
+      "review_required": true,
+      "time_check_required": true,
+      "skipped": false,
+      "passed": true
+    },
+    {
+      "case_id": "duplicate_day_number",
+      "fixture_id": "nanjing-1d-sunny-nightlife",
+      "expected_decision": "escalate",
+      "expected_flags": [
+        "route_structure"
+      ],
+      "flags": [
+        "route_structure"
+      ],
+      "review_required": true,
+      "time_check_required": true,
+      "skipped": false,
+      "passed": true
+    },
+    {
+      "case_id": "overlap",
+      "fixture_id": "nanjing-1d-sunny-nightlife",
+      "expected_decision": "escalate",
+      "expected_flags": [
+        "route_structure"
+      ],
+      "flags": [
+        "route_structure"
+      ],
+      "review_required": true,
+      "time_check_required": true,
+      "skipped": false,
+      "passed": true
+    },
+    {
+      "case_id": "reverse_period",
+      "fixture_id": "nanjing-1d-sunny-nightlife",
+      "expected_decision": "escalate",
+      "expected_flags": [
+        "route_structure"
+      ],
+      "flags": [
+        "route_structure"
+      ],
+      "review_required": true,
+      "time_check_required": true,
+      "skipped": false,
+      "passed": true
+    },
+    {
+      "case_id": "missing_time",
+      "fixture_id": "nanjing-1d-sunny-nightlife",
+      "expected_decision": "escalate",
+      "expected_flags": [
+        "route_structure"
+      ],
+      "flags": [
+        "route_structure"
+      ],
+      "review_required": true,
+      "time_check_required": true,
+      "skipped": false,
+      "passed": true
+    },
+    {
+      "case_id": "closed_hours",
+      "fixture_id": "nanjing-1d-sunny-nightlife",
+      "expected_decision": "escalate",
+      "expected_flags": [
+        "opening_time_conflict"
+      ],
+      "flags": [
+        "opening_time_conflict"
+      ],
+      "review_required": false,
+      "time_check_required": true,
+      "skipped": false,
+      "passed": true
+    },
+    {
+      "case_id": "late_start",
+      "fixture_id": "nanjing-1d-sunny-nightlife",
+      "expected_decision": "escalate",
+      "expected_flags": [
+        "habit_constraint"
+      ],
+      "flags": [
+        "habit_constraint"
+      ],
+      "review_required": true,
+      "time_check_required": true,
+      "skipped": false,
+      "passed": true
+    },
+    {
+      "case_id": "slow_pace",
+      "fixture_id": "nanjing-1d-sunny-nightlife",
+      "expected_decision": "escalate",
+      "expected_flags": [
+        "habit_constraint"
+      ],
+      "flags": [
+        "habit_constraint"
+      ],
+      "review_required": true,
+      "time_check_required": true,
+      "skipped": false,
+      "passed": true
+    },
+    {
+      "case_id": "walking_too_far",
+      "fixture_id": "nanjing-1d-sunny-nightlife",
+      "expected_decision": "escalate",
+      "expected_flags": [
+        "walking_constraint"
+      ],
+      "flags": [
+        "walking_constraint"
+      ],
+      "review_required": true,
+      "time_check_required": true,
+      "skipped": false,
+      "passed": true
+    },
+    {
+      "case_id": "walking_leg_missing",
+      "fixture_id": "nanjing-1d-sunny-nightlife",
+      "expected_decision": "escalate",
+      "expected_flags": [
+        "walking_constraint"
+      ],
+      "flags": [
+        "walking_constraint"
+      ],
+      "review_required": true,
+      "time_check_required": true,
+      "skipped": false,
+      "passed": true
+    },
+    {
+      "case_id": "long_drive",
+      "fixture_id": "nanjing-1d-sunny-nightlife",
+      "expected_decision": "escalate",
+      "expected_flags": [
+        "long_road_leg"
+      ],
+      "flags": [
+        "long_road_leg"
+      ],
+      "review_required": true,
+      "time_check_required": true,
+      "skipped": false,
+      "passed": true
+    },
+    {
+      "case_id": "user_change",
+      "fixture_id": "nanjing-1d-sunny-nightlife",
+      "expected_decision": "escalate",
+      "expected_flags": [
+        "user_modification"
+      ],
+      "flags": [
+        "user_modification"
+      ],
+      "review_required": true,
+      "time_check_required": true,
+      "skipped": false,
+      "passed": true
+    },
+    {
+      "case_id": "compound_fault",
+      "fixture_id": "nanjing-1d-sunny-nightlife",
+      "expected_decision": "escalate",
+      "expected_flags": [
+        "unknown_poi",
+        "duplicate_poi"
+      ],
+      "flags": [
+        "duplicate_poi",
+        "unknown_poi"
+      ],
+      "review_required": true,
+      "time_check_required": true,
+      "skipped": false,
+      "passed": true
+    },
+    {
+      "case_id": "jingdezhen_open",
+      "fixture_id": "jingdezhen-1d-sunny-history",
+      "expected_decision": "skip",
+      "expected_flags": [],
+      "flags": [],
+      "review_required": false,
+      "time_check_required": false,
+      "skipped": true,
+      "passed": true
+    },
+    {
+      "case_id": "jingdezhen_closed",
+      "fixture_id": "jingdezhen-1d-sunny-history",
+      "expected_decision": "escalate",
+      "expected_flags": [
+        "opening_time_conflict"
+      ],
+      "flags": [
+        "opening_time_conflict"
+      ],
+      "review_required": false,
+      "time_check_required": true,
+      "skipped": false,
+      "passed": true
+    },
+    {
+      "case_id": "lijiang_open",
+      "fixture_id": "lijiang-1d-sunny-nightlife",
+      "expected_decision": "skip",
+      "expected_flags": [],
+      "flags": [],
+      "review_required": false,
+      "time_check_required": false,
+      "skipped": true,
+      "passed": true
+    },
+    {
+      "case_id": "lijiang_closed",
+      "fixture_id": "lijiang-1d-sunny-nightlife",
+      "expected_decision": "escalate",
+      "expected_flags": [
+        "opening_time_conflict"
+      ],
+      "flags": [
+        "opening_time_conflict"
+      ],
+      "review_required": false,
+      "time_check_required": true,
+      "skipped": false,
+      "passed": true
+    },
+    {
+      "case_id": "sanya_open",
+      "fixture_id": "sanya-1d-sunny-nightlife",
+      "expected_decision": "skip",
+      "expected_flags": [],
+      "flags": [],
+      "review_required": false,
+      "time_check_required": false,
+      "skipped": true,
+      "passed": true
+    },
+    {
+      "case_id": "sanya_closed",
+      "fixture_id": "sanya-1d-sunny-nightlife",
+      "expected_decision": "escalate",
+      "expected_flags": [
+        "opening_time_conflict"
+      ],
+      "flags": [
+        "opening_time_conflict"
+      ],
+      "review_required": false,
+      "time_check_required": true,
+      "skipped": false,
+      "passed": true
+    },
+    {
+      "case_id": "shanghai_open",
+      "fixture_id": "shanghai-1d-sunny-nightlife",
+      "expected_decision": "skip",
+      "expected_flags": [],
+      "flags": [],
+      "review_required": false,
+      "time_check_required": false,
+      "skipped": true,
+      "passed": true
+    },
+    {
+      "case_id": "shanghai_closed",
+      "fixture_id": "shanghai-1d-sunny-nightlife",
+      "expected_decision": "escalate",
+      "expected_flags": [
+        "opening_time_conflict"
+      ],
+      "flags": [
+        "opening_time_conflict"
+      ],
+      "review_required": false,
+      "time_check_required": true,
+      "skipped": false,
+      "passed": true
+    }
+  ],
+  "metrics": {
+    "natural_skip_rate": 1.0,
+    "fault_escalation_recall": 1.0,
+    "constructed_pass_rate": 1.0,
+    "constructed_clean_skip_rate": 1.0,
+    "constructed_fault_recall": 1.0,
+    "constructed_category_recall": {
+      "duplicate_poi": 1.0,
+      "habit_constraint": 1.0,
+      "long_road_leg": 1.0,
+      "opening_time_conflict": 1.0,
+      "opening_time_unknown": 1.0,
+      "route_structure": 1.0,
+      "unknown_poi": 1.0,
+      "user_modification": 1.0,
+      "walking_constraint": 1.0,
+      "weather_outdoor_conflict": 1.0
+    },
+    "projected_token_reduction_vs_always_full": 0.618,
+    "projected_latency_reduction_vs_always_full": 0.507
+  },
+  "boundary": "The natural/fault groups replay saved real-provider routes; constructed cases are hand-labelled routes over frozen real POI pools, not model generations. Savings are projections from the three-case online ablation, not a new online A/B."
+}

@@ -1,0 +1,411 @@
+{
+  "report_version": "v1-offline-trajectory",
+  "generated_at": "2026-09-21T08:11:31.552532+00:00",
+  "external_calls_made": false,
+  "scenarios": [
+    {
+      "contract": "happy_path",
+      "passed": true,
+      "passed_checks": 8,
+      "total_checks": 8,
+      "checks": [
+        {
+          "id": "T1_dispatch_sequence",
+          "passed": true,
+          "detail": "observed=[('intent_extract', 'intent_agent', 0), ('poi_research', 'poi_research_agent', 0), ('itinerary_plan', 'planner_agent', 0), ('itinerary_review', 'reviewer_agent', 0)]"
+        },
+        {
+          "id": "T2_tool_permission",
+          "passed": true,
+          "detail": "unauthorized_calls=0"
+        },
+        {
+          "id": "T3_required_tools",
+          "passed": true,
+          "detail": "missing=[]"
+        },
+        {
+          "id": "T4_sanitized_parameters",
+          "passed": true,
+          "detail": "violations=[]"
+        },
+        {
+          "id": "T5_no_redundant_success",
+          "passed": true,
+          "detail": "duplicate_successes=0"
+        },
+        {
+          "id": "T6_bounded_retry",
+          "passed": true,
+          "detail": "max_dispatch_attempt=0, tool_attempts=1"
+        },
+        {
+          "id": "T7_structured_terminal_state",
+          "passed": true,
+          "detail": "status=succeeded, error_code=None"
+        },
+        {
+          "id": "T8_grounded_handoff",
+          "passed": true,
+          "detail": "itinerary_items=3"
+        }
+      ],
+      "dispatches": [
+        [
+          "intent_extract",
+          "intent_agent",
+          0
+        ],
+        [
+          "poi_research",
+          "poi_research_agent",
+          0
+        ],
+        [
+          "itinerary_plan",
+          "planner_agent",
+          0
+        ],
+        [
+          "itinerary_review",
+          "reviewer_agent",
+          0
+        ]
+      ],
+      "tool_trace": [
+        {
+          "task_id": "trip-4ae44e67-a02b-4c56-9b40-5681aa22ac39",
+          "trace_id": "f0fd51c8-4ee3-4912-a5d3-7e9c8c19e838",
+          "agent": "poi_research_agent",
+          "tool": "poi_search",
+          "parameters": {
+            "city": "Beijing",
+            "query": {
+              "present": true,
+              "length": 52,
+              "sha256": "0da5bb226801"
+            }
+          },
+          "status": "succeeded",
+          "duration_ms": 0.03,
+          "error_code": null
+        }
+      ]
+    },
+    {
+      "contract": "reviewer_replan",
+      "passed": true,
+      "passed_checks": 8,
+      "total_checks": 8,
+      "checks": [
+        {
+          "id": "T1_dispatch_sequence",
+          "passed": true,
+          "detail": "observed=[('intent_extract', 'intent_agent', 0), ('poi_research', 'poi_research_agent', 0), ('itinerary_plan', 'planner_agent', 0), ('itinerary_review', 'reviewer_agent', 0), ('itinerary_revise', 'planner_agent', 1), ('itinerary_review', 'reviewer_agent', 1)]"
+        },
+        {
+          "id": "T2_tool_permission",
+          "passed": true,
+          "detail": "unauthorized_calls=0"
+        },
+        {
+          "id": "T3_required_tools",
+          "passed": true,
+          "detail": "missing=[]"
+        },
+        {
+          "id": "T4_sanitized_parameters",
+          "passed": true,
+          "detail": "violations=[]"
+        },
+        {
+          "id": "T5_no_redundant_success",
+          "passed": true,
+          "detail": "duplicate_successes=0"
+        },
+        {
+          "id": "T6_bounded_retry",
+          "passed": true,
+          "detail": "max_dispatch_attempt=1, tool_attempts=1"
+        },
+        {
+          "id": "T7_structured_terminal_state",
+          "passed": true,
+          "detail": "status=succeeded, error_code=None"
+        },
+        {
+          "id": "T8_grounded_handoff",
+          "passed": true,
+          "detail": "itinerary_items=3"
+        }
+      ],
+      "dispatches": [
+        [
+          "intent_extract",
+          "intent_agent",
+          0
+        ],
+        [
+          "poi_research",
+          "poi_research_agent",
+          0
+        ],
+        [
+          "itinerary_plan",
+          "planner_agent",
+          0
+        ],
+        [
+          "itinerary_review",
+          "reviewer_agent",
+          0
+        ],
+        [
+          "itinerary_revise",
+          "planner_agent",
+          1
+        ],
+        [
+          "itinerary_review",
+          "reviewer_agent",
+          1
+        ]
+      ],
+      "tool_trace": [
+        {
+          "task_id": "trip-246c9484-4550-4392-b92e-3d026a0609b2",
+          "trace_id": "f7fdba91-7821-4933-bb15-120acb721095",
+          "agent": "poi_research_agent",
+          "tool": "poi_search",
+          "parameters": {
+            "city": "Beijing",
+            "query": {
+              "present": true,
+              "length": 52,
+              "sha256": "0da5bb226801"
+            }
+          },
+          "status": "succeeded",
+          "duration_ms": 0.007,
+          "error_code": null
+        }
+      ]
+    },
+    {
+      "contract": "transient_tool_retry",
+      "passed": true,
+      "passed_checks": 8,
+      "total_checks": 8,
+      "checks": [
+        {
+          "id": "T1_dispatch_sequence",
+          "passed": true,
+          "detail": "observed=[('intent_extract', 'intent_agent', 0), ('poi_research', 'poi_research_agent', 0), ('poi_research', 'poi_research_agent', 1), ('itinerary_plan', 'planner_agent', 0), ('itinerary_review', 'reviewer_agent', 0)]"
+        },
+        {
+          "id": "T2_tool_permission",
+          "passed": true,
+          "detail": "unauthorized_calls=0"
+        },
+        {
+          "id": "T3_required_tools",
+          "passed": true,
+          "detail": "missing=[]"
+        },
+        {
+          "id": "T4_sanitized_parameters",
+          "passed": true,
+          "detail": "violations=[]"
+        },
+        {
+          "id": "T5_no_redundant_success",
+          "passed": true,
+          "detail": "duplicate_successes=0"
+        },
+        {
+          "id": "T6_bounded_retry",
+          "passed": true,
+          "detail": "max_dispatch_attempt=1, tool_attempts=2"
+        },
+        {
+          "id": "T7_structured_terminal_state",
+          "passed": true,
+          "detail": "status=succeeded, error_code=None"
+        },
+        {
+          "id": "T8_grounded_handoff",
+          "passed": true,
+          "detail": "itinerary_items=3"
+        }
+      ],
+      "dispatches": [
+        [
+          "intent_extract",
+          "intent_agent",
+          0
+        ],
+        [
+          "poi_research",
+          "poi_research_agent",
+          0
+        ],
+        [
+          "poi_research",
+          "poi_research_agent",
+          1
+        ],
+        [
+          "itinerary_plan",
+          "planner_agent",
+          0
+        ],
+        [
+          "itinerary_review",
+          "reviewer_agent",
+          0
+        ]
+      ],
+      "tool_trace": [
+        {
+          "task_id": "trip-479fe9d1-d578-4680-9c96-1e342fba23f5",
+          "trace_id": "efbad613-83cc-4b20-ad30-0871c900cc0a",
+          "agent": "poi_research_agent",
+          "tool": "poi_search",
+          "parameters": {
+            "city": "Beijing",
+            "query": {
+              "present": true,
+              "length": 52,
+              "sha256": "0da5bb226801"
+            }
+          },
+          "status": "failed",
+          "duration_ms": 0.007,
+          "error_code": "TimeoutError"
+        },
+        {
+          "task_id": "trip-479fe9d1-d578-4680-9c96-1e342fba23f5",
+          "trace_id": "efbad613-83cc-4b20-ad30-0871c900cc0a",
+          "agent": "poi_research_agent",
+          "tool": "poi_search",
+          "parameters": {
+            "city": "Beijing",
+            "query": {
+              "present": true,
+              "length": 52,
+              "sha256": "0da5bb226801"
+            }
+          },
+          "status": "succeeded",
+          "duration_ms": 0.006,
+          "error_code": null
+        }
+      ]
+    },
+    {
+      "contract": "persistent_tool_failure",
+      "passed": true,
+      "passed_checks": 8,
+      "total_checks": 8,
+      "checks": [
+        {
+          "id": "T1_dispatch_sequence",
+          "passed": true,
+          "detail": "observed=[('intent_extract', 'intent_agent', 0), ('poi_research', 'poi_research_agent', 0), ('poi_research', 'poi_research_agent', 1)]"
+        },
+        {
+          "id": "T2_tool_permission",
+          "passed": true,
+          "detail": "unauthorized_calls=0"
+        },
+        {
+          "id": "T3_required_tools",
+          "passed": true,
+          "detail": "missing=[]"
+        },
+        {
+          "id": "T4_sanitized_parameters",
+          "passed": true,
+          "detail": "violations=[]"
+        },
+        {
+          "id": "T5_no_redundant_success",
+          "passed": true,
+          "detail": "duplicate_successes=0"
+        },
+        {
+          "id": "T6_bounded_retry",
+          "passed": true,
+          "detail": "max_dispatch_attempt=1, tool_attempts=2"
+        },
+        {
+          "id": "T7_structured_terminal_state",
+          "passed": true,
+          "detail": "status=failed, error_code=TimeoutError"
+        },
+        {
+          "id": "T8_grounded_handoff",
+          "passed": true,
+          "detail": "not_applicable_to_failed_run"
+        }
+      ],
+      "dispatches": [
+        [
+          "intent_extract",
+          "intent_agent",
+          0
+        ],
+        [
+          "poi_research",
+          "poi_research_agent",
+          0
+        ],
+        [
+          "poi_research",
+          "poi_research_agent",
+          1
+        ]
+      ],
+      "tool_trace": [
+        {
+          "task_id": "trip-574baf22-f8f5-472d-af8f-0498719468dc",
+          "trace_id": "85f109e2-2812-49f3-865b-cb7b9cc9a561",
+          "agent": "poi_research_agent",
+          "tool": "poi_search",
+          "parameters": {
+            "city": "Beijing",
+            "query": {
+              "present": true,
+              "length": 52,
+              "sha256": "0da5bb226801"
+            }
+          },
+          "status": "failed",
+          "duration_ms": 0.006,
+          "error_code": "TimeoutError"
+        },
+        {
+          "task_id": "trip-574baf22-f8f5-472d-af8f-0498719468dc",
+          "trace_id": "85f109e2-2812-49f3-865b-cb7b9cc9a561",
+          "agent": "poi_research_agent",
+          "tool": "poi_search",
+          "parameters": {
+            "city": "Beijing",
+            "query": {
+              "present": true,
+              "length": 52,
+              "sha256": "0da5bb226801"
+            }
+          },
+          "status": "failed",
+          "duration_ms": 0.005,
+          "error_code": "TimeoutError"
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "total": 4
+  }
+}

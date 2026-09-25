@@ -1,0 +1,117 @@
+{
+  "id": "jingdezhen-3d-smallpool-negative",
+  "tier": "capability",
+  "destination": "景德镇",
+  "query": "景德镇3天游（负样本：候选景点池极小仅4个景点，考验规划弹性）",
+  "travel_start_date": "2026-10-20",
+  "travel_end_date": "2026-10-22",
+  "days": 3,
+  "attraction_preference": "陶瓷文化",
+  "habit_preference": "正常作息",
+  "max_per_day": 3,
+  "min_rating": 4.5,
+  "max_review_rounds": 3,
+  "pois": [
+    {
+      "name": "陶溪川文创街区",
+      "rating": 4.8,
+      "open_time": "周一至周日 10:00-22:00",
+      "location": {
+        "lng": 117.236957,
+        "lat": 29.296921
+      },
+      "photo": "https://store.is.autonavi.com/showpic/da16186fe43004cf0000003593390155",
+      "adname": "珠山区",
+      "address": "里村街道新厂西路351号",
+      "tel": null,
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "景德镇陶阳里历史文化旅游区",
+      "rating": 4.8,
+      "open_time": "08:30-22:00开放；除夕08:30-16:00开放",
+      "location": {
+        "lng": 117.204535,
+        "lat": 29.296459
+      },
+      "photo": "https://store.is.autonavi.com/showpic/5c5c817dfb2287b40000004840378129?type=pic",
+      "adname": "珠山区",
+      "address": "东门游客服务中心",
+      "tel": "0798-8226233",
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "景德镇古窑民俗博览区",
+      "rating": 4.7,
+      "open_time": "周一至周日 08:00-17:00",
+      "location": {
+        "lng": 117.184813,
+        "lat": 29.28343
+      },
+      "photo": "http://store.is.autonavi.com/showpic/97b8d07cd46ce47967363a813344ffa8",
+      "adname": "昌江区",
+      "address": "瓷都大道古窑路1号",
+      "tel": "0798-8382828;4001181728",
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "景德镇陶源谷·三宝旅游度假区·三宝国际陶艺村",
+      "rating": 4.7,
+      "open_time": "周一至周日 00:00-24:00",
+      "location": {
+        "lng": 117.26534,
+        "lat": 29.247141
+      },
+      "photo": "http://store.is.autonavi.com/showpic/798edd800c3a27c36d824df129b6a785",
+      "adname": "珠山区",
+      "address": "经开区三宝村四家里",
+      "tel": "0798-8496513",
+      "cost": "[]",
+      "indoor": false
+    }
+  ],
+  "weather_forecast": [
+    {
+      "date": "2026-10-20",
+      "day_weather": "晴",
+      "night_weather": "晴",
+      "day_temp": "20",
+      "night_temp": "12",
+      "is_bad": false
+    },
+    {
+      "date": "2026-10-21",
+      "day_weather": "晴",
+      "night_weather": "晴",
+      "day_temp": "20",
+      "night_temp": "12",
+      "is_bad": false
+    },
+    {
+      "date": "2026-10-22",
+      "day_weather": "晴",
+      "night_weather": "晴",
+      "day_temp": "20",
+      "night_temp": "12",
+      "is_bad": false
+    }
+  ],
+  "expectations": {
+    "outdoor_on_bad_day_max": 0
+  },
+  "provenance": {
+    "poi_source": "AMap Web Service Place Text API v3",
+    "poi_captured_at": "2026-09-14T15:04:00.960324+00:00",
+    "poi_query_channels": [
+      "必去景点",
+      "热门景区",
+      "博物馆"
+    ],
+    "poi_rating_threshold": 4.5,
+    "weather_source": "synthetic frozen evaluation scenario",
+    "indoor_label_source": "deterministic name-keyword heuristic"
+  }
+}

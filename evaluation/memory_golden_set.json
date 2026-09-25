@@ -1,0 +1,18 @@
+{
+  "memories": [
+    {"user_id": "user-a", "text": "带父母旅行时每天少走路"},
+    {"user_id": "user-a", "text": "偏好历史博物馆"},
+    {"user_id": "user-b", "text": "喜欢重辣火锅"},
+    {"user_id": "user-b", "text": "习惯早出晚归"},
+    {"user_id": "user-c", "text": "对花生过敏"},
+    {"user_id": "user-c", "text": "偏好自然风光"}
+  ],
+  "queries": [
+    {"id": "memory-01", "user_id": "user-a", "query": "带老人出游怎么安排步行", "expected": "带父母旅行时每天少走路"},
+    {"id": "memory-02", "user_id": "user-a", "query": "想看历史类场馆", "expected": "偏好历史博物馆"},
+    {"id": "memory-03", "user_id": "user-b", "query": "这次想吃火锅", "expected": "喜欢重辣火锅"},
+    {"id": "memory-04", "user_id": "user-b", "query": "希望早上早点开始晚上晚点结束", "expected": "习惯早出晚归"},
+    {"id": "memory-05", "user_id": "user-c", "query": "餐厅有什么过敏需要注意", "expected": "对花生过敏"},
+    {"id": "memory-06", "user_id": "user-c", "query": "想看山水景色", "expected": "偏好自然风光"}
+  ]
+}

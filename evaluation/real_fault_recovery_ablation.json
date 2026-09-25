@@ -1,0 +1,694 @@
+{
+  "measurement_type": "real-provider-injected-fault-recovery",
+  "generated_at": "2026-09-21T08:50:26.718434+00:00",
+  "modes": [
+    {
+      "mode": "single_no_audit",
+      "passed": 0,
+      "runs": 2,
+      "pass_rate": 0.0,
+      "elapsed_total_ms": 0.266
+    },
+    {
+      "mode": "planner_reviewer",
+      "passed": 2,
+      "runs": 2,
+      "pass_rate": 1.0,
+      "elapsed_total_ms": 126713.588
+    },
+    {
+      "mode": "planner_reviewer_time_check",
+      "passed": 2,
+      "runs": 2,
+      "pass_rate": 1.0,
+      "elapsed_total_ms": 203081.304
+    }
+  ],
+  "records": [
+    {
+      "scenario": "duplicate_poi",
+      "mode": "single_no_audit",
+      "objective_pass": false,
+      "checks": {
+        "g1_closed_pool": {
+          "passed": true,
+          "detail": "无越界景点"
+        },
+        "g2_time_check": {
+          "passed": true,
+          "detail": "time_check 无违规"
+        },
+        "g4_structure": {
+          "passed": false,
+          "detail": "跨天或同天重复景点：古鸡鸣寺"
+        },
+        "g5_coverage": {
+          "passed": true,
+          "detail": "每天均有景点"
+        },
+        "g6_weather": {
+          "passed": true,
+          "detail": "雨雪天合规"
+        },
+        "g9_walking_distance": {
+          "passed": true,
+          "detail": "用户未指定步行上限"
+        },
+        "g10_habit_constraints": {
+          "passed": true,
+          "detail": "明确习惯约束满足"
+        },
+        "g7_convergence": {
+          "passed": false,
+          "detail": "reviewer=❌(1/3轮)，time_check=❌(0轮)"
+        },
+        "g8_time_check_efficiency": {
+          "passed": true,
+          "detail": "time_check 用了 0 轮，残留违规 0 处"
+        }
+      },
+      "elapsed_ms": 0.208,
+      "review_round": 1,
+      "time_check_round": 0,
+      "dialogue": [
+        "[第1轮] Planner：故障恢复评测的共同冻结草案。"
+      ],
+      "route": [
+        {
+          "day": 1,
+          "spots": [
+            {
+              "name": "古鸡鸣寺",
+              "period": "morning",
+              "start_time": "09:00",
+              "end_time": "11:30"
+            },
+            {
+              "name": "玄武湖景区",
+              "period": "afternoon",
+              "start_time": "12:30",
+              "end_time": "15:30"
+            },
+            {
+              "name": "南京夫子庙",
+              "period": "evening",
+              "start_time": "16:30",
+              "end_time": "19:30"
+            }
+          ],
+          "theme": "玄武—秦淮晴天古寺湖光与夫子庙历史街巷"
+        },
+        {
+          "day": 2,
+          "spots": [
+            {
+              "name": "总统府",
+              "period": "morning",
+              "start_time": "09:00",
+              "end_time": "12:30"
+            },
+            {
+              "name": "中国科举博物馆(江南贡院)",
+              "period": "afternoon",
+              "start_time": "14:00",
+              "end_time": "18:00"
+            }
+          ],
+          "theme": "雨天室内：近代总统府与科举贡院博物馆"
+        },
+        {
+          "day": 3,
+          "spots": [
+            {
+              "name": "古鸡鸣寺",
+              "period": "morning",
+              "start_time": "09:00",
+              "end_time": "11:30"
+            }
+          ],
+          "theme": "晴天中山陵陵寝与民国史迹"
+        }
+      ],
+      "fixture_id": "nanjing-3d-singlerain-history"
+    },
+    {
+      "scenario": "duplicate_poi",
+      "mode": "planner_reviewer",
+      "objective_pass": true,
+      "checks": {
+        "g1_closed_pool": {
+          "passed": true,
+          "detail": "无越界景点"
+        },
+        "g2_time_check": {
+          "passed": true,
+          "detail": "time_check 无违规"
+        },
+        "g4_structure": {
+          "passed": true,
+          "detail": "结构合法"
+        },
+        "g5_coverage": {
+          "passed": true,
+          "detail": "每天均有景点"
+        },
+        "g6_weather": {
+          "passed": true,
+          "detail": "雨雪天合规"
+        },
+        "g9_walking_distance": {
+          "passed": true,
+          "detail": "用户未指定步行上限"
+        },
+        "g10_habit_constraints": {
+          "passed": true,
+          "detail": "明确习惯约束满足"
+        },
+        "g7_convergence": {
+          "passed": false,
+          "detail": "reviewer=✅(2/3轮)，time_check=❌(0轮)"
+        },
+        "g8_time_check_efficiency": {
+          "passed": true,
+          "detail": "time_check 用了 0 轮，残留违规 0 处"
+        }
+      },
+      "elapsed_ms": 73929.539,
+      "review_round": 2,
+      "time_check_round": 0,
+      "dialogue": [
+        "[第1轮] Planner：故障恢复评测的共同冻结草案。",
+        "[第1轮] Reviewer 打回（45分）：必须删除 Day3 的古鸡鸣寺（已与 Day1 重复）。Day3 为晴天周三，请改排候选池内未使用的热门点，建议中山陵景区（与主题一致，且非周一可开放）或牛首山等，可再配1个同区域点，保持每天1–3个、不重复、少折返。Day1、Day2 室内雨天安排可保留。",
+        "[第2轮] Planner：删除 Day3 重复的古鸡鸣寺，改排中山陵景区与同分区莲花广场；Day1、Day2 雨天室内安排保留。（新增：中山陵景区、莲花广场）",
+        "[第2轮] Reviewer 通过（88分）：(无意见)"
+      ],
+      "route": [
+        {
+          "day": 1,
+          "spots": [
+            {
+              "name": "古鸡鸣寺",
+              "period": "morning",
+              "start_time": "09:00",
+              "end_time": "11:30"
+            },
+            {
+              "name": "玄武湖景区",
+              "period": "afternoon",
+              "start_time": "12:30",
+              "end_time": "15:30"
+            },
+            {
+              "name": "南京夫子庙",
+              "period": "evening",
+              "start_time": "16:30",
+              "end_time": "19:30"
+            }
+          ],
+          "theme": "玄武—秦淮晴天古寺湖光与夫子庙历史街巷"
+        },
+        {
+          "day": 2,
+          "spots": [
+            {
+              "name": "总统府",
+              "period": "morning",
+              "start_time": "09:00",
+              "end_time": "12:30"
+            },
+            {
+              "name": "中国科举博物馆(江南贡院)",
+              "period": "afternoon",
+              "start_time": "14:00",
+              "end_time": "18:00"
+            }
+          ],
+          "theme": "雨天室内：近代总统府与科举贡院博物馆"
+        },
+        {
+          "day": 3,
+          "spots": [
+            {
+              "name": "中山陵景区",
+              "period": "morning",
+              "start_time": "09:00",
+              "end_time": "13:00"
+            },
+            {
+              "name": "莲花广场",
+              "period": "afternoon",
+              "start_time": "14:30",
+              "end_time": "16:30"
+            }
+          ],
+          "theme": "晴天中山陵陵寝与玄武广场"
+        }
+      ],
+      "fixture_id": "nanjing-3d-singlerain-history"
+    },
+    {
+      "scenario": "duplicate_poi",
+      "mode": "planner_reviewer_time_check",
+      "objective_pass": true,
+      "checks": {
+        "g1_closed_pool": {
+          "passed": true,
+          "detail": "无越界景点"
+        },
+        "g2_time_check": {
+          "passed": true,
+          "detail": "time_check 无违规"
+        },
+        "g4_structure": {
+          "passed": true,
+          "detail": "结构合法"
+        },
+        "g5_coverage": {
+          "passed": true,
+          "detail": "每天均有景点"
+        },
+        "g6_weather": {
+          "passed": true,
+          "detail": "雨雪天合规"
+        },
+        "g9_walking_distance": {
+          "passed": true,
+          "detail": "用户未指定步行上限"
+        },
+        "g10_habit_constraints": {
+          "passed": true,
+          "detail": "明确习惯约束满足"
+        },
+        "g7_convergence": {
+          "passed": true,
+          "detail": "reviewer=✅(2/3轮)，time_check=✅(1轮)"
+        },
+        "g8_time_check_efficiency": {
+          "passed": true,
+          "detail": "time_check 用了 1 轮，残留违规 0 处"
+        }
+      },
+      "elapsed_ms": 86196.094,
+      "review_round": 2,
+      "time_check_round": 1,
+      "dialogue": [
+        "[第1轮] Planner：故障恢复评测的共同冻结草案。",
+        "[第1轮] Reviewer 打回（45分）：必须删除Day3对古鸡鸣寺的重复安排（Day1已游玩）。Day3主题写「中山陵陵寝与民国史迹」但实际只有古鸡鸣寺，请改为候选池内未使用的热门点：建议晴天安排中山陵景区（周三开放、墓室周二至周五开放），可搭配莲花广场或长江大桥等未重复景点，保持每天≤3且避免再回鸡鸣寺。",
+        "[第2轮] Planner：删除Day3重复的古鸡鸣寺，改为中山陵景区+莲花广场，主题与开放日对齐。（新增：中山陵景区、莲花广场）",
+        "[第2轮] Reviewer 通过（88分）：(无意见)",
+        "[time_check 第1轮] 无违规"
+      ],
+      "route": [
+        {
+          "day": 1,
+          "spots": [
+            {
+              "name": "古鸡鸣寺",
+              "period": "morning",
+              "start_time": "09:00",
+              "end_time": "11:30"
+            },
+            {
+              "name": "玄武湖景区",
+              "period": "afternoon",
+              "start_time": "12:30",
+              "end_time": "15:30"
+            },
+            {
+              "name": "南京夫子庙",
+              "period": "evening",
+              "start_time": "16:30",
+              "end_time": "19:30"
+            }
+          ],
+          "theme": "玄武—秦淮晴天古寺湖光与夫子庙历史街巷"
+        },
+        {
+          "day": 2,
+          "spots": [
+            {
+              "name": "总统府",
+              "period": "morning",
+              "start_time": "09:00",
+              "end_time": "12:30"
+            },
+            {
+              "name": "中国科举博物馆(江南贡院)",
+              "period": "afternoon",
+              "start_time": "14:00",
+              "end_time": "18:00"
+            }
+          ],
+          "theme": "雨天室内：近代总统府与科举贡院博物馆"
+        },
+        {
+          "day": 3,
+          "spots": [
+            {
+              "name": "中山陵景区",
+              "period": "morning",
+              "start_time": "09:00",
+              "end_time": "13:00"
+            },
+            {
+              "name": "莲花广场",
+              "period": "afternoon",
+              "start_time": "14:30",
+              "end_time": "16:30"
+            }
+          ],
+          "theme": "晴天中山陵陵寝与玄武莲花广场"
+        }
+      ],
+      "fixture_id": "nanjing-3d-singlerain-history"
+    },
+    {
+      "scenario": "opening_hours",
+      "mode": "single_no_audit",
+      "objective_pass": false,
+      "checks": {
+        "g1_closed_pool": {
+          "passed": true,
+          "detail": "无越界景点"
+        },
+        "g2_time_check": {
+          "passed": false,
+          "detail": "1 处时间违规未修复：Day2 不老村 游玩 07:00-08:00 超出开放 09:00-17:00"
+        },
+        "g4_structure": {
+          "passed": true,
+          "detail": "结构合法"
+        },
+        "g5_coverage": {
+          "passed": true,
+          "detail": "每天均有景点"
+        },
+        "g6_weather": {
+          "passed": true,
+          "detail": "无雨雪天"
+        },
+        "g9_walking_distance": {
+          "passed": true,
+          "detail": "用户未指定步行上限"
+        },
+        "g10_habit_constraints": {
+          "passed": false,
+          "detail": "Day2 首站 07:00，早于10:00"
+        },
+        "g7_convergence": {
+          "passed": false,
+          "detail": "reviewer=❌(1/3轮)，time_check=❌(0轮)"
+        },
+        "g8_time_check_efficiency": {
+          "passed": false,
+          "detail": "time_check 用了 0 轮，残留违规 1 处"
+        }
+      },
+      "elapsed_ms": 0.058,
+      "review_round": 1,
+      "time_check_round": 0,
+      "dialogue": [
+        "[第1轮] Planner：故障恢复评测的共同冻结草案。"
+      ],
+      "route": [
+        {
+          "day": 1,
+          "spots": [
+            {
+              "name": "中山陵景区",
+              "period": "morning",
+              "start_time": "10:00",
+              "end_time": "13:30"
+            },
+            {
+              "name": "古鸡鸣寺",
+              "period": "afternoon",
+              "start_time": "15:00",
+              "end_time": "17:15"
+            }
+          ],
+          "theme": "玄武山陵与古寺半日"
+        },
+        {
+          "day": 2,
+          "spots": [
+            {
+              "name": "不老村",
+              "period": "morning",
+              "start_time": "07:00",
+              "end_time": "08:00"
+            },
+            {
+              "name": "水墨大埝旅游区",
+              "period": "afternoon",
+              "start_time": "14:00",
+              "end_time": "17:00"
+            }
+          ],
+          "theme": "浦口乡野渔光"
+        },
+        {
+          "day": 3,
+          "spots": [
+            {
+              "name": "南京牛首山文化旅游区",
+              "period": "morning",
+              "start_time": "10:00",
+              "end_time": "16:00"
+            }
+          ],
+          "theme": "牛首山文化与自然"
+        }
+      ],
+      "fixture_id": "nanjing-3d-tighthours-negative"
+    },
+    {
+      "scenario": "opening_hours",
+      "mode": "planner_reviewer",
+      "objective_pass": true,
+      "checks": {
+        "g1_closed_pool": {
+          "passed": true,
+          "detail": "无越界景点"
+        },
+        "g2_time_check": {
+          "passed": true,
+          "detail": "time_check 无违规"
+        },
+        "g4_structure": {
+          "passed": true,
+          "detail": "结构合法"
+        },
+        "g5_coverage": {
+          "passed": true,
+          "detail": "每天均有景点"
+        },
+        "g6_weather": {
+          "passed": true,
+          "detail": "无雨雪天"
+        },
+        "g9_walking_distance": {
+          "passed": true,
+          "detail": "用户未指定步行上限"
+        },
+        "g10_habit_constraints": {
+          "passed": true,
+          "detail": "明确习惯约束满足"
+        },
+        "g7_convergence": {
+          "passed": false,
+          "detail": "reviewer=✅(2/3轮)，time_check=❌(0轮)"
+        },
+        "g8_time_check_efficiency": {
+          "passed": true,
+          "detail": "time_check 用了 0 轮，残留违规 0 处"
+        }
+      },
+      "elapsed_ms": 52784.049,
+      "review_round": 2,
+      "time_check_round": 0,
+      "dialogue": [
+        "[第1轮] Planner：故障恢复评测的共同冻结草案。",
+        "[第1轮] Reviewer 打回（62分）：Day2违反「不喜欢早起」：不老村start_time=07:00，必须改为不早于10:00开园后游览（不老村开放09:00，建议首景点≥10:00）。请将Day2调整为10:00后进入不老村，再衔接水墨大埝，并保证两景点间交通与停留时长合理。Day1、Day3节奏可保留。",
+        "[第2轮] Planner：按评审将Day2不老村改为10:00入园再衔接水墨大埝，Day1/Day3节奏保留。",
+        "[第2轮] Reviewer 通过（90分）：(无意见)"
+      ],
+      "route": [
+        {
+          "day": 1,
+          "spots": [
+            {
+              "name": "中山陵景区",
+              "period": "morning",
+              "start_time": "10:00",
+              "end_time": "13:30"
+            },
+            {
+              "name": "古鸡鸣寺",
+              "period": "afternoon",
+              "start_time": "15:00",
+              "end_time": "17:15"
+            }
+          ],
+          "theme": "玄武山陵与古寺半日"
+        },
+        {
+          "day": 2,
+          "spots": [
+            {
+              "name": "不老村",
+              "period": "morning",
+              "start_time": "10:00",
+              "end_time": "13:00"
+            },
+            {
+              "name": "水墨大埝旅游区",
+              "period": "afternoon",
+              "start_time": "14:00",
+              "end_time": "17:00"
+            }
+          ],
+          "theme": "浦口乡野渔光"
+        },
+        {
+          "day": 3,
+          "spots": [
+            {
+              "name": "南京牛首山文化旅游区",
+              "period": "morning",
+              "start_time": "10:00",
+              "end_time": "16:00"
+            }
+          ],
+          "theme": "牛首山文化与自然"
+        }
+      ],
+      "fixture_id": "nanjing-3d-tighthours-negative"
+    },
+    {
+      "scenario": "opening_hours",
+      "mode": "planner_reviewer_time_check",
+      "objective_pass": true,
+      "checks": {
+        "g1_closed_pool": {
+          "passed": true,
+          "detail": "无越界景点"
+        },
+        "g2_time_check": {
+          "passed": true,
+          "detail": "time_check 无违规"
+        },
+        "g4_structure": {
+          "passed": true,
+          "detail": "结构合法"
+        },
+        "g5_coverage": {
+          "passed": true,
+          "detail": "每天均有景点"
+        },
+        "g6_weather": {
+          "passed": true,
+          "detail": "无雨雪天"
+        },
+        "g9_walking_distance": {
+          "passed": true,
+          "detail": "用户未指定步行上限"
+        },
+        "g10_habit_constraints": {
+          "passed": true,
+          "detail": "明确习惯约束满足"
+        },
+        "g7_convergence": {
+          "passed": true,
+          "detail": "reviewer=✅(2/3轮)，time_check=✅(1轮)"
+        },
+        "g8_time_check_efficiency": {
+          "passed": true,
+          "detail": "time_check 用了 1 轮，残留违规 0 处"
+        }
+      },
+      "elapsed_ms": 116885.21,
+      "review_round": 2,
+      "time_check_round": 1,
+      "dialogue": [
+        "[第1轮] Planner：故障恢复评测的共同冻结草案。",
+        "[第1轮] Reviewer 打回（62分）：Day2违反「不喜欢早起」：不老村安排07:00-08:00，首个景点必须不早于10:00。请将不老村开始时间改到10:00及以后，并相应调整与水墨大埝的衔接（不老村开放至17:00，可改为上午10:00起游玩后再去水墨大埝）。不要改动开放时间专项以外的其他天结构。",
+        "[第2轮] Planner：仅将 Day2 不老村改为 10:00 起游并衔接水墨大埝，Day1/Day3 结构与时刻保持不变。（系统已规范化候选景点名：水墨大埸旅游区→水墨大埝旅游区）",
+        "[第2轮] Reviewer 通过（92分）：(无意见)",
+        "[time_check 第1轮] 无违规"
+      ],
+      "route": [
+        {
+          "day": 1,
+          "spots": [
+            {
+              "name": "中山陵景区",
+              "period": "morning",
+              "start_time": "10:00",
+              "end_time": "13:30"
+            },
+            {
+              "name": "古鸡鸣寺",
+              "period": "afternoon",
+              "start_time": "15:00",
+              "end_time": "17:15"
+            }
+          ],
+          "theme": "玄武山陵与古寺半日"
+        },
+        {
+          "day": 2,
+          "spots": [
+            {
+              "name": "不老村",
+              "period": "morning",
+              "start_time": "10:00",
+              "end_time": "13:00"
+            },
+            {
+              "name": "水墨大埝旅游区",
+              "period": "afternoon",
+              "start_time": "14:00",
+              "end_time": "17:00"
+            }
+          ],
+          "theme": "浦口乡野渔光"
+        },
+        {
+          "day": 3,
+          "spots": [
+            {
+              "name": "南京牛首山文化旅游区",
+              "period": "morning",
+              "start_time": "10:00",
+              "end_time": "16:00"
+            }
+          ],
+          "theme": "牛首山文化与自然"
+        }
+      ],
+      "fixture_id": "nanjing-3d-tighthours-negative"
+    }
+  ],
+  "llm_usage": {
+    "calls_total": 15,
+    "failed_total": 1,
+    "input_tokens": 21946,
+    "output_tokens": 5297,
+    "total_tokens": 27243,
+    "estimated_calls": 15,
+    "usage_exact_ratio": 0.0,
+    "latency_sum_ms": 323002.956,
+    "estimated_cost_usd": 0.0,
+    "cost_rates_configured": false
+  },
+  "boundary": "Both modes start from identical real-Planner drafts with deterministic injected faults. This measures recovery robustness, not natural-request quality or failure prevalence.",
+  "regraded_at": "2026-09-21T08:56:39.778994+00:00",
+  "regrade_external_calls_made": false,
+  "configuration": {
+    "provider": "grok",
+    "model": "grok-4.6",
+    "prompt_code_fingerprint": "abdb00bf6b86cbd5",
+    "python": "3.12.8"
+  }
+}

@@ -34,7 +34,7 @@ def run_single(fixture: dict, model_name: str | None = None) -> dict[str, Any]:
     import app.core.database as _db_module
     from app.core.database import init_db, get_conn
     from app.core.memory import set_user_profile, search_profile_fields, get_user_profile
-    from app.llm.deepseek import build_structured_deepseek
+    from app.llm.factory import build_structured_llm
     from app.planning.schemas import RewrittenQuery
     from app.planning.prompts import QUERY_REWRITE_SYSTEM
     from app.planning.helpers import invoke_structured
@@ -90,7 +90,7 @@ def run_single(fixture: dict, model_name: str | None = None) -> dict[str, Any]:
         )
 
         # ── 4. 单次结构化 LLM 调用 ────────────────────────────────────────
-        rewrite_llm = build_structured_deepseek(RewrittenQuery, model=model_name, temperature=0)
+        rewrite_llm = build_structured_llm(RewrittenQuery, model=model_name, temperature=0)
         rewritten: RewrittenQuery = invoke_structured(rewrite_llm, [
             ("system", QUERY_REWRITE_SYSTEM),
             ("human", f"原始查询：{raw_query}\n\n{intent_prefs_string}\n\n用户历史画像：\n{profile_text}"),

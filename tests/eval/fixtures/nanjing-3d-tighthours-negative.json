@@ -1,0 +1,162 @@
+{
+  "id": "nanjing-3d-tighthours-negative",
+  "tier": "capability",
+  "destination": "南京",
+  "query": "南京3天游（负样本：景点池以开放时间短的景点为主，考验时刻表合理性）",
+  "travel_start_date": "2026-08-25",
+  "travel_end_date": "2026-08-27",
+  "days": 3,
+  "attraction_preference": "历史古迹、自然景观",
+  "habit_preference": "不喜欢早起",
+  "max_per_day": 3,
+  "min_rating": 4.5,
+  "max_review_rounds": 3,
+  "pois": [
+    {
+      "name": "不老村",
+      "rating": 4.7,
+      "open_time": "周一至周日 09:00-17:00；须在公众号提前预约",
+      "location": {
+        "lng": 118.612204,
+        "lat": 32.092398
+      },
+      "photo": "http://store.is.autonavi.com/showpic/d66ee0db5d06aff0f54277fa211aa46e",
+      "adname": "浦口区",
+      "address": "江北线附近",
+      "tel": "025-58154909",
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "古鸡鸣寺",
+      "rating": 4.8,
+      "open_time": "初周一、15:05-17:30,17:15停止售票； 07:30-17:30",
+      "location": {
+        "lng": 118.795246,
+        "lat": 32.061061
+      },
+      "photo": "http://store.is.autonavi.com/query_pic?id=st653d2760-3b45-47e5-ad2c-7a027aea5997&user=search&operate=original",
+      "adname": "玄武区",
+      "address": "鸡鸣寺路1号钟山风景名胜区玄武湖景区内西南侧",
+      "tel": "025-57715595",
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "水墨大埝旅游区",
+      "rating": 4.6,
+      "open_time": "周一至周日 09:00-17:00",
+      "location": {
+        "lng": 118.594334,
+        "lat": 32.122989
+      },
+      "photo": "https://aos-comment.amap.com/B0FFFDUCR9/comment/382839a48e76fe016c8c4ce59ce69894_2048_2048_80.jpg",
+      "adname": "浦口区",
+      "address": "岔琥路",
+      "tel": "025-58228507;025-58656666",
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "中山陵景区",
+      "rating": 4.9,
+      "open_time": "08:30-17:00(周一闭馆)；法定节假日及孙中山先生诞辰、逝世纪念日正常开放,墓室仅周二至周五开放(数据来源:江苏省文旅厅公共服务平台苏心游)",
+      "location": {
+        "lng": 118.854097,
+        "lat": 32.054508
+      },
+      "photo": "http://store.is.autonavi.com/showpic/46bf800a21c42453ff756fc2b77c710f",
+      "adname": "玄武区",
+      "address": "石象路7号",
+      "tel": "025-85769047",
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "江苏江宁汤山方山国家地质公园博物馆",
+      "rating": 4.5,
+      "open_time": "4月4日-12月31日 周一 不开放；周二-周日 09:00-17:00开放；具体开放时间以官方通知为准",
+      "location": {
+        "lng": 119.040524,
+        "lat": 32.055581
+      },
+      "photo": "https://store.is.autonavi.com/showpic/d3d69bdf7fee2f9f0000003134900728?type=pic",
+      "adname": "江宁区",
+      "address": "汤山街道汤泉西路169号",
+      "tel": "025-52071105;025-68720777",
+      "cost": "[]",
+      "indoor": true
+    },
+    {
+      "name": "南京牛首山文化旅游区",
+      "rating": 4.7,
+      "open_time": "8:30-17:30（16:30停止入园）(数据来源:江苏省文旅厅公共服务平台苏心游)",
+      "location": {
+        "lng": 118.74415,
+        "lat": 31.903309
+      },
+      "photo": "http://store.is.autonavi.com/showpic/f1496728ce77c278f387d2a29c3c920e",
+      "adname": "江宁区",
+      "address": "宁丹大道18号",
+      "tel": "4001656363",
+      "cost": "[]",
+      "indoor": false
+    },
+    {
+      "name": "南京欢乐谷",
+      "rating": 4.7,
+      "open_time": "8月31日-9月11日:10:00-18:00；9月12日-10月22日:10:00-21:00；10月23日-11月1日:10:00-23:00；11月2日-11月29日:10:00-21:00",
+      "location": {
+        "lng": 118.998553,
+        "lat": 32.163841
+      },
+      "photo": "http://store.is.autonavi.com/showpic/2dfc1135d63b593dd79428ed00da81c9",
+      "adname": "栖霞区",
+      "address": "经济技术开发区欢乐谷北路8号",
+      "tel": "025-83091666",
+      "cost": "[]",
+      "indoor": false
+    }
+  ],
+  "weather_forecast": [
+    {
+      "date": "2026-08-25",
+      "day_weather": "晴",
+      "night_weather": "晴",
+      "day_temp": "31",
+      "night_temp": "23",
+      "is_bad": false
+    },
+    {
+      "date": "2026-08-26",
+      "day_weather": "晴",
+      "night_weather": "晴",
+      "day_temp": "31",
+      "night_temp": "23",
+      "is_bad": false
+    },
+    {
+      "date": "2026-08-27",
+      "day_weather": "晴",
+      "night_weather": "晴",
+      "day_temp": "31",
+      "night_temp": "23",
+      "is_bad": false
+    }
+  ],
+  "expectations": {
+    "outdoor_on_bad_day_max": 0
+  },
+  "provenance": {
+    "poi_source": "AMap Web Service Place Text API v3",
+    "poi_captured_at": "2026-09-14T15:04:00.960324+00:00",
+    "poi_query_channels": [
+      "必去景点",
+      "热门景区",
+      "博物馆"
+    ],
+    "poi_rating_threshold": 4.5,
+    "weather_source": "synthetic frozen evaluation scenario",
+    "indoor_label_source": "deterministic name-keyword heuristic"
+  }
+}

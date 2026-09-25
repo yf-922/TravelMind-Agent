@@ -10,7 +10,7 @@ const JOURNEY_STEPS = [
   { key: "attraction_search", label: "景点 Agent 检索",    detail: "搜索景点池" },
   { key: "plan_review",       label: "规划 ⇄ 评审行程",    detail: "多轮打磨逐日时刻表" },
   { key: "time_check",        label: "核查开放时间",        detail: "逐景点核对营业时段" },
-  { key: "meal",              label: "推荐沿线餐厅",        detail: "搜店 · 逐天挑选" },
+  { key: "enrichment",        label: "补充沿线信息",        detail: "餐厅推荐 · 景点贴士并行" },
   { key: "finalize",          label: "生成最终行程",         detail: "即将完成…" },
 ];
 // 后端节点名 → 旅程站点 key
@@ -21,9 +21,10 @@ const NODE_TO_STEP = {
   planner:           "plan_review",
   reviewer:          "plan_review",
   time_check:        "time_check",
-  meal_search:       "meal",
-  meal_recommend:    "meal",
-  spot_tips:         "finalize",
+  meal_search:       "enrichment",
+  meal_recommend:    "enrichment",
+  meal_enrichment:   "enrichment",
+  spot_tips:         "enrichment",
   finalize:          "finalize",
 };
 Object.assign(window, { JOURNEY_STEPS, NODE_TO_STEP });
