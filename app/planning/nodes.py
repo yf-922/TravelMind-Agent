@@ -366,6 +366,28 @@ def _route_risk_flags(state: TravelPlanState) -> list[str]:
     """Run cheap deterministic checks before paying for LLM review nodes."""
     flags: list[str] = []
     route = state.route or []
+    # Treat provider/LLM-shaped output as hostile input.  A malformed route
+    # must be escalated, never crash the gate or be silently treated as empty.
+    malformed_shape = False
+    normalized_route: list[dict[str, Any]] = []
+    for day in route:
+        if not isinstance(day, dict):
+            malformed_shape = True
+            continue
+        raw_spots = day.get("spots") or []
+        if not isinstance(raw_spots, list):
+            malformed_shape = True
+            raw_spots = []
+        safe_spots = []
+        for spot in raw_spots:
+            if not isinstance(spot, dict):
+                malformed_shape = True
+                continue
+            safe_spots.append(spot)
+        normalized_route.append({**day, "spots": safe_spots})
+    if malformed_shape:
+        flags.append("route_structure")
+    route = normalized_route
     spots = [spot for day in route for spot in (day.get("spots") or [])]
     names = [str(spot.get("name") or "").strip() for spot in spots]
     duplicates = sorted({name for name in names if name and names.count(name) > 1})
@@ -375,7 +397,7 @@ def _route_risk_flags(state: TravelPlanState) -> list[str]:
         flags.append("unknown_poi")
 
     periods = {"morning": 0, "afternoon": 1, "evening": 2}
-    structural_risk = (
+    structural_risk = malformed_shape or (
         len(route) != state.days
         or [day.get("day") for day in route] != list(range(1, state.days + 1))
         or any(not day.get("spots") for day in route)
