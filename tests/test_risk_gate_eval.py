@@ -18,3 +18,4 @@ def test_constructed_cases_cover_labelled_faults_and_clean_contrasts():
     assert report["metrics"]["constructed_clean_skip_rate"] == 1.0
     assert report["metrics"]["constructed_fault_recall"] == 1.0
     assert all(value == 1.0 for value in report["metrics"]["constructed_category_recall"].values())
+    assert all(not row["unexpected_flags"] and not row["missing_flags"] for row in report["constructed"])

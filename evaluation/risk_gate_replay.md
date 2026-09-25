@@ -40,7 +40,7 @@
 | constructed:user_change OK | escalate | user_modification |
 | constructed:compound_fault OK | escalate | duplicate_poi, unknown_poi |
 | constructed:valid_evening OK | skip | - |
-| constructed:too_many_per_day OK | escalate | route_structure, opening_time_conflict |
+| constructed:too_many_per_day OK | escalate | route_structure |
 | constructed:day_number_gap OK | escalate | route_structure |
 | constructed:zero_length_visit OK | escalate | route_structure |
 | constructed:period_missing OK | escalate | route_structure |

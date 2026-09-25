@@ -69,7 +69,7 @@ def constructed_cases() -> list[dict[str, Any]]:
         ("user_change", sunny, base, {"modification_notes": "改成室内"}, "escalate", ["user_modification"]),
         ("compound_fault", sunny, _route([_spot("虚构景点"), _spot("虚构景点", "14:00", "15:00", "afternoon")]), {}, "escalate", ["unknown_poi", "duplicate_poi"]),
         ("valid_evening", sunny, _route([_spot("南京夫子庙", "19:00", "20:00", "evening")]), {}, "skip", []),
-        ("too_many_per_day", sunny, _route([morning, afternoon, _spot(lake, "16:00", "17:00", "evening"), _spot("古鸡鸣寺", "18:00", "19:00", "evening")]), {"max_per_day": 3}, "escalate", ["route_structure"]),
+        ("too_many_per_day", sunny, _route([morning, afternoon, _spot(lake, "16:00", "17:00", "evening"), _spot("莲花广场", "18:00", "19:00", "evening")]), {"max_per_day": 3}, "escalate", ["route_structure"]),
         ("day_number_gap", sunny, [{"day": 1, "spots": [morning]}, {"day": 3, "spots": [afternoon]}], {"days": 2}, "escalate", ["route_structure"]),
         ("zero_length_visit", sunny, _route([_spot(museum, "10:00", "10:00")]), {}, "escalate", ["route_structure"]),
         ("period_missing", sunny, _route([_spot(museum, "10:00", "11:00", "night")]), {}, "escalate", ["route_structure"]),
@@ -151,8 +151,10 @@ def evaluate(root: Path = ROOT) -> dict[str, Any]:
             "case_id": case["case_id"], "fixture_id": case["fixture_id"],
             "expected_decision": case["expected_decision"], "expected_flags": case["expected_flags"],
             **actual,
+            "unexpected_flags": sorted(set(actual["flags"]) - set(case["expected_flags"])),
+            "missing_flags": sorted(set(case["expected_flags"]) - set(actual["flags"])),
             "passed": actual["skipped"] == expected_skip
-            and all(flag in actual["flags"] for flag in case["expected_flags"]),
+            and set(actual["flags"]) == set(case["expected_flags"]),
         })
 
     natural_ablation = json.loads(
