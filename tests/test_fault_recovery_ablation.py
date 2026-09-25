@@ -33,7 +33,15 @@ def test_fault_recovery_summary_keeps_failed_baseline_in_denominator():
     assert [row["pass_rate"] for row in summary] == [0.0, 1.0, 1.0]
 
 
-def test_time_check_only_recovery_graph_has_no_reviewer():
+def test_time_check_only_recovery_graph_has_no_reviewer(monkeypatch):
+    # Graph-construction contract only: do not initialize a real LLM client in CI.
+    import tests.eval.run_fault_recovery_ablation as recovery_module
+
+    fake_node = lambda *args, **kwargs: (lambda state: {})
+    monkeypatch.setattr(recovery_module, "make_planner_node", fake_node)
+    monkeypatch.setattr(recovery_module, "make_reviewer_node", fake_node)
+    monkeypatch.setattr(recovery_module, "make_time_check_node", fake_node)
+
     graph = _build_recovery_graph("time_check_only")
     assert "time_check" in graph.nodes
     assert "reviewer" in graph.nodes
