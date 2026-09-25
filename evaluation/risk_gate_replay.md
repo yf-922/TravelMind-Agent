@@ -4,7 +4,7 @@
 
 - Natural-route audit skip rate: 100.0%
 - Injected-fault escalation recall: 100.0%
-- Constructed labelled cases: 32/32 pass; clean skip 100.0%, fault recall 100.0%
+- Constructed labelled cases: 49/49 pass; clean skip 100.0%, fault recall 100.0%
 - Projected token reduction vs always-full audit: 61.8%
 - Projected latency reduction vs always-full audit: 50.7%
 
@@ -39,6 +39,23 @@
 | constructed:long_drive OK | escalate | long_road_leg |
 | constructed:user_change OK | escalate | user_modification |
 | constructed:compound_fault OK | escalate | duplicate_poi, unknown_poi |
+| constructed:valid_evening OK | skip | - |
+| constructed:too_many_per_day OK | escalate | route_structure, opening_time_conflict |
+| constructed:day_number_gap OK | escalate | route_structure |
+| constructed:zero_length_visit OK | escalate | route_structure |
+| constructed:period_missing OK | escalate | route_structure |
+| constructed:opening_conflict_with_clean_structure OK | escalate | opening_time_conflict |
+| constructed:unknown_hours_plus_duplicate OK | escalate | duplicate_poi, opening_time_unknown |
+| constructed:transit_leg_not_walk OK | escalate | walking_constraint |
+| constructed:walk_limit_exact_boundary OK | skip | - |
+| constructed:drive_leg_below_threshold OK | skip | - |
+| constructed:route_modify_opinion OK | escalate | user_modification |
+| constructed:late_start_valid OK | skip | - |
+| constructed:lijiang_all_rain_indoor OK | skip | - |
+| constructed:lijiang_all_rain_outdoor OK | escalate | weather_outdoor_conflict |
+| constructed:sanya_all_rain_outdoor OK | escalate | weather_outdoor_conflict |
+| constructed:shanghai_all_rain_indoor OK | skip | - |
+| constructed:shanghai_all_rain_outdoor OK | escalate | weather_outdoor_conflict |
 | constructed:jingdezhen_open OK | skip | - |
 | constructed:jingdezhen_closed OK | escalate | opening_time_conflict |
 | constructed:lijiang_open OK | skip | - |

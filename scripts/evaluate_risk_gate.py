@@ -68,7 +68,28 @@ def constructed_cases() -> list[dict[str, Any]]:
         ("long_drive", sunny, pair, {"route_distance_legs": [{"day": 1, "from": museum, "to": "南京夫子庙", "mode": "drive", "distance_km": 30}]}, "escalate", ["long_road_leg"]),
         ("user_change", sunny, base, {"modification_notes": "改成室内"}, "escalate", ["user_modification"]),
         ("compound_fault", sunny, _route([_spot("虚构景点"), _spot("虚构景点", "14:00", "15:00", "afternoon")]), {}, "escalate", ["unknown_poi", "duplicate_poi"]),
+        ("valid_evening", sunny, _route([_spot("南京夫子庙", "19:00", "20:00", "evening")]), {}, "skip", []),
+        ("too_many_per_day", sunny, _route([morning, afternoon, _spot(lake, "16:00", "17:00", "evening"), _spot("古鸡鸣寺", "18:00", "19:00", "evening")]), {"max_per_day": 3}, "escalate", ["route_structure"]),
+        ("day_number_gap", sunny, [{"day": 1, "spots": [morning]}, {"day": 3, "spots": [afternoon]}], {"days": 2}, "escalate", ["route_structure"]),
+        ("zero_length_visit", sunny, _route([_spot(museum, "10:00", "10:00")]), {}, "escalate", ["route_structure"]),
+        ("period_missing", sunny, _route([_spot(museum, "10:00", "11:00", "night")]), {}, "escalate", ["route_structure"]),
+        ("opening_conflict_with_clean_structure", sunny, _route([_spot(museum, "07:00", "08:00")]), {}, "escalate", ["opening_time_conflict"]),
+        ("unknown_hours_plus_duplicate", sunny, _route([_spot("临时展馆"), _spot("临时展馆", "14:00", "15:00", "afternoon")]), {"pois": [{"name": "临时展馆", "open_time": "", "indoor": True}]}, "escalate", ["duplicate_poi", "opening_time_unknown"]),
+        ("transit_leg_not_walk", sunny, pair, {"max_walking_km": 3, "route_distance_legs": [{"day": 1, "from": museum, "to": "南京夫子庙", "mode": "transit", "distance_km": 8}]}, "escalate", ["walking_constraint"]),
+        ("walk_limit_exact_boundary", sunny, pair, {"max_walking_km": 2, "route_distance_legs": [{"day": 1, "from": museum, "to": "南京夫子庙", "mode": "walk", "distance_km": 2}]}, "skip", []),
+        ("drive_leg_below_threshold", sunny, pair, {"route_distance_legs": [{"day": 1, "from": museum, "to": "南京夫子庙", "mode": "drive", "distance_km": 20}]}, "skip", []),
+        ("route_modify_opinion", sunny, base, {"route_modify_opinion": "【用户修改意见】替换下午景点"}, "escalate", ["user_modification"]),
+        ("late_start_valid", sunny, _route([_spot(museum, "10:00", "11:00")]), {"habit_preference": "不喜欢早起"}, "skip", []),
     ]
+    rainy_cross_city = [
+        ("lijiang_all_rain_indoor", "lijiang-3d-allrain-history", "丽江千古情景区", "15:00", "16:00", "skip", []),
+        ("lijiang_all_rain_outdoor", "lijiang-3d-allrain-history", "丽江古城", "10:00", "11:00", "escalate", ["weather_outdoor_conflict"]),
+        ("sanya_all_rain_outdoor", "sanya-3d-allrain-outdoor-negative", "亚龙湾海滩", "10:00", "11:00", "escalate", ["weather_outdoor_conflict"]),
+        ("shanghai_all_rain_indoor", "shanghai-3d-allrain-history", "上海失恋博物馆", "10:00", "11:00", "skip", []),
+        ("shanghai_all_rain_outdoor", "shanghai-3d-allrain-history", "上海动物园", "10:00", "11:00", "escalate", ["weather_outdoor_conflict"]),
+    ]
+    for case_id, fixture_id, poi_name, start, end, decision, flags in rainy_cross_city:
+        cases.append((case_id, fixture_id, _route([_spot(poi_name, start, end)]), {"days": 1}, decision, flags))
     city_contrasts = [
         ("jingdezhen", "jingdezhen-1d-sunny-history", "景德镇古窑民俗博览区", "07:00", "08:00"),
         ("lijiang", "lijiang-1d-sunny-nightlife", "丽江千古情景区", "10:00", "11:00"),

@@ -1,6 +1,6 @@
 {
   "measurement_type": "offline-policy-replay-on-real-provider-outputs",
-  "generated_at": "2026-09-25T05:18:34.134750+00:00",
+  "generated_at": "2026-09-25T06:59:03.795409+00:00",
   "natural": [
     {
       "case_id": "nanjing-3d-sunny-history",
@@ -378,6 +378,240 @@
       "flags": [
         "duplicate_poi",
         "unknown_poi"
+      ],
+      "review_required": true,
+      "time_check_required": true,
+      "skipped": false,
+      "passed": true
+    },
+    {
+      "case_id": "valid_evening",
+      "fixture_id": "nanjing-1d-sunny-nightlife",
+      "expected_decision": "skip",
+      "expected_flags": [],
+      "flags": [],
+      "review_required": false,
+      "time_check_required": false,
+      "skipped": true,
+      "passed": true
+    },
+    {
+      "case_id": "too_many_per_day",
+      "fixture_id": "nanjing-1d-sunny-nightlife",
+      "expected_decision": "escalate",
+      "expected_flags": [
+        "route_structure"
+      ],
+      "flags": [
+        "route_structure",
+        "opening_time_conflict"
+      ],
+      "review_required": true,
+      "time_check_required": true,
+      "skipped": false,
+      "passed": true
+    },
+    {
+      "case_id": "day_number_gap",
+      "fixture_id": "nanjing-1d-sunny-nightlife",
+      "expected_decision": "escalate",
+      "expected_flags": [
+        "route_structure"
+      ],
+      "flags": [
+        "route_structure"
+      ],
+      "review_required": true,
+      "time_check_required": true,
+      "skipped": false,
+      "passed": true
+    },
+    {
+      "case_id": "zero_length_visit",
+      "fixture_id": "nanjing-1d-sunny-nightlife",
+      "expected_decision": "escalate",
+      "expected_flags": [
+        "route_structure"
+      ],
+      "flags": [
+        "route_structure"
+      ],
+      "review_required": true,
+      "time_check_required": true,
+      "skipped": false,
+      "passed": true
+    },
+    {
+      "case_id": "period_missing",
+      "fixture_id": "nanjing-1d-sunny-nightlife",
+      "expected_decision": "escalate",
+      "expected_flags": [
+        "route_structure"
+      ],
+      "flags": [
+        "route_structure"
+      ],
+      "review_required": true,
+      "time_check_required": true,
+      "skipped": false,
+      "passed": true
+    },
+    {
+      "case_id": "opening_conflict_with_clean_structure",
+      "fixture_id": "nanjing-1d-sunny-nightlife",
+      "expected_decision": "escalate",
+      "expected_flags": [
+        "opening_time_conflict"
+      ],
+      "flags": [
+        "opening_time_conflict"
+      ],
+      "review_required": false,
+      "time_check_required": true,
+      "skipped": false,
+      "passed": true
+    },
+    {
+      "case_id": "unknown_hours_plus_duplicate",
+      "fixture_id": "nanjing-1d-sunny-nightlife",
+      "expected_decision": "escalate",
+      "expected_flags": [
+        "duplicate_poi",
+        "opening_time_unknown"
+      ],
+      "flags": [
+        "duplicate_poi",
+        "opening_time_unknown"
+      ],
+      "review_required": true,
+      "time_check_required": true,
+      "skipped": false,
+      "passed": true
+    },
+    {
+      "case_id": "transit_leg_not_walk",
+      "fixture_id": "nanjing-1d-sunny-nightlife",
+      "expected_decision": "escalate",
+      "expected_flags": [
+        "walking_constraint"
+      ],
+      "flags": [
+        "walking_constraint"
+      ],
+      "review_required": true,
+      "time_check_required": true,
+      "skipped": false,
+      "passed": true
+    },
+    {
+      "case_id": "walk_limit_exact_boundary",
+      "fixture_id": "nanjing-1d-sunny-nightlife",
+      "expected_decision": "skip",
+      "expected_flags": [],
+      "flags": [],
+      "review_required": false,
+      "time_check_required": false,
+      "skipped": true,
+      "passed": true
+    },
+    {
+      "case_id": "drive_leg_below_threshold",
+      "fixture_id": "nanjing-1d-sunny-nightlife",
+      "expected_decision": "skip",
+      "expected_flags": [],
+      "flags": [],
+      "review_required": false,
+      "time_check_required": false,
+      "skipped": true,
+      "passed": true
+    },
+    {
+      "case_id": "route_modify_opinion",
+      "fixture_id": "nanjing-1d-sunny-nightlife",
+      "expected_decision": "escalate",
+      "expected_flags": [
+        "user_modification"
+      ],
+      "flags": [
+        "user_modification"
+      ],
+      "review_required": true,
+      "time_check_required": true,
+      "skipped": false,
+      "passed": true
+    },
+    {
+      "case_id": "late_start_valid",
+      "fixture_id": "nanjing-1d-sunny-nightlife",
+      "expected_decision": "skip",
+      "expected_flags": [],
+      "flags": [],
+      "review_required": false,
+      "time_check_required": false,
+      "skipped": true,
+      "passed": true
+    },
+    {
+      "case_id": "lijiang_all_rain_indoor",
+      "fixture_id": "lijiang-3d-allrain-history",
+      "expected_decision": "skip",
+      "expected_flags": [],
+      "flags": [],
+      "review_required": false,
+      "time_check_required": false,
+      "skipped": true,
+      "passed": true
+    },
+    {
+      "case_id": "lijiang_all_rain_outdoor",
+      "fixture_id": "lijiang-3d-allrain-history",
+      "expected_decision": "escalate",
+      "expected_flags": [
+        "weather_outdoor_conflict"
+      ],
+      "flags": [
+        "weather_outdoor_conflict"
+      ],
+      "review_required": true,
+      "time_check_required": true,
+      "skipped": false,
+      "passed": true
+    },
+    {
+      "case_id": "sanya_all_rain_outdoor",
+      "fixture_id": "sanya-3d-allrain-outdoor-negative",
+      "expected_decision": "escalate",
+      "expected_flags": [
+        "weather_outdoor_conflict"
+      ],
+      "flags": [
+        "weather_outdoor_conflict"
+      ],
+      "review_required": true,
+      "time_check_required": true,
+      "skipped": false,
+      "passed": true
+    },
+    {
+      "case_id": "shanghai_all_rain_indoor",
+      "fixture_id": "shanghai-3d-allrain-history",
+      "expected_decision": "skip",
+      "expected_flags": [],
+      "flags": [],
+      "review_required": false,
+      "time_check_required": false,
+      "skipped": true,
+      "passed": true
+    },
+    {
+      "case_id": "shanghai_all_rain_outdoor",
+      "fixture_id": "shanghai-3d-allrain-history",
+      "expected_decision": "escalate",
+      "expected_flags": [
+        "weather_outdoor_conflict"
+      ],
+      "flags": [
+        "weather_outdoor_conflict"
       ],
       "review_required": true,
       "time_check_required": true,

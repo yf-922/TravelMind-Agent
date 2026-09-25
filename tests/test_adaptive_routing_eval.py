@@ -12,5 +12,5 @@ def test_adaptive_policy_replay_preserves_saved_objective_results():
     assert report["policies"]["full"]["passed"] == 6
     assert report["policies"]["adaptive"]["passed"] == 6
     assert report["policies"]["adaptive"]["elapsed_total_ms"] < report["policies"]["full"]["elapsed_total_ms"]
-    assert len(report["routing_matrix"]) == 32
+    assert len(report["routing_matrix"]) == 49
     assert report["metrics"]["routing_matrix_pass_rate"] == 1.0

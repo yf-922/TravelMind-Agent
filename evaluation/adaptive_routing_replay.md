@@ -12,7 +12,7 @@
 - Natural-case estimated Token reduction: 61.8% (3 cases only).
 - Isolated opening-hours fault estimated Tokens: time_check_only=6939, planner_reviewer_time_check=6658.
 - Overall Token reduction: unavailable; old fault report does not attribute usage per mode.
-- Offline routing matrix: 32/32 mode decisions correct; no LLM calls.
+- Offline routing matrix: 49/49 mode decisions correct; no LLM calls.
 
 | Draft | Routed mode | Single | Full | Adaptive |
 |---|---|---:|---:|---:|

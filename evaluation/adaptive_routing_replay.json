@@ -1,6 +1,6 @@
 {
   "measurement_type": "offline-policy-replay-of-saved-real-provider-outcomes",
-  "generated_at": "2026-09-25T06:08:18.410393+00:00",
+  "generated_at": "2026-09-25T06:59:04.622443+00:00",
   "cases": [
     {
       "case_id": "nanjing-3d-sunny-history",
@@ -276,6 +276,149 @@
       ]
     },
     {
+      "case_id": "valid_evening",
+      "expected_mode": "planner_only",
+      "actual_mode": "planner_only",
+      "passed": true,
+      "flags": []
+    },
+    {
+      "case_id": "too_many_per_day",
+      "expected_mode": "planner_reviewer_time_check",
+      "actual_mode": "planner_reviewer_time_check",
+      "passed": true,
+      "flags": [
+        "route_structure",
+        "opening_time_conflict"
+      ]
+    },
+    {
+      "case_id": "day_number_gap",
+      "expected_mode": "planner_reviewer_time_check",
+      "actual_mode": "planner_reviewer_time_check",
+      "passed": true,
+      "flags": [
+        "route_structure"
+      ]
+    },
+    {
+      "case_id": "zero_length_visit",
+      "expected_mode": "planner_reviewer_time_check",
+      "actual_mode": "planner_reviewer_time_check",
+      "passed": true,
+      "flags": [
+        "route_structure"
+      ]
+    },
+    {
+      "case_id": "period_missing",
+      "expected_mode": "planner_reviewer_time_check",
+      "actual_mode": "planner_reviewer_time_check",
+      "passed": true,
+      "flags": [
+        "route_structure"
+      ]
+    },
+    {
+      "case_id": "opening_conflict_with_clean_structure",
+      "expected_mode": "time_check_only",
+      "actual_mode": "time_check_only",
+      "passed": true,
+      "flags": [
+        "opening_time_conflict"
+      ]
+    },
+    {
+      "case_id": "unknown_hours_plus_duplicate",
+      "expected_mode": "planner_reviewer_time_check",
+      "actual_mode": "planner_reviewer_time_check",
+      "passed": true,
+      "flags": [
+        "duplicate_poi",
+        "opening_time_unknown"
+      ]
+    },
+    {
+      "case_id": "transit_leg_not_walk",
+      "expected_mode": "planner_reviewer_time_check",
+      "actual_mode": "planner_reviewer_time_check",
+      "passed": true,
+      "flags": [
+        "walking_constraint"
+      ]
+    },
+    {
+      "case_id": "walk_limit_exact_boundary",
+      "expected_mode": "planner_only",
+      "actual_mode": "planner_only",
+      "passed": true,
+      "flags": []
+    },
+    {
+      "case_id": "drive_leg_below_threshold",
+      "expected_mode": "planner_only",
+      "actual_mode": "planner_only",
+      "passed": true,
+      "flags": []
+    },
+    {
+      "case_id": "route_modify_opinion",
+      "expected_mode": "planner_reviewer_time_check",
+      "actual_mode": "planner_reviewer_time_check",
+      "passed": true,
+      "flags": [
+        "user_modification"
+      ]
+    },
+    {
+      "case_id": "late_start_valid",
+      "expected_mode": "planner_only",
+      "actual_mode": "planner_only",
+      "passed": true,
+      "flags": []
+    },
+    {
+      "case_id": "lijiang_all_rain_indoor",
+      "expected_mode": "planner_only",
+      "actual_mode": "planner_only",
+      "passed": true,
+      "flags": []
+    },
+    {
+      "case_id": "lijiang_all_rain_outdoor",
+      "expected_mode": "planner_reviewer_time_check",
+      "actual_mode": "planner_reviewer_time_check",
+      "passed": true,
+      "flags": [
+        "weather_outdoor_conflict"
+      ]
+    },
+    {
+      "case_id": "sanya_all_rain_outdoor",
+      "expected_mode": "planner_reviewer_time_check",
+      "actual_mode": "planner_reviewer_time_check",
+      "passed": true,
+      "flags": [
+        "weather_outdoor_conflict"
+      ]
+    },
+    {
+      "case_id": "shanghai_all_rain_indoor",
+      "expected_mode": "planner_only",
+      "actual_mode": "planner_only",
+      "passed": true,
+      "flags": []
+    },
+    {
+      "case_id": "shanghai_all_rain_outdoor",
+      "expected_mode": "planner_reviewer_time_check",
+      "actual_mode": "planner_reviewer_time_check",
+      "passed": true,
+      "flags": [
+        "weather_outdoor_conflict"
+      ]
+    },
+    {
       "case_id": "jingdezhen_open",
       "expected_mode": "planner_only",
       "actual_mode": "planner_only",
@@ -373,9 +516,9 @@
     },
     "routing_matrix_pass_rate": 1.0,
     "routing_matrix_category_counts": {
-      "planner_only": 11,
-      "time_check_only": 5,
-      "planner_reviewer_time_check": 16
+      "planner_only": 17,
+      "time_check_only": 6,
+      "planner_reviewer_time_check": 26
     }
   },
   "boundary": "Six selected saved drafts, including three injected faults; one provider run per route. Timing adds measured Planner and recovery runs, not a new end-to-end adaptive execution. Fault-mode tokens are not separately attributable in the old report, so no all-case Token saving is claimed. Fault prevalence and statistical quality stability cannot be inferred."
