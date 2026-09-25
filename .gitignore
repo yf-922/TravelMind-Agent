@@ -15,7 +15,9 @@ build/
 .venv/
 venv/
 resume.md
-eval*
+# Keep the repository's evaluation package and reports versioned; ignore only
+# generated eval artifacts placed at the repository root.
+/eval*
 qr_eval_report.md
 .qoder/
 .gstack/
