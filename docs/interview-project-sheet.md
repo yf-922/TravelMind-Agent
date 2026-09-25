@@ -12,14 +12,14 @@
 
 - 设计并实现 LangGraph 多智能体编排链路，拆分 Intent、Query Rewrite、POI Search、Planner、Reviewer、Time Check、Meal Recommendation 等节点；通过结构化 Pydantic 输出、候选池封闭约束和 Reviewer 反馈循环降低景点幻觉与不可执行路线。
 - 构建 SSE 流式进度协议，前端可实时看到节点开始、结构化阶段摘要和最终结果；为每次规划生成 `run_id`，记录节点尝试次数、耗时、失败码、慢节点、并行重叠、降级服务和 request-context LLM 用量，并提供 owner-only Trace API 与 Prometheus 指标。
-- 建立离线可复现评测：当前完整 Python 测试套件 `170 passed, 1 warning`；RAG 30 条检索集与记忆隔离集均已产出离线报告。30 条在线场景的 POI 已从高德 Place Text API 冻结为 fixture，并通过来源、时间戳、坐标、评分、去重和室内标签校验；已完成 3 案例真实三模式消融和 2 案例真实故障恢复，但不把单次结果包装成稳定性成绩。
+- 建立离线可复现评测：当前完整 Python 测试套件 `178 passed, 1 warning`；RAG 30 条检索集与记忆隔离集均已产出离线报告。30 条在线场景的 POI 已从高德 Place Text API 冻结为 fixture，并通过来源、时间戳、坐标、评分、去重和室内标签校验；已完成 39 条结构消融案例、真实三模式回放和故障恢复，但不把单次结果包装成稳定性成绩。
 - 为在线评测增加 Dry Run 和双重预算门禁：显式区分图中的逻辑 LLM 调用与重试放大的供应商请求尝试；完整 Planner/Reviewer/Time Check 在 30 条、每条 5 次且启用 Judge 时，上限为 2,250 次逻辑调用 / 6,750 次供应商尝试，默认拒绝直接执行。
 - 将模型路由接入统一 LLM 工厂：Intent、Query Rewrite、画像/记忆抽取等有界任务可选同供应商小模型，Planner、Reviewer、Judge 保留主模型；默认关闭且显式模型覆盖不丢失。当前只完成离线契约验证，不虚构多模型线上 A/B 收益。
 - 补充平台化最小协议原型：Agent Card、MCP Tool Manifest、A2A Task Envelope 统一能力发现、工具权限和跨 Agent 结构化消息，但不虚构远程协议部署。
 - 将 RAG 改为可解释的双路召回：Chroma 语义候选与本地关键词候选独立取 Top-N，再用 RRF 融合、去重并保留 `vector_rank`、`keyword_rank`、`retrieval_channels` 和引用字段；Chroma 不可用时显式降级为 keyword-only。新增最低词法相关度和弱向量最近邻拒答，避免知识库外问题被强行匹配；30 条离线集含 6 条 no-answer，不能把检索成绩包装成生成答案质量。
 - 将“少走路”和“雨天优先室内”从自然语言偏好升级为结构化约束；Planner 出稿后并发调用高德步行/驾车路线 API 核验实际道路距离，再把结果交给 Reviewer，接口失败明确标记未核验；修改行程也重新经过道路距离、Reviewer 与 Time Check，手动优化则基于有向驾车距离矩阵，不使用直线距离伪装道路收益。
 - 将无依赖的 Query Rewrite 与天气查询改为 LangGraph fan-out 并行分支，并以多前驱屏障汇合后进入 POI Search；路线中的多段道路查询使用有界线程池并发，专项测试验证两个图分支确实存在时间重叠。
-- 增加 Planner / Reviewer / Time Check 消融评测：在同一组固定结构负例上，总体通过率从 33% 提升到 67% 再到 100%，同时把平均调用节点从 1.0 增加到 2.0/3.0；该结果只用于解释硬约束编排收益，不冒充真实 LLM 质量。
+- 增加 Planner / Reviewer / Time Check 消融评测：将原先 3 条示例扩展为 39 条分层案例（正常控制、候选池越界、重复景点、开放时间冲突及不可修复草案），总体通过率从 23% 提升到 67% 再到 90%，平均调用节点从 1.0 增加到 2.0/3.0；该结果只用于解释硬约束编排收益，不冒充真实 LLM 质量。
 - 增加真实 LLM 在线消融入口：在完全相同的 Fixture 和模型配置下切换 Planner Only、Planner+Reviewer、Planner+Reviewer+Time Check，逐模式统计通过率、逐案例 `pass@k/pass^k`、Judge、误放行、节点调用、Token 和端到端 P50/P95；首轮三案例结果已落盘，但每例仅一次，不宣称统计稳定性。
 - 完成首轮真实单/多 Agent 对照：3 个自然案例各跑 1 次时三种模式硬约束均为 3/3，Judge 均值为 4.47/4.33/4.27，完整多 Agent 的估算 Token 与平均延迟约为单 Planner 的 2.6 倍/2.0 倍，因此不能宣称固定多 Agent 更优。另在相同真实 Planner 草案上注入重复景点和时间故障，无审核恢复 0/2，真实 Reviewer 回环和完整链路均恢复 2/2；结论是审核适合风险触发与失败恢复，而非所有请求无条件执行。
 - 将上述结论落到主流程：道路距离核验后执行零 LLM 的确定性风险门控，重复/越界、结构与习惯冲突、雨天露天、步行约束、超长道路段和用户修改才升级 Reviewer，已知开放时间冲突才升级 Time Check；开放时间未知时不让模型猜测，标记 `partial` 并提示用户核实。保存真实输出回放中自然路线 3/3 跳过、注入故障 2/2 升级，按三案例实测均值投影可减少约 61.8% Token、50.7% 延迟；该节省是回放投影，不冒充线上 SLA。

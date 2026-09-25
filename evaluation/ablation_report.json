@@ -2,25 +2,25 @@
   "scope": "deterministic_contract_ablation",
   "metrics": {
     "planner_only": {
-      "cases": 3,
-      "overall_pass_rate": 0.333,
+      "cases": 39,
+      "overall_pass_rate": 0.231,
       "closed_pool_pass_rate": 0.667,
-      "no_duplicate_pass_rate": 0.667,
-      "time_valid_pass_rate": 0.667,
+      "no_duplicate_pass_rate": 0.769,
+      "time_valid_pass_rate": 0.769,
       "avg_calls": 1.0
     },
     "planner_reviewer": {
-      "cases": 3,
+      "cases": 39,
       "overall_pass_rate": 0.667,
-      "closed_pool_pass_rate": 1.0,
+      "closed_pool_pass_rate": 0.897,
       "no_duplicate_pass_rate": 1.0,
-      "time_valid_pass_rate": 0.667,
+      "time_valid_pass_rate": 0.769,
       "avg_calls": 2.0
     },
     "planner_reviewer_time_check": {
-      "cases": 3,
-      "overall_pass_rate": 1.0,
-      "closed_pool_pass_rate": 1.0,
+      "cases": 39,
+      "overall_pass_rate": 0.897,
+      "closed_pool_pass_rate": 0.897,
       "no_duplicate_pass_rate": 1.0,
       "time_valid_pass_rate": 1.0,
       "avg_calls": 3.0
@@ -32,6 +32,7 @@
         "case_id": "unknown_and_duplicate",
         "checks": {
           "closed_pool": false,
+          "has_route": true,
           "no_duplicate": false,
           "time_valid": true,
           "overall": false
@@ -59,6 +60,7 @@
         "case_id": "opening_time_conflict",
         "checks": {
           "closed_pool": true,
+          "has_route": true,
           "no_duplicate": true,
           "time_valid": false,
           "overall": false
@@ -81,6 +83,7 @@
         "case_id": "already_valid",
         "checks": {
           "closed_pool": true,
+          "has_route": true,
           "no_duplicate": true,
           "time_valid": true,
           "overall": true
@@ -98,6 +101,814 @@
             "end_min": 900
           }
         ]
+      },
+      {
+        "case_id": "clean_control_00",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 1,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 540,
+            "end_min": 585
+          },
+          {
+            "name": "Park",
+            "start_min": 630,
+            "end_min": 690
+          }
+        ]
+      },
+      {
+        "case_id": "clean_control_01",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 1,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 555,
+            "end_min": 600
+          },
+          {
+            "name": "Park",
+            "start_min": 645,
+            "end_min": 705
+          }
+        ]
+      },
+      {
+        "case_id": "clean_control_02",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 1,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 570,
+            "end_min": 615
+          },
+          {
+            "name": "Park",
+            "start_min": 660,
+            "end_min": 720
+          }
+        ]
+      },
+      {
+        "case_id": "clean_control_03",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 1,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 585,
+            "end_min": 630
+          },
+          {
+            "name": "Park",
+            "start_min": 675,
+            "end_min": 735
+          }
+        ]
+      },
+      {
+        "case_id": "clean_control_04",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 1,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 600,
+            "end_min": 645
+          },
+          {
+            "name": "Park",
+            "start_min": 690,
+            "end_min": 750
+          }
+        ]
+      },
+      {
+        "case_id": "clean_control_05",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 1,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 615,
+            "end_min": 660
+          },
+          {
+            "name": "Park",
+            "start_min": 705,
+            "end_min": 765
+          }
+        ]
+      },
+      {
+        "case_id": "clean_control_06",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 1,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 630,
+            "end_min": 675
+          },
+          {
+            "name": "Park",
+            "start_min": 720,
+            "end_min": 780
+          }
+        ]
+      },
+      {
+        "case_id": "clean_control_07",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 1,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 645,
+            "end_min": 690
+          },
+          {
+            "name": "Park",
+            "start_min": 735,
+            "end_min": 795
+          }
+        ]
+      },
+      {
+        "case_id": "candidate_pool_fault_00",
+        "checks": {
+          "closed_pool": false,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": false
+        },
+        "calls": 1,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 600,
+            "end_min": 660
+          },
+          {
+            "name": "Unknown-0",
+            "start_min": 720,
+            "end_min": 780
+          }
+        ]
+      },
+      {
+        "case_id": "candidate_pool_fault_01",
+        "checks": {
+          "closed_pool": false,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": false
+        },
+        "calls": 1,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 600,
+            "end_min": 660
+          },
+          {
+            "name": "Unknown-1",
+            "start_min": 720,
+            "end_min": 780
+          }
+        ]
+      },
+      {
+        "case_id": "candidate_pool_fault_02",
+        "checks": {
+          "closed_pool": false,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": false
+        },
+        "calls": 1,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 600,
+            "end_min": 660
+          },
+          {
+            "name": "Unknown-2",
+            "start_min": 720,
+            "end_min": 780
+          }
+        ]
+      },
+      {
+        "case_id": "candidate_pool_fault_03",
+        "checks": {
+          "closed_pool": false,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": false
+        },
+        "calls": 1,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 600,
+            "end_min": 660
+          },
+          {
+            "name": "Unknown-3",
+            "start_min": 720,
+            "end_min": 780
+          }
+        ]
+      },
+      {
+        "case_id": "candidate_pool_fault_04",
+        "checks": {
+          "closed_pool": false,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": false
+        },
+        "calls": 1,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 600,
+            "end_min": 660
+          },
+          {
+            "name": "Unknown-4",
+            "start_min": 720,
+            "end_min": 780
+          }
+        ]
+      },
+      {
+        "case_id": "candidate_pool_fault_05",
+        "checks": {
+          "closed_pool": false,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": false
+        },
+        "calls": 1,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 600,
+            "end_min": 660
+          },
+          {
+            "name": "Unknown-5",
+            "start_min": 720,
+            "end_min": 780
+          }
+        ]
+      },
+      {
+        "case_id": "candidate_pool_fault_06",
+        "checks": {
+          "closed_pool": false,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": false
+        },
+        "calls": 1,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 600,
+            "end_min": 660
+          },
+          {
+            "name": "Unknown-6",
+            "start_min": 720,
+            "end_min": 780
+          }
+        ]
+      },
+      {
+        "case_id": "candidate_pool_fault_07",
+        "checks": {
+          "closed_pool": false,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": false
+        },
+        "calls": 1,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 600,
+            "end_min": 660
+          },
+          {
+            "name": "Unknown-7",
+            "start_min": 720,
+            "end_min": 780
+          }
+        ]
+      },
+      {
+        "case_id": "duplicate_fault_00",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": false,
+          "time_valid": true,
+          "overall": false
+        },
+        "calls": 1,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 600,
+            "end_min": 660
+          },
+          {
+            "name": "Museum",
+            "start_min": 720,
+            "end_min": 780
+          }
+        ]
+      },
+      {
+        "case_id": "duplicate_fault_01",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": false,
+          "time_valid": true,
+          "overall": false
+        },
+        "calls": 1,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 600,
+            "end_min": 660
+          },
+          {
+            "name": "Museum",
+            "start_min": 720,
+            "end_min": 780
+          }
+        ]
+      },
+      {
+        "case_id": "duplicate_fault_02",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": false,
+          "time_valid": true,
+          "overall": false
+        },
+        "calls": 1,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 600,
+            "end_min": 660
+          },
+          {
+            "name": "Museum",
+            "start_min": 720,
+            "end_min": 780
+          }
+        ]
+      },
+      {
+        "case_id": "duplicate_fault_03",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": false,
+          "time_valid": true,
+          "overall": false
+        },
+        "calls": 1,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 600,
+            "end_min": 660
+          },
+          {
+            "name": "Museum",
+            "start_min": 720,
+            "end_min": 780
+          }
+        ]
+      },
+      {
+        "case_id": "duplicate_fault_04",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": false,
+          "time_valid": true,
+          "overall": false
+        },
+        "calls": 1,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 600,
+            "end_min": 660
+          },
+          {
+            "name": "Museum",
+            "start_min": 720,
+            "end_min": 780
+          }
+        ]
+      },
+      {
+        "case_id": "duplicate_fault_05",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": false,
+          "time_valid": true,
+          "overall": false
+        },
+        "calls": 1,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 600,
+            "end_min": 660
+          },
+          {
+            "name": "Museum",
+            "start_min": 720,
+            "end_min": 780
+          }
+        ]
+      },
+      {
+        "case_id": "duplicate_fault_06",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": false,
+          "time_valid": true,
+          "overall": false
+        },
+        "calls": 1,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 600,
+            "end_min": 660
+          },
+          {
+            "name": "Museum",
+            "start_min": 720,
+            "end_min": 780
+          }
+        ]
+      },
+      {
+        "case_id": "duplicate_fault_07",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": false,
+          "time_valid": true,
+          "overall": false
+        },
+        "calls": 1,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 600,
+            "end_min": 660
+          },
+          {
+            "name": "Museum",
+            "start_min": 720,
+            "end_min": 780
+          }
+        ]
+      },
+      {
+        "case_id": "opening_fault_00",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": false,
+          "overall": false
+        },
+        "calls": 1,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 450,
+            "end_min": 510
+          },
+          {
+            "name": "Park",
+            "start_min": 780,
+            "end_min": 840
+          }
+        ]
+      },
+      {
+        "case_id": "opening_fault_01",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": false,
+          "overall": false
+        },
+        "calls": 1,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 460,
+            "end_min": 520
+          },
+          {
+            "name": "Park",
+            "start_min": 780,
+            "end_min": 840
+          }
+        ]
+      },
+      {
+        "case_id": "opening_fault_02",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": false,
+          "overall": false
+        },
+        "calls": 1,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 470,
+            "end_min": 530
+          },
+          {
+            "name": "Park",
+            "start_min": 780,
+            "end_min": 840
+          }
+        ]
+      },
+      {
+        "case_id": "opening_fault_03",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": false,
+          "overall": false
+        },
+        "calls": 1,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 480,
+            "end_min": 540
+          },
+          {
+            "name": "Park",
+            "start_min": 780,
+            "end_min": 840
+          }
+        ]
+      },
+      {
+        "case_id": "opening_fault_04",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": false,
+          "overall": false
+        },
+        "calls": 1,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 490,
+            "end_min": 550
+          },
+          {
+            "name": "Park",
+            "start_min": 780,
+            "end_min": 840
+          }
+        ]
+      },
+      {
+        "case_id": "opening_fault_05",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": false,
+          "overall": false
+        },
+        "calls": 1,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 500,
+            "end_min": 560
+          },
+          {
+            "name": "Park",
+            "start_min": 780,
+            "end_min": 840
+          }
+        ]
+      },
+      {
+        "case_id": "opening_fault_06",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": false,
+          "overall": false
+        },
+        "calls": 1,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 510,
+            "end_min": 570
+          },
+          {
+            "name": "Park",
+            "start_min": 780,
+            "end_min": 840
+          }
+        ]
+      },
+      {
+        "case_id": "opening_fault_07",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": false,
+          "overall": false
+        },
+        "calls": 1,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 520,
+            "end_min": 580
+          },
+          {
+            "name": "Park",
+            "start_min": 780,
+            "end_min": 840
+          }
+        ]
+      },
+      {
+        "case_id": "irreparable_empty_after_review_00",
+        "checks": {
+          "closed_pool": false,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": false
+        },
+        "calls": 1,
+        "route": [
+          {
+            "name": "Unknown-only-0",
+            "start_min": 600,
+            "end_min": 660
+          }
+        ]
+      },
+      {
+        "case_id": "irreparable_empty_after_review_01",
+        "checks": {
+          "closed_pool": false,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": false
+        },
+        "calls": 1,
+        "route": [
+          {
+            "name": "Unknown-only-1",
+            "start_min": 600,
+            "end_min": 660
+          }
+        ]
+      },
+      {
+        "case_id": "irreparable_empty_after_review_02",
+        "checks": {
+          "closed_pool": false,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": false
+        },
+        "calls": 1,
+        "route": [
+          {
+            "name": "Unknown-only-2",
+            "start_min": 600,
+            "end_min": 660
+          }
+        ]
+      },
+      {
+        "case_id": "irreparable_empty_after_review_03",
+        "checks": {
+          "closed_pool": false,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": false
+        },
+        "calls": 1,
+        "route": [
+          {
+            "name": "Unknown-only-3",
+            "start_min": 600,
+            "end_min": 660
+          }
+        ]
       }
     ],
     "planner_reviewer": [
@@ -105,6 +916,7 @@
         "case_id": "unknown_and_duplicate",
         "checks": {
           "closed_pool": true,
+          "has_route": true,
           "no_duplicate": true,
           "time_valid": true,
           "overall": true
@@ -122,6 +934,7 @@
         "case_id": "opening_time_conflict",
         "checks": {
           "closed_pool": true,
+          "has_route": true,
           "no_duplicate": true,
           "time_valid": false,
           "overall": false
@@ -144,6 +957,7 @@
         "case_id": "already_valid",
         "checks": {
           "closed_pool": true,
+          "has_route": true,
           "no_duplicate": true,
           "time_valid": true,
           "overall": true
@@ -161,6 +975,710 @@
             "end_min": 900
           }
         ]
+      },
+      {
+        "case_id": "clean_control_00",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 2,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 540,
+            "end_min": 585
+          },
+          {
+            "name": "Park",
+            "start_min": 630,
+            "end_min": 690
+          }
+        ]
+      },
+      {
+        "case_id": "clean_control_01",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 2,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 555,
+            "end_min": 600
+          },
+          {
+            "name": "Park",
+            "start_min": 645,
+            "end_min": 705
+          }
+        ]
+      },
+      {
+        "case_id": "clean_control_02",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 2,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 570,
+            "end_min": 615
+          },
+          {
+            "name": "Park",
+            "start_min": 660,
+            "end_min": 720
+          }
+        ]
+      },
+      {
+        "case_id": "clean_control_03",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 2,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 585,
+            "end_min": 630
+          },
+          {
+            "name": "Park",
+            "start_min": 675,
+            "end_min": 735
+          }
+        ]
+      },
+      {
+        "case_id": "clean_control_04",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 2,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 600,
+            "end_min": 645
+          },
+          {
+            "name": "Park",
+            "start_min": 690,
+            "end_min": 750
+          }
+        ]
+      },
+      {
+        "case_id": "clean_control_05",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 2,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 615,
+            "end_min": 660
+          },
+          {
+            "name": "Park",
+            "start_min": 705,
+            "end_min": 765
+          }
+        ]
+      },
+      {
+        "case_id": "clean_control_06",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 2,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 630,
+            "end_min": 675
+          },
+          {
+            "name": "Park",
+            "start_min": 720,
+            "end_min": 780
+          }
+        ]
+      },
+      {
+        "case_id": "clean_control_07",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 2,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 645,
+            "end_min": 690
+          },
+          {
+            "name": "Park",
+            "start_min": 735,
+            "end_min": 795
+          }
+        ]
+      },
+      {
+        "case_id": "candidate_pool_fault_00",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 2,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 600,
+            "end_min": 660
+          }
+        ]
+      },
+      {
+        "case_id": "candidate_pool_fault_01",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 2,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 600,
+            "end_min": 660
+          }
+        ]
+      },
+      {
+        "case_id": "candidate_pool_fault_02",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 2,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 600,
+            "end_min": 660
+          }
+        ]
+      },
+      {
+        "case_id": "candidate_pool_fault_03",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 2,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 600,
+            "end_min": 660
+          }
+        ]
+      },
+      {
+        "case_id": "candidate_pool_fault_04",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 2,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 600,
+            "end_min": 660
+          }
+        ]
+      },
+      {
+        "case_id": "candidate_pool_fault_05",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 2,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 600,
+            "end_min": 660
+          }
+        ]
+      },
+      {
+        "case_id": "candidate_pool_fault_06",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 2,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 600,
+            "end_min": 660
+          }
+        ]
+      },
+      {
+        "case_id": "candidate_pool_fault_07",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 2,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 600,
+            "end_min": 660
+          }
+        ]
+      },
+      {
+        "case_id": "duplicate_fault_00",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 2,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 600,
+            "end_min": 660
+          }
+        ]
+      },
+      {
+        "case_id": "duplicate_fault_01",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 2,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 600,
+            "end_min": 660
+          }
+        ]
+      },
+      {
+        "case_id": "duplicate_fault_02",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 2,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 600,
+            "end_min": 660
+          }
+        ]
+      },
+      {
+        "case_id": "duplicate_fault_03",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 2,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 600,
+            "end_min": 660
+          }
+        ]
+      },
+      {
+        "case_id": "duplicate_fault_04",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 2,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 600,
+            "end_min": 660
+          }
+        ]
+      },
+      {
+        "case_id": "duplicate_fault_05",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 2,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 600,
+            "end_min": 660
+          }
+        ]
+      },
+      {
+        "case_id": "duplicate_fault_06",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 2,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 600,
+            "end_min": 660
+          }
+        ]
+      },
+      {
+        "case_id": "duplicate_fault_07",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 2,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 600,
+            "end_min": 660
+          }
+        ]
+      },
+      {
+        "case_id": "opening_fault_00",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": false,
+          "overall": false
+        },
+        "calls": 2,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 450,
+            "end_min": 510
+          },
+          {
+            "name": "Park",
+            "start_min": 780,
+            "end_min": 840
+          }
+        ]
+      },
+      {
+        "case_id": "opening_fault_01",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": false,
+          "overall": false
+        },
+        "calls": 2,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 460,
+            "end_min": 520
+          },
+          {
+            "name": "Park",
+            "start_min": 780,
+            "end_min": 840
+          }
+        ]
+      },
+      {
+        "case_id": "opening_fault_02",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": false,
+          "overall": false
+        },
+        "calls": 2,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 470,
+            "end_min": 530
+          },
+          {
+            "name": "Park",
+            "start_min": 780,
+            "end_min": 840
+          }
+        ]
+      },
+      {
+        "case_id": "opening_fault_03",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": false,
+          "overall": false
+        },
+        "calls": 2,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 480,
+            "end_min": 540
+          },
+          {
+            "name": "Park",
+            "start_min": 780,
+            "end_min": 840
+          }
+        ]
+      },
+      {
+        "case_id": "opening_fault_04",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": false,
+          "overall": false
+        },
+        "calls": 2,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 490,
+            "end_min": 550
+          },
+          {
+            "name": "Park",
+            "start_min": 780,
+            "end_min": 840
+          }
+        ]
+      },
+      {
+        "case_id": "opening_fault_05",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": false,
+          "overall": false
+        },
+        "calls": 2,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 500,
+            "end_min": 560
+          },
+          {
+            "name": "Park",
+            "start_min": 780,
+            "end_min": 840
+          }
+        ]
+      },
+      {
+        "case_id": "opening_fault_06",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": false,
+          "overall": false
+        },
+        "calls": 2,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 510,
+            "end_min": 570
+          },
+          {
+            "name": "Park",
+            "start_min": 780,
+            "end_min": 840
+          }
+        ]
+      },
+      {
+        "case_id": "opening_fault_07",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": false,
+          "overall": false
+        },
+        "calls": 2,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 520,
+            "end_min": 580
+          },
+          {
+            "name": "Park",
+            "start_min": 780,
+            "end_min": 840
+          }
+        ]
+      },
+      {
+        "case_id": "irreparable_empty_after_review_00",
+        "checks": {
+          "closed_pool": false,
+          "has_route": false,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": false
+        },
+        "calls": 2,
+        "route": []
+      },
+      {
+        "case_id": "irreparable_empty_after_review_01",
+        "checks": {
+          "closed_pool": false,
+          "has_route": false,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": false
+        },
+        "calls": 2,
+        "route": []
+      },
+      {
+        "case_id": "irreparable_empty_after_review_02",
+        "checks": {
+          "closed_pool": false,
+          "has_route": false,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": false
+        },
+        "calls": 2,
+        "route": []
+      },
+      {
+        "case_id": "irreparable_empty_after_review_03",
+        "checks": {
+          "closed_pool": false,
+          "has_route": false,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": false
+        },
+        "calls": 2,
+        "route": []
       }
     ],
     "planner_reviewer_time_check": [
@@ -168,6 +1686,7 @@
         "case_id": "unknown_and_duplicate",
         "checks": {
           "closed_pool": true,
+          "has_route": true,
           "no_duplicate": true,
           "time_valid": true,
           "overall": true
@@ -185,6 +1704,7 @@
         "case_id": "opening_time_conflict",
         "checks": {
           "closed_pool": true,
+          "has_route": true,
           "no_duplicate": true,
           "time_valid": true,
           "overall": true
@@ -207,6 +1727,7 @@
         "case_id": "already_valid",
         "checks": {
           "closed_pool": true,
+          "has_route": true,
           "no_duplicate": true,
           "time_valid": true,
           "overall": true
@@ -224,6 +1745,710 @@
             "end_min": 900
           }
         ]
+      },
+      {
+        "case_id": "clean_control_00",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 3,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 540,
+            "end_min": 585
+          },
+          {
+            "name": "Park",
+            "start_min": 630,
+            "end_min": 690
+          }
+        ]
+      },
+      {
+        "case_id": "clean_control_01",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 3,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 555,
+            "end_min": 600
+          },
+          {
+            "name": "Park",
+            "start_min": 645,
+            "end_min": 705
+          }
+        ]
+      },
+      {
+        "case_id": "clean_control_02",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 3,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 570,
+            "end_min": 615
+          },
+          {
+            "name": "Park",
+            "start_min": 660,
+            "end_min": 720
+          }
+        ]
+      },
+      {
+        "case_id": "clean_control_03",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 3,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 585,
+            "end_min": 630
+          },
+          {
+            "name": "Park",
+            "start_min": 675,
+            "end_min": 735
+          }
+        ]
+      },
+      {
+        "case_id": "clean_control_04",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 3,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 600,
+            "end_min": 645
+          },
+          {
+            "name": "Park",
+            "start_min": 690,
+            "end_min": 750
+          }
+        ]
+      },
+      {
+        "case_id": "clean_control_05",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 3,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 615,
+            "end_min": 660
+          },
+          {
+            "name": "Park",
+            "start_min": 705,
+            "end_min": 765
+          }
+        ]
+      },
+      {
+        "case_id": "clean_control_06",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 3,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 630,
+            "end_min": 675
+          },
+          {
+            "name": "Park",
+            "start_min": 720,
+            "end_min": 780
+          }
+        ]
+      },
+      {
+        "case_id": "clean_control_07",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 3,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 645,
+            "end_min": 690
+          },
+          {
+            "name": "Park",
+            "start_min": 735,
+            "end_min": 795
+          }
+        ]
+      },
+      {
+        "case_id": "candidate_pool_fault_00",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 3,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 600,
+            "end_min": 660
+          }
+        ]
+      },
+      {
+        "case_id": "candidate_pool_fault_01",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 3,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 600,
+            "end_min": 660
+          }
+        ]
+      },
+      {
+        "case_id": "candidate_pool_fault_02",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 3,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 600,
+            "end_min": 660
+          }
+        ]
+      },
+      {
+        "case_id": "candidate_pool_fault_03",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 3,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 600,
+            "end_min": 660
+          }
+        ]
+      },
+      {
+        "case_id": "candidate_pool_fault_04",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 3,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 600,
+            "end_min": 660
+          }
+        ]
+      },
+      {
+        "case_id": "candidate_pool_fault_05",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 3,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 600,
+            "end_min": 660
+          }
+        ]
+      },
+      {
+        "case_id": "candidate_pool_fault_06",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 3,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 600,
+            "end_min": 660
+          }
+        ]
+      },
+      {
+        "case_id": "candidate_pool_fault_07",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 3,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 600,
+            "end_min": 660
+          }
+        ]
+      },
+      {
+        "case_id": "duplicate_fault_00",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 3,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 600,
+            "end_min": 660
+          }
+        ]
+      },
+      {
+        "case_id": "duplicate_fault_01",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 3,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 600,
+            "end_min": 660
+          }
+        ]
+      },
+      {
+        "case_id": "duplicate_fault_02",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 3,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 600,
+            "end_min": 660
+          }
+        ]
+      },
+      {
+        "case_id": "duplicate_fault_03",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 3,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 600,
+            "end_min": 660
+          }
+        ]
+      },
+      {
+        "case_id": "duplicate_fault_04",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 3,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 600,
+            "end_min": 660
+          }
+        ]
+      },
+      {
+        "case_id": "duplicate_fault_05",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 3,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 600,
+            "end_min": 660
+          }
+        ]
+      },
+      {
+        "case_id": "duplicate_fault_06",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 3,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 600,
+            "end_min": 660
+          }
+        ]
+      },
+      {
+        "case_id": "duplicate_fault_07",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 3,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 600,
+            "end_min": 660
+          }
+        ]
+      },
+      {
+        "case_id": "opening_fault_00",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 3,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 540,
+            "end_min": 600
+          },
+          {
+            "name": "Park",
+            "start_min": 780,
+            "end_min": 840
+          }
+        ]
+      },
+      {
+        "case_id": "opening_fault_01",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 3,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 550,
+            "end_min": 610
+          },
+          {
+            "name": "Park",
+            "start_min": 780,
+            "end_min": 840
+          }
+        ]
+      },
+      {
+        "case_id": "opening_fault_02",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 3,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 560,
+            "end_min": 620
+          },
+          {
+            "name": "Park",
+            "start_min": 780,
+            "end_min": 840
+          }
+        ]
+      },
+      {
+        "case_id": "opening_fault_03",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 3,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 570,
+            "end_min": 630
+          },
+          {
+            "name": "Park",
+            "start_min": 780,
+            "end_min": 840
+          }
+        ]
+      },
+      {
+        "case_id": "opening_fault_04",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 3,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 580,
+            "end_min": 640
+          },
+          {
+            "name": "Park",
+            "start_min": 780,
+            "end_min": 840
+          }
+        ]
+      },
+      {
+        "case_id": "opening_fault_05",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 3,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 590,
+            "end_min": 650
+          },
+          {
+            "name": "Park",
+            "start_min": 780,
+            "end_min": 840
+          }
+        ]
+      },
+      {
+        "case_id": "opening_fault_06",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 3,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 600,
+            "end_min": 660
+          },
+          {
+            "name": "Park",
+            "start_min": 780,
+            "end_min": 840
+          }
+        ]
+      },
+      {
+        "case_id": "opening_fault_07",
+        "checks": {
+          "closed_pool": true,
+          "has_route": true,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": true
+        },
+        "calls": 3,
+        "route": [
+          {
+            "name": "Museum",
+            "start_min": 610,
+            "end_min": 670
+          },
+          {
+            "name": "Park",
+            "start_min": 780,
+            "end_min": 840
+          }
+        ]
+      },
+      {
+        "case_id": "irreparable_empty_after_review_00",
+        "checks": {
+          "closed_pool": false,
+          "has_route": false,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": false
+        },
+        "calls": 3,
+        "route": []
+      },
+      {
+        "case_id": "irreparable_empty_after_review_01",
+        "checks": {
+          "closed_pool": false,
+          "has_route": false,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": false
+        },
+        "calls": 3,
+        "route": []
+      },
+      {
+        "case_id": "irreparable_empty_after_review_02",
+        "checks": {
+          "closed_pool": false,
+          "has_route": false,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": false
+        },
+        "calls": 3,
+        "route": []
+      },
+      {
+        "case_id": "irreparable_empty_after_review_03",
+        "checks": {
+          "closed_pool": false,
+          "has_route": false,
+          "no_duplicate": true,
+          "time_valid": true,
+          "overall": false
+        },
+        "calls": 3,
+        "route": []
       }
     ]
   }

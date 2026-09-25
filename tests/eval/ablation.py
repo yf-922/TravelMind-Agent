@@ -32,8 +32,15 @@ MODES = ("planner_only", "planner_reviewer", "planner_reviewer_time_check")
 
 
 def default_cases() -> list[AblationCase]:
-    """Return intentionally small contract cases with known failure modes."""
-    return [
+    """Return a stratified, deterministic contract set with mixed outcomes.
+
+    The first version used only three hand-written cases, which made the
+    percentages look artificially neat.  Keep the named smoke cases for
+    backwards compatibility, then add repeated-but-not-identical boundary
+    cases and a few irreparable drafts.  This is still an offline contract
+    benchmark, not a claim about live model accuracy.
+    """
+    cases = [
         AblationCase(
             "unknown_and_duplicate",
             ("Museum", "Park"),
@@ -63,6 +70,46 @@ def default_cases() -> list[AblationCase]:
             {"Museum": (540, 1080), "Park": (540, 1080)},
         ),
     ]
+    # 36 additional cases: clean controls, candidate-pool faults, duplicate
+    # faults, opening-hours faults, and drafts that no deterministic repair can
+    # safely approve.  The values vary enough to avoid a three-case toy demo.
+    for index in range(8):
+        start = 540 + index * 15
+        cases.append(AblationCase(
+            f"clean_control_{index:02d}", ("Museum", "Park", "Gallery"),
+            ({"name": "Museum", "start_min": start, "end_min": start + 45},
+             {"name": "Park", "start_min": start + 90, "end_min": start + 150}),
+            {"Museum": (540, 1080), "Park": (540, 1080), "Gallery": (540, 1080)},
+        ))
+    for index in range(8):
+        cases.append(AblationCase(
+            f"candidate_pool_fault_{index:02d}", ("Museum", "Park"),
+            ({"name": "Museum", "start_min": 600, "end_min": 660},
+             {"name": f"Unknown-{index}", "start_min": 720, "end_min": 780}),
+            {"Museum": (540, 1080), "Park": (540, 1080)},
+        ))
+    for index in range(8):
+        cases.append(AblationCase(
+            f"duplicate_fault_{index:02d}", ("Museum", "Park"),
+            ({"name": "Museum", "start_min": 600, "end_min": 660},
+             {"name": "Museum", "start_min": 720, "end_min": 780}),
+            {"Museum": (540, 1080), "Park": (540, 1080)},
+        ))
+    for index in range(8):
+        opening = 540 + index * 10
+        cases.append(AblationCase(
+            f"opening_fault_{index:02d}", ("Museum", "Park"),
+            ({"name": "Museum", "start_min": opening - 90, "end_min": opening - 30},
+             {"name": "Park", "start_min": 780, "end_min": 840}),
+            {"Museum": (opening, opening + 480), "Park": (540, 1080)},
+        ))
+    for index in range(4):
+        cases.append(AblationCase(
+            f"irreparable_empty_after_review_{index:02d}", ("Museum",),
+            ({"name": f"Unknown-only-{index}", "start_min": 600, "end_min": 660},),
+            {"Museum": (540, 1080)},
+        ))
+    return cases
 
 
 def _review_route(route: list[dict[str, Any]], candidates: set[str]) -> list[dict[str, Any]]:
@@ -97,7 +144,8 @@ def _time_check_route(route: list[dict[str, Any]], opening: dict[str, tuple[int,
 
 def _checks(route: list[dict[str, Any]], case: AblationCase) -> dict[str, bool]:
     names = [str(item.get("name") or "") for item in route]
-    closed_pool = all(name in set(case.candidates) for name in names)
+    has_route = bool(route)
+    closed_pool = has_route and all(name in set(case.candidates) for name in names)
     no_duplicate = len(names) == len(set(names))
     time_valid = all(
         str(item.get("name") or "") not in case.opening
@@ -110,9 +158,10 @@ def _checks(route: list[dict[str, Any]], case: AblationCase) -> dict[str, bool]:
     )
     return {
         "closed_pool": closed_pool,
+        "has_route": has_route,
         "no_duplicate": no_duplicate,
         "time_valid": time_valid,
-        "overall": closed_pool and no_duplicate and time_valid,
+        "overall": has_route and closed_pool and no_duplicate and time_valid,
     }
 
 
