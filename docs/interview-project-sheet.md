@@ -4,17 +4,17 @@
 
 ## 一句话介绍
 
-基于 FastAPI + LangGraph 的多智能体旅行规划服务：把用户意图识别、POI 检索、行程规划、Reviewer 反馈、开放时间核查、餐饮推荐和景点贴士串成可观测的 SSE 工作流，并用 SQLite/Redis/Chroma 保存用户画像、历史行程和语义记忆。
+基于 LangGraph 的 LLM 多 Agent 旅行规划服务：把用户意图识别、POI 检索、行程规划、Reviewer 反馈和开放时间核查串成可观测的 SSE 工作流，并用 SQLite/Chroma 保存用户画像、历史行程和语义记忆。
 
 ## 可直接放进简历的项目描述
 
-### AI 应用开发方向
+### LLM 应用开发方向
 
-- 基于 FloatTrip 二次开发 LangGraph 多智能体旅行规划流程，负责 Planner、Reviewer、Time Check、POI Search 的节点编排；增加用户修改后的 checkpoint 局部重规划和候选池复用，避免每次从头检索。
-- 将原直线距离判断替换为高德路线 API 的实际步行/驾车距离核验；天气、意图改写和多段路线查询并行执行，低风险请求跳过 Reviewer，高风险请求再进入审核修复。39 条分层案例中三种编排策略通过数为 9/39、26/39、35/39。
-- 使用 SQLite + Chroma 实现结构化偏好和语义记忆，通过 Pydantic 约束 Agent 间消息；基于 FastAPI + SSE 返回节点进度，使用 Redis Cache-Aside 缓存天气和 POI 查询。
-- 在 6 条保存的真实 API 响应回放中，自适应审核平均耗时 109.1 秒，全量审核 139.2 秒，平均延迟降低 21.6%；3 条自然请求样本的 Token 估算从 24,182 降至 9,242，减少 61.8%，不将其包装为线上 SLA 或实际账单。
-- 针对地图不可用、LLM 超时、开放时间核查失败和工具持续失败设计降级状态；构建 4 类故障轨迹、32 项流程契约测试。项目提供 Docker Compose、Swagger、评测脚本和回放数据，GitHub Actions 执行编译检查与 `pytest`，当前 178 条测试通过。
+- **LLM 多 Agent 编排：** 基于 FloatTrip 二次开发 LangGraph 旅行规划流程，负责 Planner、Reviewer、Time Check、POI Search 的节点调度；增加用户修改后的 checkpoint 局部重规划和候选池复用，避免每次从头检索。
+- **输出质量与评测：** 增加风险门控和独立 Reviewer，针对候选池越界、重复 POI、雨天露天景点、开放时间冲突等问题按需审核；39 条分层案例中 Planner-only、Planner+Reviewer、完整审核链路通过数为 **9/39、26/39、35/39**。
+- **记忆、RAG 与交互：** 使用 Chroma 保存语义记忆、SQLite 保存结构化偏好，通过 Pydantic 约束 Agent 间消息；使用 FastAPI + SSE 流式返回节点进度，Redis 仅作为天气和 POI 查询缓存。
+- **工具调用与性能：** 将原直线距离判断替换为高德步行/驾车路线距离核验，并行执行天气、意图改写和多段路线查询；6 条真实 API 响应回放中，自适应审核平均延迟较全量审核降低 **21.6%**，3 条自然请求样本 Token 估算减少 **61.8%**。
+- **可靠性与可验证材料：** 针对地图不可用、LLM 超时、开放时间核查失败和工具持续失败设计降级状态；构建 4 类故障轨迹、32 项流程契约测试，提供 Docker Compose、Swagger、评测脚本和回放数据，GitHub Actions 执行 `pytest`，当前 **178 条测试通过**。
 
 ### 后端开发方向
 

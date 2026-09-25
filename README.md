@@ -1,4 +1,4 @@
-# TravelMind-Agent：多智能体旅行规划助手
+# TravelMind-Agent：LLM 多 Agent 旅行规划助手
 
 > 基于开源项目 [FloatTrip](https://github.com/shouzhuoshouzhuo/FloatTrip) 的课程二次开发。面向“输入旅行需求，生成可解释的行程方案”的场景，重点实现多智能体协作、工具调用、个性化记忆与可复现测试。
 
@@ -38,8 +38,9 @@
 
 | 层级 | 技术 |
 | --- | --- |
-| 后端 | Python、FastAPI、Uvicorn、Pydantic |
-| Agent 编排 | LangGraph；实验三核心使用自定义 Supervisor |
+| LLM / Agent | LLM Agent、LangGraph、Pydantic 结构化输出、Reviewer 工作流 |
+| 记忆 / RAG | Chroma 语义记忆、SQLite 结构化记忆、关键词 + 向量混合检索 |
+| 后端支撑 | Python、FastAPI、Uvicorn、Redis |
 | 大模型 | OpenAI / Grok / DeepSeek / 豆包（环境变量切换） |
 | 地图与工具 | 高德地图 Web 服务 API、JS API |
 | 数据与记忆 | SQLite、Chroma 语义记忆（本地运行数据不提交） |
