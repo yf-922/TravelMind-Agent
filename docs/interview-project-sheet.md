@@ -37,7 +37,7 @@
 |---|---|---|
 | Python 回归 | `python -m pytest -q` | 170 passed, 1 warning |
 | Python 编译 | `python -m compileall -q app tests scripts` | 通过 |
-| 编排消融 | `python -m tests.eval.ablation --json evaluation/ablation_report.json --out evaluation/ablation_report.md` | planner_only 33% → planner+reviewer 67% → +time_check 100% |
+| 编排消融 | `python -m tests.eval.ablation --json evaluation/ablation_report.json --out evaluation/ablation_report.md` | 39 条分层案例：planner_only 23% → planner+reviewer 67% → +time_check 90% |
 | 容器构建 | `docker compose up --build -d` | 镜像构建成功 |
 | 依赖健康 | `GET /api/health` | database=ok, redis=ok |
 | HTTP/Agent 指标 | `GET /api/metrics` | Prometheus 文本格式 |
@@ -48,7 +48,7 @@
 | 在线单/多 Agent 消融预算 | `python -m tests.eval.run_online_ablation --max-cases 10 --k 3 --dry-run` | 扩展到 10 案例 × 3 次前的最坏供应商尝试上限为 2,430；当前只执行了 3 案例 × 1 次 |
 | 首轮真实单/多 Agent 对照 | `evaluation/real_single_vs_multi_ablation.md`；`evaluation/real_fault_recovery_ablation.md` | 自然请求未观察到多 Agent 质量收益；同稿故障恢复为 0/2 → 2/2，但仅 2 个注入场景、每例 1 次 |
 | 风险门控策略回放 | `python scripts/evaluate_risk_gate.py` | 保存真实输出上自然路线跳过 3/3、注入故障升级 2/2；Token/延迟节省 61.8%/50.7% 为投影 |
-| Agent/工具轨迹 | `python -m tests.eval.run_trajectory_eval` | 4/4 离线场景通过；校验调度顺序、权限、脱敏参数、重复调用、重试边界、终止状态和候选池传递 |
+| Agent/工具轨迹 | `python -m tests.eval.run_trajectory_eval` | 4 类故障场景、每类 8 项契约检查；校验调度顺序、权限、脱敏参数、重复调用、重试边界、终止状态和候选池传递 |
 | 模型路由/协议契约 | `python -m pytest tests/test_model_router.py tests/test_agent_protocols.py -q` | 9 passed；路由已接主流程，协议仍是本地原型，不等同远程 MCP/A2A 服务 |
 | 在线链路基准 | `python scripts/benchmark_pipeline.py --runs 3 --allow-external-calls` | 输出配置指纹、成功率、P50/P95/最大延迟、Token/成本和节点耗时增量；新数据待明确预算后实测 |
 
@@ -71,4 +71,4 @@
 
 ## 当前诚实边界
 
-离线 Fixture 的 100% 通过率只证明编排和结构契约，不代表真实 LLM 质量。30 场景的 POI 来自一次高德抓取，但天气是为可复现评测人工冻结、室内属性是名称关键词启发式标注；真实 LLM/Judge 目前只有 3 个单案例冒烟，不能代表 30 条集合或 5 次重复稳定性。简历中应分别写“评测数据已构建”“离线契约结果”和“在线 smoke 结果”，不要合并成单一线上成功率。
+离线 Fixture 的通过率只证明编排和结构契约，不代表真实 LLM 质量。39 条消融案例中仍保留不可修复草案，因此完整链路为 90% 而非 100%；异常输入集用于验证安全边界，不应写成业务成功率。30 场景的 POI 来自一次高德抓取，但天气是为可复现评测人工冻结、室内属性是名称关键词启发式标注；真实 LLM/Judge 目前只有 3 个单案例冒烟，不能代表 30 条集合或 5 次重复稳定性。简历中应分别写“评测数据已构建”“离线契约结果”和“在线 smoke 结果”，不要合并成单一线上成功率。
