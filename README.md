@@ -6,9 +6,9 @@
 
 原项目提供基础的旅行规划页面、POI/天气查询和初始规划流程。本仓库的主要增量集中在：
 
-- 使用 LangGraph 重构 Planner、Reviewer、Time Check、POI Search 等节点，增加风险门控、失败重试和用户修改后的 checkpoint 局部重规划；
+- 使用 LangGraph 重构 Planner、Reviewer、Time Check、POI Search 等节点，增加风险门控、失败重试和用户修改后的 checkpoint 局部重规划；确定性风险门控先检查，低风险跳过 LLM Reviewer，高风险才进入审核修复；
 - 将原直线距离判断替换为高德路线 API 的实际步行/驾车距离核验，距离查询失败时明确标记“未核验”，不伪造道路距离；
-- 使用 SQLite + Chroma 实现结构化/语义个性化记忆，使用 Pydantic 约束 Agent 间结构化消息；
+- 使用 SQLite + Chroma 实现结构化/语义个性化记忆，SQLite 保存事实源，Chroma 按 `user_id` 隔离语义记忆；旅行知识库按约 420 字符切块、保留约 80 字符段落重叠，默认召回 Top-3 并用 RRF 融合关键词与向量结果；
 - 增加天气/POI Cache-Aside、可并行查询、FastAPI + SSE 流式进度、单次执行 Trace 和失败降级状态；
 - 增加 39 条编排消融案例、真实 API 响应回放、故障轨迹测试和 GitHub Actions 离线 CI。
 
