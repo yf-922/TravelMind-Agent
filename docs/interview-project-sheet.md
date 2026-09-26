@@ -10,13 +10,12 @@
 
 ### LLM 应用开发方向
 
-**项目时间：** `请填写实际时间` ｜ **个人仓库：** [TravelMind-Agent](https://github.com/yf-922/TravelMind-Agent) ｜ **原始项目：** [FloatTrip](https://github.com/shouzhuoshouzhuo/FloatTrip)
+**项目时间：** `请填写实际时间` ｜ **个人仓库：** [TravelMind-Agent](https://github.com/yf-922/TravelMind-Agent)
 
-- **多 Agent 编排与局部重规划：** 原 FloatTrip 流程在用户改路线时从头执行，重复检索且上下文容易相互污染；我基于 LangGraph 对比并选择显式 `TravelPlanState` + checkpoint，把 Planner、检索 Worker 和 Reviewer 拆成独立节点。修改意见到达后恢复候选池，仅重跑受影响节点；候选不足时才定向查询，避免用固定状态机覆盖所有意图。
-- **输出质量与坏案例治理：** 针对“重复景点、候选池越界、开放时间冲突、步行距离超限”等失败样例，采用“确定性风险门控先筛查，低风险跳过 LLM Reviewer，高风险进入审核修复”的分层方案；用 39 条固定案例做消融，Planner-only、+Reviewer、+Time Check 分别通过 **9/39、26/39、35/39**，保留不可修复样例而非报成 100%。
-- **记忆、RAG 与交互取舍：** 用户偏好既要可精确更新又要支持语义召回，因此选择 SQLite 保存结构化事实、Chroma 保存按 `user_id` 隔离的语义记忆，而不是只用向量库；按段落切块并做向量/关键词混合召回，Pydantic 校验 Agent 消息，FastAPI + SSE 流式返回节点进度。
-- **工具调用与性能权衡：** 原流程用直线距离判断可达性，容易放过真实步行不可达路线；改为高德步行/驾车路线核验，并行执行天气、意图改写和路线查询。6 条保存的真实 API 响应回放中，自适应审核平均延迟较全量审核降低 **21.6%**；3 条自然请求的 Token 为估算值，减少 **61.8%**。两项均为小样本机制验证，不代表线上 SLA 或实际账单。
-- **可靠性与工程落地：** 从地图不可用、LLM 超时、开放时间核查失败等故障轨迹反推降级状态、重试边界和错误码；补充 4 类故障轨迹、32 项流程契约测试，提供 Docker Compose、Swagger、评测脚本和真实响应回放，GitHub Actions 执行 `pytest`，当前 **178 条测试通过**。
+- **多 Agent 编排：** 使用 LangGraph 的 `TravelPlanState + checkpoint` 编排 Planner、检索 Worker 和 Reviewer；用户替换景点等局部修改时复用候选池，仅重跑受影响节点，候选不足再定向检索。
+- **质量与回归：** 基于规则风险分决定是否调用 LLM Reviewer，并用高德步行/驾车路线核验通勤；在 39 条人工构造的硬约束回归用例中，完整链路通过 **35/39**，较仅规划基线多通过 26 条（离线回归集，非线上指标）。
+- **个性化记忆：** SQLite 保存结构化偏好与历史记录，Chroma 以 `user_id` 隔离语义记忆并在规划时召回；Pydantic 约束 Agent 消息，FastAPI + SSE 流式返回节点进度。
+- **效率与可靠性：** 并行执行可独立的天气、意图改写和路线查询，按风险分跳过不必要的 Reviewer；小样本真实 API 回放中平均审核延迟降低约 **22%**（非线上指标），GitHub Actions 配置 178 项测试覆盖规划、校验和降级核心链路。
 
 ### 后端开发方向
 
