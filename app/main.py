@@ -16,7 +16,7 @@ from __future__ import annotations
 import json
 import os
 from pathlib import Path
-from typing import Any, AsyncIterator, Optional
+from typing import Any, AsyncIterator, Optional, Literal
 
 import asyncio
 import logging
@@ -125,6 +125,7 @@ async def _encode_observed_sse(
 # ─── API 路由 ─────────────────────────────────────────────────
 
 class PlanRequest(BaseModel):
+    engine: Literal["langgraph", "supervisor"] = "langgraph"
     query: str = Field(min_length=1, max_length=2000)
     max_per_day: int = Field(default=5, ge=1, le=12)
     min_rating: float = Field(default=4.5, ge=0, le=5)
@@ -191,6 +192,18 @@ async def create_plan_stream(req: PlanRequest, request: Request):
     - Authorization: 登录用户自动保存行程 + 记忆提取 + checkpoint 存储
     """
     user_id = _get_required_user_id(request)
+    plan_stream = run_plan_stream
+    modification_stream = run_modification_stream
+    if req.engine == "supervisor":
+        from app.multi_agent_core.runtime import run_stream, run_modification_stream as supervisor_modify
+        plan_stream = run_stream
+        modification_stream = supervisor_modify
+        if req.plan_id:
+            with get_conn() as conn:
+                owned = conn.execute("SELECT id FROM itineraries WHERE id=? AND user_id=?",
+                                     (req.plan_id, user_id)).fetchone()
+            if not owned:
+                raise HTTPException(status_code=404, detail="行程不存在")
 
     # ── 1. 多轮续接：合并原始 query ──────────────────────────
     if req.thread_id:
@@ -337,10 +350,12 @@ async def create_plan_stream(req: PlanRequest, request: Request):
                 )
 
             async def gen_modification():
-                async for ev in run_modification_stream(
+                modification_options = {"user_id": user_id} if req.engine == "supervisor" else {}
+                async for ev in modification_stream(
                     checkpoint,
                     modification_notes,
                     memory_writer=memory_writer,
+                    **modification_options,
                     **overrides,
                 ):
                     if ev.get("type") == "modification_warning":
@@ -400,7 +415,7 @@ async def create_plan_stream(req: PlanRequest, request: Request):
 
     # ── 6. 普通规划流 ─────────────────────────────────────────
     async def gen():
-        async for ev in run_plan_stream(
+        async for ev in plan_stream(
             query,
             profile_hint=profile_hint,
             memory_writer=memory_writer,

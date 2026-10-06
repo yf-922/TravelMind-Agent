@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import sqlite3
+from copy import deepcopy
 from contextlib import closing
 from pathlib import Path
 from typing import Protocol
@@ -24,7 +25,7 @@ class InMemoryAgentMemoryStore:
         self._data: dict[tuple[str, str], list[MemoryEntry]] = {}
 
     def load(self, session_id: str, agent_name: str) -> list[MemoryEntry]:
-        return list(self._data.get((session_id, agent_name), []))
+        return deepcopy(self._data.get((session_id, agent_name), []))
 
     def append(self, session_id: str, agent_name: str, entry: MemoryEntry) -> None:
         self._data.setdefault((session_id, agent_name), []).append(dict(entry))
@@ -62,8 +63,12 @@ class SQLiteAgentMemoryStore:
 
     def append(self, session_id: str, agent_name: str, entry: MemoryEntry) -> None:
         with closing(self._connect()) as conn:
+            # Serialize position allocation so concurrent workers cannot choose
+            # the same primary-key slot for one session/Agent pair.
+            conn.execute("BEGIN IMMEDIATE")
             position = conn.execute(
-                "SELECT COUNT(*) FROM agent_memories WHERE session_id=? AND agent_name=?",
+                "SELECT COALESCE(MAX(position) + 1, 0) FROM agent_memories "
+                "WHERE session_id=? AND agent_name=?",
                 (session_id, agent_name),
             ).fetchone()[0]
             conn.execute(

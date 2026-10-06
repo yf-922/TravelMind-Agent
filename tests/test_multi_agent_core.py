@@ -5,6 +5,8 @@ from app.multi_agent_core.tools import FixturePoiTool
 from app.multi_agent_core.tools import ToolPermissionError, ToolRegistry
 from app.multi_agent_core.trajectory import TrajectoryContract, grade_trajectory
 from app.multi_agent_core.memory import SQLiteAgentMemoryStore
+from app.multi_agent_core.memory import InMemoryAgentMemoryStore
+from concurrent.futures import ThreadPoolExecutor
 
 
 def make_supervisor() -> Supervisor:
@@ -153,3 +155,44 @@ def test_sqlite_memory_is_isolated_by_session_and_agent(tmp_path):
     assert len(store.load("session-a", "intent_agent")) == 2
     assert store.load("session-a", "planner_agent") == []
     assert store.load("session-b", "intent_agent") == []
+
+
+def test_memory_load_cannot_mutate_stored_entries():
+    store = InMemoryAgentMemoryStore()
+    store.append("s", "intent_agent", {"role": "user", "content": "original"})
+    loaded = store.load("s", "intent_agent")
+    loaded[0]["content"] = "changed"
+    assert store.load("s", "intent_agent")[0]["content"] == "original"
+
+
+def test_sqlite_concurrent_appends_survive_reopen(tmp_path):
+    path = tmp_path / "concurrent.db"
+    store = SQLiteAgentMemoryStore(path)
+    def append(index):
+        store.append("s", "intent_agent", {"role": "user", "content": str(index)})
+    with ThreadPoolExecutor(max_workers=16) as pool:
+        list(pool.map(append, range(100)))
+    entries = SQLiteAgentMemoryStore(path).load("s", "intent_agent")
+    assert len(entries) == 100
+    assert {entry["content"] for entry in entries} == {str(index) for index in range(100)}
+
+
+def test_model_history_persists_without_cross_session_or_agent_leakage(tmp_path):
+    path = tmp_path / "history.db"
+    captured = []
+    def adapter(prompt, memory, content):
+        captured.append(memory)
+        return {"destination": "Beijing", "constraints": "", "user_request": content["user_request"]}
+    def message(session, request):
+        return AgentMessage(task_id=request, session_id=session, task_type="intent_extract",
+                            **{"from": "supervisor", "to": "intent_agent"},
+                            content={"user_request": request})
+    IntentAgent(model=adapter, memory_store=SQLiteAgentMemoryStore(path)).run(message("alice", "private preference"))
+    restored = SQLiteAgentMemoryStore(path)
+    agent = IntentAgent(model=adapter, memory_store=restored)
+    agent.run(message("alice", "next trip"))
+    agent.run(message("bob", "first trip"))
+    assert len(captured[1]) == 2
+    assert "private preference" in str(captured[1])
+    assert captured[2] == []
+    assert restored.load("alice", "planner_agent") == []
