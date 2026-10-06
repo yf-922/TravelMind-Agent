@@ -237,6 +237,26 @@ def test_modification_flow_runs_analysis_refresh_before_replanning():
     assert seen == {"names": ["Museum", "New Museum"], "status": "complete"}
 
 
+def test_modification_refresh_failure_cannot_be_reported_as_success():
+    nodes = make_nodes()
+    nodes["modification_intent"] = lambda s: {
+        "modification_search_keywords": ["museum"],
+        "modification_search_status": "pending",
+    }
+    nodes["candidate_refresh"] = lambda s: {
+        "pois": s.pois, "modification_search_status": "empty",
+    }
+    state = TravelPlanState(query="trip", destination="Nanjing", days=1,
+                            pois=[{"name": "Museum"}], modification_notes="改成博物馆")
+    async def run():
+        return [event async for event in TravelSupervisor(nodes, InMemoryAgentMemoryStore(), "s").stream(
+            state, modification=True)]
+    events = asyncio.run(run())
+    assert events[-1]["success"] is False
+    assert "candidate_refresh_unverified" in events[-1]["failure_details"]["risk_flags"]
+    assert events[-1]["plan"]["approved"] is False
+
+
 def test_supervisor_api_uses_authenticated_runtime(monkeypatch):
     from fastapi.testclient import TestClient
     import app.main as main

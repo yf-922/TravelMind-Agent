@@ -29,7 +29,7 @@ This is application-level context separation, not a process security sandbox.
 - Returned in-memory entries cannot mutate stored entries.
 - Authenticated API engine selection and missing-field continuation events.
 - Modification reuses candidates and skips Intent/weather/POI prefetch.
-- Full regression suite: 246 passed, one dependency deprecation warning.
+- Full regression suite: 252 passed, one dependency deprecation warning.
 - Five Node SSE client tests verify failed drafts cannot enter the successful-plan
   callback; missing-field continuation remains available. These run in CI.
 - Enrichment inputs are projected so meal/tips nodes cannot read private contexts.
@@ -75,6 +75,9 @@ This is application-level context separation, not a process security sandbox.
   museum preference triggers provider search and exact-name deduplication;
   time/meal-only edits can reuse the frozen POI pool. Refresh status reaches
   Planner and the final checkpoint.
+- A refresh with no provider result is a deliberate failed outcome carrying
+  `candidate_refresh_unverified`; the old route cannot be reported as a
+  successful fulfillment of the new preference.
 - Independent deterministic checks prevent model approval from overriding hard faults.
 - Optional weather/rewrite/meal/tips exceptions have explicit fallback updates.
 - Cancellation regression verifies late synchronous worker completion does not write memory.
