@@ -209,6 +209,34 @@ def test_modification_refreshes_candidates_only_when_analysis_requires_it(monkey
     assert refreshed["modification_search_status"] == "complete"
 
 
+def test_modification_flow_runs_analysis_refresh_before_replanning():
+    nodes = make_nodes()
+    seen = {}
+    nodes["modification_intent"] = lambda s: {
+        "attraction_preference": "museum",
+        "modification_search_keywords": ["museum"],
+        "modification_search_status": "pending",
+    }
+    nodes["candidate_refresh"] = lambda s: {
+        "pois": [*s.pois, {"name": "New Museum"}],
+        "modification_search_status": "complete",
+    }
+    original_planner = nodes["planner"]
+    def planner(state):
+        seen.update({"names": [poi["name"] for poi in state.pois],
+                     "status": state.modification_search_status})
+        return original_planner(state)
+    nodes["planner"] = planner
+    state = TravelPlanState(query="trip", destination="Nanjing", days=1,
+                            pois=[{"name": "Museum"}], modification_notes="改成博物馆")
+    async def run():
+        return [event async for event in TravelSupervisor(nodes, InMemoryAgentMemoryStore(), "s").stream(state, modification=True)]
+    events = asyncio.run(run())
+    stages = [event["node"] for event in events if event["type"] == "stage"]
+    assert stages[:3] == ["modification_intent", "candidate_refresh", "planner"]
+    assert seen == {"names": ["Museum", "New Museum"], "status": "complete"}
+
+
 def test_supervisor_api_uses_authenticated_runtime(monkeypatch):
     from fastapi.testclient import TestClient
     import app.main as main
