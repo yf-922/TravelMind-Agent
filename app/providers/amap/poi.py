@@ -119,6 +119,7 @@ def search_city_pois(
     keywords: str,
     types: str,
     offset: int = 8,
+    request_budget: dict[str, int] | None = None,
 ) -> list[dict[str, Any]]:
     """通用城市关键字搜索（手动编辑换点用）：类型可指定（景点/餐饮），不做缓存（由调用方决定）。"""
     params: dict[str, str] = {
@@ -133,7 +134,25 @@ def search_city_pois(
         "output": "json",
     }
     url = f"{AMAP_TEXT_SEARCH_URL}?{urllib.parse.urlencode(params)}"
-    return _text_search_raw(url)
+    if request_budget is None:
+        return _text_search_raw(url)
+    for attempt in range(2):
+        if request_budget["remaining"] <= 0:
+            raise RuntimeError("candidate_api_budget_exhausted")
+        request_budget["remaining"] -= 1
+        request_budget["used"] += 1
+        try:
+            data = http_get_json(url, attempts=1)
+            if data.get("status") == "1":
+                return data.get("pois") if isinstance(data.get("pois"), list) else []
+            if data.get("info") not in AMAP_RATE_LIMIT_INFOS:
+                raise ValueError("AMap rejected search")
+        except RuntimeError:
+            if attempt == 1:
+                raise
+        if attempt == 0 and request_budget["remaining"] > 0:
+            time.sleep(1.2)
+    raise RuntimeError("AMap candidate search failed")
 
 
 # ─── POI 解析 ────────────────────────────────────────────────

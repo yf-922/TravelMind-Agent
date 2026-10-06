@@ -271,6 +271,16 @@ class TravelPlanState(BaseModel):
 
     # 用户记忆注入（由 API 层填充）
     profile_hint: Optional[str] = None
+    candidate_search_round: int = 0
+    candidate_max_rounds: int = Field(default=2, ge=1, le=2)
+    candidate_min_per_day: int = Field(default=2, ge=1, le=5)
+    candidate_api_budget: int = Field(default=4, ge=0, le=12)
+    candidate_api_calls: int = 0
+    candidate_search_actions: list[dict[str, Any]] = Field(default_factory=list)
+    candidate_search_trace: list[dict[str, Any]] = Field(default_factory=list)
+    candidate_pool_status: str = "pending"
+    candidate_missing_coverage: list[str] = Field(default_factory=list)
+    candidate_coverage: dict[str, Any] = Field(default_factory=dict)
     semantic_memory_status: str = "not_requested"
 
     rag_sources: list[dict[str, Any]] = Field(default_factory=list)

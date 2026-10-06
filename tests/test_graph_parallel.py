@@ -49,6 +49,8 @@ def test_intent_post_processing_runs_weather_and_rewrite_in_parallel(monkeypatch
         "main_meal_candidates": [{"name": "Verified Restaurant", "location": "118,32"}],
         "main_meal_status": "ok",
     })
+    monkeypatch.setattr(graph_module, "make_candidate_react_node", lambda *a: lambda state: {"candidate_search_actions": [{"action": "stop"}]})
+    monkeypatch.setattr(graph_module, "candidate_search_node", lambda state: {"pois": [], "candidate_search_round": 2})
     monkeypatch.setattr(graph_module, "make_spot_tips_node", lambda *a, **k: lambda state: {"spot_tips": {}})
     monkeypatch.setattr(graph_module, "make_finalize_node", lambda *a, **k: lambda state: {"final_plan": {}})
 
@@ -88,6 +90,8 @@ def test_main_meal_output_and_spot_tips_run_in_parallel_before_finalize(monkeypa
         "weather_forecast": [], "weather_note": "mock",
     })
     monkeypatch.setattr(graph_module, "attraction_search_node", lambda state: {"pois": []})
+    monkeypatch.setattr(graph_module, "make_candidate_react_node", lambda *a: lambda state: {"candidate_search_actions": [{"action": "stop"}]})
+    monkeypatch.setattr(graph_module, "candidate_search_node", lambda state: {"pois": [], "candidate_search_round": 2})
     monkeypatch.setattr(graph_module, "make_planner_node", lambda *a, **k: lambda state: {
         "route": [{"day": 1, "spots": []}], "review_round": 1,
     })

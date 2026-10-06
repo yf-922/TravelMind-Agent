@@ -8,6 +8,10 @@ from langgraph.graph import END, START, StateGraph
 
 from app.planning.schemas import TravelPlanState
 from app.planning.helpers import invoke_structured  # re-export for convenience
+from app.planning.candidate_react import (
+    make_candidate_react_node, candidate_search_node, candidate_validator_node,
+    route_after_candidate_validation,
+)
 from app.planning.nodes import (
     attraction_search_node,
     finalize_node,
@@ -55,7 +59,9 @@ def build_graph(
     g.add_node("query_rewrite",    make_query_rewrite_node(model_name, user_id))
     g.add_node("intent",           make_intent_node(model_name, profile_hint=profile_hint))
     g.add_node("weather_search",   weather_search_node)
-    g.add_node("attraction_search", attraction_search_node)
+    g.add_node("candidate_react", make_candidate_react_node(model_name))
+    g.add_node("attraction_search", candidate_search_node)
+    g.add_node("candidate_validator", candidate_validator_node)
     g.add_node("main_meal_search", main_meal_candidate_search_node)
     g.add_node("main_meal_output", main_meal_output_node)
     g.add_node("planner",          _planner_for_graph(model_name))
@@ -79,10 +85,13 @@ def build_graph(
     )
     # 查询改写、天气与主链路餐馆候选都只依赖 intent 的输出，可以并行执行。
     # attraction_search 使用两者结果，因此设置多前驱屏障，确保天气/改写都完成后再检索。
-    g.add_edge("query_rewrite", "attraction_search")
-    g.add_edge("weather_search", "attraction_search")
-    g.add_edge("attraction_search", "planner")
-    g.add_edge("main_meal_search", "planner")
+    g.add_edge(["query_rewrite", "weather_search"], "candidate_react")
+    g.add_edge("candidate_react", "attraction_search")
+    g.add_edge("attraction_search", "candidate_validator")
+    g.add_conditional_edges("candidate_validator", route_after_candidate_validation,
+                           {"candidate_react": "candidate_react", "planner": "candidate_ready"})
+    g.add_node("candidate_ready", lambda state: {})
+    g.add_edge(["candidate_ready", "main_meal_search"], "planner")
     # planner 输出：time_check_done=False 时进 reviewer 走主循环；True 时进 time_check 重新核查
     g.add_conditional_edges(
         "planner", route_after_planner,
@@ -121,6 +130,9 @@ def build_graph(
 # 节点名 → 进度文案。同时充当“哪些事件需要透出”的过滤白名单。
 # planner/reviewer 文案在运行时按轮次/通过位动态拼接，这里留占位。
 _NODE_LABELS: dict[str, str] = {
+    "candidate_react": "正在判断景点候选缺口",
+    "candidate_validator": "正在检查候选覆盖与多样性",
+    "candidate_ready": "景点候选检索已结束",
     "query_rewrite":     "🔎 正在结合用户画像改写查询",
     "intent":            "🧭 正在理解出行意图（目的地 / 日期 / 偏好）",
     "weather_search":    "🌦 正在查询出行天气",
@@ -379,6 +391,12 @@ async def run_modification_stream(
         query=checkpoint.get("query", "修改行程"),
         route=checkpoint.get("route", []),
         pois=checkpoint.get("pois", []),
+        candidate_pool_status=checkpoint.get("candidate_pool_status", "pending"),
+        candidate_missing_coverage=checkpoint.get("candidate_missing_coverage", []),
+        candidate_coverage=checkpoint.get("candidate_coverage", {}),
+        candidate_search_round=checkpoint.get("candidate_search_round", 0),
+        candidate_api_calls=checkpoint.get("candidate_api_calls", 0),
+        candidate_search_trace=checkpoint.get("candidate_search_trace", []),
         planner_reviewer_dialogue=checkpoint.get("planner_reviewer_dialogue", []),
         destination=checkpoint.get("destination"),
         travel_start_date=checkpoint.get("travel_start_date"),
@@ -581,7 +599,7 @@ async def run_stream(
     # 时间修正 planner⇄time_check 最多 max_time_check_rounds 对节点；
     # 其余非循环节点（intent/query_rewrite/attraction_search/meal_search/meal_recommend/spot_tips/finalize）+ 缓冲
     config = {"recursion_limit":
-        2 * (init.max_review_rounds + 1) + 2 * init.max_time_check_rounds + 10}
+        2 * (init.max_review_rounds + 1) + 2 * init.max_time_check_rounds + 20}
 
     acc: dict[str, Any] = init.model_dump()
     async for event in app.astream_events(init, config=config, version="v2"):

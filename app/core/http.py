@@ -38,7 +38,7 @@ def redact_url(url: str) -> str:
     return urllib.parse.urlunparse(parsed._replace(query=redacted_query))
 
 
-def http_get_json(url: str, timeout: int = 15) -> dict[str, Any]:
+def http_get_json(url: str, timeout: int = 15, *, attempts: int = 3) -> dict[str, Any]:
     """发起 GET 请求并解析 JSON，失败时退避重试三次。"""
     request = urllib.request.Request(
         url,
@@ -49,14 +49,15 @@ def http_get_json(url: str, timeout: int = 15) -> dict[str, Any]:
         },
     )
     last_error: Exception | None = None
-    for attempt in range(3):
+    for attempt in range(attempts):
         try:
             with urllib.request.urlopen(request, timeout=timeout) as response:
                 charset = response.headers.get_content_charset() or "utf-8"
                 return json.loads(response.read().decode(charset, errors="replace"))
         except Exception as exc:
             last_error = exc
-            time.sleep(0.8 * (attempt + 1))
+            if attempt + 1 < attempts:
+                time.sleep(0.8 * (attempt + 1))
     raise RuntimeError(f"请求失败：{redact_url(url)}；原因：{last_error}")
 
 

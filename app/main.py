@@ -266,6 +266,12 @@ async def create_plan_stream(req: PlanRequest, request: Request):
             "meal_slots": state.meal_slots,
             "memory_session_id": state.memory_session_id,
             "repair_feedback": state.repair_feedback,
+            "candidate_pool_status": state.candidate_pool_status,
+            "candidate_missing_coverage": state.candidate_missing_coverage,
+            "candidate_coverage": state.candidate_coverage,
+            "candidate_search_round": state.candidate_search_round,
+            "candidate_api_calls": state.candidate_api_calls,
+            "candidate_search_trace": state.candidate_search_trace,
             "query":            state.query,
         }
         with get_conn() as conn:

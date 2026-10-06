@@ -23,6 +23,25 @@
 
 ## 项目能力
 
+### 有界候选池 ReAct
+
+需求分析后，查询改写和天气查询并行完成，再进入
+`candidate_react -> attraction_search -> candidate_validator` 循环。
+模型只提出最多两个类别/景点搜索动作；工具执行高德查询、合并去重和来源标注，
+校验器检查数量、明确景点覆盖、室内外约束及类型多样性。
+最多执行两轮，每次请求的候选检索共享四次 HTTP 尝试预算（含重试），Redis 命中不计外部请求。
+这个预算目前仅覆盖候选池检索，不包含天气、餐馆和道路查询。
+LLM 输出非法动作、API 失败或预算耗尽时保留已有候选并返回 `insufficient`，
+Planner 接收覆盖缺口，最终结果包含 `candidate_pool` 状态与统计。
+室内外标签来自高德类型/名称启发式，未知标签不计为已满足；明确用户限制优先于多样性。
+配置通过 `TravelPlanState` 的 `candidate_min_per_day`、`candidate_max_rounds`、
+`candidate_api_budget` 控制；默认数量目标为天数乘每日两个景点，再加至少两个备选，受 `max_spots` 限制。
+
+离线验收：`python -m pytest tests/test_candidate_react.py -q`。
+六场景契约评测：`python scripts/evaluate_candidate_react.py`，打印 JSON，
+包含覆盖数、明确景点命中、室内外分布、检索轮数、请求次数和不足场景；不调用真实 LLM/API。
+这些结果用于验证循环与预算机制，实际检索质量仍需要独立真实 Provider 对照。
+
 - 解析目的地、日期、预算、偏好等旅行约束，缺少关键字段时提示用户补充。
 - 调用高德 POI、天气、路径等服务，生成景点候选、餐饮、酒店与出行建议。
 - 使用 Planner / Reviewer 工作流生成并审查行程；候选池中没有用户指定景点时可重新检索。

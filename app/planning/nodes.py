@@ -763,6 +763,8 @@ def make_joint_planner_node(model_name: str | None):
             f"用餐时长：每餐约 {state.meal_duration_min} 分钟；步行上限：{state.max_walking_km or '未指定'} km\n"
             f"天气：{format_weather_for_llm(state.weather_forecast) or '无天气信息'}\n"
             f"景点候选池：\n{spot_text}\n\n"
+            f"候选覆盖状态：{state.candidate_pool_status}；缺口：{state.candidate_missing_coverage}。"
+            "候选不足时只用已有景点并说明缺口，不得编造景点。\n"
             f"餐馆候选池：\n{meal_text}\n\n"
             f"上一版路线（仅供修改参考）：{old_route}\n"
             f"本轮修改/审核意见：{feedback}\n"
@@ -895,6 +897,8 @@ def make_planner_node(model_name: str | None):
             f"{_travel_dates_block(state)}"
             f"{weather_block}{distance_block}\n\n"
             f"候选景点池（共 {len(state.pois)} 个）：\n{cand_text}"
+            f"\n候选池覆盖状态：{state.candidate_pool_status}；缺口：{state.candidate_missing_coverage}。"
+            "候选不足时仅使用已有候选并说明缺口，不得编造景点。"
             f"{rag_block}"
             f"{feedback}"
             f"{dialogue_block}"
@@ -1906,6 +1910,13 @@ def _finalize_impl(state: TravelPlanState) -> dict[str, Any]:
     }
 
     final_plan = {
+        "candidate_pool": {
+            "status": state.candidate_pool_status,
+            "missing_coverage": state.candidate_missing_coverage,
+            "coverage": state.candidate_coverage,
+            "search_rounds": state.candidate_search_round,
+            "api_calls": state.candidate_api_calls,
+        },
         "query": state.query,
         "destination": state.destination,
         "start_date": state.travel_start_date.isoformat() if state.travel_start_date else None,
