@@ -259,6 +259,7 @@ async def create_plan_stream(req: PlanRequest, request: Request):
             "model_name": state.model_name,
             "rewritten_query": state.rewritten_query,
             "profile_hint": state.profile_hint,
+            "semantic_memory_status": state.semantic_memory_status,
             "memory_session_id": state.memory_session_id,
             "repair_feedback": state.repair_feedback,
             "query":            state.query,

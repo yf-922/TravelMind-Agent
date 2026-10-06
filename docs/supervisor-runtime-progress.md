@@ -78,6 +78,9 @@ This is application-level context separation, not a process security sandbox.
   storage failure returns an explicit 503 rather than claiming deletion.
 - API contract tests cover unauthenticated 401, storage failure 503 and owner
   propagation for semantic-memory deletion.
+- Saved initial and confirmed-modification checkpoints now retain the semantic
+  memory availability status, so later edits do not erase the fact that a
+  request ran without personalized retrieval.
 - Modification preference analysis and candidate refresh are covered: a new
   museum preference triggers provider search and exact-name deduplication;
   time/meal-only edits can reuse the frozen POI pool. Refresh status reaches
