@@ -1,4 +1,5 @@
 import asyncio
+import pytest
 
 from app.multi_agent_core.memory import InMemoryAgentMemoryStore
 from app.multi_agent_core.runtime import TravelSupervisor
@@ -375,3 +376,61 @@ def test_public_execution_logs_survive_without_exposing_private_dialogue():
     events = collect(TravelSupervisor(nodes, InMemoryAgentMemoryStore(), "s"), TravelPlanState(query="trip"))
     assert "new planner draft" in events[-1]["history"]
     assert "private internal dialogue" not in str(events[-1]["checkpoint"])
+
+
+@pytest.mark.parametrize("role,update", [
+    ("planner", {"approved": True}),
+    ("planner", {"pois": [{"name": "Fabricated"}]}),
+    ("weather_search", {"route": []}),
+    ("reviewer", {"route": []}),
+    ("spot_tips", {"approved": True}),
+    ("finalize", {"memory_session_id": "other"}),
+])
+def test_role_output_contract_blocks_cross_role_writes_before_memory(role, update):
+    from app.multi_agent_core.runtime import RoleContractError
+    memory = InMemoryAgentMemoryStore()
+    nodes = make_nodes()
+    nodes[role] = lambda s: update
+    runtime = TravelSupervisor(nodes, memory, "s")
+    with pytest.raises(RoleContractError):
+        asyncio.run(runtime._call(role, TravelPlanState(query="trip")))
+    assert memory.load("s", role) == []
+
+
+def test_invalid_owned_field_does_not_enter_private_memory():
+    from pydantic import ValidationError
+    memory = InMemoryAgentMemoryStore()
+    nodes = make_nodes()
+    nodes["planner"] = lambda s: {"route": "not a route"}
+    runtime = TravelSupervisor(nodes, memory, "s")
+    with pytest.raises(ValidationError):
+        asyncio.run(runtime._call("planner", TravelPlanState(query="trip")))
+    assert memory.load("s", "planner") == []
+
+
+def test_finalize_cannot_read_role_private_context_even_when_called_directly():
+    nodes = make_nodes()
+    def finalize(state):
+        assert state.planner_reviewer_dialogue == []
+        assert state.agent_private_context == []
+        return {"final_plan": {}}
+    nodes["finalize"] = finalize
+    runtime = TravelSupervisor(nodes, InMemoryAgentMemoryStore(), "s")
+    asyncio.run(runtime._call("finalize", TravelPlanState(query="trip", agent_private_context=["secret"], planner_reviewer_dialogue=["secret"])))
+
+
+def test_replanning_receives_bounded_feedback_and_preserves_user_request():
+    nodes = make_nodes(reject=True)
+    original = nodes["planner"]
+    seen = []
+    def planner(state):
+        seen.append((state.modification_notes, list(state.repair_feedback)))
+        return original(state)
+    nodes["planner"] = planner
+    events = collect(TravelSupervisor(nodes, InMemoryAgentMemoryStore(), "s"),
+                     TravelPlanState(query="trip", modification_notes="keep the original museum", max_review_rounds=4))
+    assert len(seen) == 5
+    assert all(notes == "keep the original museum" for notes, _ in seen)
+    assert seen[0][1] == []
+    assert seen[1][1][0]["reviewer_issues"] == ["unresolved"]
+    assert len(events[-1]["checkpoint"]["repair_feedback"]) == 3

@@ -365,6 +365,7 @@ async def confirm_modification(req: ConfirmModificationRequest, request: Request
             "rewritten_query": state.rewritten_query,
             "profile_hint": state.profile_hint,
             "memory_session_id": state.memory_session_id,
+            "repair_feedback": state.repair_feedback,
             "query":            state.query,
         }
         with get_conn() as conn:

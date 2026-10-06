@@ -681,6 +681,8 @@ def make_planner_node(model_name: str | None):
 
         prompt = (
             f"用户需求：{state.rewritten_query or state.query}\n"
+            f"用户本轮明确修改（最高优先级，不能被历史审核意见覆盖）：{state.modification_notes or '无'}\n"
+            f"本轮修复反馈（仅参考，必须对当前路线重新验证）：{json.dumps(state.repair_feedback, ensure_ascii=False)[-4000:]}\n"
             f"目的地：{state.destination}\n旅行天数：{state.days} 天\n"
             f"每天景点数上限：{state.max_per_day}\n"
             f"景点偏好：{state.attraction_preference or '无'}\n"

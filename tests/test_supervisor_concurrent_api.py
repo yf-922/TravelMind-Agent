@@ -34,7 +34,7 @@ def test_same_owner_parallel_api_trips_save_distinct_private_sessions(monkeypatc
         def planner(state):
             assert state.planner_reviewer_dialogue == []
             barrier.wait(timeout=5)
-            return {**original(state), "route_modify_opinion": state.query}
+            return {**original(state), "rag_sources": [{"text": state.query}]}
         nodes["planner"] = planner
         return nodes
     monkeypatch.setattr(runtime, "production_nodes", factory)
@@ -71,7 +71,7 @@ def test_same_trip_concurrent_modifications_keep_frozen_history_and_all_writes(t
         def planner(state):
             seen.append((state.query, list(state.planner_reviewer_dialogue)))
             barrier.wait(timeout=5)
-            return {**original(state), "route_modify_opinion": state.query}
+            return {**original(state), "rag_sources": [{"text": state.query}]}
         nodes["planner"] = planner
         return nodes
     async def run():

@@ -25,7 +25,7 @@ This is application-level context separation, not a process security sandbox.
 - Returned in-memory entries cannot mutate stored entries.
 - Authenticated API engine selection and missing-field continuation events.
 - Modification reuses candidates and skips Intent/weather/POI prefetch.
-- Full regression suite: 231 passed, one dependency deprecation warning.
+- Full regression suite: 240 passed, one dependency deprecation warning.
 - Five Node SSE client tests verify failed drafts cannot enter the successful-plan
   callback; missing-field continuation remains available. These run in CI.
 - Enrichment inputs are projected so meal/tips nodes cannot read private contexts.
@@ -46,6 +46,13 @@ This is application-level context separation, not a process security sandbox.
 - Concurrent API tests: same owner creates two distinct saved trip sessions;
   simultaneous same-trip runtime modifications read frozen role context and
   retain both writes. Providers are mocked; not a multi-process load test.
+- Role output contracts reject cross-role writes and validate state types before
+  persistence. Planner cannot approve or rewrite the pool; Reviewer cannot rewrite
+  route; finalize cannot read private dialogue. All production role outputs have
+  explicit owned fields. Query Rewrite receives original walking/rain constraints.
+- Structured repair feedback retains the latest three revisions; current user
+  modification is injected independently so Reviewer/Time Check cannot overwrite
+  it. Role-private history is not used as a replacement for shared repair facts.
 - Browser planning page exposes `标准规划` and `协作规划`; selecting the latter sends `engine=supervisor`.
 - Human confirmation preserves the Supervisor engine and verifies the accepted draft.
 - Memory lookup/write errors degrade without terminating usable planning.
@@ -127,6 +134,10 @@ The above missing checks mean production parity is not yet established.
   2,301 estimated tokens. One trial does not prove generic preference accuracy.
 - Old provider `cost=[]` appeared as `¥[]/person`: normalization now removes
   empty/nonprice sentinels; frontend handles old saved data and keeps zero free.
+- Output-contract real smoke: 62.413 seconds, approved/saved, selected Nanjing
+  Yuhua Tea Museum, four model calls and 2,274 estimated tokens. All executed
+  production outputs satisfied role contracts. Reviewer/Time Check were skipped;
+  their contracts still require real high-risk retest (unit coverage is present).
 
 ## Authenticated full API evidence
 

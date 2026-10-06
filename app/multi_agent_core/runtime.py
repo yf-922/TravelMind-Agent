@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 
 INPUTS = {
     "intent": {"query", "profile_hint"},
-    "query_rewrite": {"query", "profile_hint", "destination", "days", "travel_start_date", "travel_end_date", "attraction_preference", "food_preference", "habit_preference"},
+    "query_rewrite": {"query", "profile_hint", "destination", "days", "travel_start_date", "travel_end_date", "attraction_preference", "food_preference", "habit_preference", "max_walking_km", "rain_indoor_priority"},
     "weather_search": {"destination", "travel_start_date", "travel_end_date", "days"},
     "attraction_search": {"destination", "query", "rewritten_query", "max_spots", "min_rating"},
     "planner": {"query", "rewritten_query", "destination", "days", "travel_start_date", "travel_end_date", "pois", "weather_forecast", "weather_note", "attraction_preference", "food_preference", "habit_preference", "max_walking_km", "rain_indoor_priority", "max_per_day", "max_review_rounds", "route", "route_modify_opinion", "route_stale_warning", "review_round", "profile_hint", "modification_notes", "route_distance_legs", "route_distance_note"},
@@ -27,7 +27,31 @@ INPUTS = {
     "time_check": {"destination", "pois", "route", "travel_start_date", "travel_end_date", "days", "time_check_round", "max_time_check_rounds", "approved", "review_required", "habit_preference", "max_walking_km", "rain_indoor_priority", "weather_forecast", "route_distance_legs", "max_per_day", "modification_notes"},
     "meal_enrichment": {"destination", "pois", "route", "food_preference"},
     "spot_tips": {"destination", "route", "travel_start_date", "weather_forecast"},
+    "finalize": set(TravelPlanState.model_fields) - {"planner_reviewer_dialogue", "agent_private_context"},
 }
+
+
+OUTPUTS = {
+    "intent": {"destination", "travel_start_date", "travel_end_date", "days", "attraction_preference", "food_preference", "habit_preference", "max_walking_km", "rain_indoor_priority", "missing_fields", "history"},
+    "query_rewrite": {"rewritten_query", "attraction_preference", "food_preference", "habit_preference", "history"},
+    "weather_search": {"weather_forecast", "weather_note", "history"},
+    "attraction_search": {"pois", "history"},
+    "planner": {"route", "review_round", "history", "planner_reviewer_dialogue", "modification_concern", "route_stale_warning", "rag_sources"},
+    "route_distance_check": {"route_distance_legs", "route_distance_mode", "route_distance_note"},
+    "risk_gate": {"route_risk_flags", "route_risk_score", "review_required", "time_check_required", "review_skipped", "approved", "need_modify_route", "time_check_done", "time_check_status"},
+    "reviewer": {"approved", "need_modify_route", "route_modify_opinion", "reviewer_issues", "history", "planner_reviewer_dialogue"},
+    "time_check": {"time_violations", "time_check_done", "time_check_round", "time_check_status", "approved", "route_risk_flags", "review_required", "risk_gate_rechecked", "route_modify_opinion", "history", "planner_reviewer_dialogue"},
+    "meal_enrichment": {"meal_candidates", "meals", "meal_search_status", "meal_recommend_status", "history"},
+    "spot_tips": {"spot_tips", "spot_guides", "spot_tips_status"},
+    "finalize": {"final_plan", "history"},
+}
+
+
+class RoleContractError(ValueError):
+    pass
+
+
+INPUTS["planner"].add("repair_feedback")
 
 
 def production_nodes(model_name=None, profile_hint="", user_id=None):
@@ -106,6 +130,11 @@ class TravelSupervisor:
             update = fallback[role]
         if not isinstance(update, dict):
             raise TypeError(f"{role} must return a state update")
+        unexpected = set(update) - OUTPUTS[role]
+        if unexpected:
+            raise RoleContractError(f"{role} cannot update fields: {', '.join(sorted(unexpected))}")
+        # Invalid role outputs must not contaminate persisted private context.
+        TravelPlanState(**{**state.model_dump(), **update})
         safe = {key: value for key, value in update.items()
                 if key not in {"history", "planner_reviewer_dialogue", "agent_private_context", "final_plan", "pois"}}
         serialized = json.dumps(safe, ensure_ascii=False, default=str)
@@ -249,6 +278,15 @@ class TravelSupervisor:
             if state.time_violations:
                 details = json.dumps(state.time_violations, ensure_ascii=False)
                 state.route_modify_opinion = "\n".join(filter(None, [state.route_modify_opinion, details]))
+            if not state.approved or state.time_violations:
+                feedback = {
+                    "revision": revision,
+                    "risk_flags": hard_faults,
+                    "time_violations": state.time_violations[:8],
+                    "reviewer_issues": state.reviewer_issues[:8],
+                    "instruction": (state.route_modify_opinion or "")[-1600:],
+                }
+                state.repair_feedback = [*state.repair_feedback[-2:], feedback]
             if state.approved and not state.time_violations:
                 break
         if state.approved:
@@ -309,7 +347,7 @@ async def run_modification_stream(checkpoint, modification_notes, memory_writer=
     data.update(approved=False, reviewer_issues=[], time_violations=[], review_round=0,
                 time_check_round=0, time_check_done=False, final_plan=None,
                 modification_notes=modification_notes,
-                route_modify_opinion=f"【用户修改意见】{modification_notes}")
+                route_modify_opinion=f"【用户修改意见】{modification_notes}", repair_feedback=[])
     data["memory_session_id"] = session
     runtime = TravelSupervisor(production_nodes(data.get("model_name"), data.get("profile_hint") or "", user_id),
                                build_memory_store(), memory_scope(user_id, session))
