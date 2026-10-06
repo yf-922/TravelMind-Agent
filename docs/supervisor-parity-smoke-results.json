@@ -45,6 +45,6 @@
     "efficiency_grade_passed": false,
     "boundary": "Forced audit mechanism trial starting at Planner; frozen facts, real model/road APIs, enrichment omitted. Not natural-request quality, full API parity or comparative speedup evidence."
   },
-  "regression": {"pytest_cases_passed": 257, "sse_client_cases_passed": 5},
+  "regression": {"pytest_cases_passed": 258, "sse_client_cases_passed": 5},
   "billing": "Tokens estimated; prices not configured; no actual cost claim."
 }

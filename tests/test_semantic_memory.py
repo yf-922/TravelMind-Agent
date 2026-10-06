@@ -1,6 +1,38 @@
 from app.core import semantic_memory
 
 
+def test_real_chroma_collection_enforces_user_filter(monkeypatch):
+    chromadb = __import__("chromadb")
+    from chromadb.api.types import Documents, EmbeddingFunction, Embeddings
+
+    class DeterministicEmbedding(EmbeddingFunction):
+        def __init__(self):
+            pass
+
+        def __call__(self, input: Documents) -> Embeddings:
+            return [[float(sum(ord(char) for char in text) % 97), float(len(text)), 1.0]
+                    for text in input]
+
+        def name(self) -> str:
+            return "deterministic_test"
+
+        def get_config(self):
+            return {}
+
+    collection = chromadb.EphemeralClient().get_or_create_collection(
+        "semantic_memory_test", embedding_function=DeterministicEmbedding()
+    )
+    collection.upsert(
+        ids=["u1-memory", "u2-memory"],
+        documents=["偏好历史文化博物馆", "偏好海鲜美食"],
+        metadatas=[{"user_id": "u1"}, {"user_id": "u2"}],
+    )
+    monkeypatch.setattr(semantic_memory, "_collection", lambda: collection)
+    assert semantic_memory.search_user_memories("u1", "历史文化") == ["偏好历史文化博物馆"]
+    assert semantic_memory.search_user_memories("u2", "历史文化") == ["偏好海鲜美食"]
+    assert semantic_memory.search_user_memories("u3", "历史文化") == []
+
+
 class FakeCollection:
     def __init__(self):
         self.rows = []
