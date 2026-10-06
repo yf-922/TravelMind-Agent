@@ -48,6 +48,31 @@ def test_supervisor_runs_full_pipeline_with_role_isolation():
     assert memory.load("another", "planner") == []
 
 
+def test_production_style_supervisor_runs_bounded_candidate_react_loop():
+    nodes = make_nodes()
+    nodes.update({
+        "candidate_react": lambda state: {
+            "candidate_search_actions": [{"action": "search_history", "query": "fixture"}],
+        },
+        "candidate_search": lambda state: {
+            "pois": [{"name": "Museum"}],
+            "candidate_search_round": state.candidate_search_round + 1,
+            "candidate_api_calls": state.candidate_api_calls + 1,
+            "candidate_search_trace": [{"action": "search_history", "result_count": 1}],
+        },
+        "candidate_validator": lambda state: {
+            "candidate_pool_status": "ready",
+            "candidate_missing_coverage": [],
+            "candidate_coverage": {"count": 1},
+        },
+    })
+    events = collect(TravelSupervisor(nodes, InMemoryAgentMemoryStore(), "s"), TravelPlanState(query="trip"))
+    stages = [event["node"] for event in events if event["type"] == "stage"]
+    assert stages[3:6] == ["candidate_react", "candidate_search", "candidate_validator"]
+    assert events[-1]["success"] is True
+    assert events[-1]["checkpoint"]["candidate_pool_status"] == "ready"
+
+
 def test_rejected_route_stops_with_incomplete_result():
     events = collect(TravelSupervisor(make_nodes(reject=True), InMemoryAgentMemoryStore(), "s"),
                      TravelPlanState(query="trip", max_review_rounds=2))

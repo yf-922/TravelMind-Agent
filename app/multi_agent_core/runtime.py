@@ -22,8 +22,23 @@ INPUTS = {
     "query_rewrite": {"query", "profile_hint", "destination", "days", "travel_start_date", "travel_end_date", "attraction_preference", "food_preference", "habit_preference", "max_walking_km", "rain_indoor_priority"},
     "weather_search": {"destination", "travel_start_date", "travel_end_date", "days"},
     "attraction_search": {"destination", "query", "rewritten_query", "max_spots", "min_rating"},
+    "candidate_react": {"query", "rewritten_query", "profile_hint", "destination", "days",
+                         "attraction_preference", "habit_preference", "weather_forecast",
+                         "candidate_search_trace", "candidate_search_round", "candidate_api_calls",
+                         "candidate_api_budget", "candidate_max_rounds", "candidate_min_per_day",
+                         "candidate_pool_status", "candidate_missing_coverage", "candidate_coverage", "pois",
+                         "modification_notes"},
+    "candidate_search": {"destination", "query", "modification_notes", "pois", "candidate_search_actions",
+                          "candidate_search_trace", "candidate_search_round", "candidate_api_calls",
+                          "candidate_api_budget", "max_spots", "min_rating"},
+    "candidate_validator": {"query", "modification_notes", "destination", "days", "max_spots", "max_per_day",
+                             "candidate_min_per_day", "candidate_max_rounds", "candidate_api_budget",
+                             "candidate_api_calls", "candidate_search_round", "candidate_search_actions",
+                             "candidate_search_trace", "candidate_pool_status", "candidate_missing_coverage",
+                             "candidate_coverage", "attraction_preference", "weather_forecast", "rain_indoor_priority",
+                             "pois"},
     "main_meal_search": {"destination", "food_preference"},
-    "planner": {"query", "rewritten_query", "destination", "days", "travel_start_date", "travel_end_date", "pois", "weather_forecast", "weather_note", "attraction_preference", "food_preference", "habit_preference", "max_walking_km", "rain_indoor_priority", "max_per_day", "max_review_rounds", "route", "route_modify_opinion", "route_stale_warning", "review_round", "profile_hint", "modification_notes", "modification_search_status", "repair_feedback", "route_distance_legs", "route_distance_note", "main_meal_candidates", "main_meal_status", "meal_duration_min", "meal_slots"},
+    "planner": {"query", "rewritten_query", "destination", "days", "travel_start_date", "travel_end_date", "pois", "weather_forecast", "weather_note", "attraction_preference", "food_preference", "habit_preference", "max_walking_km", "rain_indoor_priority", "max_per_day", "max_review_rounds", "route", "route_modify_opinion", "route_stale_warning", "review_round", "profile_hint", "modification_notes", "modification_search_status", "repair_feedback", "route_distance_legs", "route_distance_note", "main_meal_candidates", "main_meal_status", "meal_duration_min", "meal_slots", "candidate_pool_status", "candidate_missing_coverage", "candidate_coverage", "candidate_search_round", "candidate_api_calls", "candidate_search_trace"},
     "route_distance_check": {"pois", "route", "max_walking_km", "main_meal_candidates", "meal_slots"},
     "risk_gate": {"pois", "route", "days", "max_per_day", "travel_start_date", "weather_forecast", "habit_preference", "max_walking_km", "rain_indoor_priority", "route_distance_legs", "modification_notes", "route_modify_opinion", "main_meal_candidates", "meal_slots", "meal_duration_min"},
     "reviewer": {"destination", "days", "travel_start_date", "travel_end_date", "pois", "route", "habit_preference", "attraction_preference", "modification_notes", "max_per_day", "weather_forecast", "max_walking_km", "rain_indoor_priority", "route_distance_legs", "route_distance_note", "review_round", "main_meal_candidates", "meal_slots", "meal_duration_min"},
@@ -41,6 +56,9 @@ OUTPUTS = {
     "query_rewrite": {"rewritten_query", "attraction_preference", "food_preference", "habit_preference", "history"},
     "weather_search": {"weather_forecast", "weather_note", "history"},
     "attraction_search": {"pois", "history"},
+    "candidate_react": {"candidate_search_actions", "candidate_pool_status", "candidate_search_trace"},
+    "candidate_search": {"pois", "candidate_search_round", "candidate_api_calls", "candidate_search_trace"},
+    "candidate_validator": {"candidate_coverage", "candidate_missing_coverage", "candidate_pool_status"},
     "main_meal_search": {"main_meal_candidates", "main_meal_status", "history"},
     "planner": {"route", "review_round", "history", "planner_reviewer_dialogue", "modification_concern", "route_stale_warning", "rag_sources", "meal_slots"},
     "route_distance_check": {"route_distance_legs", "route_distance_mode", "route_distance_note"},
@@ -62,6 +80,11 @@ INPUTS["planner"].add("repair_feedback")
 
 def production_nodes(model_name=None, profile_hint="", user_id=None):
     from app.planning import nodes
+    from app.planning.candidate_react import (
+        candidate_search_node,
+        candidate_validator_node,
+        make_candidate_react_node,
+    )
     from app.multi_agent_core.modification import make_modification_intent_node, candidate_refresh_node
     finalize = nodes.make_finalize_node()
     def finalize_result(state):
@@ -80,7 +103,12 @@ def production_nodes(model_name=None, profile_hint="", user_id=None):
         "intent": nodes.make_intent_node(model_name, profile_hint=profile_hint),
         "query_rewrite": nodes.make_query_rewrite_node(model_name, user_id),
         "weather_search": nodes.weather_search_node,
-        "attraction_search": nodes.attraction_search_node,
+        # Keep the public stage name for compatibility, but use the same
+        # bounded ReAct candidate loop as the main LangGraph.
+        "candidate_react": make_candidate_react_node(model_name),
+        "attraction_search": candidate_search_node,
+        "candidate_search": candidate_search_node,
+        "candidate_validator": candidate_validator_node,
         "main_meal_search": nodes.main_meal_candidate_search_node,
         "planner": nodes.make_joint_planner_node(model_name),
         "route_distance_check": nodes.route_distance_check_node,
@@ -152,6 +180,22 @@ class TravelSupervisor:
                 "attraction_search": {
                     "pois": [],
                     "history": ["attraction_search: unavailable; candidate pool is unverified"],
+                },
+                "candidate_react": {
+                    "candidate_search_actions": [{"action": "stop"}],
+                    "candidate_pool_status": "insufficient",
+                    "candidate_search_trace": [{"error_code": "DECISION_FAILED"}],
+                },
+                "candidate_search": {
+                    "pois": list(state.pois),
+                    "candidate_search_round": state.candidate_search_round + 1,
+                    "candidate_api_calls": state.candidate_api_calls,
+                    "candidate_search_trace": [*state.candidate_search_trace, {"error_code": "SEARCH_FAILED"}],
+                },
+                "candidate_validator": {
+                    "candidate_pool_status": "insufficient",
+                    "candidate_missing_coverage": ["candidate_validator_unavailable"],
+                    "candidate_coverage": {},
                 },
                 "candidate_refresh": {
                     "pois": list(state.pois),
@@ -274,9 +318,24 @@ class TravelSupervisor:
                     state = event["_state"]
                 else:
                     yield event
-            yield {"type": "stage", "node": "attraction_search"}
-            state = await execute("attraction_search")
-            yield {"type": "stage_summary", "node": "attraction_search", "summary": "completed"}
+            if {"candidate_react", "candidate_search", "candidate_validator"}.issubset(self.nodes):
+                # Match the main graph's bounded ReAct candidate loop. The
+                # decision, tool execution and coverage validation are kept
+                # as separate stages so their inputs and failures are auditable.
+                while True:
+                    for role in ("candidate_react", "candidate_search", "candidate_validator"):
+                        yield {"type": "stage", "node": role,
+                               "revision": state.candidate_search_round}
+                        state = await execute(role)
+                        yield {"type": "stage_summary", "node": role, "summary": "completed"}
+                    if state.candidate_pool_status != "searching":
+                        break
+                    if state.candidate_search_round >= state.candidate_max_rounds:
+                        break
+            else:
+                yield {"type": "stage", "node": "attraction_search"}
+                state = await execute("attraction_search")
+                yield {"type": "stage_summary", "node": "attraction_search", "summary": "completed"}
 
         if modification and not confirmed and "modification_intent" in self.nodes:
             yield {"type": "stage", "node": "modification_intent"}
@@ -328,6 +387,9 @@ class TravelSupervisor:
             # Model approval cannot override a known structural or time fault.
             from app.planning.nodes import _route_risk_flags
             flags = _route_risk_flags(state)
+            if ({"candidate_react", "candidate_search", "candidate_validator"}.issubset(self.nodes)
+                    and state.candidate_pool_status in {"pending", "searching", "insufficient"}):
+                flags.append("candidate_pool_unverified")
             if state.modification_search_status in {"failed", "partial", "empty", "pending"}:
                 flags.append("candidate_refresh_unverified")
             state.route_risk_flags = flags
@@ -339,6 +401,7 @@ class TravelSupervisor:
                 "modification_time_unfulfilled",
                 "indoor_constraint",
                 "candidate_refresh_unverified",
+                "candidate_pool_unverified",
             }]
             if hard_faults:
                 state.approved = False
