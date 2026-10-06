@@ -29,7 +29,7 @@ This is application-level context separation, not a process security sandbox.
 - Returned in-memory entries cannot mutate stored entries.
 - Authenticated API engine selection and missing-field continuation events.
 - Modification reuses candidates and skips Intent/weather/POI prefetch.
-- Full regression suite: 260 passed, dependency deprecation warnings only.
+- Full regression suite: 261 passed, dependency deprecation warnings only.
 - Five Node SSE client tests verify failed drafts cannot enter the successful-plan
   callback; missing-field continuation remains available. These run in CI.
 - Enrichment inputs are projected so meal/tips nodes cannot read private contexts.
@@ -74,6 +74,9 @@ This is application-level context separation, not a process security sandbox.
 - A real in-memory Chroma collection test (deterministic local embedding) verifies
   metadata filtering for two users and no cross-user result; it does not claim
   production embedding quality or persistent-disk durability.
+- Semantic preference IDs are stable per `(user_id, memory)` rather than random,
+  so repeated expressions update the same Chroma record instead of multiplying
+  duplicate recalls. IDs still differ across users.
 - Authenticated users can delete only their own Chroma semantic-memory records;
   storage failure returns an explicit 503 rather than claiming deletion.
 - API contract tests cover unauthenticated 401, storage failure 503 and owner

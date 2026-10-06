@@ -93,6 +93,13 @@ def test_semantic_memory_deletion_reports_unavailable_store(monkeypatch):
     assert semantic_memory.delete_user_memories("u1") == (False, "degraded")
 
 
+def test_semantic_memory_ids_are_stable_and_user_scoped():
+    first = semantic_memory._memory_id("u1", "偏好慢节奏")
+    assert first == semantic_memory._memory_id("u1", "偏好慢节奏")
+    assert first != semantic_memory._memory_id("u2", "偏好慢节奏")
+    assert first != semantic_memory._memory_id("u1", "偏好早起")
+
+
 def test_semantic_memory_prompt_marks_current_request_as_higher_priority():
     prompt = semantic_memory.format_semantic_memories(["带父母时每天少走路", "不吃太辣"])
     assert "当前用户明确需求优先" in prompt

@@ -7,9 +7,9 @@ stable context that is useful when a later request is phrased differently.
 from __future__ import annotations
 
 import asyncio
+import hashlib
 import logging
 import os
-import uuid
 from pathlib import Path
 
 from app.llm.factory import build_structured_llm
@@ -107,6 +107,12 @@ def _clean_memories(memories: list[str]) -> list[str]:
     return clean[:3]
 
 
+def _memory_id(user_id: str, memory: str) -> str:
+    """Stable per-user key prevents repeated preference statements from piling up."""
+    digest = hashlib.sha256(f"{user_id}\0{memory}".encode("utf-8")).hexdigest()
+    return f"pref-{digest}"
+
+
 def _sync_store_user_memories(user_id: str, raw_query: str, model_name: str | None) -> None:
     collection = _collection()
     if collection is None or not user_id or not raw_query.strip():
@@ -119,7 +125,7 @@ def _sync_store_user_memories(user_id: str, raw_query: str, model_name: str | No
     if not memories:
         return
     collection.upsert(
-        ids=[str(uuid.uuid4()) for _ in memories],
+        ids=[_memory_id(user_id, memory) for memory in memories],
         documents=memories,
         metadatas=[{"user_id": user_id, "source": "user_request"} for _ in memories],
     )
