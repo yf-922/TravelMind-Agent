@@ -211,6 +211,32 @@ def test_memory_failure_does_not_break_planning():
             raise OSError("storage unavailable")
     events = collect(TravelSupervisor(make_nodes(), BrokenMemory(), "s"), TravelPlanState(query="trip"))
     assert events[-1]["success"] is True
+    assert events[-1]["plan"]["degraded_services"] == ["private_memory"]
+
+
+@pytest.mark.parametrize("failure", ["snapshot", "write"])
+def test_runtime_memory_failure_is_visible_and_request_local(failure):
+    class IntermittentMemory(InMemoryAgentMemoryStore):
+        broken = True
+
+        def load_many(self, *args):
+            if self.broken and failure == "snapshot":
+                raise OSError("snapshot unavailable")
+            return super().load_many(*args)
+
+        def append(self, *args):
+            if self.broken and failure == "write":
+                raise OSError("write unavailable")
+            return super().append(*args)
+
+    memory = IntermittentMemory()
+    first = collect(TravelSupervisor(make_nodes(), memory, "s"), TravelPlanState(query="trip"))
+    assert first[-1]["success"] is True
+    assert first[-1]["plan"]["degraded_services"] == ["private_memory"]
+    memory.broken = False
+    second = collect(TravelSupervisor(make_nodes(), memory, "s"), TravelPlanState(query="trip"))
+    assert second[-1]["success"] is True
+    assert "private_memory" not in second[-1]["plan"].get("degraded_services", [])
 
 
 def test_rule_fault_cannot_be_overridden_by_model_approval():

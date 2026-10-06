@@ -93,6 +93,7 @@ class TravelSupervisor:
         self.session_id = session_id
         self.memory_chars = memory_chars
         self._role_histories: dict[str, list[str]] = {}
+        self._memory_degraded = bool(getattr(memory, "durability_degraded", False))
 
     def _history(self, role: str) -> list[str]:
         if role in self._role_histories:
@@ -100,6 +101,7 @@ class TravelSupervisor:
         try:
             entries = self.memory.load(self.session_id, role)
         except Exception:
+            self._memory_degraded = True
             logger.warning("private memory lookup failed role=%s", role, exc_info=True)
             self._role_histories[role] = []
             return []
@@ -169,6 +171,7 @@ class TravelSupervisor:
                 await asyncio.to_thread(self.memory.append, self.session_id, role,
                                         {"role": "assistant", "content": serialized})
             except Exception:
+                self._memory_degraded = True
                 logger.warning("private memory write failed role=%s", role, exc_info=True)
         return update
 
@@ -191,6 +194,7 @@ class TravelSupervisor:
                             remaining -= len(content)
                     self._role_histories[role] = list(reversed(selected))
             except Exception:
+                self._memory_degraded = True
                 logger.warning("private memory snapshot failed", exc_info=True)
                 self._role_histories.update({role: [] for role in roles})
         else:
@@ -323,7 +327,7 @@ class TravelSupervisor:
         if plan is not None:
             plan["unresolved_time_violations"] = state.time_violations
             plan["unresolved_risk_flags"] = state.route_risk_flags if not state.approved else []
-            if getattr(self.memory, "durability_degraded", False):
+            if self._memory_degraded:
                 plan["degraded_services"] = list(dict.fromkeys([*(plan.get("degraded_services") or []), "private_memory"]))
         yield {"type": "result", "success": bool(plan) and state.approved,
                "plan": plan, "missing_fields": [], "history": state.history,

@@ -25,7 +25,7 @@ This is application-level context separation, not a process security sandbox.
 - Returned in-memory entries cannot mutate stored entries.
 - Authenticated API engine selection and missing-field continuation events.
 - Modification reuses candidates and skips Intent/weather/POI prefetch.
-- Full regression suite: 240 passed, one dependency deprecation warning.
+- Full regression suite: 246 passed, one dependency deprecation warning.
 - Five Node SSE client tests verify failed drafts cannot enter the successful-plan
   callback; missing-field continuation remains available. These run in CI.
 - Enrichment inputs are projected so meal/tips nodes cannot read private contexts.
@@ -40,6 +40,13 @@ This is application-level context separation, not a process security sandbox.
   all memory. SQLite retains the latest 128 entries per session/role.
 - Memory initialization failures fall back to request-local storage and expose
   `private_memory` as a degraded service.
+- Runtime history/snapshot read and append failures also mark private memory
+  degraded in the final result. The flag is request-local; a later successful
+  request using the same store does not inherit an earlier failure.
+- Four spawned OS processes concurrently append 80 entries to one SQLite
+  session/role; reopening verifies every entry plus separate owner/role records.
+  This verifies persistence contention, not multi-instance API coordination,
+  load performance or same-trip modification conflict resolution.
 - Confirmation warnings terminate trace normally as `awaiting_confirmation`,
   not `STREAM_ENDED_WITHOUT_RESULT`. Rejections report current risk flags and
   time/reviewer findings, recomputed after the final route revision.

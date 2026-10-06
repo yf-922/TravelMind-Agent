@@ -7,6 +7,67 @@ from app.multi_agent_core.trajectory import TrajectoryContract, grade_trajectory
 from app.multi_agent_core.memory import SQLiteAgentMemoryStore
 from app.multi_agent_core.memory import InMemoryAgentMemoryStore
 from concurrent.futures import ThreadPoolExecutor
+import multiprocessing
+
+
+def _append_private_memory_process(path, worker, start, reports):
+    try:
+        store = SQLiteAgentMemoryStore(path)
+        reports.put(("ready", worker))
+        if not start.wait(20):
+            raise TimeoutError("concurrent test start timed out")
+        for index in range(20):
+            store.append("shared-trip", "planner", {
+                "role": "assistant", "content": f"{worker}:{index}",
+            })
+        store.append(f"owner-{worker}", "reviewer", {
+            "role": "assistant", "content": f"private-{worker}",
+        })
+        reports.put(("done", worker))
+    except Exception as error:
+        reports.put(("error", repr(error)))
+        raise
+
+
+def test_sqlite_multi_process_writes_preserve_entries_and_isolation(tmp_path):
+    path = tmp_path / "multiprocess.db"
+    SQLiteAgentMemoryStore(path)
+    context = multiprocessing.get_context("spawn")
+    start = context.Event()
+    reports = context.Queue()
+    processes = [context.Process(target=_append_private_memory_process,
+                    args=(str(path), worker, start, reports)) for worker in range(4)]
+    try:
+        for process in processes:
+            process.start()
+        ready = [reports.get(timeout=30) for _ in processes]
+        assert sorted(ready) == [("ready", worker) for worker in range(4)]
+        start.set()
+        done = [reports.get(timeout=30) for _ in processes]
+        assert sorted(done) == [("done", worker) for worker in range(4)]
+        for process in processes:
+            process.join(timeout=10)
+            assert process.exitcode == 0
+    finally:
+        start.set()
+        for process in processes:
+            if process.pid is not None:
+                if process.is_alive():
+                    process.terminate()
+                process.join(timeout=10)
+        reports.close()
+        reports.join_thread()
+    restored = SQLiteAgentMemoryStore(path)
+    entries = restored.load("shared-trip", "planner")
+    assert len(entries) == 80
+    assert {entry["content"] for entry in entries} == {
+        f"{worker}:{index}" for worker in range(4) for index in range(20)
+    }
+    assert restored.load("shared-trip", "reviewer") == []
+    for worker in range(4):
+        assert restored.load(f"owner-{worker}", "reviewer") == [
+            {"role": "assistant", "content": f"private-{worker}"},
+        ]
 
 
 def test_sqlite_load_many_is_owner_role_scoped_and_recent(tmp_path):

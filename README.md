@@ -182,6 +182,9 @@ tests/                 # 单元、集成、端到端和评测测试
 Planner、Reviewer、Time Check 分别读取会话内的角色私有记忆，SQLite 事务快照
 和 4,000 字符预算限制跨请求干扰与上下文膨胀。公共状态保存候选池、当前路线、
 审核结论和必要反馈，不保存角色私有对话。未通过审核的草稿不会作为成功行程展示。
+初始化或运行中的私有记忆读写失败均会在结果中标记 `private_memory` 降级，
+本次规划可继续，但不声称记忆已持久化。四进程 SQLite 测试验证同会话 80 条
+并发写入无丢失及用户/角色隔离；这不是多实例 API 负载验证。
 
 ```bash
 python scripts/evaluate_supervisor_parity.py --dry-run
