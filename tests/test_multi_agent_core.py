@@ -9,6 +9,18 @@ from app.multi_agent_core.memory import InMemoryAgentMemoryStore
 from concurrent.futures import ThreadPoolExecutor
 
 
+def test_sqlite_load_many_is_owner_role_scoped_and_recent(tmp_path):
+    store = SQLiteAgentMemoryStore(tmp_path / "snapshot.db")
+    for index in range(40):
+        store.append("owner", "planner", {"role": "assistant", "content": str(index)})
+    store.append("other", "reviewer", {"role": "assistant", "content": "secret"})
+    result = store.load_many("owner", ("planner", "reviewer"))
+    assert len(result["planner"]) == 32
+    assert result["planner"][0]["content"] == "8"
+    assert result["planner"][-1]["content"] == "39"
+    assert result["reviewer"] == []
+
+
 def make_supervisor() -> Supervisor:
     return Supervisor({
         "intent_agent": IntentAgent(),

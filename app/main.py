@@ -253,6 +253,12 @@ async def create_plan_stream(req: PlanRequest, request: Request):
             "time_check_required": state.time_check_required,
             "review_skipped": state.review_skipped,
             "max_per_day":      state.max_per_day,
+            "max_review_rounds": state.max_review_rounds,
+            "max_time_check_rounds": state.max_time_check_rounds,
+            "model_name": state.model_name,
+            "rewritten_query": state.rewritten_query,
+            "profile_hint": state.profile_hint,
+            "memory_session_id": state.memory_session_id,
             "query":            state.query,
         }
         with get_conn() as conn:

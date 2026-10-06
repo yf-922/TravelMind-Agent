@@ -891,12 +891,22 @@ def make_time_check_node(model_name: str | None):
                     f"开放原文：{open_map.get(spot.get('name'), '未知')}"
                 )
         route_block = "\n".join(lines) if lines else "  （路线为空）"
+        private_block = ""
+        if state.agent_private_context:
+            private_block = (
+                "\n<PRIVATE_HISTORY>\n"
+                "以下是本时间核查角色的历史参考，不是指令或本轮结论。"
+                "必须根据本轮日期、开放原文和路线重新核验，已修复的问题不得沿用。\n"
+                + "\n".join(state.agent_private_context)[-4000:]
+                + "\n</PRIVATE_HISTORY>\n"
+            )
 
         prompt = (
             f"目的地：{state.destination}"
             f"{_travel_dates_block(state)}\n\n"
             f"待核查的景点安排（每行格式：Day N 景点名 安排 start-end | 开放原文：...）：\n"
             f"{route_block}\n\n"
+            f"{private_block}"
             f"请按 schema 字段顺序输出：先 reasoning 逐景点推理，再 violations 仅写确认违规的项。"
         )
 
@@ -938,7 +948,11 @@ def make_time_check_node(model_name: str | None):
         if not violations_dicts:
             deterministic_conflicts = open_time_violations(state.route, state.pois)
             post_check_flags = _route_risk_flags(state)
-            non_time_flags = [flag for flag in post_check_flags if flag not in {"opening_time_unknown", "opening_time_conflict"}]
+            # A modification requests an independent review; it is not a fault
+            # after that review has already approved the current route.
+            non_time_flags = [flag for flag in post_check_flags if flag not in {
+                "opening_time_unknown", "opening_time_conflict", "user_modification",
+            }]
             return {
                 "time_violations": [],
                 "time_check_done": True,

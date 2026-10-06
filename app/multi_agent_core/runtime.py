@@ -5,6 +5,7 @@ from __future__ import annotations
 import asyncio
 import json
 import logging
+import uuid
 from collections.abc import AsyncIterator, Callable
 from typing import Any
 
@@ -24,6 +25,8 @@ INPUTS = {
     "risk_gate": {"pois", "route", "days", "max_per_day", "travel_start_date", "weather_forecast", "habit_preference", "max_walking_km", "rain_indoor_priority", "route_distance_legs", "modification_notes", "route_modify_opinion"},
     "reviewer": {"destination", "days", "travel_start_date", "travel_end_date", "pois", "route", "habit_preference", "max_per_day", "weather_forecast", "max_walking_km", "rain_indoor_priority", "route_distance_legs", "route_distance_note", "review_round"},
     "time_check": {"destination", "pois", "route", "travel_start_date", "travel_end_date", "days", "time_check_round", "max_time_check_rounds", "approved", "review_required", "habit_preference", "max_walking_km", "rain_indoor_priority", "weather_forecast", "route_distance_legs", "max_per_day", "modification_notes"},
+    "meal_enrichment": {"destination", "pois", "route", "food_preference"},
+    "spot_tips": {"destination", "route", "travel_start_date", "weather_forecast"},
 }
 
 
@@ -70,7 +73,7 @@ class TravelSupervisor:
         for entry in reversed(entries):
             content = entry["content"]
             if len(content) > remaining:
-                break
+                continue
             selected.append(content)
             remaining -= len(content)
         history = list(reversed(selected))
@@ -86,6 +89,7 @@ class TravelSupervisor:
         # Only this role's persisted context is exposed to its model node.
         if role in {"planner", "reviewer", "time_check"}:
             data["planner_reviewer_dialogue"] = self._history(role)
+            data["agent_private_context"] = self._history(role)
         local = TravelPlanState(**data)
         try:
             update = await asyncio.to_thread(self.nodes[role], local)
@@ -103,7 +107,7 @@ class TravelSupervisor:
         if not isinstance(update, dict):
             raise TypeError(f"{role} must return a state update")
         safe = {key: value for key, value in update.items()
-                if key not in {"history", "planner_reviewer_dialogue", "final_plan", "pois"}}
+                if key not in {"history", "planner_reviewer_dialogue", "agent_private_context", "final_plan", "pois"}}
         serialized = json.dumps(safe, ensure_ascii=False, default=str)
         if len(serialized) <= self.memory_chars:
             history = self._history(role) + [serialized]
@@ -118,25 +122,56 @@ class TravelSupervisor:
         return update
 
     async def stream(self, state: TravelPlanState, *, modification=False, confirmed=False) -> AsyncIterator[dict[str, Any]]:
+        state = state.model_copy(deep=True)
+        state.planner_reviewer_dialogue = []
+        state.agent_private_context = []
         # Freeze every model role before any node writes this request's history.
-        for role in ("planner", "reviewer", "time_check"):
-            self._history(role)
+        roles = ("planner", "reviewer", "time_check")
+        if hasattr(self.memory, "load_many"):
+            try:
+                snapshot = await asyncio.to_thread(self.memory.load_many, self.session_id, roles)
+                for role in roles:
+                    selected = []
+                    remaining = self.memory_chars
+                    for entry in reversed(snapshot[role]):
+                        content = entry["content"]
+                        if len(content) <= remaining:
+                            selected.append(content)
+                            remaining -= len(content)
+                    self._role_histories[role] = list(reversed(selected))
+            except Exception:
+                logger.warning("private memory snapshot failed", exc_info=True)
+                self._role_histories.update({role: [] for role in roles})
+        else:
+            for role in roles:
+                await asyncio.to_thread(self._history, role)
 
         async def execute(role):
             update = await self._call(role, state)
             merged = state.model_dump()
             merged.update({k: v for k, v in update.items()
-                           if k not in {"history", "planner_reviewer_dialogue"}})
+                           if k not in {"history", "planner_reviewer_dialogue", "agent_private_context"}})
+            merged["history"] = state.history + list(update.get("history", [])) if role != "finalize" else update.get("history", state.history)
             return TravelPlanState(**merged)
 
-        async def parallel(roles):
-            async with asyncio.TaskGroup() as group:
-                tasks = [group.create_task(self._call(role, state)) for role in roles]
-            updates = [task.result() for task in tasks]
+        async def parallel_stream(roles):
+            async def invoke(role):
+                return role, await self._call(role, state)
+            tasks = [asyncio.create_task(invoke(role)) for role in roles]
             merged = state.model_dump()
-            for update in updates:
-                merged.update({k: v for k, v in update.items() if k not in {"history", "planner_reviewer_dialogue"}})
-            return TravelPlanState(**merged)
+            try:
+                for completed in asyncio.as_completed(tasks):
+                    role, update = await completed
+                    merged.update({k: v for k, v in update.items()
+                                   if k not in {"history", "planner_reviewer_dialogue", "agent_private_context"}})
+                    merged["history"] += list(update.get("history", []))
+                    yield {"type": "stage_summary", "node": role, "summary": "completed"}
+            finally:
+                for task in tasks:
+                    if not task.done():
+                        task.cancel()
+                await asyncio.gather(*tasks, return_exceptions=True)
+            yield {"_state": TravelPlanState(**merged)}
 
         if not modification:
             yield {"type": "stage", "node": "intent"}
@@ -147,9 +182,11 @@ class TravelSupervisor:
                 return
             for role in ("query_rewrite", "weather_search"):
                 yield {"type": "stage", "node": role}
-            state = await parallel(("query_rewrite", "weather_search"))
-            for role in ("query_rewrite", "weather_search"):
-                yield {"type": "stage_summary", "node": role, "summary": "completed"}
+            async for event in parallel_stream(("query_rewrite", "weather_search")):
+                if "_state" in event:
+                    state = event["_state"]
+                else:
+                    yield event
             yield {"type": "stage", "node": "attraction_search"}
             state = await execute("attraction_search")
             yield {"type": "stage_summary", "node": "attraction_search", "summary": "completed"}
@@ -198,11 +235,22 @@ class TravelSupervisor:
                 state.route_modify_opinion = "\n".join(filter(None, [state.route_modify_opinion, details]))
             if state.approved and not state.time_violations:
                 break
-        for role in ("meal_enrichment", "spot_tips"):
-            yield {"type": "stage", "node": role}
-        state = await parallel(("meal_enrichment", "spot_tips"))
-        for role in ("meal_enrichment", "spot_tips"):
-            yield {"type": "stage_summary", "node": role, "summary": "completed"}
+        if state.approved:
+            for role in ("meal_enrichment", "spot_tips"):
+                yield {"type": "stage", "node": role}
+            async for event in parallel_stream(("meal_enrichment", "spot_tips")):
+                if "_state" in event:
+                    state = event["_state"]
+                else:
+                    yield event
+        else:
+            state.meals = []
+            state.meal_candidates = []
+            state.spot_tips = {}
+            state.spot_guides = {}
+            state.meal_search_status = "skipped"
+            state.meal_recommend_status = "skipped"
+            state.spot_tips_status = "skipped"
         yield {"type": "stage", "node": "finalize"}
         state = await execute("finalize")
         yield {"type": "stage_summary", "node": "finalize", "summary": "completed"}
@@ -210,16 +258,20 @@ class TravelSupervisor:
         if plan is not None:
             plan["unresolved_time_violations"] = state.time_violations
         yield {"type": "result", "success": bool(plan) and state.approved,
-               "plan": plan, "missing_fields": [], "checkpoint": state.model_dump(mode="json")}
+               "plan": plan, "missing_fields": [], "history": state.history,
+               "message": None if state.approved else "行程在修复次数上限内未通过审核，草稿仅供参考。",
+               "checkpoint": state.model_dump(mode="json")}
 
 
 async def run_stream(query, profile_hint="", memory_writer=None, user_id=None, **overrides):
     """API-compatible entry point with owner-scoped role memories."""
     from app.multi_agent_core.memory import SQLiteAgentMemoryStore
-    session_id = str(overrides.pop("session_id", None) or user_id or "anonymous")
+    session = str(overrides.pop("session_id", None) or uuid.uuid4().hex)
+    state = TravelPlanState(query=query, profile_hint=profile_hint or None, **overrides)
+    state.memory_session_id = session
     runtime = TravelSupervisor(production_nodes(overrides.get("model_name"), profile_hint, user_id),
-                               SQLiteAgentMemoryStore(), session_id)
-    async for event in runtime.stream(TravelPlanState(query=query, profile_hint=profile_hint or None, **overrides)):
+                               SQLiteAgentMemoryStore(), memory_scope(user_id, session))
+    async for event in runtime.stream(state):
         checkpoint = event.pop("checkpoint", None)
         if checkpoint and event.get("success") and memory_writer:
             await asyncio.to_thread(memory_writer, event["plan"], TravelPlanState(**checkpoint))
@@ -229,14 +281,16 @@ async def run_stream(query, profile_hint="", memory_writer=None, user_id=None, *
 async def run_modification_stream(checkpoint, modification_notes, memory_writer=None, **overrides):
     from app.multi_agent_core.memory import SQLiteAgentMemoryStore
     user_id = overrides.pop("user_id", None)
-    session_id = str(overrides.pop("session_id", None) or user_id or "anonymous")
+    session = str(overrides.pop("session_id", None) or checkpoint.get("memory_session_id") or uuid.uuid4().hex)
     data = dict(checkpoint)
     data.update(overrides)
     data.update(approved=False, reviewer_issues=[], time_violations=[], review_round=0,
                 time_check_round=0, time_check_done=False, final_plan=None,
                 modification_notes=modification_notes,
                 route_modify_opinion=f"【用户修改意见】{modification_notes}")
-    runtime = TravelSupervisor(production_nodes(data.get("model_name")), SQLiteAgentMemoryStore(), session_id)
+    data["memory_session_id"] = session
+    runtime = TravelSupervisor(production_nodes(data.get("model_name"), data.get("profile_hint") or "", user_id),
+                               SQLiteAgentMemoryStore(), memory_scope(user_id, session))
     async for event in runtime.stream(TravelPlanState(**data), modification=True):
         if event.get("type") == "modification_warning":
             event["pending_state"]["_engine"] = "supervisor"
@@ -252,8 +306,10 @@ async def run_confirm_stream(checkpoint, memory_writer=None, user_id=None):
     data.update(approved=False, reviewer_issues=[], time_violations=[],
                 time_check_round=0, time_check_done=False, final_plan=None,
                 modification_concern=None)
-    runtime = TravelSupervisor(production_nodes(data.get("model_name")),
-                               SQLiteAgentMemoryStore(), str(user_id or "anonymous"))
+    session = str(data.get("memory_session_id") or uuid.uuid4().hex)
+    data["memory_session_id"] = session
+    runtime = TravelSupervisor(production_nodes(data.get("model_name"), data.get("profile_hint") or "", user_id),
+                               SQLiteAgentMemoryStore(), memory_scope(user_id, session))
     async for event in runtime.stream(TravelPlanState(**data), modification=True, confirmed=True):
         current = event.pop("checkpoint", None)
         if current and event.get("success") and memory_writer:
@@ -266,3 +322,7 @@ def _label_event(event):
     if event.get("type") == "stage":
         event = {**event, "label": _NODE_LABELS.get(event.get("node"), event.get("node"))}
     return event
+
+
+def memory_scope(user_id, session_id):
+    return json.dumps([str(user_id or "anonymous"), str(session_id)], separators=(",", ":"))

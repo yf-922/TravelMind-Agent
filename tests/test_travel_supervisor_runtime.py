@@ -2,6 +2,7 @@ import asyncio
 
 from app.multi_agent_core.memory import InMemoryAgentMemoryStore
 from app.multi_agent_core.runtime import TravelSupervisor
+from app.multi_agent_core.runtime import memory_scope
 from app.planning.schemas import TravelPlanState
 
 
@@ -52,6 +53,56 @@ def test_rejected_route_stops_with_incomplete_result():
     assert sum(e.get("node") == "planner" for e in events if e["type"] == "stage") == 3
     assert events[-1]["success"] is False
     assert events[-1]["plan"]["approved"] is False
+    assert not any(e.get("node") in {"meal_enrichment", "spot_tips"} for e in events)
+
+
+def test_parallel_completion_reports_fast_node_before_slow_node_finishes():
+    import threading
+    release = threading.Event()
+    nodes = make_nodes()
+    def slow(state):
+        assert release.wait(2), "fast completion event was not streamed"
+        return {"rewritten_query": "museum"}
+    nodes["query_rewrite"] = slow
+    async def run():
+        events = []
+        async for event in TravelSupervisor(nodes, InMemoryAgentMemoryStore(), "s").stream(TravelPlanState(query="trip")):
+            events.append(event)
+            if event.get("type") == "stage_summary" and event.get("node") == "weather_search":
+                release.set()
+        return events
+    events = asyncio.run(run())
+    summaries = [e["node"] for e in events if e["type"] == "stage_summary"]
+    assert summaries.index("weather_search") < summaries.index("query_rewrite")
+
+
+def test_owner_and_trip_memory_scopes_cannot_collide():
+    memory = InMemoryAgentMemoryStore()
+    memory.append(memory_scope("owner", "trip-1"), "planner", {"role": "assistant", "content": "secret"})
+    assert memory.load(memory_scope("owner", "trip-2"), "planner") == []
+    assert memory.load(memory_scope("other", "trip-1"), "planner") == []
+    assert memory_scope("a/b", "c") != memory_scope("a", "b/c")
+
+
+def test_entrypoints_persist_trip_scope_and_reuse_it_for_modification(monkeypatch):
+    import app.multi_agent_core.runtime as runtime_module
+    import app.multi_agent_core.memory as memory_module
+    memory = InMemoryAgentMemoryStore()
+    monkeypatch.setattr(memory_module, "SQLiteAgentMemoryStore", lambda: memory)
+    monkeypatch.setattr(runtime_module, "production_nodes", lambda *a, **k: make_nodes())
+    saved = []
+    def writer(plan, state):
+        saved.append(state.model_dump(mode="json"))
+    async def run():
+        first = [e async for e in runtime_module.run_stream("trip", user_id="owner", memory_writer=writer)]
+        session = saved[0]["memory_session_id"]
+        second = [e async for e in runtime_module.run_modification_stream(saved[0], "same museum", user_id="owner", memory_writer=writer)]
+        return first, second, session
+    first, second, session = asyncio.run(run())
+    assert first[-1]["success"] is True and second[-1]["success"] is True
+    assert saved[1]["memory_session_id"] == session
+    assert len(memory.load(memory_scope("owner", session), "planner")) == 2
+    assert memory.load(memory_scope("other", session), "planner") == []
 
 
 def test_role_history_has_character_budget():
@@ -248,3 +299,26 @@ def test_time_checker_receives_destination_but_not_reviewer_history():
     runtime = TravelSupervisor(nodes, memory, "s")
     asyncio.run(runtime._call("time_check", TravelPlanState(query="trip", destination="Nanjing")))
     assert captured == [("Nanjing", ["own check"])]
+
+
+def test_parallel_enrichment_does_not_receive_private_context():
+    nodes = make_nodes()
+    seen = []
+    def enrichment(state):
+        seen.append((state.planner_reviewer_dialogue, state.agent_private_context, state.reviewer_issues))
+        return {}
+    nodes["meal_enrichment"] = enrichment
+    nodes["spot_tips"] = enrichment
+    collect(TravelSupervisor(nodes, InMemoryAgentMemoryStore(), "s"),
+            TravelPlanState(query="trip", planner_reviewer_dialogue=["secret"], agent_private_context=["secret"], reviewer_issues=["old"]))
+    assert seen == [([], [], []), ([], [], [])]
+
+
+def test_public_execution_logs_survive_without_exposing_private_dialogue():
+    nodes = make_nodes()
+    original = nodes["planner"]
+    nodes["planner"] = lambda s: {**original(s), "history": ["new planner draft"],
+                                  "planner_reviewer_dialogue": ["private internal dialogue"]}
+    events = collect(TravelSupervisor(nodes, InMemoryAgentMemoryStore(), "s"), TravelPlanState(query="trip"))
+    assert "new planner draft" in events[-1]["history"]
+    assert "private internal dialogue" not in str(events[-1]["checkpoint"])

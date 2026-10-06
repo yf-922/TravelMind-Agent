@@ -209,6 +209,8 @@ class TravelPlanState(BaseModel):
     history: list[str] = Field(default_factory=list)
     # Planner 与 Reviewer 的共享对话记忆（每轮追加，两者均可读）
     planner_reviewer_dialogue: list[str] = Field(default_factory=list)
+    agent_private_context: list[str] = Field(default_factory=list)
+    memory_session_id: Optional[str] = None
     # 上一轮 Planner 未作任何修改时写入的强警告，下一轮注入 feedback 最前面
     route_stale_warning: str = ""
 

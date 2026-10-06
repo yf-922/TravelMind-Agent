@@ -94,6 +94,8 @@ async function streamPlan(body, callbacks, url = "/api/plan/stream") {
           } else if (ev.type === "result") {
             if (ev.success === false && ev.missing_fields?.length) {
               onMissingFields && onMissingFields(ev);
+            } else if (ev.success === false) {
+              onError && onError(ev.message || "行程未通过审核，请调整需求后重试；本轮草稿未保存为有效行程。");
             } else {
               onResult && onResult(ev);
             }

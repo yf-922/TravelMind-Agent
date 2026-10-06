@@ -30,6 +30,9 @@ class InMemoryAgentMemoryStore:
     def append(self, session_id: str, agent_name: str, entry: MemoryEntry) -> None:
         self._data.setdefault((session_id, agent_name), []).append(dict(entry))
 
+    def load_many(self, session_id: str, agent_names: tuple[str, ...]) -> dict[str, list[MemoryEntry]]:
+        return {name: self.load(session_id, name) for name in agent_names}
+
 
 class SQLiteAgentMemoryStore:
     """Durable memory isolated by session and Agent name."""
@@ -76,3 +79,16 @@ class SQLiteAgentMemoryStore:
                 (session_id, agent_name, position, entry["role"], entry["content"]),
             )
             conn.commit()
+
+    def load_many(self, session_id: str, agent_names: tuple[str, ...]) -> dict[str, list[MemoryEntry]]:
+        """Read recent role contexts from one SQLite transaction snapshot."""
+        result = {}
+        with closing(self._connect()) as conn:
+            conn.execute("BEGIN")
+            for name in agent_names:
+                rows = conn.execute(
+                    "SELECT role, content FROM agent_memories WHERE session_id=? AND agent_name=? "
+                    "ORDER BY position DESC LIMIT 32", (session_id, name),
+                ).fetchall()
+                result[name] = [{"role": str(role), "content": str(content)} for role, content in reversed(rows)]
+        return result

@@ -176,6 +176,24 @@ tests/                 # 单元、集成、端到端和评测测试
 
 ## 工程化运行与可观测性
 
+### Supervisor 协作链路验证
+
+前端可选“协作规划”，对应 `engine=supervisor`；默认仍为 LangGraph。
+Planner、Reviewer、Time Check 分别读取会话内的角色私有记忆，SQLite 事务快照
+和 4,000 字符预算限制跨请求干扰与上下文膨胀。公共状态保存候选池、当前路线、
+审核结论和必要反馈，不保存角色私有对话。未通过审核的草稿不会作为成功行程展示。
+
+```bash
+python scripts/evaluate_supervisor_parity.py --dry-run
+python scripts/evaluate_supervisor_api.py --dry-run
+node --test scripts/test_sse_client.cjs
+```
+
+真实调用必须显式传入 `--allow-external-calls` 和相应预算；API smoke 使用临时
+SQLite，关闭 Chroma 与后台画像提取，仍执行真实天气、POI、模型及行程补充节点。
+预算为保守调用上界估算，不是供应商计费硬限额。验证边界和尚未完成的验收见
+[`docs/supervisor-runtime-progress.md`](docs/supervisor-runtime-progress.md)。
+
 ## 平台化能力边界
 
 - `app/llm/router.py`：已接入统一 LLM 工厂的可选模型路由。短任务（意图改写、画像/记忆抽取、短输入补充信息）可使用当前供应商的 `LLM_SMALL_MODEL`，Planner/Reviewer/Judge 保留主模型；`LLM_ROUTING_ENABLED=0` 时完全保持现有模型配置。当前只有离线路由契约，没有声称真实成本收益。

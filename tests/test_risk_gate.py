@@ -183,3 +183,33 @@ def test_time_check_rechecks_new_non_time_risks_after_planner_revision(monkeypat
     assert "duplicate_poi" in update["route_risk_flags"]
     assert update["review_required"] is True
     assert nodes.route_after_time_check(state.model_copy(update=update)) == "reviewer"
+
+
+def test_time_check_does_not_repeat_approved_modification_review(monkeypatch):
+    monkeypatch.setattr(nodes, "build_structured_llm", lambda *a, **k: object())
+    monkeypatch.setattr(nodes, "invoke_structured", lambda *a, **k: TimeCheckResult(reasoning="checked", violations=[]))
+    state = _state(approved=True, review_required=True, modification_notes="use an indoor museum")
+    update = nodes.make_time_check_node(None)(state)
+    assert update["approved"] is True
+    assert update["review_required"] is False
+    assert nodes.route_after_time_check(state.model_copy(update=update)) == ["meal_search", "spot_tips"]
+
+
+def test_time_check_does_not_override_rejected_modification_review(monkeypatch):
+    monkeypatch.setattr(nodes, "build_structured_llm", lambda *a, **k: object())
+    monkeypatch.setattr(nodes, "invoke_structured", lambda *a, **k: TimeCheckResult(reasoning="checked", violations=[]))
+    state = _state(approved=False, review_required=True, modification_notes="use an indoor museum")
+    assert nodes.make_time_check_node(None)(state)["approved"] is False
+
+
+def test_time_checker_prompt_uses_private_reference_not_old_verdict(monkeypatch):
+    prompts = []
+    monkeypatch.setattr(nodes, "build_structured_llm", lambda *a, **k: object())
+    def invoke(llm, messages, **kwargs):
+        prompts.append(messages[1][1])
+        return TimeCheckResult(reasoning="current route checked", violations=[])
+    monkeypatch.setattr(nodes, "invoke_structured", invoke)
+    update = nodes.make_time_check_node(None)(_state(approved=True, agent_private_context=["OLD_TIME_PROBLEM"]))
+    assert "OLD_TIME_PROBLEM" in prompts[0]
+    assert "已修复的问题不得沿用" in prompts[0]
+    assert update["time_violations"] == []

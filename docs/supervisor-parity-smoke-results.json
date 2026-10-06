@@ -13,5 +13,17 @@
       "follow_up": "Internal repair confirmation was fixed after this run; regression passed, real-provider retest pending. No speedup or quality-win claim."
     }
   ],
+  "follow_up_runs": {
+    "tight_hours_after_confirmation_fix": {
+      "supervisor": {"approved": true, "objective_pass": true, "elapsed_ms": 142231.38, "model_calls": 6, "estimated_tokens": 11117, "efficiency_grade_passed": false},
+      "langgraph": {"outcome": "timeout", "elapsed_ms": 180010.49},
+      "boundary": "Predates modification-tag loop fix; single sequential trial, not evidence of statistical speedup."
+    },
+    "full_authenticated_api": [
+      {"request": "two-spot cultural day trip", "success": false, "elapsed_ms": 225002.96, "saved": false, "model_calls": 11, "failed_model_attempts": 2},
+      {"request": "one indoor cultural spot", "success": true, "elapsed_ms": 64448.17, "saved_history_verified": true, "saved_constraints_verified": true, "other_user_denied": true, "model_calls": 4, "estimated_tokens": 2163}
+    ],
+    "api_boundary": "Temporary SQLite, ASGI TestClient, Chroma/background extraction disabled; predates owner-plus-trip scope change."
+  },
   "billing": "Tokens estimated; prices not configured; no actual cost claim."
 }

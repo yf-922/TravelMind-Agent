@@ -346,6 +346,8 @@ async def confirm_modification(req: ConfirmModificationRequest, request: Request
             "attraction_preference": state.attraction_preference,
             "food_preference":       state.food_preference,
             "habit_preference":      state.habit_preference,
+            "max_walking_km":        state.max_walking_km,
+            "rain_indoor_priority":  state.rain_indoor_priority,
             "weather_forecast": state.weather_forecast,
             "weather_note":     state.weather_note,
             "route_distance_legs": state.route_distance_legs,
@@ -357,6 +359,12 @@ async def confirm_modification(req: ConfirmModificationRequest, request: Request
             "time_check_required": state.time_check_required,
             "review_skipped": state.review_skipped,
             "max_per_day":      state.max_per_day,
+            "max_review_rounds": state.max_review_rounds,
+            "max_time_check_rounds": state.max_time_check_rounds,
+            "model_name": state.model_name,
+            "rewritten_query": state.rewritten_query,
+            "profile_hint": state.profile_hint,
+            "memory_session_id": state.memory_session_id,
             "query":            state.query,
         }
         with get_conn() as conn:
