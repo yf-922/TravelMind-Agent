@@ -213,3 +213,20 @@ def test_time_checker_prompt_uses_private_reference_not_old_verdict(monkeypatch)
     assert "OLD_TIME_PROBLEM" in prompts[0]
     assert "已修复的问题不得沿用" in prompts[0]
     assert update["time_violations"] == []
+
+
+def test_explicit_modification_time_must_be_applied_to_route_json():
+    state = _state(modification_notes="坚持原景点凌晨02:00至03:00游览，不接受改时间")
+    assert "modification_time_unfulfilled" in route_risk_gate_node(state)["route_risk_flags"]
+    state = _state(modification_notes="保持原景点，游览改为11:00开始")
+    assert nodes.explicit_modification_time_violation(state) is True
+    state.route[0]["spots"][0].update(start_time="11:00", end_time="12:00")
+    assert nodes.explicit_modification_time_violation(state) is False
+
+
+def test_requested_window_and_opening_hours_are_independent_constraints():
+    state = _state(modification_notes="坚持02:00至03:00游览")
+    state.route[0]["spots"][0].update(start_time="02:00", end_time="03:00")
+    flags = route_risk_gate_node(state)["route_risk_flags"]
+    assert "opening_time_conflict" in flags
+    assert "modification_time_unfulfilled" not in flags

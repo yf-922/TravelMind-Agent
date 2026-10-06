@@ -21,6 +21,16 @@ def test_sqlite_load_many_is_owner_role_scoped_and_recent(tmp_path):
     assert result["reviewer"] == []
 
 
+def test_sqlite_private_memory_retention_is_bounded_per_role(tmp_path):
+    store = SQLiteAgentMemoryStore(tmp_path / "bounded.db")
+    for index in range(140):
+        store.append("s", "planner", {"role": "assistant", "content": str(index)})
+    store.append("s", "reviewer", {"role": "assistant", "content": "retain"})
+    assert len(store.load("s", "planner")) == 128
+    assert store.load("s", "planner")[0]["content"] == "12"
+    assert store.load("s", "reviewer")[0]["content"] == "retain"
+
+
 def make_supervisor() -> Supervisor:
     return Supervisor({
         "intent_agent": IntentAgent(),

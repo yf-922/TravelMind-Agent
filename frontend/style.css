@@ -1064,13 +1064,16 @@ img { display: block; }
   .profile-aside { position: static; }
 }
 @media (max-width: 720px) {
-  .topbar { padding: 0 18px; gap: 12px; }
+  .topbar { padding: 8px 18px; gap: 8px 12px; height: auto; flex-wrap: wrap; }
+  .topnav { order: 4; width: 100%; margin-left: 0; overflow-x: auto; }
+  .theme-switcher { margin-left: auto; flex-shrink: 0; }
+  .user-login-btn, .user-chip { flex-shrink: 0; }
   .brand-sub { display: none; }
   .topnav-link { padding: 7px 11px; font-size: .85rem; }
   .user-chip .chip-name { display: none; }
 }
 @media (max-width: 480px) {
-  .topbar { padding: 0 12px; gap: 6px; }
+  .topbar { padding: 8px 12px; gap: 6px; }
   .brand-name { display: none; }
   .topnav { gap: 2px; }
   .topnav-link { padding: 6px 9px; font-size: .78rem; }

@@ -25,7 +25,7 @@ This is application-level context separation, not a process security sandbox.
 - Returned in-memory entries cannot mutate stored entries.
 - Authenticated API engine selection and missing-field continuation events.
 - Modification reuses candidates and skips Intent/weather/POI prefetch.
-- Full regression suite: 211 passed, one dependency deprecation warning.
+- Full regression suite: 218 passed, one dependency deprecation warning.
 - Four Node SSE client tests verify failed drafts cannot enter the successful-plan
   callback; missing-field continuation remains available. These run in CI.
 - Enrichment inputs are projected so meal/tips nodes cannot read private contexts.
@@ -36,6 +36,10 @@ This is application-level context separation, not a process security sandbox.
   confirmation reuse the saved session, while unrelated trips are separated.
 - Parallel stage completion is streamed per worker, rather than delayed until
   the slowest branch finishes. Failed audits skip meal/tips enrichment.
+- Oversized role outputs retain bounded summaries rather than silently losing
+  all memory. SQLite retains the latest 128 entries per session/role.
+- Memory initialization failures fall back to request-local storage and expose
+  `private_memory` as a degraded service.
 - Browser planning page exposes `标准规划` and `协作规划`; selecting the latter sends `engine=supervisor`.
 - Human confirmation preserves the Supervisor engine and verifies the accepted draft.
 - Memory lookup/write errors degrade without terminating usable planning.
@@ -71,11 +75,34 @@ This is application-level context separation, not a process security sandbox.
 
 ## Remaining acceptance work
 
-- Real Provider runs and independent quality grading against the LangGraph path.
-- Same-session concurrent API runs, cancellation and partial parallel dependency failure.
-- User-facing engine selection and browser workflow validation.
+- Broader repeated Provider runs with independent grading against LangGraph;
+  current evidence is single-case smoke, not quality/latency statistics.
+- Same-session concurrent API runs beyond storage and runtime unit coverage.
+- Authenticated browser submission/result flow on the newest backend process.
+- Generic natural-language modification compliance beyond the supported one-day
+  explicit time-edit checks; multiday edits intentionally are not parsed by this rule.
 
 The above missing checks mean production parity is not yet established.
+
+## Real modification and confirmation evidence
+
+- Real initial plan, saved checkpoint, user time edit, owner confirmation and
+  resaved history all executed. Local edit reused POI/weather, skipped external
+  prefetch, changed route JSON and retained memory session. Planner history grew
+  from one entry to two. Other user confirmation was denied with 404.
+- Initial impossible-time trial revealed false success: Planner silently moved
+  the requested 02:00-03:00 visit to daytime. Explicit supported time-edit rules
+  now detect ignored requested start/window independently from opening hours.
+- Real retest: initial plan approved in 73.592 seconds; impossible-time edit and
+  confirmation returned `success=false` in 77.761 seconds, bounded replanning,
+  no meal/tips calls and no saved replacement. This is a rejection success, not
+  a completed travel-plan success. No generic natural-language compliance claim.
+- Browser mode selector rendered and switched on desktop and 390px mobile.
+  Mobile inspection found header overflow; browser tests have not yet covered
+  authenticated submission/result rendering on the newest server process.
+- Header overflow fixed with a two-row small-screen layout. Browser screenshot
+  at 390x844 confirms scroll width 375px, login visible, no horizontal overflow.
+  CSS/API/page resource versions bumped so existing browser caches receive fixes.
 
 ## Authenticated full API evidence
 

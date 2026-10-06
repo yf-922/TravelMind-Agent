@@ -362,6 +362,42 @@ def route_distance_check_node(state: TravelPlanState) -> dict[str, Any]:
     }
 
 
+def explicit_modification_time_violation(state: TravelPlanState) -> bool:
+    """Check supported explicit visit-time edits, not arbitrary natural language."""
+    notes = state.modification_notes or ""
+    if state.days != 1:
+        return False
+    if not any(word in notes for word in ("坚持", "必须", "改为")):
+        return False
+    window = re.search(r"(\d{1,2}:\d{2})\s*(?:至|到|[-~])\s*(\d{1,2}:\d{2})\s*(?:游览|参观)", notes)
+    start_only = re.search(r"(?:游览改为|开始时间改为)\s*(\d{1,2}:\d{2})\s*(?:开始)?", notes)
+    if not window and not start_only:
+        return False
+    def minutes(value):
+        hour, minute = map(int, value.split(":"))
+        return hour * 60 + minute if 0 <= hour < 24 and 0 <= minute < 60 else None
+    required_start = minutes((window or start_only).group(1))
+    required_end = minutes(window.group(2)) if window else None
+    spots = [spot for day in state.route if isinstance(day, dict)
+             for spot in (day.get("spots") or []) if isinstance(spot, dict)]
+    if required_start is None or not spots:
+        return True
+    for index, spot in enumerate(spots):
+        start = str(spot.get("start_time") or "")
+        end = str(spot.get("end_time") or "")
+        if not re.fullmatch(r"\d{1,2}:\d{2}", start) or not re.fullmatch(r"\d{1,2}:\d{2}", end):
+            return True
+        start_min, end_min = minutes(start), minutes(end)
+        if start_min is None or end_min is None:
+            return True
+        if index == 0 and start_min != required_start:
+            return True
+        if window and (required_end is None or required_end <= required_start
+                       or start_min < required_start or end_min > required_end):
+            return True
+    return False
+
+
 def _route_risk_flags(state: TravelPlanState) -> list[str]:
     """Run cheap deterministic checks before paying for LLM review nodes."""
     flags: list[str] = []
@@ -487,6 +523,8 @@ def _route_risk_flags(state: TravelPlanState) -> list[str]:
         flags.append("long_road_leg")
     if state.modification_notes or state.route_modify_opinion:
         flags.append("user_modification")
+    if explicit_modification_time_violation(state):
+        flags.append("modification_time_unfulfilled")
     return flags
 
 
@@ -497,6 +535,7 @@ def route_risk_gate_node(state: TravelPlanState) -> dict[str, Any]:
         "duplicate_poi", "unknown_poi", "weather_outdoor_conflict",
         "walking_constraint", "long_road_leg", "route_structure",
         "habit_constraint", "user_modification",
+        "modification_time_unfulfilled",
     )
     review_required = any(
         flag == prefix or flag.startswith(prefix + ":")

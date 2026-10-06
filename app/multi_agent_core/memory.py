@@ -78,6 +78,10 @@ class SQLiteAgentMemoryStore:
                 "INSERT INTO agent_memories(session_id, agent_name, position, role, content) VALUES (?,?,?,?,?)",
                 (session_id, agent_name, position, entry["role"], entry["content"]),
             )
+            conn.execute(
+                "DELETE FROM agent_memories WHERE session_id=? AND agent_name=? AND position < ?",
+                (session_id, agent_name, position - 127),
+            )
             conn.commit()
 
     def load_many(self, session_id: str, agent_names: tuple[str, ...]) -> dict[str, list[MemoryEntry]]:

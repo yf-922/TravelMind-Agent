@@ -25,5 +25,11 @@
     ],
     "api_boundary": "Temporary SQLite, ASGI TestClient, Chroma/background extraction disabled; predates owner-plus-trip scope change."
   },
+  "modification_confirmation": {
+    "local_time_edit": {"success": true, "elapsed_ms": 62814.46, "same_memory_session": true, "candidate_pool_reused": true, "route_changed": true, "planner_memory_before": 1, "planner_memory_after": 2, "other_user_confirmation_denied": true},
+    "impossible_time_before_fix": {"reported_success": true, "valid_success": false, "issue": "Requested 02:00-03:00 was silently replaced with daytime; no compliance validator."},
+    "impossible_time_after_fix": {"success": false, "elapsed_ms": 77760.59, "replacement_saved": false, "bounded_replanning": true, "enrichment_skipped": true, "other_user_confirmation_denied": true},
+    "scope": "Real providers and authenticated ASGI API with temporary storage; one trial each. Explicit one-day time-edit validation, not generic instruction compliance."
+  },
   "billing": "Tokens estimated; prices not configured; no actual cost claim."
 }

@@ -109,6 +109,17 @@ class TravelSupervisor:
         safe = {key: value for key, value in update.items()
                 if key not in {"history", "planner_reviewer_dialogue", "agent_private_context", "final_plan", "pois"}}
         serialized = json.dumps(safe, ensure_ascii=False, default=str)
+        if len(serialized) > self.memory_chars:
+            # Preserve useful findings even when a long itinerary cannot fit.
+            compact = {key: value for key, value in safe.items() if key not in {"route", "meals", "meal_candidates", "spot_tips", "spot_guides", "route_distance_legs"}}
+            for key, value in list(compact.items()):
+                if isinstance(value, str):
+                    compact[key] = value[:1000]
+                elif isinstance(value, list):
+                    compact[key] = value[:8]
+            compact["memory_summary"] = {"role": role, "destination": state.destination,
+                                         "route_days": len(update.get("route") or [])}
+            serialized = json.dumps(compact, ensure_ascii=False, default=str)
         if len(serialized) <= self.memory_chars:
             history = self._history(role) + [serialized]
             while sum(map(len, history)) > self.memory_chars:
@@ -225,6 +236,8 @@ class TravelSupervisor:
             hard_faults = [flag for flag in flags if flag in {
                 "duplicate_poi", "unknown_poi", "route_structure", "opening_time_conflict",
                 "walking_constraint", "weather_outdoor_conflict", "long_road_leg",
+                "habit_constraint",
+                "modification_time_unfulfilled",
             }]
             if hard_faults:
                 state.approved = False
@@ -257,6 +270,9 @@ class TravelSupervisor:
         plan = state.final_plan
         if plan is not None:
             plan["unresolved_time_violations"] = state.time_violations
+            plan["unresolved_risk_flags"] = state.route_risk_flags if not state.approved else []
+            if getattr(self.memory, "durability_degraded", False):
+                plan["degraded_services"] = list(dict.fromkeys([*(plan.get("degraded_services") or []), "private_memory"]))
         yield {"type": "result", "success": bool(plan) and state.approved,
                "plan": plan, "missing_fields": [], "history": state.history,
                "message": None if state.approved else "行程在修复次数上限内未通过审核，草稿仅供参考。",
@@ -265,12 +281,11 @@ class TravelSupervisor:
 
 async def run_stream(query, profile_hint="", memory_writer=None, user_id=None, **overrides):
     """API-compatible entry point with owner-scoped role memories."""
-    from app.multi_agent_core.memory import SQLiteAgentMemoryStore
     session = str(overrides.pop("session_id", None) or uuid.uuid4().hex)
     state = TravelPlanState(query=query, profile_hint=profile_hint or None, **overrides)
     state.memory_session_id = session
     runtime = TravelSupervisor(production_nodes(overrides.get("model_name"), profile_hint, user_id),
-                               SQLiteAgentMemoryStore(), memory_scope(user_id, session))
+                               build_memory_store(), memory_scope(user_id, session))
     async for event in runtime.stream(state):
         checkpoint = event.pop("checkpoint", None)
         if checkpoint and event.get("success") and memory_writer:
@@ -279,7 +294,6 @@ async def run_stream(query, profile_hint="", memory_writer=None, user_id=None, *
 
 
 async def run_modification_stream(checkpoint, modification_notes, memory_writer=None, **overrides):
-    from app.multi_agent_core.memory import SQLiteAgentMemoryStore
     user_id = overrides.pop("user_id", None)
     session = str(overrides.pop("session_id", None) or checkpoint.get("memory_session_id") or uuid.uuid4().hex)
     data = dict(checkpoint)
@@ -290,7 +304,7 @@ async def run_modification_stream(checkpoint, modification_notes, memory_writer=
                 route_modify_opinion=f"【用户修改意见】{modification_notes}")
     data["memory_session_id"] = session
     runtime = TravelSupervisor(production_nodes(data.get("model_name"), data.get("profile_hint") or "", user_id),
-                               SQLiteAgentMemoryStore(), memory_scope(user_id, session))
+                               build_memory_store(), memory_scope(user_id, session))
     async for event in runtime.stream(TravelPlanState(**data), modification=True):
         if event.get("type") == "modification_warning":
             event["pending_state"]["_engine"] = "supervisor"
@@ -301,7 +315,6 @@ async def run_modification_stream(checkpoint, modification_notes, memory_writer=
 
 
 async def run_confirm_stream(checkpoint, memory_writer=None, user_id=None):
-    from app.multi_agent_core.memory import SQLiteAgentMemoryStore
     data = {key: value for key, value in checkpoint.items() if not key.startswith("_")}
     data.update(approved=False, reviewer_issues=[], time_violations=[],
                 time_check_round=0, time_check_done=False, final_plan=None,
@@ -309,7 +322,7 @@ async def run_confirm_stream(checkpoint, memory_writer=None, user_id=None):
     session = str(data.get("memory_session_id") or uuid.uuid4().hex)
     data["memory_session_id"] = session
     runtime = TravelSupervisor(production_nodes(data.get("model_name"), data.get("profile_hint") or "", user_id),
-                               SQLiteAgentMemoryStore(), memory_scope(user_id, session))
+                               build_memory_store(), memory_scope(user_id, session))
     async for event in runtime.stream(TravelPlanState(**data), modification=True, confirmed=True):
         current = event.pop("checkpoint", None)
         if current and event.get("success") and memory_writer:
@@ -326,3 +339,14 @@ def _label_event(event):
 
 def memory_scope(user_id, session_id):
     return json.dumps([str(user_id or "anonymous"), str(session_id)], separators=(",", ":"))
+
+
+def build_memory_store():
+    from app.multi_agent_core.memory import SQLiteAgentMemoryStore, InMemoryAgentMemoryStore
+    try:
+        return SQLiteAgentMemoryStore()
+    except Exception:
+        logger.warning("private memory initialization failed; using request-local memory", exc_info=True)
+        store = InMemoryAgentMemoryStore()
+        store.durability_degraded = True
+        return store

@@ -84,6 +84,57 @@ def test_owner_and_trip_memory_scopes_cannot_collide():
     assert memory_scope("a/b", "c") != memory_scope("a", "b/c")
 
 
+def test_large_planner_output_still_saves_bounded_private_summary():
+    memory = InMemoryAgentMemoryStore()
+    nodes = make_nodes()
+    nodes["planner"] = lambda s: {"route": [{"day": 1, "spots": [{"name": "Museum", "notes": "x" * 10000}]}],
+                                  "review_round": 1}
+    runtime = TravelSupervisor(nodes, memory, "s")
+    asyncio.run(runtime._call("planner", TravelPlanState(query="trip", destination="Nanjing")))
+    entries = memory.load("s", "planner")
+    assert len(entries) == 1
+    assert len(entries[0]["content"]) <= 4000
+    assert '"route_days": 1' in entries[0]["content"]
+
+
+def test_explicit_habit_violation_cannot_be_approved_by_model():
+    nodes = make_nodes()
+    original = nodes["planner"]
+    nodes["planner"] = lambda s: {**original(s), "route": [{"day": 1, "spots": [{
+        "name": "Museum", "period": "morning", "start_time": "08:00", "end_time": "09:00",
+    }]}]}
+    events = collect(TravelSupervisor(nodes, InMemoryAgentMemoryStore(), "s"),
+                     TravelPlanState(query="trip", habit_preference="不喜欢早起", max_review_rounds=0))
+    assert events[-1]["success"] is False
+    assert "habit_constraint" in events[-1]["checkpoint"]["route_modify_opinion"]
+
+
+def test_confirmation_cannot_approve_ignored_explicit_time_change():
+    nodes = make_nodes()
+    nodes["reviewer"] = lambda s: {"approved": True}
+    nodes["time_check"] = lambda s: {"approved": True, "time_violations": []}
+    state = TravelPlanState(query="trip", days=1, pois=[{"name": "Museum", "open_time": "09:00-17:00"}],
+                            route=[{"day": 1, "spots": [{"name": "Museum", "period": "morning", "start_time": "10:00", "end_time": "11:00"}]}],
+                            modification_notes="坚持02:00至03:00游览", max_review_rounds=1)
+    async def run():
+        return [e async for e in TravelSupervisor(nodes, InMemoryAgentMemoryStore(), "s").stream(state, modification=True, confirmed=True)]
+    events = asyncio.run(run())
+    assert events[-1]["success"] is False
+    assert "modification_time_unfulfilled" in events[-1]["checkpoint"]["route_modify_opinion"]
+
+
+def test_failed_memory_initialization_is_visible_degradation(monkeypatch):
+    import app.multi_agent_core.memory as memory_module
+    from app.multi_agent_core.runtime import build_memory_store
+    def fail():
+        raise OSError("unwritable SQLite path")
+    monkeypatch.setattr(memory_module, "SQLiteAgentMemoryStore", fail)
+    store = build_memory_store()
+    events = collect(TravelSupervisor(make_nodes(), store, "s"), TravelPlanState(query="trip"))
+    assert events[-1]["success"] is True
+    assert events[-1]["plan"]["degraded_services"] == ["private_memory"]
+
+
 def test_entrypoints_persist_trip_scope_and_reuse_it_for_modification(monkeypatch):
     import app.multi_agent_core.runtime as runtime_module
     import app.multi_agent_core.memory as memory_module
