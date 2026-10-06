@@ -383,6 +383,11 @@ async def run_modification_stream(checkpoint, modification_notes, memory_writer=
     session = str(overrides.pop("session_id", None) or checkpoint.get("memory_session_id") or uuid.uuid4().hex)
     data = dict(checkpoint)
     data.update(overrides)
+    # API checkpoints serialize optional dates as empty strings; Pydantic state
+    # expects absent dates to be None so modification streams can resume them.
+    for field in ("travel_start_date", "travel_end_date"):
+        if data.get(field) in ("", None):
+            data[field] = None
     data.update(approved=False, reviewer_issues=[], time_violations=[], review_round=0,
                 time_check_round=0, time_check_done=False, final_plan=None,
                 modification_notes=modification_notes,
@@ -402,6 +407,9 @@ async def run_modification_stream(checkpoint, modification_notes, memory_writer=
 
 async def run_confirm_stream(checkpoint, memory_writer=None, user_id=None):
     data = {key: value for key, value in checkpoint.items() if not key.startswith("_")}
+    for field in ("travel_start_date", "travel_end_date"):
+        if data.get(field) in ("", None):
+            data[field] = None
     data.update(approved=False, reviewer_issues=[], time_violations=[],
                 time_check_round=0, time_check_done=False, final_plan=None,
                 modification_concern=None)

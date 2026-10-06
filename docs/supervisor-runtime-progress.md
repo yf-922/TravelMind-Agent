@@ -29,7 +29,7 @@ This is application-level context separation, not a process security sandbox.
 - Returned in-memory entries cannot mutate stored entries.
 - Authenticated API engine selection and missing-field continuation events.
 - Modification reuses candidates and skips Intent/weather/POI prefetch.
-- Full regression suite: 261 passed, dependency deprecation warnings only.
+- Full regression suite: 263 passed, dependency deprecation warnings only.
 - Five Node SSE client tests verify failed drafts cannot enter the successful-plan
   callback; missing-field continuation remains available. These run in CI.
 - Enrichment inputs are projected so meal/tips nodes cannot read private contexts.
@@ -84,6 +84,12 @@ This is application-level context separation, not a process security sandbox.
 - Saved initial and confirmed-modification checkpoints now retain the semantic
   memory availability status, so later edits do not erase the fact that a
   request ran without personalized retrieval.
+- Authenticated FastAPI replay now covers initial Supervisor save followed by a
+  `plan_id` modification: it creates a child plan, preserves the memory session,
+  emits `modification_intent -> planner -> route_distance_check`, and persists
+  the updated preference. Empty serialized dates are normalized to `None` in
+  modification and confirmation entrypoints; this fixed a real missing-terminal
+  SSE failure for date-less trips.
 - Modification preference analysis and candidate refresh are covered: a new
   museum preference triggers provider search and exact-name deduplication;
   time/meal-only edits can reuse the frozen POI pool. Refresh status reaches

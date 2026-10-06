@@ -237,6 +237,20 @@ def test_modification_intent_failure_becomes_unverified_review_finding():
     assert "candidate_refresh_unverified" in events[-1]["failure_details"]["risk_flags"]
 
 
+def test_confirm_entrypoint_normalizes_empty_optional_dates(monkeypatch):
+    import app.multi_agent_core.runtime as runtime_module
+    monkeypatch.setattr(runtime_module, "production_nodes", lambda *args, **kwargs: make_nodes())
+    checkpoint = TravelPlanState(query="trip", destination="Nanjing", days=1,
+                                 pois=[{"name": "Museum"}], route=[],
+                                 memory_session_id="session").model_dump(mode="json")
+    checkpoint["travel_start_date"] = ""
+    checkpoint["travel_end_date"] = ""
+    async def run():
+        return [event async for event in runtime_module.run_confirm_stream(checkpoint)]
+    events = asyncio.run(run())
+    assert events[-1]["type"] == "result"
+
+
 def test_modification_flow_runs_analysis_refresh_before_replanning():
     nodes = make_nodes()
     seen = {}

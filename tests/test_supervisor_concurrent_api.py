@@ -85,3 +85,60 @@ def test_same_trip_concurrent_modifications_keep_frozen_history_and_all_writes(t
     entries = store.load(scope, "planner")
     assert len(entries) == 3
     assert "edit alpha" in str(entries) and "edit beta" in str(entries)
+
+
+def test_supervisor_api_replays_saved_trip_through_modification(tmp_path, monkeypatch):
+    import app.main as main
+    import app.multi_agent_core.runtime as runtime
+    import app.multi_agent_core.memory as memory_module
+    from app.core import database
+
+    monkeypatch.setattr(database, "_DB_PATH", tmp_path / "application.db")
+    database.init_db()
+    private = SQLiteAgentMemoryStore(tmp_path / "private.db")
+    monkeypatch.setattr(memory_module, "SQLiteAgentMemoryStore", lambda: private)
+    monkeypatch.setattr(main, "search_user_memories_with_status", lambda *args: ([], "skipped"))
+    async def no_background(*args, **kwargs):
+        return None
+    monkeypatch.setattr(main, "run_profile_update_agent", no_background)
+    monkeypatch.setattr(main, "run_semantic_memory_update", no_background)
+
+    from tests.test_travel_supervisor_runtime import make_nodes
+    def factory(*args, **kwargs):
+        nodes = make_nodes()
+        nodes["modification_intent"] = lambda state: {
+            "modification_search_keywords": [],
+            "modification_search_status": "not_required",
+            "attraction_preference": "历史文化",
+        }
+        return nodes
+    monkeypatch.setattr(runtime, "production_nodes", factory)
+    headers = {"Authorization": "Bearer " + create_token("replay-owner")}
+
+    def events(response):
+        assert response.status_code == 200
+        return [json.loads(line[6:]) for line in response.text.splitlines()
+                if line.startswith("data: ")]
+
+    with TestClient(main.app) as client:
+        first = events(client.post("/api/plan/stream", headers=headers,
+                                   json={"query": "南京历史文化一日游", "engine": "supervisor"}))
+        first_result = next(event for event in reversed(first) if event["type"] == "result")
+        assert first_result["success"] is True
+        parent_id = first_result["plan_id"]
+        second = events(client.post("/api/plan/stream", headers=headers, json={
+            "query": "南京历史文化一日游", "engine": "supervisor",
+            "plan_id": parent_id, "modification_notes": "改成博物馆路线",
+        }))
+        second_result = next(event for event in reversed(second) if event["type"] == "result")
+        assert second_result["success"] is True
+        assert second_result["plan_id"] != parent_id
+        assert [event["node"] for event in second if event["type"] == "stage"][:3] == [
+            "modification_intent", "planner", "route_distance_check",
+        ]
+        detail = client.get("/api/history/" + second_result["plan_id"], headers=headers)
+        assert detail.status_code == 200
+        checkpoint = detail.json()["planner_state"]
+        assert checkpoint["memory_session_id"] == client.get(
+            "/api/history/" + parent_id, headers=headers).json()["planner_state"]["memory_session_id"]
+        assert checkpoint["attraction_preference"] == "历史文化"
