@@ -32,6 +32,20 @@ def test_registry_tracks_node_attempts_without_prompt_content():
     assert registry.get_owned(run_id, "another-user") is None
 
 
+def test_confirmation_warning_is_a_normal_terminal_trace():
+    registry = AgentRunRegistry()
+    run_id = registry.start("owner", "modification")
+    async def source():
+        yield {"type": "modification_warning", "concern": "needs confirmation", "pending_id": "pending"}
+    async def run():
+        return [event async for event in observe_agent_events(source(), run_id, registry=registry)]
+    events = asyncio.run(run())
+    assert events[-1]["run_id"] == run_id
+    trace = registry.get_owned(run_id, "owner")
+    assert trace["status"] == "awaiting_confirmation"
+    assert trace["error_code"] is None
+
+
 def test_trace_summary_reports_parallel_overlap_degradation_and_slowest_nodes():
     run = {
         "duration_ms": 150.0,

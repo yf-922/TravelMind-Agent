@@ -185,7 +185,16 @@ def poi_to_spot(poi: dict[str, Any]) -> dict[str, Any] | None:
     if isinstance(photos, list) and photos and isinstance(photos[0], dict):
         first_photo = str(photos[0].get("url", "")).strip() or None
 
-    cost_raw = str(biz_ext.get("cost", "")).strip() if isinstance(biz_ext, dict) else ""
+    cost_value = biz_ext.get("cost") if isinstance(biz_ext, dict) else None
+    cost_raw = str(cost_value).strip() if isinstance(cost_value, (str, int, float)) and not isinstance(cost_value, bool) else ""
+    if cost_raw.lower() in {"[]", "none", "null", "nan", "inf", "-inf"}:
+        cost_raw = ""
+    category = str(poi.get("type") or "") + str(poi.get("name") or "")
+    indoor = None
+    if any(word in category for word in ("博物馆", "美术馆", "纪念馆", "展览馆", "科技馆", "图书馆")):
+        indoor = True
+    elif any(word in category for word in ("公园", "广场", "植物园", "风景区", "陵园")):
+        indoor = False
 
     return {
         "name": poi.get("name", ""),
@@ -197,4 +206,6 @@ def poi_to_spot(poi: dict[str, Any]) -> dict[str, Any] | None:
         "address": normalize_address(poi.get("address", "")),
         "tel": str(poi.get("tel") or "").strip() or None,
         "cost": cost_raw or None,
+        "indoor": indoor,
+        "indoor_source": "amap_category_inference" if indoor is not None else "unknown",
     }

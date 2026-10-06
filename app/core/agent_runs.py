@@ -16,7 +16,7 @@ from typing import Any
 
 logger = logging.getLogger(__name__)
 
-TERMINAL_STATUSES = {"succeeded", "incomplete", "failed", "timed_out", "cancelled"}
+TERMINAL_STATUSES = {"succeeded", "incomplete", "failed", "timed_out", "cancelled", "awaiting_confirmation"}
 
 
 def _utc_now() -> str:
@@ -300,7 +300,10 @@ async def observe_agent_events(
                 elif event_type == "error":
                     registry.finish(run_id, "failed", str(event.get("code") or "AGENT_ERROR"))
                     terminal_seen = True
-                if event_type in {"result", "error"}:
+                elif event_type == "modification_warning":
+                    registry.finish(run_id, "awaiting_confirmation")
+                    terminal_seen = True
+                if event_type in {"result", "error", "modification_warning"}:
                     event = {**event, "run_id": run_id}
                 yield event
     except TimeoutError:

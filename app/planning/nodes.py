@@ -264,6 +264,8 @@ def attraction_search_node(state: TravelPlanState) -> dict[str, Any]:
     kept, _ = filter_by_rating(spots, state.min_rating)
     targeted: list[dict[str, Any]] = []
     target_query = (state.query or state.rewritten_query or "").strip()
+    if requires_indoor_only(state):
+        target_query = "博物馆"
     if target_query:
         try:
             raw_targeted = search_city_pois(
@@ -360,6 +362,11 @@ def route_distance_check_node(state: TravelPlanState) -> dict[str, Any]:
         "route_distance_mode": mode,
         "route_distance_note": note,
     }
+
+
+def requires_indoor_only(state: TravelPlanState) -> bool:
+    text = "\n".join(filter(None, [state.query, state.modification_notes]))
+    return bool(re.search(r"(?:只|仅)(?:想|要)?(?:参观|安排|去|玩)?[^，。；\n]{0,12}室内", text))
 
 
 def explicit_modification_time_violation(state: TravelPlanState) -> bool:
@@ -525,6 +532,9 @@ def _route_risk_flags(state: TravelPlanState) -> list[str]:
         flags.append("user_modification")
     if explicit_modification_time_violation(state):
         flags.append("modification_time_unfulfilled")
+    if requires_indoor_only(state):
+        if any(poi_by_name.get(name, {}).get("indoor") is not True for name in names):
+            flags.append("indoor_constraint")
     return flags
 
 
@@ -536,6 +546,7 @@ def route_risk_gate_node(state: TravelPlanState) -> dict[str, Any]:
         "walking_constraint", "long_road_leg", "route_structure",
         "habit_constraint", "user_modification",
         "modification_time_unfulfilled",
+        "indoor_constraint",
     )
     review_required = any(
         flag == prefix or flag.startswith(prefix + ":")
@@ -598,6 +609,10 @@ def make_planner_node(model_name: str | None):
 
         cluster_map = cluster_pois_by_location(state.pois, state.days)
         cand_text = format_spots_for_llm(state.pois, cluster_map)
+        if requires_indoor_only(state):
+            cand_text += "\n【仅室内约束】只能选择以下类型识别为室内的候选；若无候选则不要编造：\n" + "、".join(
+                str(p.get("name")) for p in state.pois if p.get("indoor") is True
+            )
         rag_sources = search_travel_knowledge(
             f"{state.destination or ''} {state.rewritten_query or state.query}", limit=3
         )
@@ -796,6 +811,9 @@ def make_reviewer_node(model_name: str | None):
 
         prompt = (
             f"目的地：{state.destination}，共 {state.days} 天，每天上限 {state.max_per_day}。\n"
+            f"原始用户需求：{state.query}\n"
+            f"本轮用户修改：{state.modification_notes or '无'}\n"
+            f"景点偏好：{state.attraction_preference or '无'}\n"
             f"用户游玩习惯：{state.habit_preference or '无'}\n"
             f"单段最大步行距离：{state.max_walking_km if state.max_walking_km is not None else '未指定'} km；"
             f"雨天优先室内：{'是' if state.rain_indoor_priority else '否'}"

@@ -230,3 +230,16 @@ def test_requested_window_and_opening_hours_are_independent_constraints():
     flags = route_risk_gate_node(state)["route_risk_flags"]
     assert "opening_time_conflict" in flags
     assert "modification_time_unfulfilled" not in flags
+
+
+def test_indoor_only_request_escalates_unknown_and_outdoor_candidates():
+    state = _state(query="只参观一个室内历史文化景点")
+    assert "indoor_constraint" not in route_risk_gate_node(state)["route_risk_flags"]
+    state.pois[0]["indoor"] = None
+    update = route_risk_gate_node(state)
+    assert "indoor_constraint" in update["route_risk_flags"]
+    assert update["review_required"] is True
+    state.pois[0]["indoor"] = False
+    assert "indoor_constraint" in route_risk_gate_node(state)["route_risk_flags"]
+    state.modification_notes = "游览改为11:00开始"
+    assert "indoor_constraint" in route_risk_gate_node(state)["route_risk_flags"]

@@ -121,6 +121,8 @@ def test_confirmation_cannot_approve_ignored_explicit_time_change():
     events = asyncio.run(run())
     assert events[-1]["success"] is False
     assert "modification_time_unfulfilled" in events[-1]["checkpoint"]["route_modify_opinion"]
+    assert "modification_time_unfulfilled" in events[-1]["failure_details"]["risk_flags"]
+    assert "modification_time_unfulfilled" in events[-1]["plan"]["unresolved_risk_flags"]
 
 
 def test_failed_memory_initialization_is_visible_degradation(monkeypatch):

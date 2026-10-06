@@ -23,7 +23,7 @@ INPUTS = {
     "planner": {"query", "rewritten_query", "destination", "days", "travel_start_date", "travel_end_date", "pois", "weather_forecast", "weather_note", "attraction_preference", "food_preference", "habit_preference", "max_walking_km", "rain_indoor_priority", "max_per_day", "max_review_rounds", "route", "route_modify_opinion", "route_stale_warning", "review_round", "profile_hint", "modification_notes", "route_distance_legs", "route_distance_note"},
     "route_distance_check": {"pois", "route", "max_walking_km"},
     "risk_gate": {"pois", "route", "days", "max_per_day", "travel_start_date", "weather_forecast", "habit_preference", "max_walking_km", "rain_indoor_priority", "route_distance_legs", "modification_notes", "route_modify_opinion"},
-    "reviewer": {"destination", "days", "travel_start_date", "travel_end_date", "pois", "route", "habit_preference", "max_per_day", "weather_forecast", "max_walking_km", "rain_indoor_priority", "route_distance_legs", "route_distance_note", "review_round"},
+    "reviewer": {"destination", "days", "travel_start_date", "travel_end_date", "pois", "route", "habit_preference", "attraction_preference", "modification_notes", "max_per_day", "weather_forecast", "max_walking_km", "rain_indoor_priority", "route_distance_legs", "route_distance_note", "review_round"},
     "time_check": {"destination", "pois", "route", "travel_start_date", "travel_end_date", "days", "time_check_round", "max_time_check_rounds", "approved", "review_required", "habit_preference", "max_walking_km", "rain_indoor_priority", "weather_forecast", "route_distance_legs", "max_per_day", "modification_notes"},
     "meal_enrichment": {"destination", "pois", "route", "food_preference"},
     "spot_tips": {"destination", "route", "travel_start_date", "weather_forecast"},
@@ -233,11 +233,14 @@ class TravelSupervisor:
             # Model approval cannot override a known structural or time fault.
             from app.planning.nodes import _route_risk_flags
             flags = _route_risk_flags(state)
+            state.route_risk_flags = flags
+            state.route_risk_score = len(flags)
             hard_faults = [flag for flag in flags if flag in {
                 "duplicate_poi", "unknown_poi", "route_structure", "opening_time_conflict",
                 "walking_constraint", "weather_outdoor_conflict", "long_road_leg",
                 "habit_constraint",
                 "modification_time_unfulfilled",
+                "indoor_constraint",
             }]
             if hard_faults:
                 state.approved = False
@@ -276,6 +279,11 @@ class TravelSupervisor:
         yield {"type": "result", "success": bool(plan) and state.approved,
                "plan": plan, "missing_fields": [], "history": state.history,
                "message": None if state.approved else "行程在修复次数上限内未通过审核，草稿仅供参考。",
+               "failure_details": None if state.approved else {
+                   "risk_flags": state.route_risk_flags,
+                   "time_violations": state.time_violations,
+                   "reviewer_issues": state.reviewer_issues,
+               },
                "checkpoint": state.model_dump(mode="json")}
 
 

@@ -636,7 +636,7 @@ function adaptPlan(backendPlan, username) {
           location: it.location || null,
           address: it.address || null,
           tel: it.tel || null,
-          cost: it.cost ?? null,
+          cost: (typeof it.cost === "number" || typeof it.cost === "string") && String(it.cost).trim() !== "" && Number.isFinite(Number(it.cost)) ? Number(it.cost) : null,
           ticketInfo: it.ticket_info || null,
         };
       } else {

@@ -25,8 +25,8 @@ This is application-level context separation, not a process security sandbox.
 - Returned in-memory entries cannot mutate stored entries.
 - Authenticated API engine selection and missing-field continuation events.
 - Modification reuses candidates and skips Intent/weather/POI prefetch.
-- Full regression suite: 218 passed, one dependency deprecation warning.
-- Four Node SSE client tests verify failed drafts cannot enter the successful-plan
+- Full regression suite: 231 passed, one dependency deprecation warning.
+- Five Node SSE client tests verify failed drafts cannot enter the successful-plan
   callback; missing-field continuation remains available. These run in CI.
 - Enrichment inputs are projected so meal/tips nodes cannot read private contexts.
 - Public execution logs survive role isolation without persisting private dialogue
@@ -40,6 +40,12 @@ This is application-level context separation, not a process security sandbox.
   all memory. SQLite retains the latest 128 entries per session/role.
 - Memory initialization failures fall back to request-local storage and expose
   `private_memory` as a degraded service.
+- Confirmation warnings terminate trace normally as `awaiting_confirmation`,
+  not `STREAM_ENDED_WITHOUT_RESULT`. Rejections report current risk flags and
+  time/reviewer findings, recomputed after the final route revision.
+- Concurrent API tests: same owner creates two distinct saved trip sessions;
+  simultaneous same-trip runtime modifications read frozen role context and
+  retain both writes. Providers are mocked; not a multi-process load test.
 - Browser planning page exposes `标准规划` and `协作规划`; selecting the latter sends `engine=supervisor`.
 - Human confirmation preserves the Supervisor engine and verifies the accepted draft.
 - Memory lookup/write errors degrade without terminating usable planning.
@@ -77,8 +83,10 @@ This is application-level context separation, not a process security sandbox.
 
 - Broader repeated Provider runs with independent grading against LangGraph;
   current evidence is single-case smoke, not quality/latency statistics.
-- Same-session concurrent API runs beyond storage and runtime unit coverage.
-- Authenticated browser submission/result flow on the newest backend process.
+- Multi-process concurrent deployment/load validation beyond threaded API and
+  same-trip runtime regression coverage.
+- Browser retest of quality fixes discovered during the authenticated full flow;
+  API/provider retest is completed, not yet repeated through the final browser process.
 - Generic natural-language modification compliance beyond the supported one-day
   explicit time-edit checks; multiday edits intentionally are not parsed by this rule.
 
@@ -103,6 +111,22 @@ The above missing checks mean production parity is not yet established.
 - Header overflow fixed with a two-row small-screen layout. Browser screenshot
   at 390x844 confirms scroll width 375px, login visible, no horizontal overflow.
   CSS/API/page resource versions bumped so existing browser caches receive fixes.
+
+## Authenticated Browser Evidence
+
+- Isolated localhost server, temporary account registration/login, selected
+  Supervisor, submitted real request, observed run id/progress and final detailed
+  route with map, transport, meals, hotel and history persistence. Browser backend
+  uses production nodes; Chroma/background extraction are disabled.
+- Quality defect discovered: indoor-only request selected an unknown/mixed site
+  (Confucius Temple) and reported success. Do not count this as quality success.
+- Added explicit indoor-only rule, museum-targeted retrieval, candidate prompt
+  guidance and unknown/outdoor rejection. Classification from AMap type/name
+  is labeled `amap_category_inference`, not official indoor confirmation.
+- Real API retest completed/approved/saved in 65.281 seconds, four model calls,
+  2,301 estimated tokens. One trial does not prove generic preference accuracy.
+- Old provider `cost=[]` appeared as `¥[]/person`: normalization now removes
+  empty/nonprice sentinels; frontend handles old saved data and keeps zero free.
 
 ## Authenticated full API evidence
 

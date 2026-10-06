@@ -123,6 +123,8 @@ def evaluate(query, timeout, modification=None, confirmation_modification=None):
                     'route_issues': plan.get('route_issues'),
                     'quality_gate': plan.get('quality_gate'),
                     'saved_history_verified': saved, 'saved_constraints_verified': constraints_preserved,
+                    'selected_attractions': [spot.get('name') for day in (checkpoint.get('route') or []) for spot in day.get('spots', [])] if saved else [],
+                    'indoor_sources': {poi.get('name'): poi.get('indoor_source') for poi in checkpoint.get('pois', [])} if saved else {},
                     'other_user_denied': isolation,
                     'private_memory_counts': {role: len(private_store.load(scope, role)) for role in ('planner', 'reviewer', 'time_check')},
                     'trace': trace,
