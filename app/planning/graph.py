@@ -109,6 +109,8 @@ _NODE_LABELS: dict[str, str] = {
     "intent":            "🧭 正在理解出行意图（目的地 / 日期 / 偏好）",
     "weather_search":    "🌦 正在查询出行天气",
     "attraction_search": "🗺 正在调用高德搜索景点池",
+    "modification_intent": "🧩 正在分析行程修改意见",
+    "candidate_refresh": "🔎 正在补充核验新增候选景点",
     "planner":           "✍️ 正在规划逐日行程",
     "route_distance_check": "🛣 正在核验道路步行/驾车距离",
     "risk_gate": "🧮 正在评估是否需要升级审核",

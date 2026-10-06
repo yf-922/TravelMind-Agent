@@ -253,6 +253,8 @@ class TravelPlanState(BaseModel):
 
     # 修改规划相关（由 API 层填充）
     modification_notes: Optional[str] = None
+    modification_search_keywords: list[str] = Field(default_factory=list)
+    modification_search_status: str = "not_required"
     parent_plan_id: Optional[str] = None
     previous_plan_summary: Optional[str] = None
 

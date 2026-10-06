@@ -16,11 +16,13 @@ logger = logging.getLogger(__name__)
 
 
 INPUTS = {
+    "modification_intent": {"modification_notes", "destination", "days", "pois", "attraction_preference", "food_preference", "habit_preference"},
+    "candidate_refresh": {"destination", "pois", "modification_search_keywords"},
     "intent": {"query", "profile_hint"},
     "query_rewrite": {"query", "profile_hint", "destination", "days", "travel_start_date", "travel_end_date", "attraction_preference", "food_preference", "habit_preference", "max_walking_km", "rain_indoor_priority"},
     "weather_search": {"destination", "travel_start_date", "travel_end_date", "days"},
     "attraction_search": {"destination", "query", "rewritten_query", "max_spots", "min_rating"},
-    "planner": {"query", "rewritten_query", "destination", "days", "travel_start_date", "travel_end_date", "pois", "weather_forecast", "weather_note", "attraction_preference", "food_preference", "habit_preference", "max_walking_km", "rain_indoor_priority", "max_per_day", "max_review_rounds", "route", "route_modify_opinion", "route_stale_warning", "review_round", "profile_hint", "modification_notes", "route_distance_legs", "route_distance_note"},
+    "planner": {"query", "rewritten_query", "destination", "days", "travel_start_date", "travel_end_date", "pois", "weather_forecast", "weather_note", "attraction_preference", "food_preference", "habit_preference", "max_walking_km", "rain_indoor_priority", "max_per_day", "max_review_rounds", "route", "route_modify_opinion", "route_stale_warning", "review_round", "profile_hint", "modification_notes", "modification_search_status", "repair_feedback", "route_distance_legs", "route_distance_note"},
     "route_distance_check": {"pois", "route", "max_walking_km"},
     "risk_gate": {"pois", "route", "days", "max_per_day", "travel_start_date", "weather_forecast", "habit_preference", "max_walking_km", "rain_indoor_priority", "route_distance_legs", "modification_notes", "route_modify_opinion"},
     "reviewer": {"destination", "days", "travel_start_date", "travel_end_date", "pois", "route", "habit_preference", "attraction_preference", "modification_notes", "max_per_day", "weather_forecast", "max_walking_km", "rain_indoor_priority", "route_distance_legs", "route_distance_note", "review_round"},
@@ -32,6 +34,8 @@ INPUTS = {
 
 
 OUTPUTS = {
+    "modification_intent": {"attraction_preference", "food_preference", "habit_preference", "modification_search_keywords", "modification_search_status", "history"},
+    "candidate_refresh": {"pois", "modification_search_status", "history"},
     "intent": {"destination", "travel_start_date", "travel_end_date", "days", "attraction_preference", "food_preference", "habit_preference", "max_walking_km", "rain_indoor_priority", "missing_fields", "history"},
     "query_rewrite": {"rewritten_query", "attraction_preference", "food_preference", "habit_preference", "history"},
     "weather_search": {"weather_forecast", "weather_note", "history"},
@@ -56,6 +60,7 @@ INPUTS["planner"].add("repair_feedback")
 
 def production_nodes(model_name=None, profile_hint="", user_id=None):
     from app.planning import nodes
+    from app.multi_agent_core.modification import make_modification_intent_node, candidate_refresh_node
     finalize = nodes.make_finalize_node()
     def finalize_result(state):
         if not state.approved:
@@ -68,6 +73,8 @@ def production_nodes(model_name=None, profile_hint="", user_id=None):
             }, "history": state.history + ["finalize: unapproved draft, external enrichment skipped"]}
         return finalize(state)
     return {
+        "modification_intent": make_modification_intent_node(model_name),
+        "candidate_refresh": candidate_refresh_node,
         "intent": nodes.make_intent_node(model_name, profile_hint=profile_hint),
         "query_rewrite": nodes.make_query_rewrite_node(model_name, user_id),
         "weather_search": nodes.weather_search_node,
@@ -246,6 +253,15 @@ class TravelSupervisor:
             state = await execute("attraction_search")
             yield {"type": "stage_summary", "node": "attraction_search", "summary": "completed"}
 
+        if modification and not confirmed and "modification_intent" in self.nodes:
+            yield {"type": "stage", "node": "modification_intent"}
+            state = await execute("modification_intent")
+            yield {"type": "stage_summary", "node": "modification_intent", "summary": "completed"}
+            if state.modification_search_keywords:
+                yield {"type": "stage", "node": "candidate_refresh"}
+                state = await execute("candidate_refresh")
+                yield {"type": "stage_summary", "node": "candidate_refresh", "summary": "completed"}
+
         for revision in range(state.max_review_rounds + 1):
             # Derived conclusions never survive a new route generation.
             state.approved = False
@@ -277,6 +293,8 @@ class TravelSupervisor:
             # Model approval cannot override a known structural or time fault.
             from app.planning.nodes import _route_risk_flags
             flags = _route_risk_flags(state)
+            if state.modification_search_status in {"failed", "empty", "pending"}:
+                flags.append("candidate_refresh_unverified")
             state.route_risk_flags = flags
             state.route_risk_score = len(flags)
             hard_faults = [flag for flag in flags if flag in {
@@ -285,6 +303,7 @@ class TravelSupervisor:
                 "habit_constraint",
                 "modification_time_unfulfilled",
                 "indoor_constraint",
+                "candidate_refresh_unverified",
             }]
             if hard_faults:
                 state.approved = False
@@ -363,6 +382,7 @@ async def run_modification_stream(checkpoint, modification_notes, memory_writer=
                 time_check_round=0, time_check_done=False, final_plan=None,
                 modification_notes=modification_notes,
                 route_modify_opinion=f"【用户修改意见】{modification_notes}", repair_feedback=[])
+    data.update(modification_search_keywords=[], modification_search_status="not_required")
     data["memory_session_id"] = session
     runtime = TravelSupervisor(production_nodes(data.get("model_name"), data.get("profile_hint") or "", user_id),
                                build_memory_store(), memory_scope(user_id, session))

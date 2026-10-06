@@ -8,6 +8,10 @@ road-distance, risk-gate, Reviewer, Time Check, meal, tips and finalization node
 It emits the existing SSE stage/result events and uses request traces and timeouts.
 Modification requests reuse the saved candidate pool and weather; explicitly
 requested new places use the existing verified POI lookup before planning.
+For preference changes, the Supervisor first checks whether the saved pool is
+enough. If it is not, it performs at most three bounded keyword searches, merges
+only provider-returned POIs, and turns failed or empty refreshes into a hard
+review finding rather than allowing the Planner to claim the preference.
 
 Role context is projected by field allow-lists. Planner, Reviewer and Time Check
 receive their own persisted history with a 4,000-character context budget.
@@ -63,6 +67,10 @@ This is application-level context separation, not a process security sandbox.
 - Browser planning page exposes `标准规划` and `协作规划`; selecting the latter sends `engine=supervisor`.
 - Human confirmation preserves the Supervisor engine and verifies the accepted draft.
 - Memory lookup/write errors degrade without terminating usable planning.
+- Modification preference analysis and candidate refresh are covered: a new
+  museum preference triggers provider search and exact-name deduplication;
+  time/meal-only edits can reuse the frozen POI pool. Refresh status reaches
+  Planner and the final checkpoint.
 - Independent deterministic checks prevent model approval from overriding hard faults.
 - Optional weather/rewrite/meal/tips exceptions have explicit fallback updates.
 - Cancellation regression verifies late synchronous worker completion does not write memory.

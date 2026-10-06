@@ -182,6 +182,33 @@ def test_modification_reuses_pool_and_skips_external_prefetch():
     assert events[-1]["checkpoint"]["pois"] == [{"name": "Museum"}]
 
 
+def test_modification_refreshes_candidates_only_when_analysis_requires_it(monkeypatch):
+    from app.multi_agent_core.modification import ModificationAnalysis
+    import app.multi_agent_core.modification as modification
+    calls = []
+    monkeypatch.setattr(modification, "build_structured_llm", lambda *args, **kwargs: object())
+    monkeypatch.setattr(modification, "amap_key", lambda: "fixture")
+    monkeypatch.setattr(modification, "search_city_pois", lambda *args, **kwargs: calls.append(kwargs["keywords"]) or [{
+        "name": "New Museum", "location": "118.7,32.0", "type": "museum", "rating": "4.8",
+    }])
+    monkeypatch.setattr(modification, "invoke_structured", lambda *args, **kwargs: ModificationAnalysis(
+        attraction_preference="博物馆", candidate_pool_sufficient=False,
+        search_keywords=["博物馆"], reasoning="旧池没有足够室内候选"))
+    nodes = {"modification_intent": modification.make_modification_intent_node(),
+             "candidate_refresh": modification.candidate_refresh_node}
+    runtime = TravelSupervisor(nodes, InMemoryAgentMemoryStore(), "s")
+    state = TravelPlanState(query="trip", destination="Nanjing", days=1,
+                            pois=[{"name": "Old Park"}], modification_notes="改成博物馆")
+    async def run():
+        return await runtime._call("modification_intent", state)
+    update = asyncio.run(run())
+    refreshed = asyncio.run(runtime._call("candidate_refresh", TravelPlanState(**{**state.model_dump(), **update})))
+    assert update["modification_search_keywords"] == ["博物馆"]
+    assert calls == ["博物馆"]
+    assert {poi["name"] for poi in refreshed["pois"]} == {"Old Park", "New Museum"}
+    assert refreshed["modification_search_status"] == "complete"
+
+
 def test_supervisor_api_uses_authenticated_runtime(monkeypatch):
     from fastapi.testclient import TestClient
     import app.main as main
