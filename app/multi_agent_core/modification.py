@@ -54,18 +54,19 @@ def candidate_refresh_node(state):
     if not keywords:
         return {"modification_search_status": "not_required"}
     added = []
-    failed = False
+    failed = 0
     for keyword in keywords[:3]:
         try:
             raw = search_city_pois(state.destination or "", amap_key(), keywords=keyword,
                                    types=ATTRACTION_TYPE, offset=8)
             added.extend(spot for item in raw if (spot := poi_to_spot(item)))
         except Exception:
-            failed = True
+            failed += 1
     # Preserve provider facts from the old pool and deduplicate exact names.
     merged = {str(poi.get("name") or "").strip(): poi for poi in state.pois if poi.get("name")}
     for poi in added:
         merged.setdefault(str(poi["name"]).strip(), poi)
-    status = "failed" if failed else "complete" if added else "empty"
+    status = ("failed" if failed == len(keywords[:3]) else "partial" if failed
+              else "complete" if added else "empty")
     return {"pois": list(merged.values()), "modification_search_status": status,
             "history": [f"candidate_refresh: queries={len(keywords[:3])}, provider_results={len(added)}, status={status}"]}

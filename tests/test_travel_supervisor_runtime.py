@@ -209,6 +209,21 @@ def test_modification_refreshes_candidates_only_when_analysis_requires_it(monkey
     assert refreshed["modification_search_status"] == "complete"
 
 
+def test_candidate_refresh_marks_partial_provider_failure(monkeypatch):
+    import app.multi_agent_core.modification as modification
+    monkeypatch.setattr(modification, "amap_key", lambda: "fixture")
+    def search(*args, **kwargs):
+        if kwargs["keywords"] == "museum":
+            return [{"name": "New Museum", "location": "118.7,32.0", "type": "museum"}]
+        raise RuntimeError("provider timeout")
+    monkeypatch.setattr(modification, "search_city_pois", search)
+    state = TravelPlanState(query="trip", destination="Nanjing", pois=[{"name": "Old Park"}],
+                            modification_search_keywords=["museum", "gallery"])
+    result = modification.candidate_refresh_node(state)
+    assert result["modification_search_status"] == "partial"
+    assert {poi["name"] for poi in result["pois"]} == {"Old Park", "New Museum"}
+
+
 def test_modification_flow_runs_analysis_refresh_before_replanning():
     nodes = make_nodes()
     seen = {}

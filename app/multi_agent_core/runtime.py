@@ -293,7 +293,7 @@ class TravelSupervisor:
             # Model approval cannot override a known structural or time fault.
             from app.planning.nodes import _route_risk_flags
             flags = _route_risk_flags(state)
-            if state.modification_search_status in {"failed", "empty", "pending"}:
+            if state.modification_search_status in {"failed", "partial", "empty", "pending"}:
                 flags.append("candidate_refresh_unverified")
             state.route_risk_flags = flags
             state.route_risk_score = len(flags)
