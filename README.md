@@ -11,6 +11,7 @@
 - 使用 SQLite + Chroma 实现结构化/语义个性化记忆，SQLite 保存事实源，Chroma 按 `user_id` 隔离语义记忆；旅行知识库按约 420 字符切块、保留约 80 字符段落重叠，默认召回 Top-3 并用 RRF 融合关键词与向量结果；
 - 增加天气/POI Cache-Aside、可并行查询、FastAPI + SSE 流式进度、单次执行 Trace 和失败降级状态；
 - 增加 39 条编排消融案例、真实 API 响应回放、故障轨迹测试和 GitHub Actions 离线 CI。
+- `POST /api/plan/stream` 支持 `engine=supervisor`：使用登录用户范围内的角色记忆和统一 SSE 事件；行程修改与确认会沿用同一编排引擎，硬约束复核优先于模型审核结论。
 
 可验证材料：
 

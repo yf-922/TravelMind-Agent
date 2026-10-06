@@ -20,15 +20,15 @@ This is application-level context separation, not a process security sandbox.
 - Returned in-memory entries cannot mutate stored entries.
 - Authenticated API engine selection and missing-field continuation events.
 - Modification reuses candidates and skips Intent/weather/POI prefetch.
-- Full regression suite: 186 passed, one dependency deprecation warning.
+- Full regression suite: 189 passed, one dependency deprecation warning.
+- Human confirmation preserves the Supervisor engine and verifies the accepted draft.
+- Memory lookup/write errors degrade without terminating usable planning.
+- Independent deterministic checks prevent model approval from overriding hard faults.
 
 ## Remaining acceptance work
 
 - Real Provider runs and independent quality grading against the LangGraph path.
-- Human confirmation continuation preserving the selected engine.
-- Memory failures must degrade without failing otherwise usable planning.
 - Same-session concurrency, cancellation and partial parallel dependency failure.
-- Stronger hard-constraint enforcement independent of model approval.
 - User-facing engine selection and browser workflow validation.
 
 The above missing checks mean production parity is not yet established.

@@ -4,11 +4,14 @@ from __future__ import annotations
 
 import asyncio
 import json
+import logging
 from collections.abc import AsyncIterator, Callable
 from typing import Any
 
 from app.multi_agent_core.memory import AgentMemoryStore
 from app.planning.schemas import TravelPlanState
+
+logger = logging.getLogger(__name__)
 
 
 INPUTS = {
@@ -53,7 +56,11 @@ class TravelSupervisor:
         self.memory_chars = memory_chars
 
     def _history(self, role: str) -> list[str]:
-        entries = self.memory.load(self.session_id, role)
+        try:
+            entries = self.memory.load(self.session_id, role)
+        except Exception:
+            logger.warning("private memory lookup failed role=%s", role, exc_info=True)
+            return []
         selected = []
         remaining = self.memory_chars
         for entry in reversed(entries):
@@ -81,11 +88,14 @@ class TravelSupervisor:
                 if key not in {"history", "planner_reviewer_dialogue", "final_plan", "pois"}}
         serialized = json.dumps(safe, ensure_ascii=False, default=str)
         if len(serialized) <= self.memory_chars:
-            await asyncio.to_thread(self.memory.append, self.session_id, role,
-                                    {"role": "assistant", "content": serialized})
+            try:
+                await asyncio.to_thread(self.memory.append, self.session_id, role,
+                                        {"role": "assistant", "content": serialized})
+            except Exception:
+                logger.warning("private memory write failed role=%s", role, exc_info=True)
         return update
 
-    async def stream(self, state: TravelPlanState, *, modification=False) -> AsyncIterator[dict[str, Any]]:
+    async def stream(self, state: TravelPlanState, *, modification=False, confirmed=False) -> AsyncIterator[dict[str, Any]]:
         async def execute(role):
             update = await self._call(role, state)
             merged = state.model_dump()
@@ -94,7 +104,9 @@ class TravelSupervisor:
             return TravelPlanState(**merged)
 
         async def parallel(roles):
-            updates = await asyncio.gather(*(self._call(role, state) for role in roles))
+            async with asyncio.TaskGroup() as group:
+                tasks = [group.create_task(self._call(role, state)) for role in roles]
+            updates = [task.result() for task in tasks]
             merged = state.model_dump()
             for update in updates:
                 merged.update({k: v for k, v in update.items() if k not in {"history", "planner_reviewer_dialogue"}})
@@ -125,11 +137,12 @@ class TravelSupervisor:
             state.route_distance_note = None
             state.time_check_done = False
             state.time_check_status = "skipped"
-            for role in ("planner", "route_distance_check", "risk_gate"):
+            roles = ("route_distance_check", "risk_gate") if confirmed and revision == 0 else ("planner", "route_distance_check", "risk_gate")
+            for role in roles:
                 yield {"type": "stage", "node": role, "revision": revision}
                 state = await execute(role)
                 yield {"type": "stage_summary", "node": role, "summary": "completed"}
-            if state.modification_concern and modification:
+            if state.modification_concern and modification and not confirmed:
                 yield {"type": "modification_warning", "message": state.modification_concern,
                        "pending_state": state.model_dump(mode="json")}
                 return
@@ -144,6 +157,17 @@ class TravelSupervisor:
             elif state.time_check_required:
                 state.approved = False
                 state.time_check_status = "partial"
+            # Model approval cannot override a known structural or time fault.
+            from app.planning.nodes import _route_risk_flags
+            flags = _route_risk_flags(state)
+            hard_faults = [flag for flag in flags if flag in {
+                "duplicate_poi", "unknown_poi", "route_structure", "opening_time_conflict",
+                "walking_constraint", "weather_outdoor_conflict", "long_road_leg",
+            }]
+            if hard_faults:
+                state.approved = False
+                feedback = "【规则校验未通过】" + ", ".join(hard_faults)
+                state.route_modify_opinion = "\n".join(filter(None, [state.route_modify_opinion, feedback]))
             if state.approved and not state.time_violations:
                 break
         for role in ("meal_enrichment", "spot_tips"):
@@ -162,7 +186,7 @@ class TravelSupervisor:
 
 
 async def run_stream(query, profile_hint="", memory_writer=None, user_id=None, **overrides):
-    """API-compatible entry point; scope private memories to owner and one run."""
+    """API-compatible entry point with owner-scoped role memories."""
     from app.multi_agent_core.memory import SQLiteAgentMemoryStore
     session_id = str(overrides.pop("session_id", None) or user_id or "anonymous")
     runtime = TravelSupervisor(production_nodes(overrides.get("model_name"), profile_hint, user_id),
@@ -186,6 +210,23 @@ async def run_modification_stream(checkpoint, modification_notes, memory_writer=
                 route_modify_opinion=f"【用户修改意见】{modification_notes}")
     runtime = TravelSupervisor(production_nodes(data.get("model_name")), SQLiteAgentMemoryStore(), session_id)
     async for event in runtime.stream(TravelPlanState(**data), modification=True):
+        if event.get("type") == "modification_warning":
+            event["pending_state"]["_engine"] = "supervisor"
+        current = event.pop("checkpoint", None)
+        if current and event.get("success") and memory_writer:
+            await asyncio.to_thread(memory_writer, event["plan"], TravelPlanState(**current))
+        yield event
+
+
+async def run_confirm_stream(checkpoint, memory_writer=None, user_id=None):
+    from app.multi_agent_core.memory import SQLiteAgentMemoryStore
+    data = {key: value for key, value in checkpoint.items() if not key.startswith("_")}
+    data.update(approved=False, reviewer_issues=[], time_violations=[],
+                time_check_round=0, time_check_done=False, final_plan=None,
+                modification_concern=None)
+    runtime = TravelSupervisor(production_nodes(data.get("model_name")),
+                               SQLiteAgentMemoryStore(), str(user_id or "anonymous"))
+    async for event in runtime.stream(TravelPlanState(**data), modification=True, confirmed=True):
         current = event.pop("checkpoint", None)
         if current and event.get("success") and memory_writer:
             await asyncio.to_thread(memory_writer, event["plan"], TravelPlanState(**current))

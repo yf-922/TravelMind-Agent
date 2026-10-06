@@ -11,7 +11,7 @@ def make_nodes(*, reject=False):
         "query_rewrite": lambda s: {"rewritten_query": "museum"},
         "weather_search": lambda s: {"weather_note": "fixture"},
         "attraction_search": lambda s: {"pois": [{"name": "Museum"}]},
-        "planner": lambda s: {"route": [{"day": 1, "spots": [{"name": "Museum"}]}], "review_round": s.review_round + 1},
+        "planner": lambda s: {"route": [{"day": 1, "spots": [{"name": "Museum", "period": "morning", "start_time": "10:00", "end_time": "11:00"}]}], "review_round": s.review_round + 1},
         "route_distance_check": lambda s: {"route_distance_legs": []},
         "risk_gate": lambda s: {"review_required": reject, "time_check_required": False, "approved": not reject},
         "reviewer": lambda s: {"approved": False, "route_modify_opinion": "revise", "reviewer_issues": ["unresolved"]},
@@ -96,3 +96,32 @@ def test_supervisor_api_uses_authenticated_runtime(monkeypatch):
     assert captured["user_id"] == "supervisor-test-owner"
     assert "thread_id" in response.text
     assert "X-Agent-Run-ID" in response.headers
+
+
+def test_memory_failure_does_not_break_planning():
+    class BrokenMemory:
+        def load(self, *args):
+            raise OSError("storage unavailable")
+        def append(self, *args):
+            raise OSError("storage unavailable")
+    events = collect(TravelSupervisor(make_nodes(), BrokenMemory(), "s"), TravelPlanState(query="trip"))
+    assert events[-1]["success"] is True
+
+
+def test_rule_fault_cannot_be_overridden_by_model_approval():
+    nodes = make_nodes()
+    nodes["planner"] = lambda s: {"route": [{"day": 1, "spots": [{"name": "Invented", "start_time": "10:00", "end_time": "11:00"}]}]}
+    events = collect(TravelSupervisor(nodes, InMemoryAgentMemoryStore(), "s"),
+                     TravelPlanState(query="trip", max_review_rounds=0))
+    assert events[-1]["success"] is False
+    assert "unknown_poi" in events[-1]["checkpoint"]["route_modify_opinion"]
+
+
+def test_confirm_checks_existing_draft_before_replanning():
+    nodes = make_nodes()
+    nodes["planner"] = lambda s: (_ for _ in ()).throw(AssertionError("accepted draft should be checked first"))
+    state = TravelPlanState(query="trip", days=1, pois=[{"name": "Museum"}],
+                            route=[{"day": 1, "spots": [{"name": "Museum", "period": "morning", "start_time": "10:00", "end_time": "11:00"}]}])
+    async def run():
+        return [e async for e in TravelSupervisor(nodes, InMemoryAgentMemoryStore(), "s").stream(state, modification=True, confirmed=True)]
+    assert asyncio.run(run())[-1]["success"] is True

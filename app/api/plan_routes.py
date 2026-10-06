@@ -325,6 +325,12 @@ async def confirm_modification(req: ConfirmModificationRequest, request: Request
         raise HTTPException(status_code=404, detail="修改状态不存在或已过期")
 
     pending_state = pending["state"]
+    confirm_stream = run_confirm_stream
+    confirm_options = {}
+    if pending_state.get("_engine") == "supervisor":
+        from app.multi_agent_core.runtime import run_confirm_stream as supervisor_confirm
+        confirm_stream = supervisor_confirm
+        confirm_options["user_id"] = user_id
     saved_plan_id: list[str] = []
     parent_plan_id = req.parent_plan_id
 
@@ -366,9 +372,10 @@ async def confirm_modification(req: ConfirmModificationRequest, request: Request
         saved_plan_id.append(pid)
 
     async def gen():
-        async for ev in run_confirm_stream(
+        async for ev in confirm_stream(
             pending_state,
             memory_writer=memory_writer,
+            **confirm_options,
         ):
             if ev.get("type") == "result" and ev.get("success") and saved_plan_id:
                 ev["plan_id"] = saved_plan_id[0]
