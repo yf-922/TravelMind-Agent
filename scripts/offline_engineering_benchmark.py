@@ -194,6 +194,9 @@ def benchmark_post_intent_fanout(runs: int, delay_ms: float) -> dict[str, Any]:
         patch.object(graph_module, "weather_search_node", delayed({
             "weather_forecast": [], "weather_note": "offline",
         })),
+        patch.object(graph_module, "main_meal_candidate_search_node", delayed({
+            "main_meal_candidates": [], "main_meal_status": "partial",
+        })),
         patch.object(graph_module, "attraction_search_node", lambda state: {"pois": []}),
         patch.object(graph_module, "make_planner_node", return_value=lambda state: {
             "route": [{"day": 1, "spots": []}], "review_round": 1,
@@ -242,7 +245,7 @@ def benchmark_post_intent_fanout(runs: int, delay_ms: float) -> dict[str, Any]:
     return {
         "measurement_type": "production-langgraph-with-delayed-fake-nodes",
         "runs": runs,
-        "parallel_nodes": ["query_rewrite", "weather_search"],
+        "parallel_nodes": ["query_rewrite", "weather_search", "main_meal_search"],
         "fake_delay_ms_per_node": delay_ms,
         "serial_baseline_ms": serial,
         "current_fanout_ms": concurrent,
@@ -290,8 +293,11 @@ def benchmark_enrichment_fanout(runs: int, delay_ms: float) -> dict[str, Any]:
         patch.object(graph_module, "make_time_check_node", return_value=lambda state: {
             "time_check_done": True, "time_violations": [], "time_check_round": 1,
         }),
-        patch.object(graph_module, "make_meal_enrichment_node", return_value=delayed({
-            "meal_candidates": [], "meals": [],
+        patch.object(graph_module, "main_meal_candidate_search_node", new=lambda state: {
+            "main_meal_candidates": [], "main_meal_status": "partial",
+        }),
+        patch.object(graph_module, "main_meal_output_node", new=delayed({
+            "meal_slots": [], "main_meal_status": "partial",
         })),
         patch.object(graph_module, "make_spot_tips_node", return_value=delayed({"spot_tips": {}})),
         patch.object(graph_module, "make_finalize_node", return_value=lambda state: {"final_plan": {}}),
@@ -326,7 +332,7 @@ def benchmark_enrichment_fanout(runs: int, delay_ms: float) -> dict[str, Any]:
     return {
         "measurement_type": "production-langgraph-with-delayed-fake-nodes",
         "runs": runs,
-        "parallel_nodes": ["meal_enrichment", "spot_tips"],
+        "parallel_nodes": ["main_meal_output", "spot_tips"],
         "fake_delay_ms_per_node": delay_ms,
         "serial_baseline_ms": serial,
         "current_fanout_ms": concurrent,

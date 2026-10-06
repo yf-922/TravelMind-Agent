@@ -53,7 +53,7 @@ def test_intent_fans_out_weather_as_independent_stage():
         travel_start_date=date(2026, 9, 20),
         travel_end_date=date(2026, 9, 20),
     )
-    assert nodes.route_after_intent(state) == ["query_rewrite", "weather_search"]
+    assert nodes.route_after_intent(state) == ["query_rewrite", "weather_search", "main_meal_search"]
 
 
 def test_weather_search_node_is_degradable_and_returns_forecast(monkeypatch):

@@ -22,6 +22,7 @@ from app.providers.hotels import recommend_chain_hotel
 from app.planning.schemas import (
     DayMealPick,
     IntentExtraction,
+    MealSlotPlan,
     ProfileUpdateResult,
     RewrittenQuery,
     RouteReview,
@@ -52,6 +53,7 @@ from app.planning.helpers import (
 )
 from app.planning.prompts import (
     INTENT_SYSTEM,
+    JOINT_PLANNER_SYSTEM,
     MEAL_SYSTEM,
     PLANNER_SYSTEM,
     QUERY_REWRITE_SYSTEM,
@@ -253,7 +255,7 @@ def weather_search_node(state: TravelPlanState) -> dict[str, Any]:
 
 def route_after_intent(state: TravelPlanState) -> str | list[str]:
     """Fan out independent post-intent work, or terminate on missing fields."""
-    return END if state.missing_fields else ["query_rewrite", "weather_search"]
+    return END if state.missing_fields else ["query_rewrite", "weather_search", "main_meal_search"]
 
 
 # ─── 高德景点搜索 ─────────────────────────────────────────────
@@ -290,6 +292,45 @@ def attraction_search_node(state: TravelPlanState) -> dict[str, Any]:
     return {"pois": merged, "history": state.history + [note]}
 
 
+def main_meal_candidate_search_node(state: TravelPlanState) -> dict[str, Any]:
+    """主 LangGraph 专用餐馆候选查询；不改变 Supervisor 的 meal_enrichment 契约。"""
+    try:
+        api_key = amap_key()
+    except Exception as exc:  # noqa: BLE001 - meal search is degradable
+        return {
+            "main_meal_candidates": [],
+            "main_meal_status": "degraded",
+        }
+    keyword = (state.food_preference or "餐厅").strip() or "餐厅"
+    try:
+        raw = search_city_pois(
+            state.destination or "", api_key, keywords=keyword,
+            types="餐饮服务", offset=20,
+        )
+        candidates = [item for item in (restaurant_to_dict(p) for p in raw) if item]
+        candidates = enrich_restaurant_prices(candidates, state.destination or "")[:30]
+    except Exception as exc:  # noqa: BLE001 - preserve planning path on provider failure
+        logger.warning("[main_meal_search] lookup failed (%s)", type(exc).__name__)
+        candidates = []
+        return {
+            "main_meal_candidates": [],
+            "main_meal_status": "degraded",
+        }
+    status = "ok" if candidates else "partial"
+    return {
+        "main_meal_candidates": candidates,
+        "main_meal_status": status,
+    }
+
+
+def main_meal_output_node(state: TravelPlanState) -> dict[str, Any]:
+    """主链路餐馆已由联合 Planner 选择，这个节点只标记输出就绪。"""
+    return {
+        "main_meal_status": state.main_meal_status if state.main_meal_candidates else "degraded",
+        "history": state.history + [f"主链路餐馆时间轴就绪：{len(state.meal_slots)} 个节点"],
+    }
+
+
 def route_distance_check_node(state: TravelPlanState) -> dict[str, Any]:
     """并发核验 Planner 路线的道路距离。
 
@@ -297,11 +338,25 @@ def route_distance_check_node(state: TravelPlanState) -> dict[str, Any]:
     参考。每一段独立请求并发执行，单段失败不会阻塞整条规划链路。
     """
     locations = spot_location_map(state.pois)
+    if state.main_meal_candidates:
+        locations.update({
+            str(item.get("name")): item.get("location")
+            for item in state.main_meal_candidates
+            if item.get("name") and item.get("location")
+        })
     jobs: list[tuple[int, str, str, dict[str, float], dict[str, float]]] = []
     for day in state.route:
         day_no = int(day.get("day") or 0)
-        spots = day.get("spots") or []
-        for prev, cur in zip(spots, spots[1:]):
+        events: list[dict[str, Any]] = [
+            {**spot, "_kind": "spot"} for spot in (day.get("spots") or [])
+        ]
+        if state.meal_slots:
+            events.extend(
+                {**slot, "name": slot.get("restaurant_name"), "_kind": "meal"}
+                for slot in state.meal_slots if int(slot.get("day") or 0) == day_no
+            )
+        events.sort(key=lambda item: str(item.get("start_time") or "99:99"))
+        for prev, cur in zip(events, events[1:]):
             from_name = str(prev.get("name") or "").strip()
             to_name = str(cur.get("name") or "").strip()
             origin, destination = locations.get(from_name), locations.get(to_name)
@@ -369,6 +424,27 @@ def requires_indoor_only(state: TravelPlanState) -> bool:
     return bool(re.search(r"(?:只|仅)(?:想|要)?(?:参观|安排|去|玩)?[^，。；\n]{0,12}室内", text))
 
 
+def _clock_minutes(value: Any) -> int:
+    match = re.fullmatch(r"\s*(\d{1,2}):(\d{2})\s*", str(value or ""))
+    if not match:
+        raise ValueError("invalid clock")
+    hour, minute = int(match.group(1)), int(match.group(2))
+    if hour > 23 or minute > 59:
+        raise ValueError("invalid clock")
+    return hour * 60 + minute
+
+
+def _time_window_contains(opening: str, start: int, end: int) -> bool:
+    match = re.search(r"(\d{1,2}):?(\d{2})\s*[-~至]\s*(\d{1,2}):?(\d{2})", opening)
+    if not match:
+        return True
+    open_min = int(match.group(1)) * 60 + int(match.group(2))
+    close_min = int(match.group(3)) * 60 + int(match.group(4))
+    if close_min <= open_min:
+        close_min += 24 * 60
+    return open_min <= start and end <= close_min
+
+
 def explicit_modification_time_violation(state: TravelPlanState) -> bool:
     """Check supported explicit visit-time edits, not arbitrary natural language."""
     notes = state.modification_notes or ""
@@ -403,6 +479,68 @@ def explicit_modification_time_violation(state: TravelPlanState) -> bool:
                        or start_min < required_start or end_min > required_end):
             return True
     return False
+
+
+def _main_meal_risk_flags(state: TravelPlanState) -> list[str]:
+    """Deterministic checks for main-chain meal time-axis nodes."""
+    if not state.meal_slots:
+        return []
+    flags: list[str] = []
+    candidates = {str(item.get("name")): item for item in state.main_meal_candidates}
+    seen: set[str] = set()
+    for slot in state.meal_slots:
+        name = str(slot.get("restaurant_name") or slot.get("name") or "").strip()
+        if not name or name not in candidates:
+            flags.append("meal_unknown_restaurant")
+        if name and name in seen:
+            flags.append("meal_duplicate_restaurant")
+        seen.add(name)
+        try:
+            start = int(str(slot.get("start_time") or "").split(":")[0]) * 60 + int(str(slot.get("start_time") or "").split(":")[1])
+            end = int(str(slot.get("end_time") or "").split(":")[0]) * 60 + int(str(slot.get("end_time") or "").split(":")[1])
+        except (ValueError, IndexError):
+            flags.append("meal_time_structure")
+            continue
+        if end <= start or end - start < state.meal_duration_min:
+            flags.append("meal_time_structure")
+        opening = str(candidates.get(name, {}).get("open_time") or "")
+        if opening and not _time_window_contains(opening, start, end):
+            flags.append("meal_opening_conflict")
+        day_no = int(slot.get("day") or 0)
+        for day in state.route:
+            if int(day.get("day") or 0) != day_no:
+                continue
+            for spot in day.get("spots") or []:
+                try:
+                    ss = _clock_minutes(spot.get("start_time"))
+                    ee = _clock_minutes(spot.get("end_time"))
+                except ValueError:
+                    continue
+                if ss < end and start < ee:
+                    flags.append("meal_overlap")
+        # Apply an explicit per-meal budget only when the user actually gave
+        # one; missing provider prices remain a visible degraded state rather
+        # than being treated as a hard violation.
+        budget_match = re.search(
+            r"(?:人均|每餐|餐饮).{0,8}(?:(?:不超过|不高于|以内|预算(?:为)?)[^0-9]{0,3})?(\d+(?:\.\d+)?)\s*(?:元|块)?",
+            "\n".join(filter(None, [state.query, state.modification_notes])),
+        )
+        if budget_match:
+            budget_limit = float(budget_match.group(1))
+            cost = _money_value(candidates.get(name, {}).get("cost"))
+            if cost is not None and cost > budget_limit:
+                flags.append("meal_budget_conflict")
+        # If the provider returned cuisine/category metadata, use it as a
+        # deterministic guard.  Do not reject a candidate merely because the
+        # provider omitted tags; the LLM Reviewer handles that soft case.
+        preference = (state.food_preference or "").strip()
+        metadata = candidates.get(name, {})
+        tags = " ".join(str(metadata.get(key) or "") for key in ("keytag", "type", "keywords", "category"))
+        if preference and tags:
+            requested = [token for token in re.split(r"[、,，/\s]+", preference) if len(token) >= 2]
+            if requested and not any(token in tags for token in requested):
+                flags.append("meal_preference_conflict")
+    return sorted(set(flags))
 
 
 def _route_risk_flags(state: TravelPlanState) -> list[str]:
@@ -535,6 +673,7 @@ def _route_risk_flags(state: TravelPlanState) -> list[str]:
     if requires_indoor_only(state):
         if any(poi_by_name.get(name, {}).get("indoor") is not True for name in names):
             flags.append("indoor_constraint")
+    flags.extend(_main_meal_risk_flags(state))
     return flags
 
 
@@ -547,12 +686,15 @@ def route_risk_gate_node(state: TravelPlanState) -> dict[str, Any]:
         "habit_constraint", "user_modification",
         "modification_time_unfulfilled",
         "indoor_constraint",
+        "meal_unknown_restaurant", "meal_duplicate_restaurant", "meal_time_structure",
+        "meal_opening_conflict", "meal_overlap", "meal_budget_conflict",
+        "meal_preference_conflict",
     )
     review_required = any(
         flag == prefix or flag.startswith(prefix + ":")
         for flag in flags for prefix in review_prefixes
     )
-    time_required = "opening_time_conflict" in flags
+    time_required = bool({"opening_time_conflict", "meal_opening_conflict", "meal_time_structure", "meal_overlap"} & set(flags))
     if review_required:
         time_required = True
     skipped = not review_required and not time_required
@@ -593,6 +735,67 @@ def _travel_dates_block(state: TravelPlanState) -> str:
         "\n\n出行日期与星期（请据此判断景点当天是否开放，"
         "勿把有闭馆日/限定开放日的景点排在其不开放的星期）：\n" + "\n".join(lines)
     )
+
+
+def make_joint_planner_node(model_name: str | None):
+    """主 LangGraph 专用 Planner：景点与餐馆共同生成时间轴。"""
+    llm = build_structured_llm(
+        TravelRoute, model=model_name, temperature=0.3, task_type="joint_planner"
+    )
+
+    def planner(state: TravelPlanState) -> dict[str, Any]:
+        cluster_map = cluster_pois_by_location(state.pois, state.days)
+        spot_text = format_spots_for_llm(state.pois, cluster_map)
+        meal_text = "（无餐馆候选，餐馆时间块可留空并说明降级）"
+        if state.main_meal_candidates:
+            meal_text = "\n".join(
+                f"- {item.get('name')} | 评分={item.get('rating') or '无'} | "
+                f"人均={item.get('cost') or '未知'} | 营业={item.get('open_time') or '未知'} | "
+                f"坐标={item.get('location')} | 标签={item.get('keytag') or '无'}"
+                for item in state.main_meal_candidates[:30]
+            )
+        feedback = state.route_modify_opinion or "无"
+        old_route = json.dumps(state.route, ensure_ascii=False) if state.route else "无"
+        prompt = (
+            f"用户需求：{state.rewritten_query or state.query}\n"
+            f"目的地：{state.destination}；天数：{state.days}；每天景点上限：{state.max_per_day}\n"
+            f"景点偏好：{state.attraction_preference or '无'}；用餐偏好：{state.food_preference or '无'}\n"
+            f"用餐时长：每餐约 {state.meal_duration_min} 分钟；步行上限：{state.max_walking_km or '未指定'} km\n"
+            f"天气：{format_weather_for_llm(state.weather_forecast) or '无天气信息'}\n"
+            f"景点候选池：\n{spot_text}\n\n"
+            f"餐馆候选池：\n{meal_text}\n\n"
+            f"上一版路线（仅供修改参考）：{old_route}\n"
+            f"本轮修改/审核意见：{feedback}\n"
+            "请同时输出景点 days 和餐馆 meal_slots。meal_slots 的餐馆名必须逐字来自餐馆候选池，"
+            "每个 meal_slots 必须有 day 对应关系（通过顺序从 start_time 判断），并确保时间不与景点重叠。"
+        )
+        result: TravelRoute = invoke_structured(
+            llm, [("system", JOINT_PLANNER_SYSTEM), ("human", prompt)]
+        )
+        route = [day.model_dump() for day in result.days]
+        replacements = canonicalize_route_spot_names(route, state.pois)
+        allowed_meals = {str(item.get("name")) for item in state.main_meal_candidates}
+        slots: list[dict[str, Any]] = []
+        for slot in result.meal_slots:
+            item = slot.model_dump()
+            name = str(item.get("restaurant_name") or "").strip()
+            if name and name in allowed_meals:
+                slots.append(item)
+        note = result.notes or f"联合规划完成：{len(route)} 天、{len(slots)} 个餐馆时间块"
+        if replacements:
+            note += f"；规范化景点名称 {len(replacements)} 个"
+        return {
+            "route": route,
+            "meal_slots": slots,
+            "review_round": state.review_round + 1,
+            "history": state.history + [f"[joint_planner] {note}"],
+            "planner_reviewer_dialogue": state.planner_reviewer_dialogue + [
+                f"[联合规划第{state.review_round + 1}轮] {note}"
+            ],
+            "route_stale_warning": "",
+        }
+
+    return planner
 
 
 def make_planner_node(model_name: str | None):
@@ -789,6 +992,12 @@ def make_reviewer_node(model_name: str | None):
 
         facts = f"非候选池景点：{('；'.join(bad_unknown)) or '无'}"
         distance_facts = _format_route_distance_facts(state.route_distance_legs, state.route_distance_note)
+        meal_facts = ""
+        if state.meal_slots:
+            meal_facts = (
+                "\n主链路餐馆时间轴（请检查用餐节奏、偏好和与景点组合；营业时间/硬约束由规则复核）：\n"
+                + json.dumps(state.meal_slots, ensure_ascii=False)
+            )
 
         weather_text = format_weather_for_llm(state.weather_forecast)
         weather_block = (
@@ -825,6 +1034,7 @@ def make_reviewer_node(model_name: str | None):
             f"待评审路线：\n{json.dumps(state.route, ensure_ascii=False)}\n\n"
             f"系统客观预检（请据此判断）：\n{facts}"
             f"\n{distance_facts}"
+            f"{meal_facts}"
             f"{dialogue_block}\n\n"
             f"请评审并给出结论。⚠️ 开放时间和闭馆日由 time_check 专项 Agent 单独核查，"
             f"你不要评审开放时间相关问题。"
@@ -912,6 +1122,8 @@ def route_after_time_check(state: TravelPlanState) -> str | list[str]:
     - 否则 → planner 修正
     """
     if not state.time_violations:
+        if any(str(flag).startswith("meal_") for flag in (state.route_risk_flags or [])):
+            return "planner"
         if state.risk_gate_rechecked and state.review_required and any(
             flag not in {"opening_time_unknown", "opening_time_conflict"}
             for flag in (state.route_risk_flags or [])
@@ -1556,6 +1768,43 @@ def _finalize_impl(state: TravelPlanState) -> dict[str, Any]:
                 else:
                     timeline.append({"type": "dinner", "name": None, "no_restaurant": True})
 
+        if state.meal_slots:
+            # 主链路使用联合规划时间轴；旧 meals 仅作为 Supervisor/旧 checkpoint 兼容输出。
+            meal_info = {
+                str(item.get("name")): item for item in state.main_meal_candidates
+            }
+            timeline = [item for item in timeline if item.get("type") == "hotel"]
+            for spot in day.get("spots", []):
+                info = spot_info.get(spot["name"], {})
+                timeline.append(resolve_attraction_price({
+                    "type": "attraction", "name": spot["name"],
+                    "start_time": spot.get("start_time"), "end_time": spot.get("end_time"),
+                    "period": spot.get("period"), "rating": info.get("rating"),
+                    "open_time": info.get("open_time"), "photo": info.get("photo"),
+                    "location": info.get("location"), "tip": state.spot_tips.get(spot["name"]),
+                    "guide": state.spot_guides.get(spot["name"]), "address": info.get("address"),
+                    "tel": info.get("tel"), "cost": info.get("cost"),
+                }, the_date, state.destination or "",
+                    live_tickets.get((str(spot.get("name") or ""), str(the_date or ""))),
+                    live_lookup_done=True))
+            for slot in state.meal_slots:
+                if int(slot.get("day") or 0) != int(day_no or 0):
+                    continue
+                info = meal_info.get(str(slot.get("restaurant_name") or ""), {})
+                timeline.append({
+                    "type": str(slot.get("meal") or "lunch"),
+                    "name": slot.get("restaurant_name"),
+                    "start_time": slot.get("start_time"),
+                    "end_time": slot.get("end_time"),
+                    "duration_min": slot.get("duration_min", state.meal_duration_min),
+                    "reason": slot.get("reason", ""),
+                    **info,
+                })
+            hotel_items = [item for item in timeline if item.get("type") == "hotel"]
+            timed_items = [item for item in timeline if item.get("type") != "hotel"]
+            timed_items.sort(key=lambda item: str(item.get("start_time") or "99:99"))
+            timeline = hotel_items + timed_items
+
         # 相邻地点距离与交通建议：优先使用路线服务返回的道路距离。
         # 多段路线并发查询，单段失败只标记 unavailable，不把直线距离冒充道路距离。
         state_leg_map = {
@@ -1641,6 +1890,8 @@ def _finalize_impl(state: TravelPlanState) -> dict[str, Any]:
         "meal_recommend": state.meal_recommend_status,
         "spot_tips": state.spot_tips_status,
     }
+    if state.main_meal_status != "not_requested":
+        service_status["main_meal_search"] = state.main_meal_status
     degraded_services = [
         name for name, status in service_status.items()
         if status in {"partial", "degraded"}
@@ -1650,6 +1901,7 @@ def _finalize_impl(state: TravelPlanState) -> dict[str, Any]:
         "time_check": "开放时间自动核查暂不可用，请在出发前通过景区官方渠道复核。",
         "meal_search": "部分沿线餐厅信息未获取成功，请在出发前查看地图实时结果。",
         "meal_recommend": "部分餐厅采用候选评分降级选择，请结合实时营业情况复核。",
+        "main_meal_search": "主链路餐馆候选查询部分失败，餐馆时间块可能为空或为降级结果。",
         "spot_tips": "景点贴士生成暂不可用，请以景区官方游览须知为准。",
     }
 
@@ -1675,6 +1927,11 @@ def _finalize_impl(state: TravelPlanState) -> dict[str, Any]:
         },
         "weather_forecast": state.weather_forecast,
         "weather_note": state.weather_note,
+        "meal_planning": {
+            "status": state.main_meal_status,
+            "duration_min": state.meal_duration_min,
+            "slots": list(state.meal_slots),
+        },
         # 透传给前端的"出行注意事项"：来自 reviewer 最后一轮的 issues，
         # 已是给用户看的友好出行提醒。time_check 的 violations 不属于注意事项——
         # 它要么被 planner 修完（time_violations 清空），要么属于极端兜底情况（达轮数上限未清完），
@@ -1685,6 +1942,7 @@ def _finalize_impl(state: TravelPlanState) -> dict[str, Any]:
         "service_status": service_status,
         "degraded_services": degraded_services,
         "days": days_out,
+        "meal_slots": list(state.meal_slots or []),
         "hotel": hotel_summary,
     }
     final_plan["budget_summary"] = {

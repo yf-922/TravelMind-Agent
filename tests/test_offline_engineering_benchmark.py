@@ -26,7 +26,7 @@ def test_fanout_benchmark_exercises_compiled_production_graph():
 
     assert result["pass"] is True
     assert result["p50_speedup"] >= 1.5
-    assert result["parallel_nodes"] == ["query_rewrite", "weather_search"]
+    assert result["parallel_nodes"] == ["query_rewrite", "weather_search", "main_meal_search"]
 
 
 def test_enrichment_benchmark_exercises_compiled_production_graph():
@@ -34,7 +34,7 @@ def test_enrichment_benchmark_exercises_compiled_production_graph():
 
     assert result["pass"] is True
     assert result["p50_speedup"] >= 1.5
-    assert result["parallel_nodes"] == ["meal_enrichment", "spot_tips"]
+    assert result["parallel_nodes"] == ["main_meal_output", "spot_tips"]
 
 
 def test_checkpoint_benchmark_is_explicitly_simulated_and_reports_avoided_work():

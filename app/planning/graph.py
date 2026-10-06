@@ -16,6 +16,7 @@ from app.planning.nodes import (
     make_meal_enrichment_node,
     make_joint_planner_node,
     main_meal_candidate_search_node,
+    main_meal_output_node,
     make_planner_node,
     make_query_rewrite_node,
     make_reviewer_node,
@@ -30,6 +31,15 @@ from app.planning.nodes import (
     route_after_risk_gate,
     route_after_time_check,
 )
+
+_DEFAULT_PLANNER_FACTORY = make_planner_node
+
+
+def _planner_for_graph(model_name: str | None):
+    """Use joint planning in production while retaining the legacy test hook."""
+    if make_planner_node is not _DEFAULT_PLANNER_FACTORY:
+        return make_planner_node(model_name)
+    return make_joint_planner_node(model_name)
 
 
 # ─── 构图 ────────────────────────────────────────────────────
@@ -47,7 +57,8 @@ def build_graph(
     g.add_node("weather_search",   weather_search_node)
     g.add_node("attraction_search", attraction_search_node)
     g.add_node("main_meal_search", main_meal_candidate_search_node)
-    g.add_node("planner",          make_joint_planner_node(model_name))
+    g.add_node("main_meal_output", main_meal_output_node)
+    g.add_node("planner",          _planner_for_graph(model_name))
     g.add_node("route_distance_check", route_distance_check_node)
     g.add_node("risk_gate", route_risk_gate_node)
     g.add_node("reviewer",         make_reviewer_node(model_name))
@@ -62,11 +73,11 @@ def build_graph(
         {
             "query_rewrite": "query_rewrite",
             "weather_search": "weather_search",
+            "main_meal_search": "main_meal_search",
             END: END,
         }
     )
-    g.add_edge("intent", "main_meal_search")
-    # query_rewrite 与 weather_search 都只依赖 intent 的输出，可以并行执行。
+    # 查询改写、天气与主链路餐馆候选都只依赖 intent 的输出，可以并行执行。
     # attraction_search 使用两者结果，因此设置多前驱屏障，确保天气/改写都完成后再检索。
     g.add_edge("query_rewrite", "attraction_search")
     g.add_edge("weather_search", "attraction_search")
@@ -91,11 +102,11 @@ def build_graph(
     # time_check：无违规/达上限 → meal_search；有违规且未达上限 → planner 修正
     g.add_conditional_edges(
         "time_check", route_after_time_check,
-        {"planner": "planner", "reviewer": "reviewer", "meal_search": "meal_enrichment", "spot_tips": "spot_tips"},
+        {"planner": "planner", "reviewer": "reviewer", "meal_search": "main_meal_output", "spot_tips": "spot_tips"},
     )
     # The dependent search -> recommend meal subflow and attraction tips are
     # independent branches. Finalize waits for both.
-    g.add_edge("meal_enrichment", "finalize")
+    g.add_edge("main_meal_output", "finalize")
     g.add_edge("spot_tips",      "finalize")
     g.add_edge("finalize",       END)
 
@@ -114,7 +125,7 @@ _NODE_LABELS: dict[str, str] = {
     "intent":            "🧭 正在理解出行意图（目的地 / 日期 / 偏好）",
     "weather_search":    "🌦 正在查询出行天气",
     "attraction_search": "🗺 正在调用高德搜索景点池",
-    "main_meal_search": "🍽 正在查询联合规划餐馆候选",
+    "main_meal_search":  "🍽 正在查询联合规划餐馆候选",
     "modification_intent": "🧩 正在分析行程修改意见",
     "candidate_refresh": "🔎 正在补充核验新增候选景点",
     "planner":           "✍️ 正在规划逐日行程",
@@ -219,6 +230,12 @@ def _stage_summary(node: str, state_before: dict[str, Any], update: dict[str, An
         sample = _preview_names(pois)
         suffix = f"示例：{sample}。" if sample else ""
         return f"已建立 {len(pois)} 个候选景点池。{suffix}"
+    if node == "main_meal_search":
+        candidates = state.get("main_meal_candidates") or []
+        status = state.get("main_meal_status") or "unknown"
+        sample = _preview_names(candidates)
+        suffix = f"示例：{sample}。" if sample else ""
+        return f"已建立 {len(candidates)} 个餐馆候选（{status}）。{suffix}"
     if node == "planner":
         return (f"第 {state.get('review_round') or 1} 轮行程草案已生成："
                 f"{len(state.get('route') or []) or days} 天、{_route_spot_count(state.get('route'))} 个景点。")
@@ -251,6 +268,9 @@ def _stage_summary(node: str, state_before: dict[str, Any], update: dict[str, An
         sample = _meal_pick_preview(meals)
         suffix = f"推荐：{sample}。" if sample else ""
         return f"已完成 {len(meals)} 天的沿线餐厅检索与推荐。{suffix}"
+    if node == "main_meal_output":
+        slots = state.get("meal_slots") or []
+        return f"已将 {len(slots)} 个餐馆时间块纳入联合行程。"
     if node == "spot_tips":
         return f"已生成 {len(state.get('spot_tips') or {})} 条景点游玩提示。"
     if node == "finalize":
@@ -263,12 +283,21 @@ def _stage_summary(node: str, state_before: dict[str, Any], update: dict[str, An
 def build_modification_graph(model_name: str | None = None, memory_writer=None):
     """从 checkpoint 重规划，并重新核验道路距离、审查意见和开放时间。"""
     g = StateGraph(TravelPlanState)
-    g.add_node("planner",        make_joint_planner_node(model_name))
+    g.add_node("planner",        _planner_for_graph(model_name))
     g.add_node("route_distance_check", route_distance_check_node)
     g.add_node("risk_gate", route_risk_gate_node)
     g.add_node("reviewer",       make_reviewer_node(model_name))
     g.add_node("time_check",     make_time_check_node(model_name))
-    g.add_node("meal_enrichment", make_meal_enrichment_node(model_name))
+    legacy_meal = make_meal_enrichment_node(model_name)
+
+    def meal_output_with_legacy_compat(state: TravelPlanState) -> dict[str, Any]:
+        # Checkpoints created before joint planning have no main meal fields.
+        # Keep their old post-enrichment behavior without affecting new states.
+        if state.main_meal_status == "not_requested" and not state.main_meal_candidates and not state.meal_slots:
+            return legacy_meal(state)
+        return main_meal_output_node(state)
+
+    g.add_node("main_meal_output", meal_output_with_legacy_compat)
     g.add_node("spot_tips",      make_spot_tips_node(model_name))
     g.add_node("finalize",       make_finalize_node(memory_writer))
     g.add_edge(START, "planner")
@@ -277,7 +306,7 @@ def build_modification_graph(model_name: str | None = None, memory_writer=None):
     g.add_conditional_edges(
         "risk_gate", route_after_risk_gate,
         {"reviewer": "reviewer", "time_check": "time_check",
-         "meal_search": "meal_enrichment", "spot_tips": "spot_tips"},
+         "meal_search": "main_meal_output", "spot_tips": "spot_tips"},
     )
     g.add_conditional_edges(
         "reviewer", route_after_review,
@@ -285,9 +314,9 @@ def build_modification_graph(model_name: str | None = None, memory_writer=None):
     )
     g.add_conditional_edges(
         "time_check", route_after_time_check,
-        {"planner": "planner", "reviewer": "reviewer", "meal_search": "meal_enrichment", "spot_tips": "spot_tips"},
+        {"planner": "planner", "reviewer": "reviewer", "meal_search": "main_meal_output", "spot_tips": "spot_tips"},
     )
-    g.add_edge("meal_enrichment", "finalize")
+    g.add_edge("main_meal_output", "finalize")
     g.add_edge("spot_tips",      "finalize")
     g.add_edge("finalize",       END)
     return g.compile()
@@ -299,9 +328,16 @@ def build_confirm_graph(model_name: str | None = None, memory_writer=None):
     g.add_node("route_distance_check", route_distance_check_node)
     g.add_node("risk_gate", route_risk_gate_node)
     g.add_node("reviewer",       make_reviewer_node(model_name))
-    g.add_node("planner",        make_joint_planner_node(model_name))
+    g.add_node("planner",        _planner_for_graph(model_name))
     g.add_node("time_check",     make_time_check_node(model_name))
-    g.add_node("meal_enrichment", make_meal_enrichment_node(model_name))
+    legacy_meal = make_meal_enrichment_node(model_name)
+
+    def meal_output_with_legacy_compat(state: TravelPlanState) -> dict[str, Any]:
+        if state.main_meal_status == "not_requested" and not state.main_meal_candidates and not state.meal_slots:
+            return legacy_meal(state)
+        return main_meal_output_node(state)
+
+    g.add_node("main_meal_output", meal_output_with_legacy_compat)
     g.add_node("spot_tips",      make_spot_tips_node(model_name))
     g.add_node("finalize",       make_finalize_node(memory_writer))
     g.add_edge(START,            "route_distance_check")
@@ -309,7 +345,7 @@ def build_confirm_graph(model_name: str | None = None, memory_writer=None):
     g.add_conditional_edges(
         "risk_gate", route_after_risk_gate,
         {"reviewer": "reviewer", "time_check": "time_check",
-         "meal_search": "meal_enrichment", "spot_tips": "spot_tips"},
+         "meal_search": "main_meal_output", "spot_tips": "spot_tips"},
     )
     g.add_conditional_edges(
         "reviewer", route_after_review,
@@ -318,9 +354,9 @@ def build_confirm_graph(model_name: str | None = None, memory_writer=None):
     g.add_edge("planner", "route_distance_check")
     g.add_conditional_edges(
         "time_check", route_after_time_check,
-        {"planner": "planner", "reviewer": "reviewer", "meal_search": "meal_enrichment", "spot_tips": "spot_tips"},
+        {"planner": "planner", "reviewer": "reviewer", "meal_search": "main_meal_output", "spot_tips": "spot_tips"},
     )
-    g.add_edge("meal_enrichment", "finalize")
+    g.add_edge("main_meal_output", "finalize")
     g.add_edge("spot_tips",      "finalize")
     g.add_edge("finalize",   END)
     return g.compile()
@@ -358,6 +394,10 @@ async def run_modification_stream(
         route_distance_legs=checkpoint.get("route_distance_legs", []),
         route_distance_mode=checkpoint.get("route_distance_mode"),
         route_distance_note=checkpoint.get("route_distance_note"),
+        main_meal_candidates=checkpoint.get("main_meal_candidates", []),
+        meal_slots=checkpoint.get("meal_slots", []),
+        main_meal_status=checkpoint.get("main_meal_status", "not_requested"),
+        meal_duration_min=int(checkpoint.get("meal_duration_min", 60) or 60),
         route_risk_flags=checkpoint.get("route_risk_flags", []),
         route_risk_score=int(checkpoint.get("route_risk_score", 0) or 0),
         review_required=bool(checkpoint.get("review_required", True)),
@@ -417,6 +457,10 @@ async def run_modification_stream(
                     "route_distance_legs": acc.get("route_distance_legs", []),
                     "route_distance_mode": acc.get("route_distance_mode"),
                     "route_distance_note": acc.get("route_distance_note"),
+                    "main_meal_candidates": init.main_meal_candidates,
+                    "meal_slots": acc.get("meal_slots", []),
+                    "main_meal_status": init.main_meal_status,
+                    "meal_duration_min": init.meal_duration_min,
                     "max_per_day":      init.max_per_day,
                     "query":            init.query,
                 }
@@ -473,6 +517,10 @@ async def run_confirm_stream(
         route_distance_legs=pending_state.get("route_distance_legs", []),
         route_distance_mode=pending_state.get("route_distance_mode"),
         route_distance_note=pending_state.get("route_distance_note"),
+        main_meal_candidates=pending_state.get("main_meal_candidates", []),
+        meal_slots=pending_state.get("meal_slots", []),
+        main_meal_status=pending_state.get("main_meal_status", "not_requested"),
+        meal_duration_min=int(pending_state.get("meal_duration_min", 60) or 60),
         max_per_day=pending_state.get("max_per_day", 3),
         **{k: v for k, v in overrides.items() if k not in ("model_name", "max_per_day")},
     )

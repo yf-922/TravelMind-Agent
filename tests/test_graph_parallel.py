@@ -45,8 +45,9 @@ def test_intent_post_processing_runs_weather_and_rewrite_in_parallel(monkeypatch
     monkeypatch.setattr(graph_module, "make_time_check_node", lambda *a, **k: lambda state: {
         "time_check_done": True, "time_violations": [], "time_check_round": 1,
     })
-    monkeypatch.setattr(graph_module, "make_meal_enrichment_node", lambda *a, **k: lambda state: {
-        "meal_candidates": [], "meals": [],
+    monkeypatch.setattr(graph_module, "main_meal_candidate_search_node", lambda state: {
+        "main_meal_candidates": [{"name": "Verified Restaurant", "location": "118,32"}],
+        "main_meal_status": "ok",
     })
     monkeypatch.setattr(graph_module, "make_spot_tips_node", lambda *a, **k: lambda state: {"spot_tips": {}})
     monkeypatch.setattr(graph_module, "make_finalize_node", lambda *a, **k: lambda state: {"final_plan": {}})
@@ -59,7 +60,7 @@ def test_intent_post_processing_runs_weather_and_rewrite_in_parallel(monkeypatch
     assert rewrite_start < weather_end and weather_start < rewrite_end
 
 
-def test_meal_enrichment_and_spot_tips_run_in_parallel_before_finalize(monkeypatch):
+def test_main_meal_output_and_spot_tips_run_in_parallel_before_finalize(monkeypatch):
     import app.planning.graph as graph_module
 
     intervals: dict[str, tuple[float, float]] = {}
@@ -97,15 +98,19 @@ def test_meal_enrichment_and_spot_tips_run_in_parallel_before_finalize(monkeypat
     monkeypatch.setattr(graph_module, "make_time_check_node", lambda *a, **k: lambda state: {
         "time_check_done": True, "time_violations": [], "time_check_round": 1,
     })
-    monkeypatch.setattr(graph_module, "make_meal_enrichment_node", lambda *a, **k: delayed(
-        "meal_enrichment", {"meals": [{"day": 1, "lunch": None, "dinner": None}]}
+    monkeypatch.setattr(graph_module, "main_meal_candidate_search_node", lambda state: {
+        "main_meal_candidates": [{"name": "Verified Restaurant", "location": "118,32"}],
+        "main_meal_status": "ok",
+    })
+    monkeypatch.setattr(graph_module, "main_meal_output_node", delayed(
+        "main_meal_output", {"meal_slots": [{"day": 1, "meal": "lunch", "restaurant_name": "Verified Restaurant", "start_time": "12:00", "end_time": "13:00"}]}
     ))
     monkeypatch.setattr(graph_module, "make_spot_tips_node", lambda *a, **k: delayed(
         "spot_tips", {"spot_tips": {"Museum": "tip"}}
     ))
 
     def finalize(state):
-        finalized["meals"] = state.meals
+        finalized["meal_slots"] = state.meal_slots
         finalized["spot_tips"] = state.spot_tips
         return {"final_plan": {}}
 
@@ -116,7 +121,7 @@ def test_meal_enrichment_and_spot_tips_run_in_parallel_before_finalize(monkeypat
     )
 
     assert result["final_plan"] == {}
-    assert finalized["meals"] and finalized["spot_tips"] == {"Museum": "tip"}
-    meal_start, meal_end = intervals["meal_enrichment"]
+    assert finalized["meal_slots"] and finalized["spot_tips"] == {"Museum": "tip"}
+    meal_start, meal_end = intervals["main_meal_output"]
     tips_start, tips_end = intervals["spot_tips"]
     assert meal_start < tips_end and tips_start < meal_end

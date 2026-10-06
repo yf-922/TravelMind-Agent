@@ -49,6 +49,20 @@ class DayRoute(BaseModel):
     theme: str = Field(description="当天主题，一句话，根据已确定的景点内容归纳")
 
 
+class MealSlotPlan(BaseModel):
+    """餐馆作为主规划时间轴中的一等节点。"""
+
+    # Default day=1 keeps older structured planner/checkpoint payloads loadable;
+    # the joint-planner prompt still requires an explicit day for new output.
+    day: int = Field(default=1, ge=1, description="第几天")
+    meal: str = Field(description="lunch 或 dinner")
+    restaurant_name: str = Field(description="餐馆名，必须严格来自餐馆候选池")
+    start_time: str = Field(description="用餐开始时间，格式 HH:MM")
+    end_time: str = Field(description="用餐结束时间，格式 HH:MM")
+    duration_min: int = Field(default=60, ge=15, le=240, description="用餐时长，分钟")
+    reason: str = Field(default="", description="选择该餐馆的简短理由")
+
+
 class TravelRoute(BaseModel):
     """Planner 产出的逐天路线（含时刻表）。
 
@@ -63,6 +77,10 @@ class TravelRoute(BaseModel):
     )
     days: list[DayRoute] = Field(
         description="逐天路线，严格落实 reasoning 中的结论——说换就必须换，说保留就保留"
+    )
+    meal_slots: list[MealSlotPlan] = Field(
+        default_factory=list,
+        description="午餐和晚餐时间轴节点；餐馆名必须来自餐馆候选池",
     )
     notes: str = Field(default="", description="本版总结，一句话说明本轮主要改动，供历史日志展示")
     modification_concern: str = Field(
@@ -228,6 +246,11 @@ class TravelPlanState(BaseModel):
     # 餐饮（一次成型）
     meal_candidates: list[dict[str, Any]] = Field(default_factory=list)
     meals: list[dict[str, Any]] = Field(default_factory=list)
+    # 主 LangGraph 联合规划专用字段；Supervisor 继续使用上面的兼容字段。
+    main_meal_candidates: list[dict[str, Any]] = Field(default_factory=list)
+    meal_slots: list[dict[str, Any]] = Field(default_factory=list)
+    main_meal_status: str = "not_requested"
+    meal_duration_min: int = Field(default=60, ge=15, le=240)
 
     # 景点游玩贴士（spot_tips 节点填充：景点名 → 贴士文本）
     spot_tips: dict[str, str] = Field(default_factory=dict)

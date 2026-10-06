@@ -29,7 +29,7 @@ This is application-level context separation, not a process security sandbox.
 - Returned in-memory entries cannot mutate stored entries.
 - Authenticated API engine selection and missing-field continuation events.
 - Modification reuses candidates and skips Intent/weather/POI prefetch.
-- Full regression suite: 263 passed, dependency deprecation warnings only.
+- Full regression suite: 270 passed, dependency deprecation warnings only.
 - Five Node SSE client tests verify failed drafts cannot enter the successful-plan
   callback; missing-field continuation remains available. These run in CI.
 - Enrichment inputs are projected so meal/tips nodes cannot read private contexts.
@@ -99,6 +99,10 @@ This is application-level context separation, not a process security sandbox.
   closed venues, malformed meal windows and attraction/meal overlap. A food
   preference edit refreshes meal candidates; a time-only edit keeps the saved
   pool.
+- Main LangGraph and Supervisor fan out restaurant-candidate lookup with query
+  rewrite and weather. The offline compiled-graph benchmark measures this
+  three-way fan-out and the joint meal-output/tips fan-out using delayed fake
+  nodes; it is not online latency data.
 - Modification preference analysis and candidate refresh are covered: a new
   museum preference triggers provider search and exact-name deduplication;
   time/meal-only edits can reuse the frozen POI pool. Refresh status reaches
