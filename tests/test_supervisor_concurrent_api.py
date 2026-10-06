@@ -107,9 +107,13 @@ def test_supervisor_api_replays_saved_trip_through_modification(tmp_path, monkey
     def factory(*args, **kwargs):
         nodes = make_nodes()
         nodes["modification_intent"] = lambda state: {
-            "modification_search_keywords": [],
-            "modification_search_status": "not_required",
+            "modification_search_keywords": ["museum"] if "博物馆" in (state.modification_notes or "") else [],
+            "modification_search_status": "pending" if "博物馆" in (state.modification_notes or "") else "not_required",
             "attraction_preference": "历史文化",
+        }
+        nodes["candidate_refresh"] = lambda state: {
+            "pois": [*state.pois, {"name": "Verified Museum", "location": "118.7,32.0"}],
+            "modification_search_status": "complete",
         }
         return nodes
     monkeypatch.setattr(runtime, "production_nodes", factory)
@@ -134,7 +138,7 @@ def test_supervisor_api_replays_saved_trip_through_modification(tmp_path, monkey
         assert second_result["success"] is True
         assert second_result["plan_id"] != parent_id
         assert [event["node"] for event in second if event["type"] == "stage"][:3] == [
-            "modification_intent", "planner", "route_distance_check",
+            "modification_intent", "candidate_refresh", "planner",
         ]
         detail = client.get("/api/history/" + second_result["plan_id"], headers=headers)
         assert detail.status_code == 200
@@ -142,3 +146,12 @@ def test_supervisor_api_replays_saved_trip_through_modification(tmp_path, monkey
         assert checkpoint["memory_session_id"] == client.get(
             "/api/history/" + parent_id, headers=headers).json()["planner_state"]["memory_session_id"]
         assert checkpoint["attraction_preference"] == "历史文化"
+        assert "Verified Museum" in [poi["name"] for poi in checkpoint["pois"]]
+        third = events(client.post("/api/plan/stream", headers=headers, json={
+            "query": "南京历史文化一日游", "engine": "supervisor",
+            "plan_id": second_result["plan_id"], "modification_notes": "调整游玩节奏",
+        }))
+        third_result = next(event for event in reversed(third) if event["type"] == "result")
+        assert third_result["success"] is True
+        third_checkpoint = client.get("/api/history/" + third_result["plan_id"], headers=headers).json()["planner_state"]
+        assert "Verified Museum" in [poi["name"] for poi in third_checkpoint["pois"]]

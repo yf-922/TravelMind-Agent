@@ -90,6 +90,9 @@ This is application-level context separation, not a process security sandbox.
   the updated preference. Empty serialized dates are normalized to `None` in
   modification and confirmation entrypoints; this fixed a real missing-terminal
   SSE failure for date-less trips.
+- The replay now covers three generations: initial plan, a preference edit that
+  refreshes and persists a verified POI, then a second local edit. The third
+  checkpoint retains the refreshed POI and the same private-memory session.
 - Modification preference analysis and candidate refresh are covered: a new
   museum preference triggers provider search and exact-name deduplication;
   time/meal-only edits can reuse the frozen POI pool. Refresh status reaches
