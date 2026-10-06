@@ -224,6 +224,19 @@ def test_candidate_refresh_marks_partial_provider_failure(monkeypatch):
     assert {poi["name"] for poi in result["pois"]} == {"Old Park", "New Museum"}
 
 
+def test_modification_intent_failure_becomes_unverified_review_finding():
+    nodes = make_nodes()
+    nodes["modification_intent"] = lambda state: (_ for _ in ()).throw(RuntimeError("model timeout"))
+    state = TravelPlanState(query="trip", destination="Nanjing", days=1,
+                            pois=[{"name": "Museum"}], modification_notes="改成自然景点")
+    async def run():
+        return [event async for event in TravelSupervisor(nodes, InMemoryAgentMemoryStore(), "s").stream(
+            state, modification=True)]
+    events = asyncio.run(run())
+    assert events[-1]["success"] is False
+    assert "candidate_refresh_unverified" in events[-1]["failure_details"]["risk_flags"]
+
+
 def test_modification_flow_runs_analysis_refresh_before_replanning():
     nodes = make_nodes()
     seen = {}

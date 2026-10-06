@@ -139,6 +139,11 @@ class TravelSupervisor:
             update = await asyncio.to_thread(self.nodes[role], local)
         except Exception:
             fallback = {
+                "modification_intent": {
+                    "modification_search_keywords": [],
+                    "modification_search_status": "failed",
+                    "history": ["modification_intent: unavailable; candidate refresh could not be verified"],
+                },
                 "query_rewrite": {"rewritten_query": state.query},
                 "weather_search": {"weather_forecast": [], "weather_note": "Weather unavailable; forecast not verified."},
                 "spot_tips": {"spot_tips": {}, "spot_guides": {}, "spot_tips_status": "degraded"},

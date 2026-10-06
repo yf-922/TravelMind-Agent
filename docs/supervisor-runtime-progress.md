@@ -29,7 +29,7 @@ This is application-level context separation, not a process security sandbox.
 - Returned in-memory entries cannot mutate stored entries.
 - Authenticated API engine selection and missing-field continuation events.
 - Modification reuses candidates and skips Intent/weather/POI prefetch.
-- Full regression suite: 259 passed, dependency deprecation warnings only.
+- Full regression suite: 260 passed, dependency deprecation warnings only.
 - Five Node SSE client tests verify failed drafts cannot enter the successful-plan
   callback; missing-field continuation remains available. These run in CI.
 - Enrichment inputs are projected so meal/tips nodes cannot read private contexts.
@@ -91,6 +91,9 @@ This is application-level context separation, not a process security sandbox.
 - Multiple refresh keywords retain successful provider results as `partial`,
   but still trigger the hard review gate until the requested candidate set is
   verified complete.
+- Modification-intent model failures now degrade to an explicit unverified
+  refresh finding and a rejected draft, matching the main chain's non-fatal
+  provider failure behavior without claiming preference compliance.
 - Independent deterministic checks prevent model approval from overriding hard faults.
 - Optional weather/rewrite/meal/tips exceptions have explicit fallback updates.
 - Cancellation regression verifies late synchronous worker completion does not write memory.
