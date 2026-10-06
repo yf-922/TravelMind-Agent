@@ -1635,6 +1635,7 @@ def _finalize_impl(state: TravelPlanState) -> dict[str, Any]:
         })
 
     service_status = {
+        "semantic_memory": state.semantic_memory_status,
         "time_check": state.time_check_status,
         "meal_search": state.meal_search_status,
         "meal_recommend": state.meal_recommend_status,
@@ -1645,6 +1646,7 @@ def _finalize_impl(state: TravelPlanState) -> dict[str, Any]:
         if status in {"partial", "degraded"}
     ]
     degradation_messages = {
+        "semantic_memory": "个性化语义记忆暂不可用，本次规划未使用长期语义偏好。",
         "time_check": "开放时间自动核查暂不可用，请在出发前通过景区官方渠道复核。",
         "meal_search": "部分沿线餐厅信息未获取成功，请在出发前查看地图实时结果。",
         "meal_recommend": "部分餐厅采用候选评分降级选择，请结合实时营业情况复核。",

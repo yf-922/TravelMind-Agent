@@ -51,11 +51,16 @@ def _collection():
 
 def search_user_memories(user_id: str, query: str, limit: int = 3) -> list[str]:
     """Return only memories owned by this user; failure degrades to no memory."""
+    return search_user_memories_with_status(user_id, query, limit=limit)[0]
+
+
+def search_user_memories_with_status(user_id: str, query: str, limit: int = 3) -> tuple[list[str], str]:
+    """Return memories plus an explicit ``ok/skipped/degraded`` status."""
     if not user_id or not query.strip():
-        return []
+        return [], "skipped"
     collection = _collection()
     if collection is None:
-        return []
+        return [], "degraded"
     try:
         result = collection.query(
             query_texts=[query],
@@ -64,10 +69,10 @@ def search_user_memories(user_id: str, query: str, limit: int = 3) -> list[str]:
             include=["documents"],
         )
         docs = (result.get("documents") or [[]])[0] or []
-        return [str(doc) for doc in docs if str(doc).strip()][:limit]
+        return [str(doc) for doc in docs if str(doc).strip()][:limit], "ok"
     except Exception:
         logger.warning("[semantic_memory] retrieval failed user=%s", user_id, exc_info=True)
-        return []
+        return [], "degraded"
 
 
 def format_semantic_memories(memories: list[str]) -> str:

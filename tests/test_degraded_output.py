@@ -22,3 +22,13 @@ def test_finalize_exposes_degraded_services_to_the_client(monkeypatch):
     assert plan["service_status"]["meal_recommend"] == "ok"
     assert len(plan["route_issues"]) == 3
     assert any("官方渠道复核" in issue for issue in plan["route_issues"])
+
+
+def test_finalize_reports_semantic_memory_degradation():
+    state = TravelPlanState(query="test", destination="南京", days=1,
+                            route=[{"day": 1, "theme": "test", "spots": []}],
+                            semantic_memory_status="degraded")
+    plan = nodes.finalize_node(state)["final_plan"]
+    assert plan["service_status"]["semantic_memory"] == "degraded"
+    assert "semantic_memory" in plan["degraded_services"]
+    assert any("长期语义偏好" in issue for issue in plan["route_issues"])

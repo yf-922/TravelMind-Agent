@@ -67,6 +67,10 @@ This is application-level context separation, not a process security sandbox.
 - Browser planning page exposes `标准规划` and `协作规划`; selecting the latter sends `engine=supervisor`.
 - Human confirmation preserves the Supervisor engine and verifies the accepted draft.
 - Memory lookup/write errors degrade without terminating usable planning.
+- Chroma retrieval now exposes `ok`, `skipped` or `degraded` in the final service
+  status. A vector-store outage remains non-fatal but is visible to the user;
+  an empty result is distinct from an unavailable store. The API passes the
+  status into both engines' final plans.
 - Modification preference analysis and candidate refresh are covered: a new
   museum preference triggers provider search and exact-name deduplication;
   time/meal-only edits can reuse the frozen POI pool. Refresh status reaches

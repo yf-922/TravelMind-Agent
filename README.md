@@ -187,6 +187,8 @@ Planner、Reviewer、Time Check 分别读取会话内的角色私有记忆，SQL
 初始化或运行中的私有记忆读写失败均会在结果中标记 `private_memory` 降级，
 本次规划可继续，但不声称记忆已持久化。四进程 SQLite 测试验证同会话 80 条
 并发写入无丢失及用户/角色隔离；这不是多实例 API 负载验证。
+Chroma 语义检索也返回 `ok/skipped/degraded` 状态；不可用时仍可规划，但最终
+结果会明确列出 `semantic_memory` 降级，不把空召回误报为“没有用户偏好”。
 
 ```bash
 python scripts/evaluate_supervisor_parity.py --dry-run

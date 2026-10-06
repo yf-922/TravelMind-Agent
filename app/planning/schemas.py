@@ -248,6 +248,7 @@ class TravelPlanState(BaseModel):
 
     # 用户记忆注入（由 API 层填充）
     profile_hint: Optional[str] = None
+    semantic_memory_status: str = "not_requested"
 
     rag_sources: list[dict[str, Any]] = Field(default_factory=list)
 

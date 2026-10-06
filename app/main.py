@@ -46,6 +46,7 @@ from app.core.semantic_memory import (
     format_semantic_memories,
     run_semantic_memory_update,
     search_user_memories,
+    search_user_memories_with_status,
 )
 from app.core.thread_store import thread_store
 from app.core.cache import redis_status
@@ -398,6 +399,7 @@ async def create_plan_stream(req: PlanRequest, request: Request):
 
     # ── 5. 记忆注入：读取用户历史偏好 ────────────────────────
     profile_hint = ""
+    semantic_memory_status = "skipped"
     if user_id:
         with get_conn() as conn:
             profile = get_user_profile(user_id, conn)
@@ -407,16 +409,19 @@ async def create_plan_stream(req: PlanRequest, request: Request):
         # that blocking operation on FastAPI's event loop: otherwise a single
         # planning request can make login and health checks appear frozen.
         try:
-            memories = await asyncio.wait_for(
-                asyncio.to_thread(search_user_memories, user_id, query),
+            memories, semantic_memory_status = await asyncio.wait_for(
+                asyncio.to_thread(search_user_memories_with_status, user_id, query),
                 timeout=min(5.0, max(1.0, float(os.getenv("MEMORY_LOOKUP_TIMEOUT_SECONDS", "2.5")))),
             )
             semantic_hint = format_semantic_memories(memories)
         except TimeoutError:
+            semantic_memory_status = "degraded"
             logger.warning("[semantic_memory] lookup timed out; continuing without semantic memory")
         except (ValueError, TypeError):
+            semantic_memory_status = "degraded"
             logger.warning("[semantic_memory] invalid lookup timeout configuration; skipping lookup")
         except Exception:  # noqa: BLE001
+            semantic_memory_status = "degraded"
             logger.warning("[semantic_memory] lookup failed; continuing without semantic memory", exc_info=True)
         profile_hint = "\n".join(part for part in (structured_hint, semantic_hint) if part)
 
@@ -427,6 +432,7 @@ async def create_plan_stream(req: PlanRequest, request: Request):
             profile_hint=profile_hint,
             memory_writer=memory_writer,
             user_id=user_id,
+            semantic_memory_status=semantic_memory_status,
             **overrides,
         ):
             # missing_fields 时追加 thread_id 供前端续接

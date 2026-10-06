@@ -22,6 +22,26 @@ def test_semantic_memory_is_isolated_by_user(monkeypatch):
     assert semantic_memory.search_user_memories("u2", "带父母旅行") == ["每天少走路"]
 
 
+def test_semantic_memory_status_distinguishes_empty_from_unavailable(monkeypatch):
+    class EmptyCollection:
+        def query(self, **kwargs):
+            return {"documents": [[]]}
+
+    monkeypatch.setattr(semantic_memory, "_collection", lambda: EmptyCollection())
+    assert semantic_memory.search_user_memories_with_status("u1", "museum") == ([], "ok")
+    monkeypatch.setattr(semantic_memory, "_collection", lambda: None)
+    assert semantic_memory.search_user_memories_with_status("u1", "museum") == ([], "degraded")
+
+
+def test_semantic_memory_status_marks_query_failure(monkeypatch):
+    class BrokenCollection:
+        def query(self, **kwargs):
+            raise RuntimeError("vector index unavailable")
+
+    monkeypatch.setattr(semantic_memory, "_collection", lambda: BrokenCollection())
+    assert semantic_memory.search_user_memories_with_status("u1", "museum") == ([], "degraded")
+
+
 def test_semantic_memory_prompt_marks_current_request_as_higher_priority():
     prompt = semantic_memory.format_semantic_memories(["带父母时每天少走路", "不吃太辣"])
     assert "当前用户明确需求优先" in prompt
