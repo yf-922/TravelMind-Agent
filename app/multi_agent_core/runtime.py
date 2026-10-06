@@ -19,7 +19,7 @@ INPUTS = {
     "query_rewrite": {"query", "profile_hint", "destination", "days", "travel_start_date", "travel_end_date", "attraction_preference", "food_preference", "habit_preference"},
     "weather_search": {"destination", "travel_start_date", "travel_end_date", "days"},
     "attraction_search": {"destination", "query", "rewritten_query", "max_spots", "min_rating"},
-    "planner": {"query", "destination", "days", "travel_start_date", "travel_end_date", "pois", "weather_forecast", "weather_note", "attraction_preference", "food_preference", "habit_preference", "max_walking_km", "rain_indoor_priority", "max_per_day", "route", "route_modify_opinion", "route_stale_warning", "review_round", "profile_hint", "modification_notes"},
+    "planner": {"query", "rewritten_query", "destination", "days", "travel_start_date", "travel_end_date", "pois", "weather_forecast", "weather_note", "attraction_preference", "food_preference", "habit_preference", "max_walking_km", "rain_indoor_priority", "max_per_day", "max_review_rounds", "route", "route_modify_opinion", "route_stale_warning", "review_round", "profile_hint", "modification_notes", "route_distance_legs", "route_distance_note"},
     "route_distance_check": {"pois", "route", "max_walking_km"},
     "risk_gate": {"pois", "route", "days", "max_per_day", "travel_start_date", "weather_forecast", "habit_preference", "max_walking_km", "rain_indoor_priority", "route_distance_legs", "modification_notes", "route_modify_opinion"},
     "reviewer": {"destination", "days", "travel_start_date", "travel_end_date", "pois", "route", "habit_preference", "max_per_day", "weather_forecast", "max_walking_km", "rain_indoor_priority", "route_distance_legs", "route_distance_note", "review_round"},
@@ -86,7 +86,19 @@ class TravelSupervisor:
         if role in {"planner", "reviewer", "time_check"}:
             data["planner_reviewer_dialogue"] = self._history(role)
         local = TravelPlanState(**data)
-        update = await asyncio.to_thread(self.nodes[role], local)
+        try:
+            update = await asyncio.to_thread(self.nodes[role], local)
+        except Exception:
+            fallback = {
+                "query_rewrite": {"rewritten_query": state.query},
+                "weather_search": {"weather_forecast": [], "weather_note": "Weather unavailable; forecast not verified."},
+                "spot_tips": {"spot_tips": {}, "spot_guides": {}, "spot_tips_status": "degraded"},
+                "meal_enrichment": {"meals": [], "meal_candidates": [], "meal_search_status": "degraded", "meal_recommend_status": "degraded"},
+            }
+            if role not in fallback:
+                raise
+            logger.warning("optional supervisor node failed role=%s", role, exc_info=True)
+            update = fallback[role]
         if not isinstance(update, dict):
             raise TypeError(f"{role} must return a state update")
         safe = {key: value for key, value in update.items()
@@ -142,8 +154,6 @@ class TravelSupervisor:
             state.approved = False
             state.reviewer_issues = []
             state.time_violations = []
-            state.route_distance_legs = []
-            state.route_distance_note = None
             state.time_check_done = False
             state.time_check_status = "skipped"
             roles = ("route_distance_check", "risk_gate") if confirmed and revision == 0 else ("planner", "route_distance_check", "risk_gate")
@@ -177,6 +187,9 @@ class TravelSupervisor:
                 state.approved = False
                 feedback = "【规则校验未通过】" + ", ".join(hard_faults)
                 state.route_modify_opinion = "\n".join(filter(None, [state.route_modify_opinion, feedback]))
+            if state.time_violations:
+                details = json.dumps(state.time_violations, ensure_ascii=False)
+                state.route_modify_opinion = "\n".join(filter(None, [state.route_modify_opinion, details]))
             if state.approved and not state.time_violations:
                 break
         for role in ("meal_enrichment", "spot_tips"):

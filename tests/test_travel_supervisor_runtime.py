@@ -146,3 +146,58 @@ def test_modification_warning_matches_frontend_contract():
     event = asyncio.run(run())[-1]
     assert event["type"] == "modification_warning"
     assert event["concern"] == "Requires user confirmation"
+
+
+def test_optional_parallel_failures_return_explicit_degradation():
+    nodes = make_nodes()
+    def unavailable(state):
+        raise TimeoutError("provider timeout")
+    for name in ("weather_search", "query_rewrite", "spot_tips", "meal_enrichment"):
+        nodes[name] = unavailable
+    events = collect(TravelSupervisor(nodes, InMemoryAgentMemoryStore(), "s"), TravelPlanState(query="trip"))
+    final = events[-1]
+    assert final["success"] is True
+    assert final["checkpoint"]["weather_forecast"] == []
+    assert final["checkpoint"]["spot_tips_status"] == "degraded"
+    assert final["checkpoint"]["meal_search_status"] == "degraded"
+
+
+def test_cancellation_does_not_save_late_worker_output():
+    import threading
+    memory = InMemoryAgentMemoryStore()
+    started = threading.Event()
+    release = threading.Event()
+    nodes = make_nodes()
+    def blocked(state):
+        started.set()
+        release.wait(2)
+        return {"destination": "Nanjing", "days": 1}
+    nodes["intent"] = blocked
+    async def run():
+        runtime = TravelSupervisor(nodes, memory, "s")
+        async def consume():
+            return [event async for event in runtime.stream(TravelPlanState(query="trip"))]
+        task = asyncio.create_task(consume())
+        await asyncio.to_thread(started.wait, 2)
+        task.cancel()
+        release.set()
+        try:
+            await task
+        except asyncio.CancelledError:
+            pass
+        else:
+            raise AssertionError("cancellation was swallowed")
+    asyncio.run(run())
+    assert memory.load("s", "intent") == []
+
+
+def test_planner_receives_review_feedback_and_configured_limit():
+    nodes = make_nodes(reject=True)
+    rounds = []
+    original = nodes["planner"]
+    def planner(state):
+        rounds.append((state.route_modify_opinion, state.max_review_rounds))
+        return original(state)
+    nodes["planner"] = planner
+    collect(TravelSupervisor(nodes, InMemoryAgentMemoryStore(), "s"), TravelPlanState(query="trip", max_review_rounds=1))
+    assert rounds == [(None, 1), ("revise", 1)]
