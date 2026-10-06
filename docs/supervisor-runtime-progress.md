@@ -29,7 +29,7 @@ This is application-level context separation, not a process security sandbox.
 - Returned in-memory entries cannot mutate stored entries.
 - Authenticated API engine selection and missing-field continuation events.
 - Modification reuses candidates and skips Intent/weather/POI prefetch.
-- Full regression suite: 252 passed, one dependency deprecation warning.
+- Full regression suite: 254 passed, one dependency deprecation warning.
 - Five Node SSE client tests verify failed drafts cannot enter the successful-plan
   callback; missing-field continuation remains available. These run in CI.
 - Enrichment inputs are projected so meal/tips nodes cannot read private contexts.
@@ -71,6 +71,8 @@ This is application-level context separation, not a process security sandbox.
   status. A vector-store outage remains non-fatal but is visible to the user;
   an empty result is distinct from an unavailable store. The API passes the
   status into both engines' final plans.
+- Authenticated users can delete only their own Chroma semantic-memory records;
+  storage failure returns an explicit 503 rather than claiming deletion.
 - Modification preference analysis and candidate refresh are covered: a new
   museum preference triggers provider search and exact-name deduplication;
   time/meal-only edits can reuse the frozen POI pool. Refresh status reaches

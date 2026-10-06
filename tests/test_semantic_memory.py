@@ -42,6 +42,25 @@ def test_semantic_memory_status_marks_query_failure(monkeypatch):
     assert semantic_memory.search_user_memories_with_status("u1", "museum") == ([], "degraded")
 
 
+def test_semantic_memory_deletion_is_user_scoped(monkeypatch):
+    class Collection:
+        def __init__(self):
+            self.filters = []
+
+        def delete(self, **kwargs):
+            self.filters.append(kwargs)
+
+    collection = Collection()
+    monkeypatch.setattr(semantic_memory, "_collection", lambda: collection)
+    assert semantic_memory.delete_user_memories("u1") == (True, "ok")
+    assert collection.filters == [{"where": {"user_id": "u1"}}]
+
+
+def test_semantic_memory_deletion_reports_unavailable_store(monkeypatch):
+    monkeypatch.setattr(semantic_memory, "_collection", lambda: None)
+    assert semantic_memory.delete_user_memories("u1") == (False, "degraded")
+
+
 def test_semantic_memory_prompt_marks_current_request_as_higher_priority():
     prompt = semantic_memory.format_semantic_memories(["带父母时每天少走路", "不吃太辣"])
     assert "当前用户明确需求优先" in prompt

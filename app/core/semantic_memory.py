@@ -81,6 +81,21 @@ def format_semantic_memories(memories: list[str]) -> str:
     return "AI 长期记忆（仅作参考，当前用户明确需求优先）：" + "；".join(memories)
 
 
+def delete_user_memories(user_id: str) -> tuple[bool, str]:
+    """Delete only one user's semantic memories; return operation status."""
+    if not user_id:
+        return False, "skipped"
+    collection = _collection()
+    if collection is None:
+        return False, "degraded"
+    try:
+        collection.delete(where={"user_id": user_id})
+        return True, "ok"
+    except Exception:
+        logger.warning("[semantic_memory] deletion failed user=%s", user_id, exc_info=True)
+        return False, "degraded"
+
+
 def _clean_memories(memories: list[str]) -> list[str]:
     seen: set[str] = set()
     clean: list[str] = []

@@ -8,6 +8,7 @@ from pydantic import BaseModel
 from app.core.auth import decode_token
 from app.core.database import get_conn
 from app.core.memory import get_user_profile, set_user_profile
+from app.core.semantic_memory import delete_user_memories
 
 router = APIRouter(prefix="/api/profile", tags=["profile"])
 
@@ -50,3 +51,13 @@ def update_profile(req: ProfileUpdate, authorization: str | None = Header(defaul
     with get_conn() as conn:
         set_user_profile(user_id, req.model_dump(), conn)
         return _profile_with_stats(user_id, conn)
+
+
+@router.delete("/semantic-memory")
+def clear_semantic_memory(authorization: str | None = Header(default=None)):
+    """Erase only the authenticated user's Chroma preference records."""
+    user_id = _require_user(authorization)
+    deleted, status = delete_user_memories(user_id)
+    if status == "degraded":
+        raise HTTPException(503, "语义记忆存储暂不可用，未确认删除")
+    return {"deleted": deleted, "status": status}
