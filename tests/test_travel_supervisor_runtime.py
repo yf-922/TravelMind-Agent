@@ -77,6 +77,76 @@ def test_parallel_completion_reports_fast_node_before_slow_node_finishes():
     assert summaries.index("weather_search") < summaries.index("query_rewrite")
 
 
+def test_initial_fact_queries_fan_out_meals_with_query_and_weather():
+    """Supervisor keeps the same first-stage fan-out as the main graph."""
+    import threading
+
+    nodes = make_nodes()
+    started = []
+    release = threading.Event()
+
+    def delayed(name, result):
+        def run(state):
+            started.append(name)
+            assert release.wait(2), f"{name} did not receive release"
+            return result
+        return run
+
+    nodes["query_rewrite"] = delayed("query_rewrite", {"rewritten_query": "museum"})
+    nodes["weather_search"] = delayed("weather_search", {"weather_note": "fixture"})
+    nodes["main_meal_search"] = delayed("main_meal_search", {
+        "main_meal_candidates": [{"name": "Local Kitchen"}],
+        "main_meal_status": "ok",
+    })
+
+    async def run():
+        task = asyncio.create_task(
+            collect_async(TravelSupervisor(nodes, InMemoryAgentMemoryStore(), "s"), TravelPlanState(query="trip"))
+        )
+        for _ in range(20):
+            await asyncio.sleep(0.01)
+            if len(started) == 3:
+                break
+        assert set(started) == {"query_rewrite", "weather_search", "main_meal_search"}
+        release.set()
+        return await task
+
+    async def collect_async(runtime, state):
+        return [event async for event in runtime.stream(state)]
+
+    events = asyncio.run(run())
+    stages = [event["node"] for event in events if event["type"] == "stage"]
+    assert stages[:4] == ["intent", "query_rewrite", "weather_search", "main_meal_search"]
+    assert events[-1]["success"] is True
+    assert events[-1]["checkpoint"]["main_meal_status"] == "ok"
+
+
+def test_optional_initial_meal_failure_is_degraded_but_not_falsely_used():
+    nodes = make_nodes()
+    nodes["main_meal_search"] = lambda state: (_ for _ in ()).throw(TimeoutError("meal provider timeout"))
+
+    events = collect(
+        TravelSupervisor(nodes, InMemoryAgentMemoryStore(), "s"),
+        TravelPlanState(query="trip"),
+    )
+    assert events[-1]["success"] is True
+    checkpoint = events[-1]["checkpoint"]
+    assert checkpoint["main_meal_candidates"] == []
+    assert checkpoint["main_meal_status"] == "degraded"
+
+
+def test_initial_attraction_failure_cannot_be_approved_from_empty_pool():
+    nodes = make_nodes()
+    nodes["attraction_search"] = lambda state: (_ for _ in ()).throw(TimeoutError("poi provider timeout"))
+
+    events = collect(
+        TravelSupervisor(nodes, InMemoryAgentMemoryStore(), "s"),
+        TravelPlanState(query="trip", max_review_rounds=0),
+    )
+    assert events[-1]["success"] is False
+    assert "unknown_poi" in events[-1]["failure_details"]["risk_flags"]
+
+
 def test_owner_and_trip_memory_scopes_cannot_collide():
     memory = InMemoryAgentMemoryStore()
     memory.append(memory_scope("owner", "trip-1"), "planner", {"role": "assistant", "content": "secret"})
@@ -255,6 +325,72 @@ def test_food_modification_refreshes_meal_candidates_but_time_edit_does_not():
     time_events = run_for("把博物馆改到下午")
     assert "main_meal_search" in [event["node"] for event in food_events if event["type"] == "stage"]
     assert "main_meal_search" not in [event["node"] for event in time_events if event["type"] == "stage"]
+
+
+def test_food_and_candidate_modification_branches_run_in_parallel():
+    import threading
+
+    nodes = make_nodes()
+    started = []
+    release = threading.Event()
+    nodes["modification_intent"] = lambda state: {
+        "modification_search_keywords": ["museum"],
+        "modification_search_status": "pending",
+    }
+
+    def delayed(name, result):
+        def run(state):
+            started.append(name)
+            assert release.wait(2), f"{name} did not receive release"
+            return result
+        return run
+
+    nodes["candidate_refresh"] = delayed("candidate_refresh", {
+        "pois": [{"name": "Museum"}],
+        "modification_search_status": "complete",
+    })
+    nodes["main_meal_search"] = delayed("main_meal_search", {
+        "main_meal_candidates": [{"name": "Local Kitchen"}],
+        "main_meal_status": "ok",
+    })
+
+    async def collect_async(runtime, state):
+        return [event async for event in runtime.stream(state, modification=True)]
+
+    async def run():
+        task = asyncio.create_task(collect_async(
+            TravelSupervisor(nodes, InMemoryAgentMemoryStore(), "s"),
+            TravelPlanState(query="trip", destination="Nanjing", days=1,
+                            pois=[{"name": "Museum"}], modification_notes="改成博物馆并换清淡餐厅"),
+        ))
+        for _ in range(20):
+            await asyncio.sleep(0.01)
+            if len(started) == 2:
+                break
+        assert set(started) == {"candidate_refresh", "main_meal_search"}
+        release.set()
+        return await task
+
+    events = asyncio.run(run())
+    assert events[-1]["success"] is True
+
+
+def test_candidate_refresh_exception_is_unverified_not_a_crash():
+    nodes = make_nodes()
+    nodes["modification_intent"] = lambda state: {
+        "modification_search_keywords": ["museum"],
+        "modification_search_status": "pending",
+    }
+    nodes["candidate_refresh"] = lambda state: (_ for _ in ()).throw(TimeoutError("refresh timeout"))
+    state = TravelPlanState(query="trip", destination="Nanjing", days=1,
+                            pois=[{"name": "Museum"}], modification_notes="改成博物馆")
+    async def run():
+        return [event async for event in TravelSupervisor(
+            nodes, InMemoryAgentMemoryStore(), "s"
+        ).stream(state, modification=True)]
+    events = asyncio.run(run())
+    assert events[-1]["success"] is False
+    assert "candidate_refresh_unverified" in events[-1]["failure_details"]["risk_flags"]
 
 
 def test_confirm_entrypoint_normalizes_empty_optional_dates(monkeypatch):

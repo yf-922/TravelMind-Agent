@@ -149,6 +149,20 @@ class TravelSupervisor:
                 },
                 "query_rewrite": {"rewritten_query": state.query},
                 "weather_search": {"weather_forecast": [], "weather_note": "Weather unavailable; forecast not verified."},
+                "attraction_search": {
+                    "pois": [],
+                    "history": ["attraction_search: unavailable; candidate pool is unverified"],
+                },
+                "candidate_refresh": {
+                    "pois": list(state.pois),
+                    "modification_search_status": "failed",
+                    "history": ["candidate_refresh: unavailable; candidate pool is unverified"],
+                },
+                "main_meal_search": {
+                    "main_meal_candidates": [],
+                    "main_meal_status": "degraded",
+                    "history": ["main_meal_search: unavailable; meal candidates not verified"],
+                },
                 "spot_tips": {"spot_tips": {}, "spot_guides": {}, "spot_tips_status": "degraded"},
                 "meal_enrichment": {"meals": [], "meal_candidates": [], "meal_search_status": "degraded", "meal_recommend_status": "degraded"},
             }
@@ -250,9 +264,12 @@ class TravelSupervisor:
             if state.missing_fields:
                 yield {"type": "result", "success": False, "missing_fields": state.missing_fields, "plan": None}
                 return
-            for role in ("query_rewrite", "weather_search"):
+            initial_parallel_roles = ["query_rewrite", "weather_search"]
+            if "main_meal_search" in self.nodes:
+                initial_parallel_roles.append("main_meal_search")
+            for role in initial_parallel_roles:
                 yield {"type": "stage", "node": role}
-            async for event in parallel_stream(("query_rewrite", "weather_search")):
+            async for event in parallel_stream(tuple(initial_parallel_roles)):
                 if "_state" in event:
                     state = event["_state"]
                 else:
@@ -260,24 +277,25 @@ class TravelSupervisor:
             yield {"type": "stage", "node": "attraction_search"}
             state = await execute("attraction_search")
             yield {"type": "stage_summary", "node": "attraction_search", "summary": "completed"}
-            if "main_meal_search" in self.nodes:
-                yield {"type": "stage", "node": "main_meal_search"}
-                state = await execute("main_meal_search")
-                yield {"type": "stage_summary", "node": "main_meal_search", "summary": "completed"}
 
         if modification and not confirmed and "modification_intent" in self.nodes:
             yield {"type": "stage", "node": "modification_intent"}
             state = await execute("modification_intent")
             yield {"type": "stage_summary", "node": "modification_intent", "summary": "completed"}
+            modification_parallel_roles = []
             if state.modification_search_keywords:
-                yield {"type": "stage", "node": "candidate_refresh"}
-                state = await execute("candidate_refresh")
-                yield {"type": "stage_summary", "node": "candidate_refresh", "summary": "completed"}
+                modification_parallel_roles.append("candidate_refresh")
             if ("main_meal_search" in self.nodes
                     and any(word in (state.modification_notes or "") for word in ("餐", "吃", "用餐", "口味"))):
-                yield {"type": "stage", "node": "main_meal_search"}
-                state = await execute("main_meal_search")
-                yield {"type": "stage_summary", "node": "main_meal_search", "summary": "completed"}
+                modification_parallel_roles.append("main_meal_search")
+            for role in modification_parallel_roles:
+                yield {"type": "stage", "node": role}
+            if modification_parallel_roles:
+                async for event in parallel_stream(tuple(modification_parallel_roles)):
+                    if "_state" in event:
+                        state = event["_state"]
+                    else:
+                        yield event
 
         for revision in range(state.max_review_rounds + 1):
             # Derived conclusions never survive a new route generation.
