@@ -99,6 +99,29 @@ This is application-level context separation, not a process security sandbox.
 
 The above missing checks mean production parity is not yet established.
 
+## Latest private-memory audit verification
+
+- Full regression: 243 pytest cases and five Node SSE-client cases passed.
+  These are contract/regression checks, not a 100% real-request success claim.
+- Production Reviewer and Time Check output contracts and role-local prompt
+  inputs are covered with mocked structured-model calls.
+- Real forced-audit run on `nanjing-3d-tighthours-negative`: Planner executed
+  first, followed by road verification, risk gate, Reviewer and Time Check;
+  one repair repeated those five stages. Final objective checks passed, with
+  no remaining risk flags. Elapsed time was 129,600.34 ms, six model calls and
+  11,619 estimated input-plus-output tokens (9,348 input / 2,271 output).
+- Convergence and time-check efficiency grades failed: two audit rounds were
+  needed. This is forced-audit mechanism verification over frozen POI/weather,
+  not a natural-request quality trial, full API run or latency comparison.
+- The earlier forced run entered with confirmation enabled and skipped the
+  initial Planner. It is not evidence for normal planning; the script entry
+  was corrected before the run reported above.
+- Rejected production drafts now bypass live finalization/enrichment and expose
+  `draft_only` plus unresolved findings. A regression checks both rejected and
+  approved finalization paths.
+- Evaluator supports engine selection and explicit audit forcing. Its provider
+  attempt budget is a preflight estimate, not a runtime hard call limiter.
+
 ## Real modification and confirmation evidence
 
 - Real initial plan, saved checkpoint, user time edit, owner confirmation and

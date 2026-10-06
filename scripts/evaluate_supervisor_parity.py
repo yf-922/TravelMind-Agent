@@ -33,11 +33,17 @@ def supervisor_outcome(events):
     return TravelPlanState(**last['checkpoint']), 'result'
 
 
-async def evaluate(case_id, timeout):
+def call_budget(engines):
+    return 90 * ("langgraph" in engines) + 18 * ("supervisor" in engines)
+
+
+async def evaluate(case_id, timeout, engines=('langgraph', 'supervisor'), force_review=False):
     fixture = load_fixtures(case_id)[0]
     state = build_state_from_fixture(fixture)
     state.max_review_rounds = 1
     state.max_time_check_rounds = 2
+    if force_review:
+        state.route_modify_opinion = "本次机制验收必须独立审核当前路线是否满足约束"
     nodes = production_nodes(state.model_name)
     # Isolate planning, road verification and audit. No meal/ticket/hotel calls.
     nodes['meal_enrichment'] = lambda s: {}
@@ -45,14 +51,19 @@ async def evaluate(case_id, timeout):
     nodes['finalize'] = lambda s: {'final_plan': {'approved': s.approved, 'days': s.route}}
     records = []
     with tempfile.TemporaryDirectory() as directory:
-        for engine in ('langgraph', 'supervisor'):
+        for engine in engines:
             started = time.perf_counter()
             token = bind_run('parity-' + engine)
+            stages = []
             try:
                 if engine == 'supervisor':
                     runtime = TravelSupervisor(nodes, SQLiteAgentMemoryStore(Path(directory) / 'memory.db'), engine)
                     async def consume():
-                        events = [e async for e in runtime.stream(state.model_copy(deep=True), modification=True)]
+                        events = []
+                        async for event in runtime.stream(state.model_copy(deep=True), modification=True):
+                            events.append(event)
+                            if event.get('type') == 'stage':
+                                stages.append(event['node'])
                         return supervisor_outcome(events)
                     final, outcome = await asyncio.wait_for(consume(), timeout)
                 else:
@@ -70,6 +81,7 @@ async def evaluate(case_id, timeout):
                 grading = grade_code(final, fixture)
                 records.append({'engine': engine, 'completed': True, 'approved': final.approved,
                                 'outcome': outcome,
+                                'nodes': stages, 'risk_flags': final.route_risk_flags,
                                 'grading': grading, 'review_round': final.review_round,
                                 'time_check_round': final.time_check_round})
             except Exception as error:
@@ -92,19 +104,24 @@ def main():
     parser.add_argument('--timeout', type=float, default=150)
     parser.add_argument('--dry-run', action='store_true')
     parser.add_argument('--max-llm-calls', type=int)
+    parser.add_argument('--engine', choices=('both', 'langgraph', 'supervisor'), default='both')
+    parser.add_argument('--force-review', action='store_true', help='Require an independent audit; not a natural-request quality trial')
     parser.add_argument('--output', type=Path, default=ROOT / 'evaluation' / 'supervisor_parity_smoke.json')
     args = parser.parse_args()
     # Main graph: conservatively allow one model call per recursion step (30).
     # Supervisor: two planner/reviewer/time-check rounds (6). Each structured
     # invocation may retry three times. This is a preflight estimate, not a limiter.
-    budget = {'provider_attempts_upper_bound': 108, 'engines': 2,
+    engines = ('langgraph', 'supervisor') if args.engine == 'both' else (args.engine,)
+    upper = call_budget(engines)
+    budget = {'provider_attempts_upper_bound': upper, 'engines': len(engines),
               'scope': 'frozen POI/weather; live model and route APIs'}
     if args.dry_run:
         print(json.dumps(budget))
         return
     require_external_calls(parser, allowed=args.allow_external_calls, operation='Supervisor parity')
-    require_call_budget(parser, estimated_upper_bound=108, maximum=args.max_llm_calls)
-    report = asyncio.run(evaluate(args.case, args.timeout))
+    require_call_budget(parser, estimated_upper_bound=upper, maximum=args.max_llm_calls)
+    report = asyncio.run(evaluate(args.case, args.timeout, engines, args.force_review))
+    report['forced_review'] = args.force_review
     args.output.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding='utf-8')
 
 

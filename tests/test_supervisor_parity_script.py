@@ -1,6 +1,13 @@
 import pytest
 
 from scripts.evaluate_supervisor_parity import supervisor_outcome
+from scripts.evaluate_supervisor_parity import call_budget
+
+
+def test_selected_engine_budget_includes_all_retry_attempts():
+    assert call_budget(("supervisor",)) == 18
+    assert call_budget(("langgraph",)) == 90
+    assert call_budget(("langgraph", "supervisor")) == 108
 
 
 def test_confirmation_is_not_misclassified_as_runtime_error():

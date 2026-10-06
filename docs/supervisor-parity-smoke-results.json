@@ -31,5 +31,20 @@
     "impossible_time_after_fix": {"success": false, "elapsed_ms": 77760.59, "replacement_saved": false, "bounded_replanning": true, "enrichment_skipped": true, "other_user_confirmation_denied": true},
     "scope": "Real providers and authenticated ASGI API with temporary storage; one trial each. Explicit one-day time-edit validation, not generic instruction compliance."
   },
+  "latest_forced_audit_contract_run": {
+    "case_id": "nanjing-3d-tighthours-negative",
+    "approved": true,
+    "objective_pass": true,
+    "elapsed_ms": 129600.34,
+    "model_calls": 6,
+    "estimated_input_tokens": 9348,
+    "estimated_output_tokens": 2271,
+    "estimated_tokens": 11619,
+    "review_rounds": 2,
+    "time_check_rounds": 2,
+    "efficiency_grade_passed": false,
+    "boundary": "Forced audit mechanism trial starting at Planner; frozen facts, real model/road APIs, enrichment omitted. Not natural-request quality, full API parity or comparative speedup evidence."
+  },
+  "regression": {"pytest_cases_passed": 243, "sse_client_cases_passed": 5},
   "billing": "Tokens estimated; prices not configured; no actual cost claim."
 }

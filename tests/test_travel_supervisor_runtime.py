@@ -434,3 +434,51 @@ def test_replanning_receives_bounded_feedback_and_preserves_user_request():
     assert seen[0][1] == []
     assert seen[1][1][0]["reviewer_issues"] == ["unresolved"]
     assert len(events[-1]["checkpoint"]["repair_feedback"]) == 3
+
+
+def test_production_auditors_satisfy_contract_and_receive_role_local_context(monkeypatch):
+    from app.planning import nodes as production
+    from app.planning.schemas import RouteReview, TimeCheckResult
+    memory = InMemoryAgentMemoryStore()
+    memory.append("s", "reviewer", {"role": "assistant", "content": "reviewer previous finding"})
+    memory.append("s", "time_check", {"role": "assistant", "content": "time previous finding"})
+    monkeypatch.setattr(production, "build_structured_llm", lambda schema, **k: schema)
+    prompts = {}
+    def invoke(schema, messages, **kwargs):
+        prompts[schema.__name__] = messages[1][1]
+        if schema is RouteReview:
+            return RouteReview(reasoning="current route verified", approved=True, score=90)
+        return TimeCheckResult(reasoning="current hours verified", violations=[])
+    monkeypatch.setattr(production, "invoke_structured", invoke)
+    runtime = TravelSupervisor({"reviewer": production.make_reviewer_node(None),
+                                "time_check": production.make_time_check_node(None)}, memory, "s")
+    state = TravelPlanState(query="trip", destination="Nanjing", days=1, approved=True,
+                            pois=[{"name": "Museum", "open_time": "09:00-17:00"}],
+                            route=[{"day": 1, "spots": [{"name": "Museum", "period": "morning", "start_time": "10:00", "end_time": "11:00"}]}])
+    review = asyncio.run(runtime._call("reviewer", state))
+    time = asyncio.run(runtime._call("time_check", state))
+    assert review["approved"] is True and time["approved"] is True
+    assert "reviewer previous finding" in prompts["RouteReview"]
+    assert "time previous finding" not in prompts["RouteReview"]
+    assert "time previous finding" in prompts["TimeCheckResult"]
+    assert "reviewer previous finding" not in prompts["TimeCheckResult"]
+
+
+def test_production_rejected_draft_does_not_call_live_finalization(monkeypatch):
+    import app.planning.nodes as nodes_module
+    from app.multi_agent_core.runtime import production_nodes
+    monkeypatch.setattr(nodes_module, "build_structured_llm", lambda *a, **k: object())
+    calls = []
+    def make_finalize():
+        def finalize(state):
+            calls.append(state.approved)
+            return {"final_plan": {"approved": state.approved}}
+        return finalize
+    monkeypatch.setattr(nodes_module, "make_finalize_node", make_finalize)
+    nodes = production_nodes()
+    draft = nodes["finalize"](TravelPlanState(query="trip", approved=False, route_risk_flags=["unknown_poi"]))
+    assert calls == []
+    assert draft["final_plan"]["draft_only"] is True
+    assert draft["final_plan"]["unresolved_risk_flags"] == ["unknown_poi"]
+    nodes["finalize"](TravelPlanState(query="trip", approved=True))
+    assert calls == [True]

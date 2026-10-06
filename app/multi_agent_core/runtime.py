@@ -56,6 +56,17 @@ INPUTS["planner"].add("repair_feedback")
 
 def production_nodes(model_name=None, profile_hint="", user_id=None):
     from app.planning import nodes
+    finalize = nodes.make_finalize_node()
+    def finalize_result(state):
+        if not state.approved:
+            return {"final_plan": {
+                "approved": False, "destination": state.destination, "days_count": state.days,
+                "draft_route": state.route, "route_issues": state.reviewer_issues,
+                "unresolved_time_violations": state.time_violations,
+                "unresolved_risk_flags": state.route_risk_flags,
+                "draft_only": True,
+            }, "history": state.history + ["finalize: unapproved draft, external enrichment skipped"]}
+        return finalize(state)
     return {
         "intent": nodes.make_intent_node(model_name, profile_hint=profile_hint),
         "query_rewrite": nodes.make_query_rewrite_node(model_name, user_id),
@@ -68,7 +79,7 @@ def production_nodes(model_name=None, profile_hint="", user_id=None):
         "time_check": nodes.make_time_check_node(model_name),
         "meal_enrichment": nodes.make_meal_enrichment_node(model_name),
         "spot_tips": nodes.make_spot_tips_node(model_name),
-        "finalize": nodes.make_finalize_node(),
+        "finalize": finalize_result,
     }
 
 
