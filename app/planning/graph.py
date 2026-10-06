@@ -14,6 +14,8 @@ from app.planning.nodes import (
     make_finalize_node,
     make_intent_node,
     make_meal_enrichment_node,
+    make_joint_planner_node,
+    main_meal_candidate_search_node,
     make_planner_node,
     make_query_rewrite_node,
     make_reviewer_node,
@@ -44,7 +46,8 @@ def build_graph(
     g.add_node("intent",           make_intent_node(model_name, profile_hint=profile_hint))
     g.add_node("weather_search",   weather_search_node)
     g.add_node("attraction_search", attraction_search_node)
-    g.add_node("planner",          make_planner_node(model_name))
+    g.add_node("main_meal_search", main_meal_candidate_search_node)
+    g.add_node("planner",          make_joint_planner_node(model_name))
     g.add_node("route_distance_check", route_distance_check_node)
     g.add_node("risk_gate", route_risk_gate_node)
     g.add_node("reviewer",         make_reviewer_node(model_name))
@@ -62,11 +65,13 @@ def build_graph(
             END: END,
         }
     )
+    g.add_edge("intent", "main_meal_search")
     # query_rewrite 与 weather_search 都只依赖 intent 的输出，可以并行执行。
     # attraction_search 使用两者结果，因此设置多前驱屏障，确保天气/改写都完成后再检索。
     g.add_edge("query_rewrite", "attraction_search")
     g.add_edge("weather_search", "attraction_search")
     g.add_edge("attraction_search", "planner")
+    g.add_edge("main_meal_search", "planner")
     # planner 输出：time_check_done=False 时进 reviewer 走主循环；True 时进 time_check 重新核查
     g.add_conditional_edges(
         "planner", route_after_planner,
@@ -109,6 +114,7 @@ _NODE_LABELS: dict[str, str] = {
     "intent":            "🧭 正在理解出行意图（目的地 / 日期 / 偏好）",
     "weather_search":    "🌦 正在查询出行天气",
     "attraction_search": "🗺 正在调用高德搜索景点池",
+    "main_meal_search": "🍽 正在查询联合规划餐馆候选",
     "modification_intent": "🧩 正在分析行程修改意见",
     "candidate_refresh": "🔎 正在补充核验新增候选景点",
     "planner":           "✍️ 正在规划逐日行程",
@@ -257,7 +263,7 @@ def _stage_summary(node: str, state_before: dict[str, Any], update: dict[str, An
 def build_modification_graph(model_name: str | None = None, memory_writer=None):
     """从 checkpoint 重规划，并重新核验道路距离、审查意见和开放时间。"""
     g = StateGraph(TravelPlanState)
-    g.add_node("planner",        make_planner_node(model_name))
+    g.add_node("planner",        make_joint_planner_node(model_name))
     g.add_node("route_distance_check", route_distance_check_node)
     g.add_node("risk_gate", route_risk_gate_node)
     g.add_node("reviewer",       make_reviewer_node(model_name))
@@ -293,7 +299,7 @@ def build_confirm_graph(model_name: str | None = None, memory_writer=None):
     g.add_node("route_distance_check", route_distance_check_node)
     g.add_node("risk_gate", route_risk_gate_node)
     g.add_node("reviewer",       make_reviewer_node(model_name))
-    g.add_node("planner",        make_planner_node(model_name))
+    g.add_node("planner",        make_joint_planner_node(model_name))
     g.add_node("time_check",     make_time_check_node(model_name))
     g.add_node("meal_enrichment", make_meal_enrichment_node(model_name))
     g.add_node("spot_tips",      make_spot_tips_node(model_name))

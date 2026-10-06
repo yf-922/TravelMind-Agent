@@ -22,10 +22,11 @@ INPUTS = {
     "query_rewrite": {"query", "profile_hint", "destination", "days", "travel_start_date", "travel_end_date", "attraction_preference", "food_preference", "habit_preference", "max_walking_km", "rain_indoor_priority"},
     "weather_search": {"destination", "travel_start_date", "travel_end_date", "days"},
     "attraction_search": {"destination", "query", "rewritten_query", "max_spots", "min_rating"},
-    "planner": {"query", "rewritten_query", "destination", "days", "travel_start_date", "travel_end_date", "pois", "weather_forecast", "weather_note", "attraction_preference", "food_preference", "habit_preference", "max_walking_km", "rain_indoor_priority", "max_per_day", "max_review_rounds", "route", "route_modify_opinion", "route_stale_warning", "review_round", "profile_hint", "modification_notes", "modification_search_status", "repair_feedback", "route_distance_legs", "route_distance_note"},
-    "route_distance_check": {"pois", "route", "max_walking_km"},
-    "risk_gate": {"pois", "route", "days", "max_per_day", "travel_start_date", "weather_forecast", "habit_preference", "max_walking_km", "rain_indoor_priority", "route_distance_legs", "modification_notes", "route_modify_opinion"},
-    "reviewer": {"destination", "days", "travel_start_date", "travel_end_date", "pois", "route", "habit_preference", "attraction_preference", "modification_notes", "max_per_day", "weather_forecast", "max_walking_km", "rain_indoor_priority", "route_distance_legs", "route_distance_note", "review_round"},
+    "main_meal_search": {"destination", "food_preference"},
+    "planner": {"query", "rewritten_query", "destination", "days", "travel_start_date", "travel_end_date", "pois", "weather_forecast", "weather_note", "attraction_preference", "food_preference", "habit_preference", "max_walking_km", "rain_indoor_priority", "max_per_day", "max_review_rounds", "route", "route_modify_opinion", "route_stale_warning", "review_round", "profile_hint", "modification_notes", "modification_search_status", "repair_feedback", "route_distance_legs", "route_distance_note", "main_meal_candidates", "main_meal_status", "meal_duration_min", "meal_slots"},
+    "route_distance_check": {"pois", "route", "max_walking_km", "main_meal_candidates", "meal_slots"},
+    "risk_gate": {"pois", "route", "days", "max_per_day", "travel_start_date", "weather_forecast", "habit_preference", "max_walking_km", "rain_indoor_priority", "route_distance_legs", "modification_notes", "route_modify_opinion", "main_meal_candidates", "meal_slots", "meal_duration_min"},
+    "reviewer": {"destination", "days", "travel_start_date", "travel_end_date", "pois", "route", "habit_preference", "attraction_preference", "modification_notes", "max_per_day", "weather_forecast", "max_walking_km", "rain_indoor_priority", "route_distance_legs", "route_distance_note", "review_round", "main_meal_candidates", "meal_slots", "meal_duration_min"},
     "time_check": {"destination", "pois", "route", "travel_start_date", "travel_end_date", "days", "time_check_round", "max_time_check_rounds", "approved", "review_required", "habit_preference", "max_walking_km", "rain_indoor_priority", "weather_forecast", "route_distance_legs", "max_per_day", "modification_notes"},
     "meal_enrichment": {"destination", "pois", "route", "food_preference"},
     "spot_tips": {"destination", "route", "travel_start_date", "weather_forecast"},
@@ -40,7 +41,8 @@ OUTPUTS = {
     "query_rewrite": {"rewritten_query", "attraction_preference", "food_preference", "habit_preference", "history"},
     "weather_search": {"weather_forecast", "weather_note", "history"},
     "attraction_search": {"pois", "history"},
-    "planner": {"route", "review_round", "history", "planner_reviewer_dialogue", "modification_concern", "route_stale_warning", "rag_sources"},
+    "main_meal_search": {"main_meal_candidates", "main_meal_status", "history"},
+    "planner": {"route", "review_round", "history", "planner_reviewer_dialogue", "modification_concern", "route_stale_warning", "rag_sources", "meal_slots"},
     "route_distance_check": {"route_distance_legs", "route_distance_mode", "route_distance_note"},
     "risk_gate": {"route_risk_flags", "route_risk_score", "review_required", "time_check_required", "review_skipped", "approved", "need_modify_route", "time_check_done", "time_check_status"},
     "reviewer": {"approved", "need_modify_route", "route_modify_opinion", "reviewer_issues", "history", "planner_reviewer_dialogue"},
@@ -79,7 +81,8 @@ def production_nodes(model_name=None, profile_hint="", user_id=None):
         "query_rewrite": nodes.make_query_rewrite_node(model_name, user_id),
         "weather_search": nodes.weather_search_node,
         "attraction_search": nodes.attraction_search_node,
-        "planner": nodes.make_planner_node(model_name),
+        "main_meal_search": nodes.main_meal_candidate_search_node,
+        "planner": nodes.make_joint_planner_node(model_name),
         "route_distance_check": nodes.route_distance_check_node,
         "risk_gate": nodes.route_risk_gate_node,
         "reviewer": nodes.make_reviewer_node(model_name),
@@ -257,6 +260,10 @@ class TravelSupervisor:
             yield {"type": "stage", "node": "attraction_search"}
             state = await execute("attraction_search")
             yield {"type": "stage_summary", "node": "attraction_search", "summary": "completed"}
+            if "main_meal_search" in self.nodes:
+                yield {"type": "stage", "node": "main_meal_search"}
+                state = await execute("main_meal_search")
+                yield {"type": "stage_summary", "node": "main_meal_search", "summary": "completed"}
 
         if modification and not confirmed and "modification_intent" in self.nodes:
             yield {"type": "stage", "node": "modification_intent"}
@@ -266,6 +273,11 @@ class TravelSupervisor:
                 yield {"type": "stage", "node": "candidate_refresh"}
                 state = await execute("candidate_refresh")
                 yield {"type": "stage_summary", "node": "candidate_refresh", "summary": "completed"}
+            if ("main_meal_search" in self.nodes
+                    and any(word in (state.modification_notes or "") for word in ("餐", "吃", "用餐", "口味"))):
+                yield {"type": "stage", "node": "main_meal_search"}
+                state = await execute("main_meal_search")
+                yield {"type": "stage_summary", "node": "main_meal_search", "summary": "completed"}
 
         for revision in range(state.max_review_rounds + 1):
             # Derived conclusions never survive a new route generation.

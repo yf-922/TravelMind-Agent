@@ -237,6 +237,26 @@ def test_modification_intent_failure_becomes_unverified_review_finding():
     assert "candidate_refresh_unverified" in events[-1]["failure_details"]["risk_flags"]
 
 
+def test_food_modification_refreshes_meal_candidates_but_time_edit_does_not():
+    def run_for(notes):
+        nodes = make_nodes()
+        nodes["modification_intent"] = lambda s: {"modification_search_status": "not_required"}
+        nodes["main_meal_search"] = lambda s: {
+            "main_meal_candidates": [{"name": "New Restaurant"}],
+            "main_meal_status": "ok",
+        }
+        async def run():
+            state = TravelPlanState(query="trip", destination="Nanjing", days=1,
+                                    pois=[{"name": "Museum"}], modification_notes=notes)
+            return [event async for event in TravelSupervisor(nodes, InMemoryAgentMemoryStore(), "s").stream(
+                state, modification=True)]
+        return asyncio.run(run())
+    food_events = run_for("换成清淡口味餐厅")
+    time_events = run_for("把博物馆改到下午")
+    assert "main_meal_search" in [event["node"] for event in food_events if event["type"] == "stage"]
+    assert "main_meal_search" not in [event["node"] for event in time_events if event["type"] == "stage"]
+
+
 def test_confirm_entrypoint_normalizes_empty_optional_dates(monkeypatch):
     import app.multi_agent_core.runtime as runtime_module
     monkeypatch.setattr(runtime_module, "production_nodes", lambda *args, **kwargs: make_nodes())

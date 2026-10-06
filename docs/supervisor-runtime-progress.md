@@ -93,6 +93,12 @@ This is application-level context separation, not a process security sandbox.
 - The replay now covers three generations: initial plan, a preference edit that
   refreshes and persists a verified POI, then a second local edit. The third
   checkpoint retains the refreshed POI and the same private-memory session.
+- Supervisor now uses the shared joint meal planner path: meal candidate search
+  runs before the first plan, meal slots are carried through route-distance and
+  risk/reviewer inputs, and deterministic checks reject unknown restaurants,
+  closed venues, malformed meal windows and attraction/meal overlap. A food
+  preference edit refreshes meal candidates; a time-only edit keeps the saved
+  pool.
 - Modification preference analysis and candidate refresh are covered: a new
   museum preference triggers provider search and exact-name deduplication;
   time/meal-only edits can reuse the frozen POI pool. Refresh status reaches
