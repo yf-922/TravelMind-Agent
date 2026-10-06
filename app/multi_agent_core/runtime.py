@@ -54,8 +54,11 @@ class TravelSupervisor:
         self.memory = memory
         self.session_id = session_id
         self.memory_chars = memory_chars
+        self._role_histories: dict[str, list[str]] = {}
 
     def _history(self, role: str) -> list[str]:
+        if role in self._role_histories:
+            return list(self._role_histories[role])
         try:
             entries = self.memory.load(self.session_id, role)
         except Exception:
@@ -69,7 +72,9 @@ class TravelSupervisor:
                 break
             selected.append(content)
             remaining -= len(content)
-        return list(reversed(selected))
+        history = list(reversed(selected))
+        self._role_histories[role] = history
+        return list(history)
 
     async def _call(self, role: str, state: TravelPlanState) -> dict[str, Any]:
         fields = INPUTS.get(role)
@@ -88,6 +93,10 @@ class TravelSupervisor:
                 if key not in {"history", "planner_reviewer_dialogue", "final_plan", "pois"}}
         serialized = json.dumps(safe, ensure_ascii=False, default=str)
         if len(serialized) <= self.memory_chars:
+            history = self._history(role) + [serialized]
+            while sum(map(len, history)) > self.memory_chars:
+                history.pop(0)
+            self._role_histories[role] = history
             try:
                 await asyncio.to_thread(self.memory.append, self.session_id, role,
                                         {"role": "assistant", "content": serialized})
@@ -143,7 +152,7 @@ class TravelSupervisor:
                 state = await execute(role)
                 yield {"type": "stage_summary", "node": role, "summary": "completed"}
             if state.modification_concern and modification and not confirmed:
-                yield {"type": "modification_warning", "message": state.modification_concern,
+                yield {"type": "modification_warning", "concern": state.modification_concern,
                        "pending_state": state.model_dump(mode="json")}
                 return
             if state.review_required:
@@ -195,7 +204,7 @@ async def run_stream(query, profile_hint="", memory_writer=None, user_id=None, *
         checkpoint = event.pop("checkpoint", None)
         if checkpoint and event.get("success") and memory_writer:
             await asyncio.to_thread(memory_writer, event["plan"], TravelPlanState(**checkpoint))
-        yield event
+        yield _label_event(event)
 
 
 async def run_modification_stream(checkpoint, modification_notes, memory_writer=None, **overrides):
@@ -215,7 +224,7 @@ async def run_modification_stream(checkpoint, modification_notes, memory_writer=
         current = event.pop("checkpoint", None)
         if current and event.get("success") and memory_writer:
             await asyncio.to_thread(memory_writer, event["plan"], TravelPlanState(**current))
-        yield event
+        yield _label_event(event)
 
 
 async def run_confirm_stream(checkpoint, memory_writer=None, user_id=None):
@@ -230,4 +239,11 @@ async def run_confirm_stream(checkpoint, memory_writer=None, user_id=None):
         current = event.pop("checkpoint", None)
         if current and event.get("success") and memory_writer:
             await asyncio.to_thread(memory_writer, event["plan"], TravelPlanState(**current))
-        yield event
+        yield _label_event(event)
+
+
+def _label_event(event):
+    from app.planning.graph import _NODE_LABELS
+    if event.get("type") == "stage":
+        event = {**event, "label": _NODE_LABELS.get(event.get("node"), event.get("node"))}
+    return event

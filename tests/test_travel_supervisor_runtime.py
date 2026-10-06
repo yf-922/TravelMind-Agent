@@ -125,3 +125,24 @@ def test_confirm_checks_existing_draft_before_replanning():
     async def run():
         return [e async for e in TravelSupervisor(nodes, InMemoryAgentMemoryStore(), "s").stream(state, modification=True, confirmed=True)]
     assert asyncio.run(run())[-1]["success"] is True
+
+
+def test_private_history_snapshot_ignores_other_inflight_run():
+    memory = InMemoryAgentMemoryStore()
+    memory.append("s", "planner", {"role": "assistant", "content": "previous"})
+    runtime = TravelSupervisor(make_nodes(), memory, "s")
+    assert runtime._history("planner") == ["previous"]
+    memory.append("s", "planner", {"role": "assistant", "content": "other request"})
+    assert runtime._history("planner") == ["previous"]
+
+
+def test_modification_warning_matches_frontend_contract():
+    nodes = make_nodes()
+    original = nodes["planner"]
+    nodes["planner"] = lambda s: {**original(s), "modification_concern": "Requires user confirmation"}
+    async def run():
+        return [e async for e in TravelSupervisor(nodes, InMemoryAgentMemoryStore(), "s").stream(
+            TravelPlanState(query="trip", days=1, pois=[{"name": "Museum"}]), modification=True)]
+    event = asyncio.run(run())[-1]
+    assert event["type"] == "modification_warning"
+    assert event["concern"] == "Requires user confirmation"

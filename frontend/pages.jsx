@@ -87,6 +87,7 @@ function PlanPage({ onRequestLogin, currentUsername, onPhaseChange, onPlanReady,
 
   React.useEffect(() => { onPhaseChange?.(phase); }, [phase]); // eslint-disable-line
   const [query, setQuery] = React.useState("");
+  const [engine, setEngine] = React.useState("langgraph");
   const [planId, setPlanId] = React.useState(null);
   const [logs, setLogs] = React.useState([]);
   const [activeNode, setActiveNode] = React.useState(null);
@@ -244,7 +245,7 @@ function PlanPage({ onRequestLogin, currentUsername, onPhaseChange, onPlanReady,
     setErrMsg("");
     setRunId(null);
 
-    streamPlan(body, {
+    streamPlan({ ...body, engine }, {
       onAbort: (fn) => { abortRef.current = fn; },
       onRun: (ev) => setRunId(ev.run_id || null),
       onStage: handleStage,
@@ -452,6 +453,13 @@ function PlanPage({ onRequestLogin, currentUsername, onPhaseChange, onPlanReady,
             </div>
           )}
           <div className={`query-card${missingFields.length ? " has-missing" : ""}`}>
+            <label className="query-label">
+              规划模式
+              <select value={engine} onChange={e => setEngine(e.target.value)} disabled={phase === "loading"}>
+                <option value="langgraph">标准规划</option>
+                <option value="supervisor">协作规划</option>
+              </select>
+            </label>
             <div className="query-label"><span className="mode-dot"></span>描述你的旅行需求（含目的地、日期、偏好）</div>
             <textarea
               className="query-textarea"
