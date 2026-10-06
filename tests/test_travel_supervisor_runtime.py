@@ -136,16 +136,48 @@ def test_private_history_snapshot_ignores_other_inflight_run():
     assert runtime._history("planner") == ["previous"]
 
 
+def test_all_private_histories_are_frozen_before_first_node():
+    memory = InMemoryAgentMemoryStore()
+    memory.append("s", "reviewer", {"role": "assistant", "content": "previous review"})
+    nodes = make_nodes(reject=True)
+    original = nodes["intent"]
+    def intent(state):
+        memory.append("s", "reviewer", {"role": "assistant", "content": "other inflight review"})
+        return original(state)
+    nodes["intent"] = intent
+    def reviewer(state):
+        assert state.planner_reviewer_dialogue == ["previous review"]
+        return {"approved": True}
+    nodes["reviewer"] = reviewer
+    events = collect(TravelSupervisor(nodes, memory, "s"), TravelPlanState(query="trip"))
+    assert events[-1]["success"] is True
+
+
 def test_modification_warning_matches_frontend_contract():
     nodes = make_nodes()
     original = nodes["planner"]
     nodes["planner"] = lambda s: {**original(s), "modification_concern": "Requires user confirmation"}
     async def run():
         return [e async for e in TravelSupervisor(nodes, InMemoryAgentMemoryStore(), "s").stream(
-            TravelPlanState(query="trip", days=1, pois=[{"name": "Museum"}]), modification=True)]
+            TravelPlanState(query="trip", days=1, pois=[{"name": "Museum"}],
+                            modification_notes="replace the museum"), modification=True)]
     event = asyncio.run(run())[-1]
     assert event["type"] == "modification_warning"
     assert event["concern"] == "Requires user confirmation"
+
+
+def test_internal_repair_concern_does_not_interrupt_audit_loop():
+    nodes = make_nodes(reject=True)
+    original = nodes["planner"]
+    nodes["planner"] = lambda s: {**original(s), "modification_concern": "Internal repair is difficult"}
+    async def run():
+        return [e async for e in TravelSupervisor(nodes, InMemoryAgentMemoryStore(), "s").stream(
+            TravelPlanState(query="trip", days=1, pois=[{"name": "Museum"}], max_review_rounds=1),
+            modification=True)]
+    events = asyncio.run(run())
+    assert all(e["type"] != "modification_warning" for e in events)
+    assert events[-1]["type"] == "result"
+    assert events[-1]["success"] is False
 
 
 def test_optional_parallel_failures_return_explicit_degradation():
@@ -201,3 +233,18 @@ def test_planner_receives_review_feedback_and_configured_limit():
     nodes["planner"] = planner
     collect(TravelSupervisor(nodes, InMemoryAgentMemoryStore(), "s"), TravelPlanState(query="trip", max_review_rounds=1))
     assert rounds == [(None, 1), ("revise", 1)]
+
+
+def test_time_checker_receives_destination_but_not_reviewer_history():
+    memory = InMemoryAgentMemoryStore()
+    memory.append("s", "reviewer", {"role": "assistant", "content": "reviewer secret"})
+    memory.append("s", "time_check", {"role": "assistant", "content": "own check"})
+    captured = []
+    nodes = make_nodes()
+    def check(state):
+        captured.append((state.destination, state.planner_reviewer_dialogue))
+        return {}
+    nodes["time_check"] = check
+    runtime = TravelSupervisor(nodes, memory, "s")
+    asyncio.run(runtime._call("time_check", TravelPlanState(query="trip", destination="Nanjing")))
+    assert captured == [("Nanjing", ["own check"])]

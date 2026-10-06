@@ -1,0 +1,17 @@
+{
+  "scope": "Frozen POI/weather, real model and road API; enrichment omitted. One sequential trial per engine, not an online benchmark.",
+  "cases": [
+    {
+      "case_id": "nanjing-1d-sunny-nightlife",
+      "langgraph": {"outcome": "approved", "objective_pass": true, "elapsed_ms": 33934.88, "model_calls": 1, "estimated_tokens": 2202},
+      "supervisor": {"outcome": "approved", "objective_pass": true, "elapsed_ms": 33846.36, "model_calls": 1, "estimated_tokens": 2197}
+    },
+    {
+      "case_id": "nanjing-3d-tighthours-negative",
+      "langgraph": {"outcome": "timeout", "elapsed_ms": 240054.26, "model_calls": 10, "estimated_tokens": 16955},
+      "supervisor": {"outcome": "requires_confirmation", "approved": false, "elapsed_ms": 112137.58, "model_calls": 4, "estimated_tokens": 8802},
+      "follow_up": "Internal repair confirmation was fixed after this run; regression passed, real-provider retest pending. No speedup or quality-win claim."
+    }
+  ],
+  "billing": "Tokens estimated; prices not configured; no actual cost claim."
+}

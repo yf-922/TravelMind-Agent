@@ -23,7 +23,7 @@ INPUTS = {
     "route_distance_check": {"pois", "route", "max_walking_km"},
     "risk_gate": {"pois", "route", "days", "max_per_day", "travel_start_date", "weather_forecast", "habit_preference", "max_walking_km", "rain_indoor_priority", "route_distance_legs", "modification_notes", "route_modify_opinion"},
     "reviewer": {"destination", "days", "travel_start_date", "travel_end_date", "pois", "route", "habit_preference", "max_per_day", "weather_forecast", "max_walking_km", "rain_indoor_priority", "route_distance_legs", "route_distance_note", "review_round"},
-    "time_check": {"pois", "route", "travel_start_date", "travel_end_date", "days", "time_check_round", "max_time_check_rounds", "approved", "review_required", "habit_preference", "max_walking_km", "rain_indoor_priority", "weather_forecast", "route_distance_legs", "max_per_day", "modification_notes"},
+    "time_check": {"destination", "pois", "route", "travel_start_date", "travel_end_date", "days", "time_check_round", "max_time_check_rounds", "approved", "review_required", "habit_preference", "max_walking_km", "rain_indoor_priority", "weather_forecast", "route_distance_legs", "max_per_day", "modification_notes"},
 }
 
 
@@ -63,6 +63,7 @@ class TravelSupervisor:
             entries = self.memory.load(self.session_id, role)
         except Exception:
             logger.warning("private memory lookup failed role=%s", role, exc_info=True)
+            self._role_histories[role] = []
             return []
         selected = []
         remaining = self.memory_chars
@@ -117,6 +118,10 @@ class TravelSupervisor:
         return update
 
     async def stream(self, state: TravelPlanState, *, modification=False, confirmed=False) -> AsyncIterator[dict[str, Any]]:
+        # Freeze every model role before any node writes this request's history.
+        for role in ("planner", "reviewer", "time_check"):
+            self._history(role)
+
         async def execute(role):
             update = await self._call(role, state)
             merged = state.model_dump()
@@ -161,7 +166,8 @@ class TravelSupervisor:
                 yield {"type": "stage", "node": role, "revision": revision}
                 state = await execute(role)
                 yield {"type": "stage_summary", "node": role, "summary": "completed"}
-            if state.modification_concern and modification and not confirmed:
+            if (state.modification_concern and modification and state.modification_notes
+                    and revision == 0 and not confirmed):
                 yield {"type": "modification_warning", "concern": state.modification_concern,
                        "pending_state": state.model_dump(mode="json")}
                 return
