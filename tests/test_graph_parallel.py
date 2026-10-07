@@ -70,6 +70,7 @@ def test_main_meal_output_and_spot_tips_run_in_parallel_before_finalize(monkeypa
 
     intervals: dict[str, tuple[float, float]] = {}
     finalized: dict[str, object] = {}
+    finalize_calls = []
     lock = threading.Lock()
 
     def delayed(name, update):
@@ -99,6 +100,12 @@ def test_main_meal_output_and_spot_tips_run_in_parallel_before_finalize(monkeypa
         "route": [{"day": 1, "spots": []}], "review_round": 1,
     })
     monkeypatch.setattr(graph_module, "route_distance_check_node", lambda state: {})
+    monkeypatch.setattr(graph_module, "route_risk_gate_node", lambda state: {
+        "review_required": False, "time_check_required": False, "review_skipped": True,
+    })
+    def unexpected_legacy_factory(*args, **kwargs):
+        raise AssertionError("Joint planning must not construct legacy meal enrichment")
+    monkeypatch.setattr(graph_module, "make_meal_enrichment_node", unexpected_legacy_factory)
     monkeypatch.setattr(graph_module, "make_reviewer_node", lambda *a, **k: lambda state: {
         "approved": True, "reviewer_issues": [], "route_modify_opinion": None,
     })
@@ -117,6 +124,7 @@ def test_main_meal_output_and_spot_tips_run_in_parallel_before_finalize(monkeypa
     ))
 
     def finalize(state):
+        finalize_calls.append(1)
         finalized["meal_slots"] = state.meal_slots
         finalized["spot_tips"] = state.spot_tips
         return {"final_plan": {}}
@@ -128,6 +136,7 @@ def test_main_meal_output_and_spot_tips_run_in_parallel_before_finalize(monkeypa
     )
 
     assert result["final_plan"] == {}
+    assert len(finalize_calls) == 1
     assert finalized["meal_slots"] and finalized["spot_tips"] == {"Museum": "tip"}
     meal_start, meal_end = intervals["main_meal_output"]
     tips_start, tips_end = intervals["spot_tips"]

@@ -23,13 +23,29 @@ def _utc_now() -> str:
     return datetime.now(timezone.utc).isoformat()
 
 
-def plan_timeout_seconds() -> float:
-    """Return a bounded per-run timeout configured by PLAN_TIMEOUT_SECONDS."""
+def plan_timeout_seconds() -> float | None:
+    """Optional operator emergency ceiling; normal runs use node deadlines."""
     try:
-        value = float(os.getenv("PLAN_TIMEOUT_SECONDS", "180"))
+        value = float(os.getenv("PLAN_TIMEOUT_SECONDS", "0"))
     except ValueError:
-        value = 180.0
-    return min(max(value, 5.0), 900.0)
+        value = 0.0
+    return min(max(value, 5.0), 900.0) if value > 0 else None
+
+
+def node_timeout_seconds(node: str) -> float:
+    defaults = {"planner": 150, "intent": 90, "query_rewrite": 60,
+                "weather_search": 15, "candidate_react": 60}
+    try:
+        value = float(os.getenv("NODE_TIMEOUT_" + node.upper() + "_SECONDS",
+                               os.getenv("NODE_TIMEOUT_SECONDS", str(defaults.get(node, 120)))))
+    except ValueError:
+        value = defaults.get(node, 120)
+    return min(max(value, 1.0), 900.0)
+
+
+class NodeDeadlineExceeded(Exception):
+    def __init__(self, node: str, limit: float):
+        self.node, self.limit = node, limit
 
 
 class AgentRunRegistry:
@@ -280,16 +296,34 @@ async def observe_agent_events(
     timeout = plan_timeout_seconds() if timeout_seconds is None else timeout_seconds
     usage_token = bind_run(run_id)
     terminal_seen = False
+    active: dict[str, tuple[float, float]] = {}
     try:
         yield {"type": "run", "run_id": run_id, "timeout_seconds": timeout}
         async with asyncio.timeout(timeout):
-            async for event in source:
+            iterator = source.__aiter__()
+            while True:
+                # Heartbeats/completions of other branches must not reset an
+                # already-running node's deadline.
+                node, (deadline, limit) = min(active.items(), key=lambda item: item[1][0]) if active else (
+                    "stream", (time.monotonic() + node_timeout_seconds("stream"), node_timeout_seconds("stream")))
+                try:
+                    async with asyncio.timeout(max(0, deadline - time.monotonic())) as node_timer:
+                        event = await anext(iterator)
+                except StopAsyncIteration:
+                    break
+                except TimeoutError as exc:
+                    if node_timer.expired():
+                        raise NodeDeadlineExceeded(node, limit) from exc
+                    raise RuntimeError("provider request timed out") from exc
                 event_type = event.get("type")
                 node = str(event.get("node") or "")
                 if event_type == "stage" and node:
                     registry.node_started(run_id, node)
+                    limit = node_timeout_seconds(node)
+                    active.setdefault(node, (time.monotonic() + limit, limit))
                 elif event_type == "stage_summary" and node:
                     registry.node_finished(run_id, node)
+                    active.pop(node, None)
                 elif event_type == "result":
                     plan = event.get("plan")
                     if isinstance(plan, dict):
@@ -306,6 +340,12 @@ async def observe_agent_events(
                 if event_type in {"result", "error", "modification_warning"}:
                     event = {**event, "run_id": run_id}
                 yield event
+    except NodeDeadlineExceeded as exc:
+        registry.finish(run_id, "timed_out", "NODE_TIMEOUT")
+        terminal_seen = True
+        yield {"type": "error", "code": "NODE_TIMEOUT", "node": exc.node,
+               "message": f"节点 {exc.node} 超过 {exc.limit:g} 秒，本次执行已停止，请重试。",
+               "run_id": run_id}
     except TimeoutError:
         registry.finish(run_id, "timed_out", "PLAN_TIMEOUT")
         terminal_seen = True

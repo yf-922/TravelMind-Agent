@@ -164,6 +164,56 @@ def test_provider_auth_error_is_actionable_without_leaking_key():
     assert "sk-secret-value" not in message
 
 
+def test_default_deadline_is_per_node_not_total(monkeypatch):
+    import app.core.agent_runs as module
+    monkeypatch.delenv("PLAN_TIMEOUT_SECONDS", raising=False)
+    monkeypatch.setattr(module, "node_timeout_seconds", lambda node: 0.1)
+    assert module.plan_timeout_seconds() is None
+    registry = AgentRunRegistry()
+    run_id = registry.start("owner", "plan")
+    async def source():
+        for node in ("intent", "planner", "finalize"):
+            yield {"type": "stage", "node": node}
+            await asyncio.sleep(0.04)
+            yield {"type": "stage_summary", "node": node}
+        yield {"type": "result", "success": True}
+    async def collect():
+        return [e async for e in observe_agent_events(source(), run_id, registry=registry)]
+    events = asyncio.run(collect())
+    assert events[-1]["type"] == "result"
+    assert registry.status(run_id) == "succeeded"
+
+
+def test_parallel_heartbeats_cannot_extend_stuck_node_deadline(monkeypatch):
+    import app.core.agent_runs as module
+    monkeypatch.delenv("PLAN_TIMEOUT_SECONDS", raising=False)
+    monkeypatch.setattr(module, "node_timeout_seconds", lambda node: 0.03)
+    registry = AgentRunRegistry()
+    run_id = registry.start("owner", "plan")
+    async def source():
+        yield {"type": "stage", "node": "planner"}
+        while True:
+            await asyncio.sleep(0.003)
+            yield {"type": "heartbeat"}
+    async def collect():
+        return [e async for e in observe_agent_events(source(), run_id, registry=registry)]
+    events = asyncio.run(collect())
+    assert events[-1]["code"] == "NODE_TIMEOUT"
+    assert events[-1]["node"] == "planner"
+    assert registry.status(run_id) == "timed_out"
+
+
+def test_provider_timeout_is_not_misreported_as_node_deadline():
+    registry = AgentRunRegistry()
+    run_id = registry.start("owner", "plan")
+    async def source():
+        yield {"type": "stage", "node": "planner"}
+        raise TimeoutError("request timed out")
+    async def collect():
+        return [e async for e in observe_agent_events(source(), run_id, registry=registry)]
+    assert asyncio.run(collect())[-1]["code"] == "LLM_REQUEST_TIMEOUT"
+
+
 def test_missing_provider_key_has_specific_config_error():
     code, message = classify_agent_error(
         RuntimeError("缺少 OPENAI_API_KEY。请在 .env.local 中配置后重试。")

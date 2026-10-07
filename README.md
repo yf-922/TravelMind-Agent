@@ -251,7 +251,7 @@ docker compose up --build
 
 `/api/metrics` 还会输出 HTTP 平均/P95/最大延迟，以及 LLM 调用次数、输入/输出 token、累计 LLM 延迟、估算成本和 usage 精确率。结构化输出解析后供应商不一定保留 usage metadata：能读取时使用真实 token，读取不到时使用字符数估算并计入 `travelmind_llm_usage_exact_ratio`。成本单价不硬编码，可通过 `LLM_INPUT_USD_PER_1K` 和 `LLM_OUTPUT_USD_PER_1K` 按当前供应商账单配置。
 
-规划 SSE 的第一帧返回 `run_id`，响应头同时包含 `X-Agent-Run-ID`。服务默认在 180 秒后终止未完成的规划，可通过 `PLAN_TIMEOUT_SECONDS` 调整。Trace 仅保留最近 200 次执行，不保存用户原始 Prompt、模型思考或模型输出。单次 Token 通过 request context 归因，仍需结合 `usage_exact_ratio` 区分供应商原始 usage 与字符估算。
+规划 SSE 的第一帧返回 `run_id`，响应头同时包含 `X-Agent-Run-ID`。默认不设整单 180 秒截止，而按节点计时：Planner 150 秒、intent 90 秒、查询改写 60 秒、天气 15 秒、ReAct 决策 60 秒，其余节点 120 秒。可通过 `NODE_TIMEOUT_SECONDS` 设置通用上限，或通过 `NODE_TIMEOUT_PLANNER_SECONDS` 等设置单节点上限。并行节点独立计时；其他分支进度和心跳不会刷新卡住节点的期限。超过期限返回 `NODE_TIMEOUT` 和节点名，不将未完成结果当成功；取消协程不能强制停止已进入线程的同步调用，底层 HTTP 仍保留请求超时。有需要时运营可显式设置 `PLAN_TIMEOUT_SECONDS` 作为整单应急上限（默认 0，关闭）。Trace 仅保留最近 200 次执行，不保存用户原始 Prompt、模型思考或模型输出。单次 Token 通过 request context 归因，仍需结合 `usage_exact_ratio` 区分供应商原始 usage 与字符估算。
 
 Docker 默认关闭 Chroma embedding 模型下载，旅行知识库使用带来源标签的本地关键词检索，避免首次启动下载约 79 MB 模型而阻塞服务。需要完整向量检索时，将 `SEMANTIC_MEMORY_ENABLED=1`、`TRAVEL_KNOWLEDGE_ENABLED=1`；语义记忆检索仍会在 `MEMORY_LOOKUP_TIMEOUT_SECONDS`（默认 2.5 秒）后降级。
 

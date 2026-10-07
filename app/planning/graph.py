@@ -73,7 +73,6 @@ def build_graph(
     g.add_node("risk_gate", route_risk_gate_node)
     g.add_node("reviewer",         make_reviewer_node(model_name))
     g.add_node("time_check",       make_time_check_node(model_name))
-    g.add_node("meal_enrichment",  make_meal_enrichment_node(model_name))
     g.add_node("spot_tips",        make_spot_tips_node(model_name))
     g.add_node("finalize",         make_finalize_node(memory_writer))
 
@@ -106,7 +105,7 @@ def build_graph(
     g.add_conditional_edges(
         "risk_gate", route_after_risk_gate,
         {"reviewer": "reviewer", "time_check": "time_check",
-         "meal_search": "meal_enrichment", "spot_tips": "spot_tips"},
+         "meal_search": "main_meal_output", "spot_tips": "spot_tips"},
     )
     # reviewer：通过或达最大轮数 → time_check 阶段；否则打回 planner
     g.add_conditional_edges(
@@ -120,8 +119,7 @@ def build_graph(
     )
     # The dependent search -> recommend meal subflow and attraction tips are
     # independent branches. Finalize waits for both.
-    g.add_edge("main_meal_output", "finalize")
-    g.add_edge("spot_tips",      "finalize")
+    g.add_edge(["main_meal_output", "spot_tips"], "finalize")
     g.add_edge("finalize",       END)
 
     return g.compile()
@@ -146,7 +144,7 @@ _NODE_LABELS: dict[str, str] = {
     "main_meal_search":  "🍽 正在查询联合规划餐馆候选",
     "modification_intent": "🧩 正在分析行程修改意见",
     "candidate_refresh": "🔎 正在补充核验新增候选景点",
-    "planner":           "✍️ 正在规划逐日行程",
+    "planner":           "✍️ 正在联合规划景点与用餐时间",
     "route_distance_check": "🛣 正在核验道路步行/驾车距离",
     "risk_gate": "🧮 正在评估是否需要升级审核",
     "reviewer":          "🔍 正在评审行程",
@@ -262,7 +260,7 @@ def _stage_summary(node: str, state_before: dict[str, Any], update: dict[str, An
     if node == "risk_gate":
         flags = state.get("route_risk_flags") or []
         if state.get("review_skipped"):
-            return "低风险路线，跳过 Reviewer/Time Check，直接进入结果增强。"
+            return "低风险路线，保留联合规划结果，进入行程整理与贴士补充。"
         return f"检测到 {len(flags)} 项风险，已升级到独立审核。"
     if node == "reviewer":
         issues = state.get("reviewer_issues") or []
@@ -334,8 +332,7 @@ def build_modification_graph(model_name: str | None = None, memory_writer=None):
         "time_check", route_after_time_check,
         {"planner": "planner", "reviewer": "reviewer", "meal_search": "main_meal_output", "spot_tips": "spot_tips"},
     )
-    g.add_edge("main_meal_output", "finalize")
-    g.add_edge("spot_tips",      "finalize")
+    g.add_edge(["main_meal_output", "spot_tips"], "finalize")
     g.add_edge("finalize",       END)
     return g.compile()
 
@@ -374,8 +371,7 @@ def build_confirm_graph(model_name: str | None = None, memory_writer=None):
         "time_check", route_after_time_check,
         {"planner": "planner", "reviewer": "reviewer", "meal_search": "main_meal_output", "spot_tips": "spot_tips"},
     )
-    g.add_edge("main_meal_output", "finalize")
-    g.add_edge("spot_tips",      "finalize")
+    g.add_edge(["main_meal_output", "spot_tips"], "finalize")
     g.add_edge("finalize",   END)
     return g.compile()
 

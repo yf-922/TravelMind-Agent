@@ -2,6 +2,14 @@ from app.planning import nodes
 from app.planning.schemas import TravelPlanState
 
 
+def test_time_check_exhaustion_stops_residual_meal_and_review_loops():
+    for flag in ("meal_overlap", "candidate_pool_unverified"):
+        state = TravelPlanState(query="trip", time_check_round=3, max_time_check_rounds=3,
+                                review_round=4, max_review_rounds=3, risk_gate_rechecked=True,
+                                review_required=True, route_risk_flags=[flag])
+        assert nodes.route_after_time_check(state) == ["meal_search", "spot_tips"]
+
+
 def test_main_meal_search_degrades_without_provider(monkeypatch):
     monkeypatch.setattr(nodes, "amap_key", lambda: (_ for _ in ()).throw(RuntimeError("no key")))
     result = nodes.main_meal_candidate_search_node(

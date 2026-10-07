@@ -7,10 +7,10 @@
 const JOURNEY_STEPS = [
   { key: "intent",            label: "理解出行意图",       detail: "目的地 / 日期 / 偏好 · 查询天气预报" },
   { key: "query_rewrite",     label: "结合画像优化查询",   detail: "个性化改写中" },
-  { key: "attraction_search", label: "景点 Agent 检索",    detail: "搜索景点池" },
-  { key: "plan_review",       label: "规划 ⇄ 评审行程",    detail: "多轮打磨逐日时刻表" },
+  { key: "attraction_search", label: "景点候选检索",      detail: "建立与补充候选池" },
+  { key: "plan_review",       label: "景点与餐厅联合规划", detail: "联合时间轴 · 路线核验与审核" },
   { key: "time_check",        label: "核查开放时间",        detail: "逐景点核对营业时段" },
-  { key: "enrichment",        label: "补充沿线信息",        detail: "餐厅推荐 · 景点贴士并行" },
+  { key: "enrichment",        label: "整理行程与游玩贴士",  detail: "保留已规划的用餐安排" },
   { key: "finalize",          label: "生成最终行程",         detail: "即将完成…" },
 ];
 // 后端节点名 → 旅程站点 key
@@ -30,6 +30,9 @@ const NODE_TO_STEP = {
   meal_search:       "enrichment",
   meal_recommend:    "enrichment",
   meal_enrichment:   "enrichment",
+  main_meal_output:  "enrichment",
+  route_distance_check: "plan_review",
+  risk_gate:         "plan_review",
   spot_tips:         "enrichment",
   finalize:          "finalize",
 };

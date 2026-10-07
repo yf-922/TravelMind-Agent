@@ -1104,7 +1104,13 @@ def route_after_time_check(state: TravelPlanState) -> str | list[str]:
     - 达 max_time_check_rounds 上限 → meal_search（带剩余问题前进，由 finalize 透传给前端）
     - 否则 → planner 修正
     """
+    # Exhaustion also applies when there are no time violations but residual
+    # meal/non-time risks would otherwise re-enter planner or reviewer forever.
+    if state.time_check_round >= state.max_time_check_rounds:
+        return ["meal_search", "spot_tips"]
     if not state.time_violations:
+        if state.review_round > state.max_review_rounds:
+            return ["meal_search", "spot_tips"]
         if any(str(flag).startswith("meal_") for flag in (state.route_risk_flags or [])):
             return "planner"
         if state.risk_gate_rechecked and state.review_required and any(

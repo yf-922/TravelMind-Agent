@@ -135,8 +135,8 @@ function PlanPage({ onRequestLogin, currentUsername, onPhaseChange, onPlanReady,
       "候选景点会先检查名称、坐标和评分，避免把不存在的地点写进计划。",
     ],
     planner: [
-      "规划师正在把候选景点按区域、节奏和天气组合成逐日行程。",
-      "正在给每个景点安排时段，并尽量减少跨区折返。",
+      "规划师正在联合安排景点、餐厅和通勤时间。",
+      "正在检查游览和用餐时段，并尽量减少跨区折返。",
     ],
     reviewer: [
       "评审 Agent 正在检查路线是否使用了候选池外的景点，以及是否满足你的约束。",
