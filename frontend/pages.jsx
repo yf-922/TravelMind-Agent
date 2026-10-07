@@ -111,6 +111,7 @@ function PlanPage({ onRequestLogin, currentUsername, onPhaseChange, onPlanReady,
   // 旅程已走到的最远站点下标：planner⇄reviewer / planner⇄time_check 循环时只前进不后退
   const maxStepRef = React.useRef(-1);
   const narrationIndexRef = React.useRef(0);
+  const runningStagesRef = React.useRef({});
   const startDateRef = React.useRef(null);
 
   const hasDateMissing = missingFields.some(field => String(field).includes("日期"));
@@ -200,8 +201,9 @@ function PlanPage({ onRequestLogin, currentUsername, onPhaseChange, onPlanReady,
   }, []); // eslint-disable-line
 
   const handleStage = (ev) => {
+    runningStagesRef.current[ev.node] = ev.label || ev.node;
     setLogs(prev => [...prev, ev.label || ev.node]);
-    setStageLabel(ev.label || "");
+    setStageLabel(Object.values(runningStagesRef.current).join(" · "));
     updateNarration(ev.node);
     const key = NODE_TO_STEP[ev.node] || ev.node;
     const idx = JOURNEY_STEPS.findIndex(s => s.key === key);
@@ -212,6 +214,7 @@ function PlanPage({ onRequestLogin, currentUsername, onPhaseChange, onPlanReady,
   };
 
   const resetJourney = () => {
+    runningStagesRef.current = {};
     maxStepRef.current = -1;
     setActiveNode(null);
     setDoneNodes([]);
@@ -220,6 +223,13 @@ function PlanPage({ onRequestLogin, currentUsername, onPhaseChange, onPlanReady,
     setLiveNarration("旅行助手已出发，正在整理你的需求…");
     setStageReport("");
     setStageReports({});
+  };
+
+  const completeStage = (ev) => {
+    delete runningStagesRef.current[ev.node];
+    const labels = Object.values(runningStagesRef.current);
+    setStageLabel(labels.join(" · "));
+    setLiveNarration(labels.length ? labels.join(" · ") : ev.summary);
   };
 
   React.useEffect(() => {
@@ -232,6 +242,7 @@ function PlanPage({ onRequestLogin, currentUsername, onPhaseChange, onPlanReady,
     setPhase("loading");
     const isModify = !!(body.plan_id && body.modification_notes);
     if (isModify) {
+      runningStagesRef.current = {};
       const preDone = JOURNEY_STEPS.slice(0, 3).map(s => s.key);
       maxStepRef.current = 3;
       setDoneNodes(preDone);
@@ -251,8 +262,8 @@ function PlanPage({ onRequestLogin, currentUsername, onPhaseChange, onPlanReady,
       onStage: handleStage,
       onStageSummary: (ev) => {
         if (!ev.summary) return;
+        completeStage(ev);
         setStageReport(ev.summary);
-        setLiveNarration(ev.summary);
         const step = NODE_TO_STEP[ev.node] || ev.node;
         setStageReports(prev => ({
           ...prev,
@@ -322,8 +333,8 @@ function PlanPage({ onRequestLogin, currentUsername, onPhaseChange, onPlanReady,
       onStage: handleStage,
       onStageSummary: (ev) => {
         if (!ev.summary) return;
+        completeStage(ev);
         setStageReport(ev.summary);
-        setLiveNarration(ev.summary);
         const step = NODE_TO_STEP[ev.node] || ev.node;
         setStageReports(prev => ({
           ...prev,

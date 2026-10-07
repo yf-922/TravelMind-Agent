@@ -17,7 +17,13 @@ const JOURNEY_STEPS = [
 const NODE_TO_STEP = {
   intent:            "intent",
   query_rewrite:     "query_rewrite",
+  weather_search:    "query_rewrite",
+  main_meal_search:  "query_rewrite",
   attraction_search: "attraction_search",
+  candidate_react:   "attraction_search",
+  candidate_search:  "attraction_search",
+  candidate_validator: "attraction_search",
+  candidate_ready:   "attraction_search",
   planner:           "plan_review",
   reviewer:          "plan_review",
   time_check:        "time_check",

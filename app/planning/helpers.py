@@ -457,7 +457,7 @@ def fetch_weather_for_dates(
         all_forecasts = []
 
     if not all_forecasts:
-        return [], "天气信息获取失败，按晴天规划路线"
+        return [], "天气信息暂不可用，请出发前复核；不将未知天气视为晴天"
 
     forecast_map = {f["date"]: f for f in all_forecasts}
 

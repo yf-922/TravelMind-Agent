@@ -50,7 +50,9 @@ def fetch_forecast(city: str, api_key: str) -> list[dict[str, Any]]:
     url = f"{AMAP_WEATHER_URL}?{urllib.parse.urlencode(params)}"
 
     try:
-        data = http_get_json(url)
+        # Optional enrichment must not spend 3 x 15 seconds blocking the
+        # post-intent fan-in when the weather service is unavailable.
+        data = http_get_json(url, timeout=5, attempts=1)
     except Exception:
         return []
 

@@ -136,7 +136,7 @@ def make_query_rewrite_node(model_name: str | None, user_id: str | None):
             rewritten: RewrittenQuery = invoke_structured(rewrite_llm, [
                 ("system", QUERY_REWRITE_SYSTEM),
                 ("human", f"原始查询：{raw}\n\n{intent_prefs}\n\n用户历史画像：\n{profile_text}"),
-            ])
+            ], retries=1)
 
             note = f"[query_rewrite] {raw!r} → {rewritten.rewritten_query!r}（{rewritten.reasoning}）"
             return {
@@ -249,7 +249,7 @@ def weather_search_node(state: TravelPlanState) -> dict[str, Any]:
         logger.warning("[weather_search] failed: %s", exc)
         return {
             "weather_forecast": [],
-            "weather_note": "天气信息获取失败，按晴天规划路线",
+            "weather_note": "天气信息暂不可用，请出发前复核；不将未知天气视为晴天",
         }
 
 
