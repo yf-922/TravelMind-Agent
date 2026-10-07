@@ -1488,7 +1488,7 @@ def make_spot_tips_node(model_name: str | None):
         )
         try:
             result: SpotTipsResult = invoke_structured(
-                llm, [("system", SPOT_TIPS_SYSTEM), ("human", prompt)]
+                llm, [("system", SPOT_TIPS_SYSTEM), ("human", prompt)], retries=1
             )
         except Exception as exc:  # noqa: BLE001 - tips are non-critical enrichment
             logger.warning("[spot_tips] generation failed (%s)", type(exc).__name__)

@@ -167,7 +167,11 @@ class TravelSupervisor:
             data["agent_private_context"] = self._history(role)
         local = TravelPlanState(**data)
         try:
-            update = await asyncio.to_thread(self.nodes[role], local)
+            if role == "spot_tips":
+                from app.planning.enrichment import run_spot_tips
+                update = await run_spot_tips(self.nodes[role], local)
+            else:
+                update = await asyncio.to_thread(self.nodes[role], local)
         except Exception:
             fallback = {
                 "modification_intent": {

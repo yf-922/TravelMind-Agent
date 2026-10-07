@@ -7,6 +7,7 @@ from typing import Any, AsyncIterator
 from langgraph.graph import END, START, StateGraph
 
 from app.planning.schemas import TravelPlanState
+from app.planning.enrichment import bounded_spot_tips
 from app.planning.helpers import invoke_structured  # re-export for convenience
 from app.planning.candidate_react import (
     make_candidate_react_node, candidate_search_node, candidate_validator_node,
@@ -73,7 +74,7 @@ def build_graph(
     g.add_node("risk_gate", route_risk_gate_node)
     g.add_node("reviewer",         make_reviewer_node(model_name))
     g.add_node("time_check",       make_time_check_node(model_name))
-    g.add_node("spot_tips",        make_spot_tips_node(model_name))
+    g.add_node("spot_tips",        bounded_spot_tips(make_spot_tips_node(model_name)))
     g.add_node("finalize",         make_finalize_node(memory_writer))
 
     g.add_edge(START,   "intent")
@@ -288,6 +289,8 @@ def _stage_summary(node: str, state_before: dict[str, Any], update: dict[str, An
         slots = state.get("meal_slots") or []
         return f"已将 {len(slots)} 个餐馆时间块纳入联合行程。"
     if node == "spot_tips":
+        if state.get("spot_tips_status") == "degraded":
+            return "游玩贴士暂不可用，已跳过；保留景点与用餐安排，继续生成行程。"
         return f"已生成 {len(state.get('spot_tips') or {})} 条景点游玩提示。"
     if node == "finalize":
         return "行程已整理完成，正在展示结果。"
@@ -314,7 +317,7 @@ def build_modification_graph(model_name: str | None = None, memory_writer=None):
         return main_meal_output_node(state)
 
     g.add_node("main_meal_output", meal_output_with_legacy_compat)
-    g.add_node("spot_tips",      make_spot_tips_node(model_name))
+    g.add_node("spot_tips",      bounded_spot_tips(make_spot_tips_node(model_name)))
     g.add_node("finalize",       make_finalize_node(memory_writer))
     g.add_edge(START, "planner")
     g.add_edge("planner", "route_distance_check")
@@ -353,7 +356,7 @@ def build_confirm_graph(model_name: str | None = None, memory_writer=None):
         return main_meal_output_node(state)
 
     g.add_node("main_meal_output", meal_output_with_legacy_compat)
-    g.add_node("spot_tips",      make_spot_tips_node(model_name))
+    g.add_node("spot_tips",      bounded_spot_tips(make_spot_tips_node(model_name)))
     g.add_node("finalize",       make_finalize_node(memory_writer))
     g.add_edge(START,            "route_distance_check")
     g.add_edge("route_distance_check", "risk_gate")
