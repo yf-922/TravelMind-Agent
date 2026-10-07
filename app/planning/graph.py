@@ -60,7 +60,11 @@ def build_graph(
     g.add_node("intent",           make_intent_node(model_name, profile_hint=profile_hint))
     g.add_node("weather_search",   weather_search_node)
     g.add_node("candidate_react", make_candidate_react_node(model_name))
-    g.add_node("attraction_search", candidate_search_node)
+    g.add_node("candidate_search", candidate_search_node)
+    # Build a deterministic, city-wide verified pool before the optional
+    # ReAct expansion.  ReAct is a gap-filler; making it the first search
+    # meant a provider timeout could turn an otherwise valid city into 0 POIs.
+    g.add_node("attraction_search", attraction_search_node)
     g.add_node("candidate_validator", candidate_validator_node)
     g.add_node("main_meal_search", main_meal_candidate_search_node)
     g.add_node("main_meal_output", main_meal_output_node)
@@ -84,10 +88,11 @@ def build_graph(
         }
     )
     # 查询改写、天气与主链路餐馆候选都只依赖 intent 的输出，可以并行执行。
-    # attraction_search 使用两者结果，因此设置多前驱屏障，确保天气/改写都完成后再检索。
-    g.add_edge(["query_rewrite", "weather_search"], "candidate_react")
-    g.add_edge("candidate_react", "attraction_search")
-    g.add_edge("attraction_search", "candidate_validator")
+    # 初始景点池使用稳定的城市级检索；之后再由 ReAct 针对缺口定向补充。
+    g.add_edge(["query_rewrite", "weather_search"], "attraction_search")
+    g.add_edge("attraction_search", "candidate_react")
+    g.add_edge("candidate_react", "candidate_search")
+    g.add_edge("candidate_search", "candidate_validator")
     g.add_conditional_edges("candidate_validator", route_after_candidate_validation,
                            {"candidate_react": "candidate_react", "planner": "candidate_ready"})
     g.add_node("candidate_ready", lambda state: {})
@@ -130,6 +135,7 @@ def build_graph(
 # 节点名 → 进度文案。同时充当“哪些事件需要透出”的过滤白名单。
 # planner/reviewer 文案在运行时按轮次/通过位动态拼接，这里留占位。
 _NODE_LABELS: dict[str, str] = {
+    "candidate_search": "正在定向补充景点候选",
     "candidate_react": "正在判断景点候选缺口",
     "candidate_validator": "正在检查候选覆盖与多样性",
     "candidate_ready": "景点候选检索已结束",
@@ -237,7 +243,7 @@ def _stage_summary(node: str, state_before: dict[str, Any], update: dict[str, An
         return weather + "。"
     if node == "query_rewrite":
         return "已结合本次需求和用户偏好，整理检索约束。"
-    if node == "attraction_search":
+    if node in {"attraction_search", "candidate_search"}:
         pois = state.get("pois") or []
         sample = _preview_names(pois)
         suffix = f"示例：{sample}。" if sample else ""

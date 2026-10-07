@@ -198,6 +198,7 @@ def benchmark_post_intent_fanout(runs: int, delay_ms: float) -> dict[str, Any]:
             "main_meal_candidates": [], "main_meal_status": "partial",
         })),
         patch.object(graph_module, "make_candidate_react_node", return_value=lambda state: {"candidate_search_actions": [{"action": "stop"}]}),
+        patch.object(graph_module, "attraction_search_node", lambda state: {}),
         patch.object(graph_module, "candidate_search_node", lambda state: {"pois": [], "candidate_search_round": 2}),
         patch.object(graph_module, "make_planner_node", return_value=lambda state: {
             "route": [{"day": 1, "spots": []}], "review_round": 1,
@@ -284,6 +285,7 @@ def benchmark_enrichment_fanout(runs: int, delay_ms: float) -> dict[str, Any]:
             "weather_forecast": [], "weather_note": "offline",
         }),
         patch.object(graph_module, "make_candidate_react_node", return_value=lambda state: {"candidate_search_actions": [{"action": "stop"}]}),
+        patch.object(graph_module, "attraction_search_node", lambda state: {}),
         patch.object(graph_module, "candidate_search_node", lambda state: {"pois": [], "candidate_search_round": 2}),
         patch.object(graph_module, "make_planner_node", return_value=lambda state: {
             "route": [{"day": 1, "spots": []}], "review_round": 1,

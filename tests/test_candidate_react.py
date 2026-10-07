@@ -43,14 +43,46 @@ def test_decision_uses_current_request_memory_weather_and_observations(monkeypat
     assert "当前需求" in captured[0] and "历史记忆" in captured[0] and "is_bad" in captured[0]
 
 
-def test_invalid_model_action_never_reaches_tool(monkeypatch):
+def test_invalid_model_action_is_replaced_by_server_defined_categories(monkeypatch):
     monkeypatch.setattr(cr, "build_structured_llm", lambda *a, **k: object())
     monkeypatch.setattr(cr, "invoke_structured", lambda *a, **k: object())
     state = TravelPlanState(query="旅行")
     update = cr.make_candidate_react_node()(state)
-    state = state.model_copy(update=update)
-    monkeypatch.setattr(cr, "search_city_pois", lambda *a, **k: (_ for _ in ()).throw(AssertionError()))
-    assert cr.candidate_search_node(state)["candidate_api_calls"] == 0
+    assert update["candidate_search_actions"] == cr.baseline_actions(state)
+    assert update["candidate_search_trace"][-1]["error_code"] == "DECISION_FAILED"
+
+
+def test_bootstrap_search_shares_budget_and_does_not_send_full_request(monkeypatch):
+    from app.planning.nodes import attraction_search_node
+    calls = []
+    monkeypatch.setattr(cr, "get_cached", lambda key: None)
+    monkeypatch.setattr(cr, "set_cached", lambda *a: None)
+    monkeypatch.setattr(cr, "amap_key", lambda: "fake")
+    def search(city, key, *, keywords, types, request_budget, **kwargs):
+        calls.append((city, keywords, types))
+        request_budget["used"] += 1
+        request_budget["remaining"] -= 1
+        return [{"name": "故宫" if types == "110000" else "首都博物馆",
+                 "location": "116.4,39.9", "type": "博物馆"}]
+    monkeypatch.setattr(cr, "search_city_pois", search)
+    state = TravelPlanState(query="北京三日游，明天出发", destination="北京", days=3)
+    update = attraction_search_node(state)
+    assert len(update["pois"]) == 2
+    assert all(p["rating"] is None and p["rating_status"] == "unknown" for p in update["pois"])
+    assert update["candidate_api_calls"] == 2
+    assert update["candidate_search_round"] == 0
+    assert calls == [("北京", "", "110000"), ("北京", "博物馆", "140100")]
+
+
+def test_known_low_ratings_are_still_filtered(monkeypatch):
+    monkeypatch.setattr(cr, "get_cached", lambda key: [
+        {"name": "Low", "location": "116,39", "biz_ext": {"rating": "2.0"}},
+        {"name": "Unknown", "location": "116,39"}])
+    update = cr.candidate_search_node(TravelPlanState(query="trip", candidate_search_actions=[
+        {"action": "search_history", "query": ""}]))
+    assert [p["name"] for p in update["pois"]] == ["Unknown"]
+    assert update["candidate_search_trace"][0]["raw_count"] == 2
+    assert update["candidate_search_trace"][0]["rating_filtered"] == 1
 
 
 def test_cached_results_merge_without_duplicate_or_api_calls(monkeypatch):

@@ -25,15 +25,18 @@
 
 ### 有界候选池 ReAct
 
-需求分析后，查询改写和天气查询并行完成，再进入
-`candidate_react -> attraction_search -> candidate_validator` 循环。
+主链路在需求分析、查询改写和天气查询完成后，先通过 `attraction_search`
+建立不依赖 LLM 的城市基础候选池，再进入
+`candidate_react -> candidate_search -> candidate_validator` 补检索循环。
 模型只提出最多两个类别/景点搜索动作；工具执行高德查询、合并去重和来源标注，
 校验器检查数量、明确景点覆盖、室内外约束及类型多样性。
-最多执行两轮，每次请求的候选检索共享四次 HTTP 尝试预算（含重试），Redis 命中不计外部请求。
+最多执行两轮，每次请求的基础与补充检索共享四次 HTTP 尝试预算（含重试），Redis 命中不计外部请求。
 这个预算目前仅覆盖候选池检索，不包含天气、餐馆和道路查询。
-LLM 输出非法动作、API 失败或预算耗尽时保留已有候选并返回 `insufficient`，
+LLM 失败或对空池提出停止时丢弃模型决策，使用服务端预定义类别查询；已有池则保留结果。
+API 失败或预算耗尽时保留已有候选并返回 `insufficient`，
 Planner 接收覆盖缺口，最终结果包含 `candidate_pool` 状态与统计。
 室内外标签来自高德类型/名称启发式，未知标签不计为已满足；明确用户限制优先于多样性。
+有评分的候选执行最低评分过滤，无评分但坐标有效的真实 POI 保留并标注 `rating_status=unknown`。
 配置通过 `TravelPlanState` 的 `candidate_min_per_day`、`candidate_max_rounds`、
 `candidate_api_budget` 控制；默认数量目标为天数乘每日两个景点，再加至少两个备选，受 `max_spots` 限制。
 

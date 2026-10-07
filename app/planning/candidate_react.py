@@ -62,6 +62,20 @@ def coverage(state: TravelPlanState) -> tuple[dict, list[str]]:
     return stats, missing
 
 
+def baseline_actions(state: TravelPlanState) -> list[dict]:
+    """Search real categories, never a generated itinerary or invented place."""
+    requested = extract_explicit_place_requests(state.query + "\n" + (state.modification_notes or ""))
+    if requested:
+        return [{"action": "search_user_requested_poi", "query": requested[0]},
+                {"action": "search_indoor", "query": "博物馆"}]
+    indoor_only = any(word in state.query for word in ("只去室内", "只安排室内", "仅室内", "只要室内"))
+    if indoor_only:
+        return [{"action": "search_indoor", "query": "博物馆"},
+                {"action": "search_indoor", "query": "美术馆"}]
+    return [{"action": "search_history", "query": ""},
+            {"action": "search_indoor", "query": "博物馆"}]
+
+
 def make_candidate_react_node(model_name=None):
     def decide(state: TravelPlanState):
         stats, missing = coverage(state)
@@ -79,9 +93,12 @@ def make_candidate_react_node(model_name=None):
                     "candidates": [{"name": p.get("name"), "indoor": p.get("indoor")} for p in state.pois]}, ensure_ascii=False))], retries=1)
             decision = CandidateDecision.model_validate(result.model_dump())
             actions = [a.model_dump() for a in decision.actions]
+            if not state.pois and all(a["action"] == "stop" for a in actions):
+                actions = baseline_actions(state)
         except Exception:
-            # No tool call is made from an invalid model decision.
-            return {"candidate_search_actions": [{"action": "stop"}],
+            # Discard model output. A server-defined category query remains
+            # safe even when the model times out, particularly for empty pools.
+            return {"candidate_search_actions": baseline_actions(state) if not state.pois else [{"action": "stop"}],
                     "candidate_pool_status": "insufficient",
                     "candidate_search_trace": state.candidate_search_trace + [{"error_code": "DECISION_FAILED"}]}
         return {"candidate_search_actions": actions}
@@ -102,7 +119,7 @@ def candidate_search_node(state: TravelPlanState):
         if action.action == "stop":
             continue
         query = action.query.strip()
-        if not query:
+        if not query and action.action != "search_history":
             trace.append({"action": action.action, "error_code": "EMPTY_QUERY"})
             continue
         if action.action == "search_user_requested_poi" and query not in extract_explicit_place_requests(
@@ -110,7 +127,10 @@ def candidate_search_node(state: TravelPlanState):
         ):
             trace.append({"action": action.action, "error_code": "UNREQUESTED_PLACE"})
             continue
-        digest = hashlib.sha256(json.dumps([state.destination, query], ensure_ascii=True).encode()).hexdigest()
+        types = "140100" if action.action == "search_indoor" else "110000"
+        if action.action == "search_user_requested_poi":
+            types = ""
+        digest = hashlib.sha256(json.dumps(["v2", state.destination, query, types], ensure_ascii=True).encode()).hexdigest()
         key = "tripagent:candidate:" + digest
         duplicate = any(t.get("query_key") == key for t in trace)
         if duplicate:
@@ -125,9 +145,12 @@ def candidate_search_node(state: TravelPlanState):
                 if budget["remaining"] <= 0:
                     raise RuntimeError("candidate_api_budget_exhausted")
                 rows = search_city_pois(state.destination or "", amap_key(), keywords=query,
-                    types="" if action.action == "search_user_requested_poi" else "风景名胜|科教文化服务",
+                    types=types,
                     offset=25, request_budget=budget)
-                set_cached(key, rows, POI_TTL)
+                if rows:
+                    set_cached(key, rows, POI_TTL)
+            record["raw_count"] = len(rows)
+            record["rating_filtered"] = 0
             for row in rows:
                 spot = poi_to_spot(row)
                 if not spot or not spot.get("name") or not all(math.isfinite(v) for v in spot["location"].values()):
@@ -137,12 +160,14 @@ def candidate_search_node(state: TravelPlanState):
                 if action.action == "search_user_requested_poi":
                     if spot["name"] != query or query not in extract_explicit_place_requests(state.query + "\n" + (state.modification_notes or "")):
                         continue
-                elif spot.get("rating") is None or spot["rating"] < state.min_rating:
+                elif spot.get("rating") is not None and spot["rating"] < state.min_rating:
+                    record["rating_filtered"] += 1
                     continue
                 if len(pool) >= state.max_spots and action.action != "search_user_requested_poi":
                     continue
                 if spot["name"] not in names:
-                    spot.update(source="amap", category=str(row.get("type") or ""))
+                    spot.update(source="amap", category=str(row.get("type") or ""),
+                                rating_status="unknown" if spot.get("rating") is None else "known")
                     pool.append(spot)
                     names.add(spot["name"])
                     record["result_count"] += 1

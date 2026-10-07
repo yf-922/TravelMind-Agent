@@ -33,11 +33,14 @@ def test_intent_post_processing_runs_weather_and_rewrite_in_parallel(monkeypatch
         "weather_search", {"weather_forecast": [], "weather_note": "mock"}
     ))
     monkeypatch.setattr(graph_module, "attraction_search_node", lambda state: {
-        "pois": [], "history": state.history + ["attractions"]
+        "pois": [{"name": "Verified Museum", "rating": 5, "indoor": True,
+                  "location": {"lat": 32, "lng": 118}}],
+        "history": state.history + ["attractions"]
     })
-    monkeypatch.setattr(graph_module, "make_planner_node", lambda *a, **k: lambda state: {
-        "route": [{"day": 1, "spots": []}], "review_round": 1,
-    })
+    def planner(state):
+        assert state.pois[0]["name"] == "Verified Museum"
+        return {"route": [{"day": 1, "spots": []}], "review_round": 1}
+    monkeypatch.setattr(graph_module, "make_planner_node", lambda *a, **k: planner)
     monkeypatch.setattr(graph_module, "route_distance_check_node", lambda state: {})
     monkeypatch.setattr(graph_module, "make_reviewer_node", lambda *a, **k: lambda state: {
         "approved": True, "reviewer_issues": [], "route_modify_opinion": None,
@@ -50,7 +53,7 @@ def test_intent_post_processing_runs_weather_and_rewrite_in_parallel(monkeypatch
         "main_meal_status": "ok",
     })
     monkeypatch.setattr(graph_module, "make_candidate_react_node", lambda *a: lambda state: {"candidate_search_actions": [{"action": "stop"}]})
-    monkeypatch.setattr(graph_module, "candidate_search_node", lambda state: {"pois": [], "candidate_search_round": 2})
+    monkeypatch.setattr(graph_module, "candidate_search_node", lambda state: {"candidate_search_round": 2})
     monkeypatch.setattr(graph_module, "make_spot_tips_node", lambda *a, **k: lambda state: {"spot_tips": {}})
     monkeypatch.setattr(graph_module, "make_finalize_node", lambda *a, **k: lambda state: {"final_plan": {}})
 

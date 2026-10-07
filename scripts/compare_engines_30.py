@@ -212,6 +212,7 @@ def _run_main(fx: dict[str, Any], delay_ms: float) -> dict[str, Any]:
         patch.object(graph, "make_intent_node", return_value=nodes["intent"]),
         patch.object(graph, "make_query_rewrite_node", return_value=nodes["query_rewrite"]),
         patch.object(graph, "weather_search_node", nodes["weather_search"]),
+        patch.object(graph, "attraction_search_node", lambda state: {}),
         patch.object(graph, "make_candidate_react_node", return_value=nodes["candidate_react"]),
         patch.object(graph, "candidate_search_node", nodes["candidate_search"]),
         patch.object(graph, "candidate_validator_node", nodes["candidate_validator"]),

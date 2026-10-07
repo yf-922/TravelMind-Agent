@@ -261,35 +261,14 @@ def route_after_intent(state: TravelPlanState) -> str | list[str]:
 # ─── 高德景点搜索 ─────────────────────────────────────────────
 
 def attraction_search_node(state: TravelPlanState) -> dict[str, Any]:
-    api_key = amap_key()
-    spots = fetch_city_spots(state.destination or "", api_key, max_spots=state.max_spots)
-    kept, _ = filter_by_rating(spots, state.min_rating)
-    targeted: list[dict[str, Any]] = []
-    target_query = (state.query or state.rewritten_query or "").strip()
-    if requires_indoor_only(state):
-        target_query = "博物馆"
-    if target_query:
-        try:
-            raw_targeted = search_city_pois(
-                state.destination or "", api_key, keywords=target_query,
-                types=ATTRACTION_TYPE, offset=8,
-            )
-            targeted = [spot for raw in raw_targeted if (spot := poi_to_spot(raw))]
-        except RuntimeError:
-            targeted = []
+    from app.planning.candidate_react import baseline_actions, candidate_search_node
 
-    merged: list[dict[str, Any]] = []
-    seen: set[str] = set()
-    for spot in [*targeted, *kept]:
-        name = str(spot.get("name") or "").strip()
-        if name and name not in seen:
-            seen.add(name)
-            merged.append(spot)
-    note = (
-        f"高德景点搜索：通用池 {len(spots)} 个，定向扩展 {len(targeted)} 个，"
-        f"最终候选池 {len(merged)} 个；定向扩展用于覆盖用户明确提到但通用池没有的景点"
-    )
-    return {"pois": merged, "history": state.history + [note]}
+    seeded = state.model_copy(update={"candidate_search_actions": baseline_actions(state)})
+    update = candidate_search_node(seeded)
+    # The bootstrap shares the HTTP budget, but is not a ReAct revision round.
+    update["candidate_search_round"] = state.candidate_search_round
+    update["history"] = state.history + [f"高德基础候选池：{len(update['pois'])} 个景点"]
+    return update
 
 
 def main_meal_candidate_search_node(state: TravelPlanState) -> dict[str, Any]:
