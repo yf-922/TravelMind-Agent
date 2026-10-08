@@ -41,6 +41,21 @@ with `annotator`, ISO `reviewed_at`, `annotation_status=human_reviewed`, a versi
 and change-log explanation. Export/import do not automatically sign drafts.
 One reviewer is sufficient; do not claim multi-rater agreement.
 
+Start with small dev-only batches rather than signing all 120 cases at once:
+
+```powershell
+python scripts/export_rag_review_batch.py --cases evaluation/rag_benchmark_v2_draft.json --corpus knowledge/benchmark_v2_curated/chunks.json --limit 10 --out docs/rag_review_batch_01.md
+```
+
+The Markdown places proposed queries beside source excerpts; the adjacent JSON
+retains editable fields. Selection keeps complete intent groups and excludes test
+queries. Review scope is relevance, necessary facts, answerability and source
+validity. Machine preparation never signs the labels. Transfer actual human
+corrections into the full review packet before importing; a partial batch cannot
+pass the full dataset freeze gate. Batch 01 currently includes an obvious issue:
+the Nanjing transport question points at security/luggage rules rather than
+arrival/transfer evidence. Revise or relabel it before measuring quality.
+
 ```powershell
 python scripts/review_rag_annotations.py import --cases evaluation/rag_v2_review_packet.json --corpus knowledge/benchmark_v2_curated/chunks.json --out evaluation/rag_benchmark_v2_reviewed.json
 python scripts/review_rag_annotations.py import-corpus --cases evaluation/rag_v2_review_packet.json --corpus knowledge/benchmark_v2_curated/chunks.json --out knowledge/benchmark_v2_reviewed/chunks.json

@@ -1,0 +1,395 @@
+{
+  "scope": "dev_only",
+  "annotation_status": "pending_review",
+  "corpus_fingerprint": "5bf231483310c9c74108c2a0d31491e69f8e24c13942aa8960103d82e7356d1f",
+  "all_annotations_fingerprint": "2677679c38a063df4db9df8d8d9de2c0d318e90fa379d5710f285f72f75e6802",
+  "cases": [
+    {
+      "id": "v2-0-0-0",
+      "query": "南京博物院：怎么预约，需要提前准备什么？",
+      "city": "南京",
+      "type": "answerable",
+      "intent_group": "南京-intent-0",
+      "split": "dev",
+      "challenge": "exact_name",
+      "relevant_chunks": [
+        {
+          "chunk_id": "dynamic-4099b51516468dbb6050861d",
+          "relevance": 2,
+          "evidence_group": "1d05f7a9df128868aa5606f8"
+        }
+      ],
+      "reference_facts": [
+        "参观预约： 南京博物院官方微信小程序。 预约成功后，观众须携带本人二代身份证原件、江苏省第三代社保卡原件或港澳台居民居住证原件，并通过 人脸比对 系统核验入馆。持港澳居民来往内地通行证、台湾居民来往大陆通行证及外国人永久居留身份证或外籍护照的人士，预约成功后，参观当日凭本人有效证件原件和预约凭证到 正门东侧绿色通道服务窗口人工 核验入馆。 温馨提示： 未满14周岁（含14周岁）的未成年人不得单独预约，须由成年人代为预约亲子票并同步核验入馆，每名成年人最多携带三名未成年人。"
+      ],
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null,
+      "annotation_version": "v2-draft",
+      "drafted_by": "template_evidence_proposal",
+      "change_log": [
+        "Proposed evidence may not answer query; human must revise query, labels and facts."
+      ]
+    },
+    {
+      "id": "v2-0-0-1",
+      "query": "我准备去南京博物院，关于预约的事想问一下：怎么预约，需要提前准备什么？",
+      "city": "南京",
+      "type": "answerable",
+      "intent_group": "南京-intent-0",
+      "split": "dev",
+      "challenge": "colloquial",
+      "relevant_chunks": [
+        {
+          "chunk_id": "dynamic-4099b51516468dbb6050861d",
+          "relevance": 2,
+          "evidence_group": "1d05f7a9df128868aa5606f8"
+        }
+      ],
+      "reference_facts": [
+        "参观预约： 南京博物院官方微信小程序。 预约成功后，观众须携带本人二代身份证原件、江苏省第三代社保卡原件或港澳台居民居住证原件，并通过 人脸比对 系统核验入馆。持港澳居民来往内地通行证、台湾居民来往大陆通行证及外国人永久居留身份证或外籍护照的人士，预约成功后，参观当日凭本人有效证件原件和预约凭证到 正门东侧绿色通道服务窗口人工 核验入馆。 温馨提示： 未满14周岁（含14周岁）的未成年人不得单独预约，须由成年人代为预约亲子票并同步核验入馆，每名成年人最多携带三名未成年人。"
+      ],
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null,
+      "annotation_version": "v2-draft",
+      "drafted_by": "template_evidence_proposal",
+      "change_log": [
+        "Proposed evidence may not answer query; human must revise query, labels and facts."
+      ]
+    },
+    {
+      "id": "v2-0-2-0",
+      "query": "南京博物院：怎样到达，入口和换乘怎么选？",
+      "city": "南京",
+      "type": "answerable",
+      "intent_group": "南京-intent-2",
+      "split": "dev",
+      "challenge": "exact_name",
+      "relevant_chunks": [
+        {
+          "chunk_id": "dynamic-0fc5403a875b2874a939c600",
+          "relevance": 2,
+          "evidence_group": "a32867577752e03bdceb8b3e"
+        }
+      ],
+      "reference_facts": [
+        " 8.通过安检前请将携带液体、笔记本电脑、平板电脑、大型电子产品、照相机、雨伞、贵重物品提前取出放入安检盒单独手检，切勿将其放置在安检机履带上。 9.请携带大件行李箱的观众请勿带入馆内，服务中心提供寄存服务。 10.酗酒者、仪容不整者、无行为能力或限制行为能力且无监护人陪伴者谢绝入馆。 11.其他有碍展品安全、影响观众参观者谢绝入馆。 12.馆内谢绝使用电动轮椅、老年代步车。 13.根据国家有关规定，除常设的基本陈列和以院藏文物为主的专题展览免费开放外，按照市场化运作举办的临时展览及展演不列入免费参观范围。 通过安检门时请服从安检人员指挥有序接受安检。请主动将携带的包裹等物品经过x射线安检机检查后方能带入展馆，如发现违禁品，请主动配合检查，并交由安检人员予以寄存。安检机检出的疑似违禁品，请开包配合检验，确认后方能带入展馆。 请寄存违禁品的观众在闭馆（下午5:00）前取回您的物品。 感谢您的配合与支持，祝参观愉快！"
+      ],
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null,
+      "annotation_version": "v2-draft",
+      "drafted_by": "template_evidence_proposal",
+      "change_log": [
+        "Proposed evidence may not answer query; human must revise query, labels and facts."
+      ]
+    },
+    {
+      "id": "v2-0-2-1",
+      "query": "我准备去南京博物院，关于交通的事想问一下：怎样到达，入口和换乘怎么选？",
+      "city": "南京",
+      "type": "answerable",
+      "intent_group": "南京-intent-2",
+      "split": "dev",
+      "challenge": "colloquial",
+      "relevant_chunks": [
+        {
+          "chunk_id": "dynamic-0fc5403a875b2874a939c600",
+          "relevance": 2,
+          "evidence_group": "a32867577752e03bdceb8b3e"
+        }
+      ],
+      "reference_facts": [
+        " 8.通过安检前请将携带液体、笔记本电脑、平板电脑、大型电子产品、照相机、雨伞、贵重物品提前取出放入安检盒单独手检，切勿将其放置在安检机履带上。 9.请携带大件行李箱的观众请勿带入馆内，服务中心提供寄存服务。 10.酗酒者、仪容不整者、无行为能力或限制行为能力且无监护人陪伴者谢绝入馆。 11.其他有碍展品安全、影响观众参观者谢绝入馆。 12.馆内谢绝使用电动轮椅、老年代步车。 13.根据国家有关规定，除常设的基本陈列和以院藏文物为主的专题展览免费开放外，按照市场化运作举办的临时展览及展演不列入免费参观范围。 通过安检门时请服从安检人员指挥有序接受安检。请主动将携带的包裹等物品经过x射线安检机检查后方能带入展馆，如发现违禁品，请主动配合检查，并交由安检人员予以寄存。安检机检出的疑似违禁品，请开包配合检验，确认后方能带入展馆。 请寄存违禁品的观众在闭馆（下午5:00）前取回您的物品。 感谢您的配合与支持，祝参观愉快！"
+      ],
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null,
+      "annotation_version": "v2-draft",
+      "drafted_by": "template_evidence_proposal",
+      "change_log": [
+        "Proposed evidence may not answer query; human must revise query, labels and facts."
+      ]
+    },
+    {
+      "id": "v2-0-4-0",
+      "query": "南京博物院：带老人慢慢游览，有什么安排建议？",
+      "city": "南京",
+      "type": "answerable",
+      "intent_group": "南京-intent-4",
+      "split": "dev",
+      "challenge": "exact_name",
+      "relevant_chunks": [
+        {
+          "chunk_id": "dynamic-da84c7d313c702b96e45af04",
+          "relevance": 2,
+          "evidence_group": "d3886eb301aa0f1fa3f3dca2"
+        }
+      ],
+      "reference_facts": [
+        " ① 14周岁及以下 未成年人 不得单独预约 ，须由成年人代为预约亲子票并同步核验入馆，每名成年人最多携带三名未成年人。 ②持港澳居民来往内地通行证、台湾居民来往大陆通行证及外国人永久居留身份证或外籍护照的人士， 自行预约 后请于参观当日凭本人 预约证件原件和预约成功凭证 在服务中心绿色通道服务窗口办理相关手续后入馆。 4. 优待观众： ① 现役军人 持军官证、 预备役人员 持预备役人员证，其 随行直系亲属 （父母、配偶、子女）持有效证件原件，至正门东侧绿色通道服务窗口登记，由“绿色通道”安检入馆。 ②70周岁及以上老人、残障人士、退役军人、伤残军人、消防救援人员、“三属”人员（烈士遗属、因公牺牲军人遗属、病故军人遗属）以及持无偿献血荣誉证的观众可通过南京博物院官方小程序 “优待观众预约” ，填写身份信息并拍照上传相应证件，即可预约7日内任一时间段门票。"
+      ],
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null,
+      "annotation_version": "v2-draft",
+      "drafted_by": "template_evidence_proposal",
+      "change_log": [
+        "Proposed evidence may not answer query; human must revise query, labels and facts."
+      ]
+    },
+    {
+      "id": "v2-0-4-1",
+      "query": "网上攻略里城市容易搞混，请只按南京的南京博物院回答：带老人慢慢游览，有什么安排建议？",
+      "city": "南京",
+      "type": "answerable",
+      "intent_group": "南京-intent-4",
+      "split": "dev",
+      "challenge": "city_disambiguation",
+      "relevant_chunks": [
+        {
+          "chunk_id": "dynamic-da84c7d313c702b96e45af04",
+          "relevance": 2,
+          "evidence_group": "d3886eb301aa0f1fa3f3dca2"
+        }
+      ],
+      "reference_facts": [
+        " ① 14周岁及以下 未成年人 不得单独预约 ，须由成年人代为预约亲子票并同步核验入馆，每名成年人最多携带三名未成年人。 ②持港澳居民来往内地通行证、台湾居民来往大陆通行证及外国人永久居留身份证或外籍护照的人士， 自行预约 后请于参观当日凭本人 预约证件原件和预约成功凭证 在服务中心绿色通道服务窗口办理相关手续后入馆。 4. 优待观众： ① 现役军人 持军官证、 预备役人员 持预备役人员证，其 随行直系亲属 （父母、配偶、子女）持有效证件原件，至正门东侧绿色通道服务窗口登记，由“绿色通道”安检入馆。 ②70周岁及以上老人、残障人士、退役军人、伤残军人、消防救援人员、“三属”人员（烈士遗属、因公牺牲军人遗属、病故军人遗属）以及持无偿献血荣誉证的观众可通过南京博物院官方小程序 “优待观众预约” ，填写身份信息并拍照上传相应证件，即可预约7日内任一时间段门票。"
+      ],
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null,
+      "annotation_version": "v2-draft",
+      "drafted_by": "template_evidence_proposal",
+      "change_log": [
+        "Proposed evidence may not answer query; human must revise query, labels and facts."
+      ]
+    },
+    {
+      "id": "v2-0-6-0",
+      "query": "南京博物院：购票和入场有哪些条件？",
+      "city": "南京",
+      "type": "answerable",
+      "intent_group": "南京-intent-6",
+      "split": "dev",
+      "challenge": "exact_name",
+      "relevant_chunks": [
+        {
+          "chunk_id": "dynamic-da84c7d313c702b96e45af04",
+          "relevance": 2,
+          "evidence_group": "d3886eb301aa0f1fa3f3dca2"
+        }
+      ],
+      "reference_facts": [
+        " ① 14周岁及以下 未成年人 不得单独预约 ，须由成年人代为预约亲子票并同步核验入馆，每名成年人最多携带三名未成年人。 ②持港澳居民来往内地通行证、台湾居民来往大陆通行证及外国人永久居留身份证或外籍护照的人士， 自行预约 后请于参观当日凭本人 预约证件原件和预约成功凭证 在服务中心绿色通道服务窗口办理相关手续后入馆。 4. 优待观众： ① 现役军人 持军官证、 预备役人员 持预备役人员证，其 随行直系亲属 （父母、配偶、子女）持有效证件原件，至正门东侧绿色通道服务窗口登记，由“绿色通道”安检入馆。 ②70周岁及以上老人、残障人士、退役军人、伤残军人、消防救援人员、“三属”人员（烈士遗属、因公牺牲军人遗属、病故军人遗属）以及持无偿献血荣誉证的观众可通过南京博物院官方小程序 “优待观众预约” ，填写身份信息并拍照上传相应证件，即可预约7日内任一时间段门票。"
+      ],
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null,
+      "annotation_version": "v2-draft",
+      "drafted_by": "template_evidence_proposal",
+      "change_log": [
+        "Proposed evidence may not answer query; human must revise query, labels and facts."
+      ]
+    },
+    {
+      "id": "v2-0-8-0",
+      "query": "南京博物院：有哪些服务设施和使用要求？",
+      "city": "南京",
+      "type": "answerable",
+      "intent_group": "南京-intent-8",
+      "split": "dev",
+      "challenge": "multi_evidence",
+      "relevant_chunks": [
+        {
+          "chunk_id": "dynamic-38acf508b169ee6ddb5dad0f",
+          "relevance": 2,
+          "evidence_group": "adad4f0173f31cfe42f7c936"
+        },
+        {
+          "chunk_id": "official-54da8e0f874e62514e24db8d",
+          "relevance": 2,
+          "evidence_group": "682804f43364f40ff3018777"
+        }
+      ],
+      "reference_facts": [
+        "南京博物院设有多处餐饮点。文渊广场的公众餐厅约1000平方米，提供中西餐饮服务；小剧场旁的甜品店、特展馆的茶社和民国馆的咖啡厅等，为观众提供特色餐饮服务。所有餐饮由院统一管理，对装修风格、软硬件设备设施、食品卫生等统一把关，保证饮食质量和餐具卫生。",
+        "全市涉及高空、山区、滨水、水上游乐项目等高风险 A级旅游景区暂时关闭。各景区重点排查滨江栈道、山林步道、临水观景平台、游乐设施及排水、电力系统安全隐患，全面落实闭园管控措施。稳妥做好滞留游客疏散安置工作。各室内文博场馆、游乐场所全面开展隐患排查，为临时滞留游客提供安全休憩场地与贴心服务保障。"
+      ],
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null,
+      "annotation_version": "v2-draft",
+      "drafted_by": "template_evidence_proposal",
+      "change_log": [
+        "Proposed evidence may not answer query; human must revise query, labels and facts."
+      ]
+    },
+    {
+      "id": "v2-1-1-0",
+      "query": "上海旅行：几点开放，有哪些时间限制？",
+      "city": "上海",
+      "type": "answerable",
+      "intent_group": "上海-intent-1",
+      "split": "dev",
+      "challenge": "exact_name",
+      "relevant_chunks": [
+        {
+          "chunk_id": "official-2d293e2c6c5d5bd32e6d3035",
+          "relevance": 2,
+          "evidence_group": "a37b01971daefc237c535c26"
+        }
+      ],
+      "reference_facts": [
+        "第一条 凡20人及以上（含20人）团队前来参观，须提前7天（不含当天）进行电话预约。本馆团队参观实行每日限额管理，预约名额有限，约满即止，不接受无预约临时团队入馆参观。人民广场馆预约电话：021－63724550；东馆预约电话：021－20729998（请在开放时间内拨打）。"
+      ],
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null,
+      "annotation_version": "v2-draft",
+      "drafted_by": "template_evidence_proposal",
+      "change_log": [
+        "Proposed evidence may not answer query; human must revise query, labels and facts."
+      ]
+    },
+    {
+      "id": "v2-1-1-1",
+      "query": "我准备去上海旅行，关于开放的事想问一下：几点开放，有哪些时间限制？",
+      "city": "上海",
+      "type": "answerable",
+      "intent_group": "上海-intent-1",
+      "split": "dev",
+      "challenge": "colloquial",
+      "relevant_chunks": [
+        {
+          "chunk_id": "official-2d293e2c6c5d5bd32e6d3035",
+          "relevance": 2,
+          "evidence_group": "a37b01971daefc237c535c26"
+        }
+      ],
+      "reference_facts": [
+        "第一条 凡20人及以上（含20人）团队前来参观，须提前7天（不含当天）进行电话预约。本馆团队参观实行每日限额管理，预约名额有限，约满即止，不接受无预约临时团队入馆参观。人民广场馆预约电话：021－63724550；东馆预约电话：021－20729998（请在开放时间内拨打）。"
+      ],
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null,
+      "annotation_version": "v2-draft",
+      "drafted_by": "template_evidence_proposal",
+      "change_log": [
+        "Proposed evidence may not answer query; human must revise query, labels and facts."
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "chunk_id": "dynamic-0fc5403a875b2874a939c600",
+      "text": " 8.通过安检前请将携带液体、笔记本电脑、平板电脑、大型电子产品、照相机、雨伞、贵重物品提前取出放入安检盒单独手检，切勿将其放置在安检机履带上。 9.请携带大件行李箱的观众请勿带入馆内，服务中心提供寄存服务。 10.酗酒者、仪容不整者、无行为能力或限制行为能力且无监护人陪伴者谢绝入馆。 11.其他有碍展品安全、影响观众参观者谢绝入馆。 12.馆内谢绝使用电动轮椅、老年代步车。 13.根据国家有关规定，除常设的基本陈列和以院藏文物为主的专题展览免费开放外，按照市场化运作举办的临时展览及展演不列入免费参观范围。 通过安检门时请服从安检人员指挥有序接受安检。请主动将携带的包裹等物品经过x射线安检机检查后方能带入展馆，如发现违禁品，请主动配合检查，并交由安检人员予以寄存。安检机检出的疑似违禁品，请开包配合检验，确认后方能带入展馆。 请寄存违禁品的观众在闭馆（下午5:00）前取回您的物品。 感谢您的配合与支持，祝参观愉快！",
+      "content_hash": "4ee92541177cae6a46bba02589faf94bbc0f753da0160c858d15cdcac9723c5a",
+      "city": "南京",
+      "topic": "/visit/notes",
+      "url": "https://www.njmuseum.com/api/visit/notes",
+      "source": "7917577c830b2e52",
+      "collected_at": "2026-10-08",
+      "source_type": "official_museum",
+      "evidence_group": "a32867577752e03bdceb8b3e",
+      "review_status": "pending",
+      "indoor": "unknown",
+      "fact_validity": "snapshot_not_live",
+      "chunking_version": "v2-semantic-char420",
+      "valid_until": null
+    },
+    {
+      "chunk_id": "dynamic-38acf508b169ee6ddb5dad0f",
+      "text": "南京博物院设有多处餐饮点。文渊广场的公众餐厅约1000平方米，提供中西餐饮服务；小剧场旁的甜品店、特展馆的茶社和民国馆的咖啡厅等，为观众提供特色餐饮服务。所有餐饮由院统一管理，对装修风格、软硬件设备设施、食品卫生等统一把关，保证饮食质量和餐具卫生。",
+      "content_hash": "adad4f0173f31cfe42f7c936f7df1bb920c230c80e13c970e00c2c349851055e",
+      "city": "南京",
+      "topic": "/service/shop",
+      "url": "https://www.njmuseum.com/api/service/shop",
+      "source": "3a5d77ea58541cfe",
+      "collected_at": "2026-10-08",
+      "source_type": "official_museum",
+      "evidence_group": "adad4f0173f31cfe42f7c936",
+      "review_status": "pending",
+      "indoor": "unknown",
+      "fact_validity": "snapshot_not_live",
+      "chunking_version": "v2-semantic-char420",
+      "valid_until": null
+    },
+    {
+      "chunk_id": "dynamic-4099b51516468dbb6050861d",
+      "text": "参观预约： 南京博物院官方微信小程序。 预约成功后，观众须携带本人二代身份证原件、江苏省第三代社保卡原件或港澳台居民居住证原件，并通过 人脸比对 系统核验入馆。持港澳居民来往内地通行证、台湾居民来往大陆通行证及外国人永久居留身份证或外籍护照的人士，预约成功后，参观当日凭本人有效证件原件和预约凭证到 正门东侧绿色通道服务窗口人工 核验入馆。 温馨提示： 未满14周岁（含14周岁）的未成年人不得单独预约，须由成年人代为预约亲子票并同步核验入馆，每名成年人最多携带三名未成年人。",
+      "content_hash": "1d05f7a9df128868aa5606f8614d1f2fd901faac0d43912eeef10bccd7158476",
+      "city": "南京",
+      "topic": "/visit/notes",
+      "url": "https://www.njmuseum.com/api/visit/notes",
+      "source": "7917577c830b2e52",
+      "collected_at": "2026-10-08",
+      "source_type": "official_museum",
+      "evidence_group": "1d05f7a9df128868aa5606f8",
+      "review_status": "pending",
+      "indoor": "unknown",
+      "fact_validity": "snapshot_not_live",
+      "chunking_version": "v2-semantic-char420",
+      "valid_until": null
+    },
+    {
+      "chunk_id": "dynamic-da84c7d313c702b96e45af04",
+      "text": " ① 14周岁及以下 未成年人 不得单独预约 ，须由成年人代为预约亲子票并同步核验入馆，每名成年人最多携带三名未成年人。 ②持港澳居民来往内地通行证、台湾居民来往大陆通行证及外国人永久居留身份证或外籍护照的人士， 自行预约 后请于参观当日凭本人 预约证件原件和预约成功凭证 在服务中心绿色通道服务窗口办理相关手续后入馆。 4. 优待观众： ① 现役军人 持军官证、 预备役人员 持预备役人员证，其 随行直系亲属 （父母、配偶、子女）持有效证件原件，至正门东侧绿色通道服务窗口登记，由“绿色通道”安检入馆。 ②70周岁及以上老人、残障人士、退役军人、伤残军人、消防救援人员、“三属”人员（烈士遗属、因公牺牲军人遗属、病故军人遗属）以及持无偿献血荣誉证的观众可通过南京博物院官方小程序 “优待观众预约” ，填写身份信息并拍照上传相应证件，即可预约7日内任一时间段门票。",
+      "content_hash": "262b699736e20048f0a7398aaa97c3c3ab5d024acbcdf98c09c483c283bf2a65",
+      "city": "南京",
+      "topic": "/visit/notes",
+      "url": "https://www.njmuseum.com/api/visit/notes",
+      "source": "7917577c830b2e52",
+      "collected_at": "2026-10-08",
+      "source_type": "official_museum",
+      "evidence_group": "d3886eb301aa0f1fa3f3dca2",
+      "review_status": "pending",
+      "indoor": "unknown",
+      "fact_validity": "snapshot_not_live",
+      "chunking_version": "v2-semantic-char420",
+      "valid_until": null
+    },
+    {
+      "chunk_id": "official-2d293e2c6c5d5bd32e6d3035",
+      "text": "第一条 凡20人及以上（含20人）团队前来参观，须提前7天（不含当天）进行电话预约。本馆团队参观实行每日限额管理，预约名额有限，约满即止，不接受无预约临时团队入馆参观。人民广场馆预约电话：021－63724550；东馆预约电话：021－20729998（请在开放时间内拨打）。",
+      "source": "d4cca9105b50395f",
+      "url": "https://www.shanghaimuseum.cn/mu/frontend/pg/infomation/team-reservation",
+      "city": "上海",
+      "topic": "团队预约",
+      "collected_at": "2026-10-08",
+      "content_hash": "a37b01971daefc237c535c266b52a3199e0a0810fd57307bf4b18a856b38fc45",
+      "source_type": "official_museum",
+      "evidence_group": "a37b01971daefc237c535c26",
+      "indoor": "unknown",
+      "review_status": "pending",
+      "fact_validity": "snapshot_not_live",
+      "chunking_version": "v2-semantic-char420",
+      "valid_until": null,
+      "alternate_sources": [
+        {
+          "url": "https://www.shanghaimuseum.cn/mu/frontend/pg/infomation/team-reservation",
+          "chunk_id": "official-2d293e2c6c5d5bd32e6d3035"
+        }
+      ]
+    },
+    {
+      "chunk_id": "official-54da8e0f874e62514e24db8d",
+      "text": "全市涉及高空、山区、滨水、水上游乐项目等高风险 A级旅游景区暂时关闭。各景区重点排查滨江栈道、山林步道、临水观景平台、游乐设施及排水、电力系统安全隐患，全面落实闭园管控措施。稳妥做好滞留游客疏散安置工作。各室内文博场馆、游乐场所全面开展隐患排查，为临时滞留游客提供安全休憩场地与贴心服务保障。",
+      "source": "3f6c5875367f06a7",
+      "url": "https://wlj.nanjing.gov.cn/whyw/202608/t20260810_5891397.html",
+      "city": "南京",
+      "topic": "台风 “白海豚” 来袭！南京出游安全温...",
+      "collected_at": "2026-10-08",
+      "content_hash": "682804f43364f40ff30187778759525f316a382534a96b0facd19af4b14eab40",
+      "source_type": "official_tourism",
+      "evidence_group": "682804f43364f40ff3018777",
+      "indoor": "unknown",
+      "review_status": "pending",
+      "fact_validity": "snapshot_not_live",
+      "chunking_version": "v2-semantic-char420",
+      "valid_until": null
+    }
+  ],
+  "instructions": "Review proposals against sources; this packet does not authorize or perform signing. Transfer actual human corrections to the full review packet before importing."
+}
