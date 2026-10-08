@@ -716,16 +716,16 @@ def _travel_dates_block(state: TravelPlanState) -> str:
     )
 
 
-def make_joint_planner_node(model_name: str | None):
+def make_joint_planner_node(model_name: str | None, *, knowledge_lookup=None, llm=None, invoke_fn=None):
     """主 LangGraph 专用 Planner：景点与餐馆共同生成时间轴。"""
-    llm = build_structured_llm(
+    llm = llm if llm is not None else build_structured_llm(
         TravelRoute, model=model_name, temperature=0.3, task_type="joint_planner"
     )
 
     def planner(state: TravelPlanState) -> dict[str, Any]:
         rag_sources = []
         try:
-            rag_sources = search_planning_knowledge(
+            rag_sources = (knowledge_lookup or search_planning_knowledge)(
                 state.destination or "", state.pois,
                 f"{state.rewritten_query or state.query} {state.attraction_preference or ''}",
             )
@@ -760,7 +760,7 @@ def make_joint_planner_node(model_name: str | None):
             "请同时输出景点 days 和餐馆 meal_slots。meal_slots 的餐馆名必须逐字来自餐馆候选池，"
             "每个 meal_slots 必须有 day 对应关系（通过顺序从 start_time 判断），并确保时间不与景点重叠。"
         )
-        result: TravelRoute = invoke_structured(
+        result: TravelRoute = (invoke_fn or invoke_structured)(
             llm, [("system", JOINT_PLANNER_SYSTEM), ("human", prompt)]
         )
         route = [day.model_dump() for day in result.days]
