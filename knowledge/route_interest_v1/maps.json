@@ -1,5 +1,5 @@
 {
-  "captured_at": "2026-10-08T14:08:40.880976+00:00",
+  "captured_at": "2026-10-08T14:57:22.235520+00:00",
   "routes": {
     "[{\"lat\": 32.040802, \"lng\": 118.825064}, {\"lat\": 32.069455, \"lng\": 118.812688}, \"drive\"]": {
       "mode": "taxi_or_car",
@@ -997,8 +997,8 @@
   "mode": "drive",
   "live_weather": false,
   "previous_capture": {
-    "captured_at": "2026-10-08T10:09:51.547971+00:00",
-    "requests": 1
+    "captured_at": "2026-10-08T14:08:40.880976+00:00",
+    "requests": 0
   },
   "case_fingerprint": "354d34473c3af8235ac40dbe862b30cdf73a70a05b09a09a2931b76fe4625d7b"
 }

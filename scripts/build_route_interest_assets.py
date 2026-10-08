@@ -21,7 +21,7 @@ OUT = ROOT / "knowledge/route_interest_v1"
 # city, official entity aliases, URL, verbatim stable fact quote, interest
 SOURCES = [
     ("南京", ["中国科举博物馆(江南贡院)"], "https://www.njlyw.cn/websitenew/web/ScenicDetail?m=173&c=QH&i=1280",
-     "科举制度自隋创建、唐完备、宋改革、元中落、明鼎盛至清灭亡，历时逾千年", "科举制度与中国古代教育史"),
+     "科举制度自隋创立、唐完备、宋改革、元中落、明鼎盛至清灭亡，历时逾千年", "科举制度与中国古代教育史"),
     ("上海", ["上海迪士尼度假区"], "https://www.shanghaidisneyresort.com/zh-cn/",
      "游乐项目 娱乐演出 迪士尼朋友", "主题乐园游乐与角色娱乐"),
     ("三亚", ["三亚南山文化旅游区"], "https://www.nanshan.com/nanshan/byjd.html",
@@ -101,11 +101,19 @@ def collect_sources(directory: Path):
         try:
             response = httpx.get(url, timeout=20, follow_redirects=True)
             response.raise_for_status()
-            soup = BeautifulSoup(response.content, "html.parser")
+            # Some official Chinese pages contain a few legacy/invalid bytes.
+            # Prefer strict UTF-8, but permit replacement decoding only when the
+            # exact quoted evidence still survives; unrelated broken text is
+            # never used as a fact.
+            try:
+                html = response.content.decode("utf-8", errors="strict")
+            except UnicodeDecodeError:
+                html = response.content.decode("utf-8", errors="replace")
+            soup = BeautifulSoup(html, "html.parser")
             for tag in soup(["script", "style"]): tag.decompose()
             text = " ".join(soup.get_text(" ", strip=True).split())
             normalized_quote = " ".join(quote.split())
-            if normalized_quote not in text:
+            if normalized_quote not in text or "\ufffd" in normalized_quote:
                 raise ValueError("verbatim fact not found; needs source review")
             digest = hashlib.sha256(text.encode()).hexdigest()
             (directory / "snapshots").mkdir(parents=True, exist_ok=True)
@@ -154,7 +162,15 @@ def main():
         if (args.out/'facts.json').exists():
             saved = json.loads((args.out/'facts.json').read_text(encoding='utf-8'))
             captured = {f['source'] for f in extra}
-            extra += [f for f in saved if f['source'].startswith('interest_') and f['source'] not in captured]
+            # A transient provider failure must not erase an already verified
+            # immutable snapshot. Keep the old fact unless a new verified quote
+            # was captured for that source.
+            current = {f['source']: f for f in extra}
+            for old in saved:
+                if not old['source'].startswith('interest_') or old['source'] in current:
+                    continue
+                extra.append(old)
+                records.append({k: old[k] for k in ('url', 'entities', 'city', 'source', 'status', 'snapshot_hash', 'collected_at') if k in old})
     elif (args.out / 'facts.json').exists():
         extra = [f for f in json.loads((args.out / 'facts.json').read_text(encoding='utf-8')) if f['source'].startswith('interest_')]
         records = json.loads((args.out / 'manifest.json').read_text(encoding='utf-8'))['source_collection']

@@ -31,8 +31,8 @@
     "upstream": "fixed_verified_candidates_weather_and_drive_replay"
   },
   "cases": "354d34473c3af8235ac40dbe862b30cdf73a70a05b09a09a2931b76fe4625d7b",
-  "facts": "ed66c18d28867e020592e6c70edf4377308379cb011a54d50c9828d0d525194f",
-  "maps": "9fb911a7aaf5c8fa785119c2b79daea13536dd08f65b9a55a53911998a2c6f6c",
+  "facts": "0a2d4f50fa08d4c376a9f0dd29ffde2d316a6a70ade57abc6cf935ea5168d1e3",
+  "maps": "39e11de69aaa5dd8b3d1f6a8fd72cb9912566a9b59875011af15dc93da5a0cbc",
   "implementation": "8cb73d47ad6b8e6a6764d6d1a24b9c4ddadc243d44286b40d6aeafd2bcff874e",
   "preflight": {
     "requests": 15,
@@ -104,15 +104,14 @@
       "case_id": "interest-南京-01",
       "sources": [
         "nanjing_museum_history",
-        "interest_b4c5aa40346c042a",
+        "interest_2ef5a854aa78999d",
         "interest_bcd0981a9c64dc89"
       ],
       "candidate_entities": [
+        "中国科举博物馆(江南贡院)",
         "南京博物院",
         "南京总统府",
-        "总统府",
-        "玄武湖",
-        "玄武湖景区"
+        "总统府"
       ]
     },
     {
@@ -147,15 +146,14 @@
       "case_id": "interest-南京-02",
       "sources": [
         "interest_bcd0981a9c64dc89",
-        "nanjing_museum_history",
-        "interest_b4c5aa40346c042a"
+        "interest_2ef5a854aa78999d",
+        "nanjing_museum_history"
       ],
       "candidate_entities": [
+        "中国科举博物馆(江南贡院)",
         "南京博物院",
         "南京总统府",
-        "总统府",
-        "玄武湖",
-        "玄武湖景区"
+        "总统府"
       ]
     },
     {
@@ -190,15 +188,14 @@
       "case_id": "interest-南京-03",
       "sources": [
         "interest_bcd0981a9c64dc89",
-        "interest_b4c5aa40346c042a",
+        "interest_2ef5a854aa78999d",
         "nanjing_museum_history"
       ],
       "candidate_entities": [
+        "中国科举博物馆(江南贡院)",
         "南京博物院",
         "南京总统府",
-        "总统府",
-        "玄武湖",
-        "玄武湖景区"
+        "总统府"
       ]
     },
     {
@@ -233,15 +230,14 @@
       "case_id": "interest-南京-04",
       "sources": [
         "nanjing_museum_history",
-        "interest_b4c5aa40346c042a",
+        "interest_2ef5a854aa78999d",
         "interest_bcd0981a9c64dc89"
       ],
       "candidate_entities": [
+        "中国科举博物馆(江南贡院)",
         "南京博物院",
         "南京总统府",
-        "总统府",
-        "玄武湖",
-        "玄武湖景区"
+        "总统府"
       ]
     },
     {
@@ -276,15 +272,14 @@
       "case_id": "interest-南京-05",
       "sources": [
         "nanjing_museum_history",
-        "interest_b4c5aa40346c042a",
+        "interest_2ef5a854aa78999d",
         "interest_bcd0981a9c64dc89"
       ],
       "candidate_entities": [
+        "中国科举博物馆(江南贡院)",
         "南京博物院",
         "南京总统府",
-        "总统府",
-        "玄武湖",
-        "玄武湖景区"
+        "总统府"
       ]
     },
     {
