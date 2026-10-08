@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "recorded_on": "2026-10-08",
+  "scope": "development_review",
+  "decision_source": "Direct user reply in this chat",
+  "status": "scope_confirmed_evidence_pending",
+  "importable_as_gold": false,
+  "scope_policy": {
+    "include": ["明确场馆的预约渠道、时间窗口和操作要求", "明确景点或展览的门票价格、免费范围和收费例外"],
+    "exclude": ["亲子陪护条件", "优惠资格细则", "雨天体验建议", "慢游与休息建议", "泛化安全建议", "交通路径和换乘规划", "设施体验问题"],
+    "other_concrete_facts": "用户提到具体事实之类，但尚未明确其他类别；不自动扩大范围。",
+    "entity_requirement": "需明确景点、场馆或产品，不从城市名猜实体。",
+    "validity_requirement": "政策日期或适用性不明确时不作为当前事实；记录不足，不编造。",
+    "previous_advice_decision": "新的全局范围覆盖此前允许老人休息与陪护建议的决定；第一批原意见保留作为历史记录。",
+    "original_assets_modified": false,
+    "frozen_test_modified": false,
+    "excluded_cases_are_not_passes": true
+  },
+  "batch_02": [
+    {"case_ids": ["v2-1-3-0", "v2-1-3-1"], "user_reply": "只要补预约的相关信息 至于陪同条件这些都不要", "action": "create_new_explicit_reservation_queries", "reason": "原题问亲子注意事项，不能只改答案范围却保留原题并宣称完整回答。保留原题审计，新题明确问上海博物馆东馆专项预约。"},
+    {"case_ids": ["v2-1-5-0"], "user_reply": "都不要", "action": "exclude_next_fact_benchmark"},
+    {"case_ids": ["v2-1-7-0"], "user_reply": "不要", "action": "exclude_next_fact_benchmark"},
+    {"case_ids": ["v2-1-9-0"], "user_reply": "都不要", "action": "exclude_next_fact_benchmark"},
+    {"case_ids": ["v2-2-0-0", "v2-2-0-1"], "user_reply": "不要，建议只给明确的信息", "action": "exclude_current_uncertain_cases", "reason": "当前公告缺年份和适用性核实。排除此版本案例，不推断所有重庆预约事实永久不在范围内。"},
+    {"case_ids": ["v2-2-2-0", "v2-2-2-1"], "user_reply": "都不要", "action": "exclude_next_fact_benchmark"},
+    {"case_ids": ["v2-2-6-0"], "user_reply": "不要", "action": "exclude_current_ambiguous_case"}
+  ],
+  "next_version_requirements": [
+    "开发集先做范围清单，保留原 ID、排除原因与新题映射。",
+    "新增预约与门票问题来自独立证据，不以同义改写凑独立场景数量。",
+    "新范围重建数量与意图分组方案，不将旧开发集缩小后的分数称为原 120 条基准结果。",
+    "无答案与模糊请求保留在独立行为评测中，不应因本知识库只收具体事实而丢失拒答保护。",
+    "正式标签需人工核对具体证据；范围意见不能代替来源审核。"
+  ]
+}
