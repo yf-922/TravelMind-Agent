@@ -271,6 +271,18 @@ Docker 默认关闭 Chroma embedding 模型下载，旅行知识库使用带来�
 
 在线提供商验证脚本只打印 SSE 事件数量、成功状态、错误码和耗时，不打印 API Key、Prompt 或完整行程；所有真实 LLM/地图评测入口默认拒绝执行。Planner/Reviewer 评测还要求 `--max-llm-calls`，Fixture 生成要求 `--max-api-calls`，并将结构化调用最多 3 次尝试纳入预算。第三方兼容中转的稳定性和隐私边界需按服务商条款评估。
 
+## 旅游知识 RAG 评测补强
+
+独立的 v2 评测语料包含六城 128 块（含 28 块明确标记的项目规划建议），
+配套 120 条待人工确认的查询，开发集/测试集各 60 条。提供六种检索对照、
+固定版本中文 BGE、分块对照、失败计入指标、来源与标注冻结保护，以及
+生成/Judge 预算预检。生产检索默认未修改；草稿分数不是正式效果结论。
+
+复现命令、来源局限、人工审核流程和未完成实验见
+[`docs/rag_benchmark_v2.md`](docs/rag_benchmark_v2.md)。
+本次实验、测试记录及待完成门禁见
+[`docs/rag_benchmark_v2_implementation_report.md`](docs/rag_benchmark_v2_implementation_report.md)。
+
 ## 说明与致谢
 
 - 本项目用于《人工智能应用实践》课程实验和个人工程学习。

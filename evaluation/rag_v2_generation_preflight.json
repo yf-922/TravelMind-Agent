@@ -1,0 +1,282 @@
+{
+  "preflight": {
+    "cases": 60,
+    "ks": [
+      2,
+      3,
+      5
+    ],
+    "repetitions": 3,
+    "calls_upper_bound": 1080,
+    "estimated_input_token_ceiling": 29408760,
+    "output_token_ceiling": 1105920,
+    "estimated_cost_ceiling": 31.6206,
+    "price_unit": "user-specified currency per million tokens",
+    "estimation": "conservative UTF-8 bytes, not measured usage",
+    "paid_execution": false,
+    "human_review_required": true
+  },
+  "configuration": {
+    "mode": "hybrid",
+    "k": 3,
+    "rrf_c": 60
+  },
+  "embedding": {
+    "model": "BAAI/bge-small-zh-v1.5",
+    "revision": "7999e1d3359715c523056ef9478215996d62a620",
+    "distance": "cosine",
+    "normalize": true,
+    "query_prefix": "为这个句子生成表示以用于检索相关文章：",
+    "max_tokens": 512
+  },
+  "prompt_version": "grounded-travel-v1",
+  "frozen_test_required_before_execution": true,
+  "corpus_fingerprint": "5bf231483310c9c74108c2a0d31491e69f8e24c13942aa8960103d82e7356d1f",
+  "annotation_fingerprint": "2677679c38a063df4db9df8d8d9de2c0d318e90fa379d5710f285f72f75e6802",
+  "test_subset_fingerprint": "cc1d5cc78904bc482ee167f44856a3cceac99c420e36f8ae8396d4163a68fd52",
+  "configuration_fingerprint": "1f2b74283118bb4732f87014c56d301adde31d8722b34c5da5e906444bc40cdb",
+  "results": [],
+  "human_sample": [],
+  "summary": {
+    "expected_trials": 540,
+    "recorded_trials": 0,
+    "completed_trials": 0,
+    "execution_status": "not_run",
+    "availability": null,
+    "judge_scores_including_failures": {
+      "correctness": null,
+      "evidence_support": null,
+      "preference_match": null,
+      "refusal_correctness": null
+    },
+    "judge_scores_completed_only": {
+      "correctness": null,
+      "evidence_support": null,
+      "preference_match": null,
+      "refusal_correctness": null
+    },
+    "actual_provider_usage": {
+      "generator": {
+        "measured_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0
+      },
+      "judge": {
+        "measured_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0
+      }
+    },
+    "mean_generation_latency_ms": null,
+    "human_review_complete": false,
+    "interpretation": "Independent Judge diagnostics; not human gold or retrieval metrics."
+  },
+  "summary_by_k": {
+    "2": {
+      "expected_trials": 180,
+      "recorded_trials": 0,
+      "completed_trials": 0,
+      "execution_status": "not_run",
+      "availability": null,
+      "judge_scores_including_failures": {
+        "correctness": null,
+        "evidence_support": null,
+        "preference_match": null,
+        "refusal_correctness": null
+      },
+      "judge_scores_completed_only": {
+        "correctness": null,
+        "evidence_support": null,
+        "preference_match": null,
+        "refusal_correctness": null
+      },
+      "actual_provider_usage": {
+        "generator": {
+          "measured_calls": 0,
+          "input_tokens": 0,
+          "output_tokens": 0
+        },
+        "judge": {
+          "measured_calls": 0,
+          "input_tokens": 0,
+          "output_tokens": 0
+        }
+      },
+      "mean_generation_latency_ms": null,
+      "human_review_complete": false,
+      "interpretation": "Independent Judge diagnostics; not human gold or retrieval metrics."
+    },
+    "3": {
+      "expected_trials": 180,
+      "recorded_trials": 0,
+      "completed_trials": 0,
+      "execution_status": "not_run",
+      "availability": null,
+      "judge_scores_including_failures": {
+        "correctness": null,
+        "evidence_support": null,
+        "preference_match": null,
+        "refusal_correctness": null
+      },
+      "judge_scores_completed_only": {
+        "correctness": null,
+        "evidence_support": null,
+        "preference_match": null,
+        "refusal_correctness": null
+      },
+      "actual_provider_usage": {
+        "generator": {
+          "measured_calls": 0,
+          "input_tokens": 0,
+          "output_tokens": 0
+        },
+        "judge": {
+          "measured_calls": 0,
+          "input_tokens": 0,
+          "output_tokens": 0
+        }
+      },
+      "mean_generation_latency_ms": null,
+      "human_review_complete": false,
+      "interpretation": "Independent Judge diagnostics; not human gold or retrieval metrics."
+    },
+    "5": {
+      "expected_trials": 180,
+      "recorded_trials": 0,
+      "completed_trials": 0,
+      "execution_status": "not_run",
+      "availability": null,
+      "judge_scores_including_failures": {
+        "correctness": null,
+        "evidence_support": null,
+        "preference_match": null,
+        "refusal_correctness": null
+      },
+      "judge_scores_completed_only": {
+        "correctness": null,
+        "evidence_support": null,
+        "preference_match": null,
+        "refusal_correctness": null
+      },
+      "actual_provider_usage": {
+        "generator": {
+          "measured_calls": 0,
+          "input_tokens": 0,
+          "output_tokens": 0
+        },
+        "judge": {
+          "measured_calls": 0,
+          "input_tokens": 0,
+          "output_tokens": 0
+        }
+      },
+      "mean_generation_latency_ms": null,
+      "human_review_complete": false,
+      "interpretation": "Independent Judge diagnostics; not human gold or retrieval metrics."
+    }
+  },
+  "summary_by_type": {
+    "answerable": {
+      "expected_trials": 405,
+      "recorded_trials": 0,
+      "completed_trials": 0,
+      "execution_status": "not_run",
+      "availability": null,
+      "judge_scores_including_failures": {
+        "correctness": null,
+        "evidence_support": null,
+        "preference_match": null,
+        "refusal_correctness": null
+      },
+      "judge_scores_completed_only": {
+        "correctness": null,
+        "evidence_support": null,
+        "preference_match": null,
+        "refusal_correctness": null
+      },
+      "actual_provider_usage": {
+        "generator": {
+          "measured_calls": 0,
+          "input_tokens": 0,
+          "output_tokens": 0
+        },
+        "judge": {
+          "measured_calls": 0,
+          "input_tokens": 0,
+          "output_tokens": 0
+        }
+      },
+      "mean_generation_latency_ms": null,
+      "human_review_complete": false,
+      "interpretation": "Independent Judge diagnostics; not human gold or retrieval metrics."
+    },
+    "in_corpus_missing": {
+      "expected_trials": 63,
+      "recorded_trials": 0,
+      "completed_trials": 0,
+      "execution_status": "not_run",
+      "availability": null,
+      "judge_scores_including_failures": {
+        "correctness": null,
+        "evidence_support": null,
+        "preference_match": null,
+        "refusal_correctness": null
+      },
+      "judge_scores_completed_only": {
+        "correctness": null,
+        "evidence_support": null,
+        "preference_match": null,
+        "refusal_correctness": null
+      },
+      "actual_provider_usage": {
+        "generator": {
+          "measured_calls": 0,
+          "input_tokens": 0,
+          "output_tokens": 0
+        },
+        "judge": {
+          "measured_calls": 0,
+          "input_tokens": 0,
+          "output_tokens": 0
+        }
+      },
+      "mean_generation_latency_ms": null,
+      "human_review_complete": false,
+      "interpretation": "Independent Judge diagnostics; not human gold or retrieval metrics."
+    },
+    "out_of_corpus": {
+      "expected_trials": 72,
+      "recorded_trials": 0,
+      "completed_trials": 0,
+      "execution_status": "not_run",
+      "availability": null,
+      "judge_scores_including_failures": {
+        "correctness": null,
+        "evidence_support": null,
+        "preference_match": null,
+        "refusal_correctness": null
+      },
+      "judge_scores_completed_only": {
+        "correctness": null,
+        "evidence_support": null,
+        "preference_match": null,
+        "refusal_correctness": null
+      },
+      "actual_provider_usage": {
+        "generator": {
+          "measured_calls": 0,
+          "input_tokens": 0,
+          "output_tokens": 0
+        },
+        "judge": {
+          "measured_calls": 0,
+          "input_tokens": 0,
+          "output_tokens": 0
+        }
+      },
+      "mean_generation_latency_ms": null,
+      "human_review_complete": false,
+      "interpretation": "Independent Judge diagnostics; not human gold or retrieval metrics."
+    }
+  }
+}
