@@ -17,6 +17,29 @@ def load_assets():
     return tuple(json.loads((ASSETS/f'{name}.json').read_text(encoding='utf-8')) for name in ('cases', 'facts'))
 
 
+def test_collector_keeps_exact_quote_despite_unrelated_invalid_bytes(tmp_path, monkeypatch):
+    import httpx
+    from scripts import build_route_interest_assets as builder
+    monkeypatch.setattr(builder, 'SOURCES', [('南京', ['景点A'], 'https://official.example/fact', '古代教育', '历史')])
+    monkeypatch.setattr(httpx, 'get', lambda *a, **k: httpx.Response(200, content=b'<html>'+ '古代教育'.encode()+b'<aside>\xff</aside></html>', request=httpx.Request('GET', a[0])))
+    facts, records = builder.collect_sources(tmp_path)
+    assert len(facts) == 1 and facts[0]['text'] == '古代教育'
+    assert not validate_snapshots(tmp_path, facts)
+    (tmp_path/'facts.json').write_text(json.dumps(facts), encoding='utf-8')
+    monkeypatch.setattr(httpx, 'get', lambda *a, **k: pytest.fail('verified evidence must be reused'))
+    reused, _ = builder.collect_sources(tmp_path, only_missing=True)
+    assert reused == facts
+
+
+def test_collector_rejects_quote_corrupted_by_invalid_bytes(tmp_path, monkeypatch):
+    import httpx
+    from scripts import build_route_interest_assets as builder
+    monkeypatch.setattr(builder, 'SOURCES', [('南京', ['景点A'], 'https://official.example/fact', '古代教育', '历史')])
+    monkeypatch.setattr(httpx, 'get', lambda *a, **k: httpx.Response(200, content='古代'.encode()+b'\xff'+'教育'.encode(), request=httpx.Request('GET', a[0])))
+    facts, records = builder.collect_sources(tmp_path)
+    assert facts == [] and records[0]['status'] == 'unavailable'
+
+
 def test_assets_have_30_cases_18_distinct_real_candidates_and_provenance():
     cases, facts = load_assets()
     assert not validate_assets(cases, facts)

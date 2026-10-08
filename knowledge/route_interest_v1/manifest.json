@@ -2,6 +2,28 @@
   "version": "route-interest-v1",
   "source_collection": [
     {
+      "url": "https://www.njlyw.cn/websitenew/web/ScenicDetail?m=173&c=JN&i=1313",
+      "entities": [
+        "南京欢乐谷"
+      ],
+      "city": "南京",
+      "source": "interest_7c3418c5dc49a1be",
+      "status": "verified_quote",
+      "snapshot_hash": "ce505706327fc6763ce9e1687b6916b90675d9dabac911c44dfc4833024ad9e6",
+      "collected_at": "2026-10-08T15:18:23.217814+00:00"
+    },
+    {
+      "url": "https://www.njlyw.cn/websitenew/web/ScenicDetail?m=173&c=XW&i=545",
+      "entities": [
+        "中山陵景区"
+      ],
+      "city": "南京",
+      "source": "interest_e38fe23cef511c22",
+      "status": "verified_quote",
+      "snapshot_hash": "d5997dca1516150e83d5eba68d6f3970e5799af9523b7b3e15eb39f006c8f4a0",
+      "collected_at": "2026-10-08T15:18:23.620846+00:00"
+    },
+    {
       "url": "https://www.njlyw.cn/websitenew/web/ScenicDetail?m=173&c=QH&i=1280",
       "entities": [
         "中国科举博物馆(江南贡院)"
@@ -10,7 +32,7 @@
       "source": "interest_2ef5a854aa78999d",
       "status": "verified_quote",
       "snapshot_hash": "f586ebeb54c768b39c875366b20dd7af8fb51f2ccd8db6d07a4b9217b23afc07",
-      "collected_at": "2026-10-08T14:54:07.139442+00:00"
+      "collected_at": "2026-10-08T15:18:24.066834+00:00"
     },
     {
       "url": "https://www.shanghaidisneyresort.com/zh-cn/",
@@ -21,7 +43,7 @@
       "source": "interest_25a29915abb41827",
       "status": "verified_quote",
       "snapshot_hash": "88d41cb37e1ec129dcf6a21493690ca11b4fcbeb6594f7bd4cbeb74aa70f5e45",
-      "collected_at": "2026-10-08T14:54:07.859244+00:00"
+      "collected_at": "2026-10-08T15:18:24.855973+00:00"
     },
     {
       "url": "https://www.nanshan.com/nanshan/byjd.html",
@@ -32,7 +54,7 @@
       "source": "interest_d78fbeaccfb68d62",
       "status": "verified_quote",
       "snapshot_hash": "478d4b68b3a0804437eabcf541d23902f1d461878cb16fa60c6b2cd2ef813637",
-      "collected_at": "2026-10-08T14:54:08.314260+00:00"
+      "collected_at": "2026-10-08T15:18:25.327056+00:00"
     },
     {
       "url": "https://www.visitsanya.com/zh/destination/%e8%a5%bf%e5%b2%9b",
@@ -43,7 +65,7 @@
       "source": "interest_29f816a87be08528",
       "status": "verified_quote",
       "snapshot_hash": "f897bc84074616da2682f9348ac06e62b2c3e1719a50768e4a6ee8396060fb4b",
-      "collected_at": "2026-10-08T14:54:08.867522+00:00"
+      "collected_at": "2026-10-08T15:18:25.818078+00:00"
     },
     {
       "url": "https://www.visitsanya.com/zh/destination/%e9%b9%bf%e5%9b%9e%e5%a4%b4%e9%a3%8e%e6%99%af%e5%8c%ba",
@@ -54,7 +76,7 @@
       "source": "interest_939e4045f8981f6a",
       "status": "verified_quote",
       "snapshot_hash": "f50f199251a5bd598e75ac747c69c239d1c523a1570a863065a76b6293069498",
-      "collected_at": "2026-10-08T14:54:09.307846+00:00"
+      "collected_at": "2026-10-08T15:18:26.211079+00:00"
     },
     {
       "url": "https://www.xuanwuhu.net/mhls/mhls1.aspx",
@@ -66,7 +88,7 @@
       "source": "interest_b4c5aa40346c042a",
       "status": "verified_quote",
       "snapshot_hash": "485953f0626d9033e3f784459b3323e0c64a55c17df96a432370c317e8d695ed",
-      "collected_at": "2026-10-08T14:54:09.855816+00:00"
+      "collected_at": "2026-10-08T15:18:26.607306+00:00"
     },
     {
       "url": "https://www.njztf.cn/",
@@ -78,7 +100,7 @@
       "source": "interest_bcd0981a9c64dc89",
       "status": "verified_quote",
       "snapshot_hash": "bb3dd0b5d3d1fef15caf3c8f0ceea549e8c835fe855e2d51178b9b6f7244ad5e",
-      "collected_at": "2026-10-08T14:54:20.787282+00:00"
+      "collected_at": "2026-10-08T15:18:37.857624+00:00"
     },
     {
       "url": "https://www.snhm.org.cn/cszl/zggk.htm",
@@ -89,7 +111,7 @@
       "source": "interest_90ec80f62860ffdf",
       "status": "verified_quote",
       "snapshot_hash": "f06882206ca97433d797098ee9400122c90a6e9d411fd52ee1dc88ab06c67212",
-      "collected_at": "2026-10-08T14:54:21.458628+00:00"
+      "collected_at": "2026-10-08T15:18:38.869376+00:00"
     },
     {
       "url": "https://www.shanghaizoo.cn/",
@@ -100,7 +122,7 @@
       "source": "interest_15bfb1df39cfb7e5",
       "status": "verified_quote",
       "snapshot_hash": "4207044420e071b7ec8bb556d0eb15d6583f396e68f3ce72dcd54bc7b4dcd908",
-      "collected_at": "2026-10-08T14:54:21.879630+00:00"
+      "collected_at": "2026-10-08T15:18:39.247370+00:00"
     },
     {
       "url": "https://www.sh-aquarium.com/",
@@ -111,7 +133,7 @@
       "source": "interest_33012e0d9d6b1788",
       "status": "verified_quote",
       "snapshot_hash": "e2f93299c872d983d1fd14669249dc6cbe13b69581372aa8e1df5d80e3e0cc6b",
-      "collected_at": "2026-10-08T14:54:22.389117+00:00"
+      "collected_at": "2026-10-08T15:18:39.697089+00:00"
     },
     {
       "url": "https://www.aitianya.cn/",
@@ -122,7 +144,7 @@
       "source": "interest_493b6e346dac06d7",
       "status": "verified_quote",
       "snapshot_hash": "9541dff54986b71feaa00fe9254a968bd41518ffe343e58f51f7082434906e4b",
-      "collected_at": "2026-10-08T14:54:24.921800+00:00"
+      "collected_at": "2026-10-08T15:18:42.147440+00:00"
     },
     {
       "url": "https://www.sanyapark.com/",
@@ -134,7 +156,7 @@
       "source": "interest_f463160d936a96b9",
       "status": "verified_quote",
       "snapshot_hash": "c0a78b54f31b1b55aef6dec6bc8c83bd17c25d2d2533db3f738c1fda3d17fb51",
-      "collected_at": "2026-10-08T14:54:26.626069+00:00"
+      "collected_at": "2026-10-08T15:18:43.751384+00:00"
     }
   ],
   "candidates_per_city": {
@@ -143,11 +165,11 @@
     "三亚": 6
   },
   "evidenced_candidates_per_city": {
-    "南京": 4,
+    "南京": 6,
     "上海": 5,
     "三亚": 6
   },
-  "fact_fingerprint": "0a2d4f50fa08d4c376a9f0dd29ffde2d316a6a70ade57abc6cf935ea5168d1e3",
+  "fact_fingerprint": "272515732f593d659a0aaec00349424a2cb36a650ecb012feffa294944d9b74d",
   "case_fingerprint": "354d34473c3af8235ac40dbe862b30cdf73a70a05b09a09a2931b76fe4625d7b",
   "label_status": "draft_not_human_confirmed",
   "splits": {

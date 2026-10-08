@@ -20,6 +20,10 @@ from app.evaluation.rag_protocol import fingerprint
 OUT = ROOT / "knowledge/route_interest_v1"
 # city, official entity aliases, URL, verbatim stable fact quote, interest
 SOURCES = [
+    ("南京", ["南京欢乐谷"], "https://www.njlyw.cn/websitenew/web/ScenicDetail?m=173&c=JN&i=1313",
+     "园区目前拥有欢乐时光、遗落要塞、甜品王国、黑铁城、奇想海洋、魔眼森林六大主题区域、四十余台游乐设备。", "主题乐园与亲子游乐"),
+    ("南京", ["中山陵景区"], "https://www.njlyw.cn/websitenew/web/ScenicDetail?m=173&c=XW&i=545",
+     "中山陵位于钟山中茅峰南麓，是伟大的民主革命先行者孙中山先生的陵墓", "近代历史与纪念建筑"),
     ("南京", ["中国科举博物馆(江南贡院)"], "https://www.njlyw.cn/websitenew/web/ScenicDetail?m=173&c=QH&i=1280",
      "科举制度自隋创立、唐完备、宋改革、元中落、明鼎盛至清灭亡，历时逾千年", "科举制度与中国古代教育史"),
     ("上海", ["上海迪士尼度假区"], "https://www.shanghaidisneyresort.com/zh-cn/",
@@ -91,13 +95,26 @@ QUERIES = {
 }
 
 
-def collect_sources(directory: Path):
+def collect_sources(directory: Path, *, only_missing: bool = False):
     import httpx
     from bs4 import BeautifulSoup
     records, facts = [], []
+    saved_path = directory / 'facts.json'
+    saved = {f['source']: f for f in json.loads(saved_path.read_text(encoding='utf-8'))} if saved_path.exists() else {}
     for city, entities, url, quote, topic in SOURCES:
         source = "interest_" + hashlib.sha256(url.encode()).hexdigest()[:16]
         record = {"url": url, "entities": entities, "city": city, "source": source}
+        old = saved.get(source)
+        snapshot = directory / 'snapshots' / (source + '.txt')
+        if only_missing and old and snapshot.exists():
+            previous_text = snapshot.read_text(encoding='utf-8')
+            if (hashlib.sha256(previous_text.encode()).hexdigest() == old.get('snapshot_hash')
+                    and old.get('text') == ' '.join(quote.split())
+                    and old['text'] in previous_text
+                    and old.get('city') == city and old.get('entities') == entities):
+                facts.append(old)
+                records.append({k: old[k] for k in ('url', 'entities', 'city', 'source', 'status', 'snapshot_hash', 'collected_at') if k in old})
+                continue
         try:
             response = httpx.get(url, timeout=20, follow_redirects=True)
             response.raise_for_status()
@@ -150,18 +167,21 @@ def make_cases(pools, facts):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--collect", action="store_true")
+    parser.add_argument("--only-missing", action="store_true", help="reuse verified snapshots and fetch only new/changed sources")
     parser.add_argument("--out", type=Path, default=OUT)
     args = parser.parse_args()
     args.out.mkdir(parents=True, exist_ok=True)
     prior_cases = json.loads((args.out/'cases.json').read_text(encoding='utf-8')) if (args.out/'cases.json').exists() else []
     if any(c.get('annotation_status') == 'human_reviewed' for c in prior_cases):
         parser.error('reviewed version must not be regenerated; create a new --out version')
+    prior_facts = json.loads((args.out/'facts.json').read_text(encoding='utf-8')) if (args.out/'facts.json').exists() else []
+    if any(f.get('review_status') == 'human_reviewed' for f in prior_facts):
+        parser.error('reviewed source version must not be regenerated; create a new --out version')
     seeds = json.loads((ROOT / "knowledge/travel/planning_facts.json").read_text(encoding="utf-8"))
     if args.collect:
-        extra, records = collect_sources(args.out)
+        extra, records = collect_sources(args.out, only_missing=args.only_missing)
         if (args.out/'facts.json').exists():
             saved = json.loads((args.out/'facts.json').read_text(encoding='utf-8'))
-            captured = {f['source'] for f in extra}
             # A transient provider failure must not erase an already verified
             # immutable snapshot. Keep the old fact unless a new verified quote
             # was captured for that source.
@@ -170,7 +190,15 @@ def main():
                 if not old['source'].startswith('interest_') or old['source'] in current:
                     continue
                 extra.append(old)
-                records.append({k: old[k] for k in ('url', 'entities', 'city', 'source', 'status', 'snapshot_hash', 'collected_at') if k in old})
+                # Keep one record per source, retaining the latest failure
+                # separately from the prior snapshot's successful capture.
+                attempt = next((r for r in records if r['source'] == old['source']), None)
+                retained = {k: old[k] for k in ('url', 'entities', 'city', 'source', 'status', 'snapshot_hash', 'collected_at') if k in old}
+                if attempt:
+                    retained['latest_attempt'] = dict(attempt)
+                    attempt.clear(); attempt.update(retained)
+                else:
+                    records.append(retained)
     elif (args.out / 'facts.json').exists():
         extra = [f for f in json.loads((args.out / 'facts.json').read_text(encoding='utf-8')) if f['source'].startswith('interest_')]
         records = json.loads((args.out / 'manifest.json').read_text(encoding='utf-8'))['source_collection']
