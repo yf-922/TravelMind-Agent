@@ -727,7 +727,7 @@ def make_joint_planner_node(model_name: str | None, *, knowledge_lookup=None, ll
         try:
             rag_sources = (knowledge_lookup or search_planning_knowledge)(
                 state.destination or "", state.pois,
-                f"{state.rewritten_query or state.query} {state.attraction_preference or ''}",
+                f"{state.query} {state.modification_notes or ''} {state.attraction_preference or ''}",
             )
         except Exception:
             logger.warning("[joint_planner] knowledge unavailable; continue with verified candidates", exc_info=True)
@@ -753,6 +753,11 @@ def make_joint_planner_node(model_name: str | None, *, knowledge_lookup=None, ll
             f"景点候选池：\n{spot_text}\n\n"
             f"候选覆盖状态：{state.candidate_pool_status}；缺口：{state.candidate_missing_coverage}。"
             "候选不足时只用已有景点并说明缺口，不得编造景点。\n"
+            "同一景点全程仅安排一次，即使午餐前后分段也不能重复写入 spots；候选不足时宁可少排。\n"
+            "当前原始需求及本轮修改优先于历史偏好或查询改写。检索事实只用于比较已核验候选的兴趣匹配，"
+            "不得覆盖开放时间、道路通勤等硬约束。为已选景点输出 selection_reasons，"
+            "source_ids 只能引用实际提供且属于该景点的 source；没有知识证据时引用为空，不能猜测。\n"
+            f"原始需求：{state.query}；当前修改：{state.modification_notes or '无'}\n"
             f"{rag_block}\n"
             f"餐馆候选池：\n{meal_text}\n\n"
             f"上一版路线（仅供修改参考）：{old_route}\n"
@@ -765,6 +770,30 @@ def make_joint_planner_node(model_name: str | None, *, knowledge_lookup=None, ll
         )
         route = [day.model_dump() for day in result.days]
         replacements = canonicalize_route_spot_names(route, state.pois)
+        # A lunch break is not a second attraction visit. Keep the first slot;
+        # downstream rules still inspect the resulting route, including gaps.
+        seen_names: set[str] = set()
+        removed_duplicates = 0
+        for day in route:
+            distinct = []
+            for spot in day.get("spots", []):
+                name = str(spot.get("name") or "").strip()
+                if name in seen_names:
+                    removed_duplicates += 1
+                    continue
+                seen_names.add(name)
+                distinct.append(spot)
+            day["spots"] = distinct
+        source_map = {s["source"]: s for s in rag_sources}
+        selection_reasons = []
+        for reason in result.selection_reasons:
+            if reason.name not in seen_names:
+                continue
+            valid_sources = [sid for sid in dict.fromkeys(reason.source_ids)
+                             if sid in source_map and reason.name in source_map[sid].get("entities", [])]
+            selection_reasons.append({"name": reason.name, "reason": reason.reason,
+                                      "source_ids": valid_sources,
+                                      "evidence_status": "citation_linked_not_fact_verified" if valid_sources else "unverified"})
         allowed_meals = {str(item.get("name")) for item in state.main_meal_candidates}
         slots: list[dict[str, Any]] = []
         for slot in result.meal_slots:
@@ -775,10 +804,13 @@ def make_joint_planner_node(model_name: str | None, *, knowledge_lookup=None, ll
         note = result.notes or f"联合规划完成：{len(route)} 天、{len(slots)} 个餐馆时间块"
         if replacements:
             note += f"；规范化景点名称 {len(replacements)} 个"
+        if removed_duplicates:
+            note += f"；移除重复景点时间块 {removed_duplicates} 个（仍需校验剩余路线）"
         return {
             "route": route,
             "meal_slots": slots,
             "rag_sources": rag_sources,
+            "selection_reasons": selection_reasons,
             "review_round": state.review_round + 1,
             "history": state.history + [f"[joint_planner] {note}"],
             "planner_reviewer_dialogue": state.planner_reviewer_dialogue + [
@@ -799,7 +831,7 @@ def _retrieved_knowledge_block(sources: list[dict[str, Any]]) -> str:
         "travel claims. If you mention a fact in notes, retain its [source: source#chunk] label.\n"
         + "\n\n".join(
             f"[source: {item['source']}#{item['chunk_id']}]"
-            f" URL={item.get('url', 'not provided')} snapshot={item.get('collected_at', 'unknown')}\n{item['text']}"
+            f" entities={item.get('entities', [])} URL={item.get('url', 'not provided')} snapshot={item.get('collected_at', 'unknown')}\n{item['text']}"
             for item in sources
         ) + "\n</RETRIEVED_DATA>"
     )
@@ -1980,6 +2012,8 @@ def _finalize_impl(state: TravelPlanState) -> dict[str, Any]:
     ][:20]
     final_plan["candidate_spots"] = candidate_spots
     final_plan["knowledge_sources"] = list(state.rag_sources or [])
+    selected_names = {s.get("name") for d in state.route for s in d.get("spots", [])}
+    final_plan["selection_reasons"] = [r for r in state.selection_reasons if r.get("name") in selected_names]
 
     history = state.history + ["finalize：已组装最终计划"]
     # 规划过程日志随 plan 一起落库，历史详情页回看时可还原完整规划过程

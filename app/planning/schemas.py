@@ -63,6 +63,12 @@ class MealSlotPlan(BaseModel):
     reason: str = Field(default="", description="选择该餐馆的简短理由")
 
 
+class SelectionReason(BaseModel):
+    name: str = Field(description="已选景点名，必须来自最终 days")
+    reason: str = Field(description="与本次用户兴趣相关的选点理由；无证据时明确未知")
+    source_ids: list[str] = Field(default_factory=list, description="支撑理由的检索 source ID；不得编造引用")
+
+
 class TravelRoute(BaseModel):
     """Planner 产出的逐天路线（含时刻表）。
 
@@ -82,6 +88,7 @@ class TravelRoute(BaseModel):
         default_factory=list,
         description="午餐和晚餐时间轴节点；餐馆名必须来自餐馆候选池",
     )
+    selection_reasons: list[SelectionReason] = Field(default_factory=list)
     notes: str = Field(default="", description="本版总结，一句话说明本轮主要改动，供历史日志展示")
     modification_concern: str = Field(
         default="",
@@ -284,6 +291,7 @@ class TravelPlanState(BaseModel):
     semantic_memory_status: str = "not_requested"
 
     rag_sources: list[dict[str, Any]] = Field(default_factory=list)
+    selection_reasons: list[dict[str, Any]] = Field(default_factory=list)
 
     # 修改规划相关（由 API 层填充）
     modification_notes: Optional[str] = None

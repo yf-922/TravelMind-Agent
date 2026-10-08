@@ -74,19 +74,25 @@ def _split_text(text: str, size: int = _CHUNK_SIZE, overlap: int = _CHUNK_OVERLA
     return chunks
 
 
-def load_documents() -> list[dict[str, Any]]:
+def load_documents(*, include_interest: bool = False) -> list[dict[str, Any]]:
     """Load version-controlled legacy guides and sourced planning facts."""
     documents: list[dict[str, Any]] = []
     for path in sorted(_SOURCE_DIR.glob("*.md")):
         text = path.read_text(encoding="utf-8").strip()
         if text:
             documents.append({"source": path.stem, "text": text})
-    facts_path = _SOURCE_DIR / "planning_facts.json"
-    if facts_path.exists():
+    fact_paths = [_SOURCE_DIR / "planning_facts.json"]
+    if include_interest:
+        fact_paths.append(_ROOT / "knowledge/route_interest_v1/facts.json")
+    for facts_path in fact_paths:
+        if not facts_path.exists():
+            continue
         facts = json.loads(facts_path.read_text(encoding="utf-8"))
         sources = {d["source"] for d in documents}
         for fact in facts:
             if fact["source"] in sources:
+                if any(d == fact for d in documents):
+                    continue
                 raise ValueError("duplicate planning knowledge source")
             sources.add(fact["source"])
             documents.append(fact)
@@ -303,7 +309,7 @@ def search_travel_knowledge(query: str, limit: int = 3, mode: str = "auto", *, s
         return []
 
 
-def search_planning_knowledge(destination: str, pois: list[dict[str, Any]], query: str, limit: int = 3):
+def search_planning_knowledge(destination: str, pois: list[dict[str, Any]], query: str, limit: int = 3, *, mode: str = "auto"):
     """Only retrieve sourced facts about verified candidates in this city."""
     city = (destination or "").strip().removesuffix("市")
     names = {str(p.get("name") or "").strip() for p in pois}
@@ -314,10 +320,9 @@ def search_planning_knowledge(destination: str, pois: list[dict[str, Any]], quer
     }
     if not eligible:
         return []
-    # Candidate names participate in recall; city/entity filtering happens
-    # before ranking so generic city advice cannot crowd out actual evidence.
-    scoped_query = f"{city} {' '.join(sorted(names))} {query}"
-    rows = search_travel_knowledge(scoped_query, limit=limit, source_filter=list(eligible))
+    # Names constrain scope; do not dilute interest relevance with every name
+    # in a large pool. Retrieval errors remain distinguishable in the harness.
+    rows = search_travel_knowledge(query, limit=limit, mode=mode, source_filter=list(eligible))
     return [{**r, **{k: eligible[r['source']][k] for k in
                      ('city', 'entities', 'url', 'collected_at', 'evidence_id', 'knowledge_type', 'validity')}}
             for r in rows if r.get('source') in eligible]
