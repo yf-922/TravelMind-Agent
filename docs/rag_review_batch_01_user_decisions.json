@@ -35,8 +35,11 @@
     {
       "case_ids": ["v2-0-6-0"],
       "user_reply": "统一",
-      "action": "pending_clarification",
-      "reason": "未明确是否表示同意 AI 门票审核建议，不能推断为统一票价或全部免费。"
+      "action": "retain_expand_required_facts",
+      "clarification_reply": "对 同意",
+      "requirements": ["区分常设展免费与临展收费例外", "预约要求", "所需证件"],
+      "reason": "用户明确同意门票题审核建议，不表示统一票价或全部免费。",
+      "evidence_status": "pending_final_annotation"
     },
     {
       "case_ids": ["v2-0-8-0"],
