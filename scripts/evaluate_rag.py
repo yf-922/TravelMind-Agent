@@ -91,6 +91,8 @@ def evaluate(cases: list[dict[str, Any]], top_k: int = 3, retriever: str = "keyw
         "generation_only_cases": len(generation_only_rows),
         "by_difficulty": difficulty,
         "metrics": {
+            "source_hit_at_k": round(sum(row["hit_at_k"] for row in answerable_rows) / len(answerable_rows), 3) if answerable_rows else 0.0,
+            "recall_at_k_is_legacy_alias_for_source_hit": True,
             "hit_at_1": round(sum(row["hit_at_1"] for row in answerable_rows) / len(answerable_rows), 3) if answerable_rows else 0.0,
             "recall_at_k": round(sum(row["hit_at_k"] for row in answerable_rows) / len(answerable_rows), 3) if answerable_rows else 0.0,
             "mrr": round(mean(row["reciprocal_rank"] for row in answerable_rows), 3) if answerable_rows else 0.0,
@@ -116,7 +118,7 @@ def render_markdown(report: dict[str, Any]) -> str:
         f"- Cases: {report['case_count']}",
         f"- Answerable / empty-retrieval / generation-only: {report['answerable_cases']} / {report['no_answer_cases']} / {report['generation_only_cases']}",
         f"- Hit@1: {metrics['hit_at_1']:.1%}",
-        f"- Recall@{report['top_k']}: {metrics['recall_at_k']:.1%}",
+        f"- Source Hit@{report['top_k']} (not chunk Recall): {metrics['source_hit_at_k']:.1%}",
         f"- MRR: {metrics['mrr']:.3f}",
         f"- Empty-retrieval negative accuracy: {metrics['no_answer_accuracy']:.1%}",
         f"- False-positive rate: {metrics['false_positive_rate']:.1%}",
