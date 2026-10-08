@@ -1,0 +1,666 @@
+{
+  "status": "budget_stopped",
+  "stop_reason": "Client error '429 Too Many Requests' for url 'https://www.micuapi.ai/api/usage/token/'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+  "fingerprint": "2ea39bb77f6388261eea408c1b4b2721197809365b7f17727c2a41c126940d6d",
+  "model": "grok-4.6",
+  "transport": {
+    "responses_api": true,
+    "reasoning_effort": "low",
+    "timeout_seconds": 90,
+    "retries": 0
+  },
+  "preflight": {
+    "requests": 12,
+    "arms": 2,
+    "repetitions": 1,
+    "calls_ceiling": 24,
+    "input_token_ceiling_estimate": 143328,
+    "cost_ceiling": 0.581568,
+    "price_unit": "specified currency / million tokens",
+    "estimate_method": "UTF-8 bytes + 256 overhead per prompt; not measured usage"
+  },
+  "scope": "Planner-only controlled pilot; keyword evidence; sequential, no retries/Judge/maps; not end-to-end quality or latency.",
+  "budget_proxy": {
+    "attempted_calls": 11,
+    "committed_cost": 0.077226,
+    "measured_cost_known_usage_only": 0.07722599999999999,
+    "unknown_usage_calls": 0
+  },
+  "gateway_quota": {
+    "start": 56053891,
+    "cap": 500000,
+    "scope": "key-wide, includes any concurrent usage",
+    "units_per_display_currency": 500000
+  },
+  "all_recorded_summary": {
+    "without_rag": {
+      "expected": 12,
+      "recorded": 6,
+      "successful": 6,
+      "availability": 1.0,
+      "execution_completion": 0.5,
+      "basic_rule_pass_including_failures": 0.08333333333333333,
+      "p50_ms": 14812.629599997308,
+      "p95_ms": 22514.03439999558,
+      "usage_measured_calls": 6,
+      "actual_input_tokens": 10132,
+      "actual_output_tokens": 3744
+    },
+    "with_rag": {
+      "expected": 12,
+      "recorded": 5,
+      "successful": 5,
+      "availability": 1.0,
+      "execution_completion": 0.4166666666666667,
+      "basic_rule_pass_including_failures": 0.08333333333333333,
+      "p50_ms": 14819.064700044692,
+      "p95_ms": 21651.617600000463,
+      "usage_measured_calls": 5,
+      "actual_input_tokens": 8600,
+      "actual_output_tokens": 2883
+    }
+  },
+  "completed_pairs_only": {
+    "without_rag": {
+      "completed_pairs": 5,
+      "mean_latency_ms": 15225.581979996059,
+      "input_tokens": 8428,
+      "output_tokens": 3040,
+      "basic_rule_pass": 1
+    },
+    "with_rag": {
+      "completed_pairs": 5,
+      "mean_latency_ms": 14377.913360006642,
+      "input_tokens": 8600,
+      "output_tokens": 2883,
+      "basic_rule_pass": 1
+    }
+  },
+  "human_review_complete": false,
+  "trials": [
+    {
+      "case_id": "nanjing_museum_history-interest",
+      "arm": "without_rag",
+      "repetition": 0,
+      "latency_ms": 22514.03439999558,
+      "usage": {
+        "input_tokens": 1690,
+        "output_tokens": 887,
+        "total_tokens": 2577,
+        "input_token_details": {
+          "cache_read": 128
+        },
+        "output_token_details": {
+          "reasoning": 567
+        }
+      },
+      "generated": {
+        "reasoning": "【景点相邻】候选池仅有南京博物院一处且无坐标，无法做多点相邻串联，全日只安排该馆，避免跨区奔波。【用户偏好】用户关注展陈主题，南京博物院以历史文物与专题展览为核心，作为唯一合规候选，全日围绕馆内展陈参观。【无重复】全天仅此一点，不编造候选外景点。【天气适配】无天气信息，室内展馆受天气影响小，仍待现场确认开放与预约。",
+        "days": [
+          {
+            "day": 1,
+            "spots": [
+              {
+                "name": "南京博物院",
+                "period": "morning",
+                "start_time": "09:30",
+                "end_time": "12:00"
+              },
+              {
+                "name": "南京博物院",
+                "period": "afternoon",
+                "start_time": "13:30",
+                "end_time": "16:30"
+              }
+            ],
+            "theme": "南京博物院全日展陈参观"
+          }
+        ],
+        "meal_slots": [],
+        "notes": "仅使用候选池内南京博物院；午餐12:00-13:00、晚餐18:00-19:00预留60分钟但餐馆候选为空故 meal_slots 留空，开放时间与预约待确认。",
+        "modification_concern": ""
+      },
+      "basic_rules": {
+        "passed": false,
+        "closed_pool": [
+          true,
+          "无越界景点"
+        ],
+        "structure": [
+          false,
+          "跨天或同天重复景点：南京博物院"
+        ],
+        "nonempty": true
+      },
+      "human_review_status": "pending"
+    },
+    {
+      "case_id": "nanjing_museum_history-interest",
+      "arm": "with_rag",
+      "repetition": 0,
+      "latency_ms": 21651.617600000463,
+      "usage": {
+        "input_tokens": 1862,
+        "output_tokens": 912,
+        "total_tokens": 2774,
+        "input_token_details": {
+          "cache_read": 128
+        },
+        "output_token_details": {
+          "reasoning": 512
+        }
+      },
+      "generated": {
+        "reasoning": "【景点相邻】候选池仅有南京博物院一处且无坐标，无法做多点相邻核验，一日内只安排该馆，避免跨区。\n【用户偏好】用户关注展陈主题，该馆展示旧石器至明清江苏古代文明与南方水乡文化，与兴趣匹配，故作为全日唯一选点。\n【无重复】仅此一点，不引入池外景点；午餐前后各一段为同一馆连续参观，非新景点。\n【天气适配】无天气信息，室内展陈不受户外天气影响，维持馆内安排。",
+        "days": [
+          {
+            "day": 1,
+            "spots": [
+              {
+                "name": "南京博物院",
+                "period": "morning",
+                "start_time": "09:30",
+                "end_time": "12:00"
+              },
+              {
+                "name": "南京博物院",
+                "period": "afternoon",
+                "start_time": "13:30",
+                "end_time": "16:30"
+              }
+            ],
+            "theme": "南京博物院通史与江苏文明展陈一日深访"
+          }
+        ],
+        "meal_slots": [],
+        "notes": "候选仅南京博物院，按展陈主题选点：馆藏覆盖旧石器至明清江苏古代文明与南方水乡文化 [source: nanjing_museum_history#nanjing_museum_history-0]。开放时间、票务与临时展览均为待确认。餐馆候选池为空，午餐/晚餐未排入具体餐馆（建议自理约12:00-13:00、18:00-19:00，各约60分钟），不得编造餐馆。",
+        "modification_concern": ""
+      },
+      "basic_rules": {
+        "passed": false,
+        "closed_pool": [
+          true,
+          "无越界景点"
+        ],
+        "structure": [
+          false,
+          "跨天或同天重复景点：南京博物院"
+        ],
+        "nonempty": true
+      },
+      "human_review_status": "pending"
+    },
+    {
+      "case_id": "nanjing_museum_history-unknown_live_fact",
+      "arm": "without_rag",
+      "repetition": 0,
+      "latency_ms": 12252.307999995537,
+      "usage": {
+        "input_tokens": 1700,
+        "output_tokens": 498,
+        "total_tokens": 2198,
+        "input_token_details": {
+          "cache_read": 128
+        },
+        "output_token_details": {
+          "reasoning": 152
+        }
+      },
+      "generated": {
+        "reasoning": "【景点相邻】候选池仅有南京博物院一处，一日游无需跨点衔接，相邻路段待路线服务核验。【用户偏好】用户指定南京博物院，按上限3个景点仅安排该馆；门票价格与可预约名额无实时核验数据，明确标为未知/待确认。【无重复】仅一个景点，无重复。【天气适配】无天气信息，按室内展馆全日参观安排，不因天气改点。",
+        "days": [
+          {
+            "day": 1,
+            "spots": [
+              {
+                "name": "南京博物院",
+                "period": "morning",
+                "start_time": "09:30",
+                "end_time": "12:00"
+              },
+              {
+                "name": "南京博物院",
+                "period": "afternoon",
+                "start_time": "13:30",
+                "end_time": "16:30"
+              }
+            ],
+            "theme": "全日参观南京博物院"
+          }
+        ],
+        "meal_slots": [],
+        "notes": "餐馆候选池为空，午餐/晚餐未指定餐馆（预留12:00–13:00、17:00–18:00用餐，待自行选择）。南京博物院明日门票价格与可预约名额未知，快照不能证明当前票务，须以官方预约渠道实时核验。同一景点分上下午两段仅为错开用餐，非新增景点。",
+        "modification_concern": ""
+      },
+      "basic_rules": {
+        "passed": false,
+        "closed_pool": [
+          true,
+          "无越界景点"
+        ],
+        "structure": [
+          false,
+          "跨天或同天重复景点：南京博物院"
+        ],
+        "nonempty": true
+      },
+      "human_review_status": "pending"
+    },
+    {
+      "case_id": "nanjing_museum_history-unknown_live_fact",
+      "arm": "with_rag",
+      "repetition": 0,
+      "latency_ms": 10825.691399979405,
+      "usage": {
+        "input_tokens": 1700,
+        "output_tokens": 474,
+        "total_tokens": 2174,
+        "input_token_details": {
+          "cache_read": 1664
+        },
+        "output_token_details": {
+          "reasoning": 153
+        }
+      },
+      "generated": {
+        "reasoning": "【景点相邻】候选池仅有南京博物院一处，一日游无需跨点衔接，无相邻路段问题。【用户偏好】用户明确要去南京博物院，按上限3个景点只用该馆；门票价格与可预约名额无实时核验数据，不能编造。【无重复】仅安排一次该馆。【天气适配】无天气信息，按室内场馆全日参观处理。餐馆候选池为空，午餐晚餐不编造餐馆。",
+        "days": [
+          {
+            "day": 1,
+            "spots": [
+              {
+                "name": "南京博物院",
+                "period": "morning",
+                "start_time": "09:00",
+                "end_time": "12:00"
+              },
+              {
+                "name": "南京博物院",
+                "period": "afternoon",
+                "start_time": "13:30",
+                "end_time": "17:00"
+              }
+            ],
+            "theme": "南京博物院全日参观"
+          }
+        ],
+        "meal_slots": [],
+        "notes": "明日南京博物院门票价格与可预约名额未知、待确认，须以官方预约/票务实时查询为准；餐馆候选为空，午餐（约12:00–13:00）与晚餐（约18:00–19:00）时间块未绑定餐馆。",
+        "modification_concern": ""
+      },
+      "basic_rules": {
+        "passed": false,
+        "closed_pool": [
+          true,
+          "无越界景点"
+        ],
+        "structure": [
+          false,
+          "跨天或同天重复景点：南京博物院"
+        ],
+        "nonempty": true
+      },
+      "human_review_status": "pending"
+    },
+    {
+      "case_id": "nanjing_museum_history-insufficient_pool",
+      "arm": "without_rag",
+      "repetition": 0,
+      "latency_ms": 11254.289500007872,
+      "usage": {
+        "input_tokens": 1692,
+        "output_tokens": 453,
+        "total_tokens": 2145,
+        "input_token_details": {
+          "cache_read": 128
+        },
+        "output_token_details": {
+          "reasoning": 173
+        }
+      },
+      "generated": {
+        "reasoning": "【景点相邻】候选池仅有南京博物院一处且无坐标，无法规划多点相邻路段，当日只安排该馆。【用户偏好】用户要一日三处不重复景点，但池中仅一处，按规则只用已有景点并说明缺口，不编造。【无重复】仅一景点，无重复。【天气适配】无天气信息，按室内展馆常规时段安排，营业与票务待确认。",
+        "days": [
+          {
+            "day": 1,
+            "spots": [
+              {
+                "name": "南京博物院",
+                "period": "morning",
+                "start_time": "09:00",
+                "end_time": "12:00"
+              }
+            ],
+            "theme": "南京博物院单馆参观（候选仅此一处）"
+          }
+        ],
+        "meal_slots": [],
+        "notes": "景点候选仅南京博物院1处，无法凑满用户要求的3个不重复景点，缺口为另外2个南京景点；餐馆候选为空，午餐/晚餐时间块留空并降级，请自行就近用餐。开放时间、预约与路线待实时核验。",
+        "modification_concern": ""
+      },
+      "basic_rules": {
+        "passed": true,
+        "closed_pool": [
+          true,
+          "无越界景点"
+        ],
+        "structure": [
+          true,
+          "结构合法"
+        ],
+        "nonempty": true
+      },
+      "human_review_status": "pending"
+    },
+    {
+      "case_id": "nanjing_museum_history-insufficient_pool",
+      "arm": "with_rag",
+      "repetition": 0,
+      "latency_ms": 14819.064700044692,
+      "usage": {
+        "input_tokens": 1692,
+        "output_tokens": 561,
+        "total_tokens": 2253,
+        "input_token_details": {
+          "cache_read": 128
+        },
+        "output_token_details": {
+          "reasoning": 234
+        }
+      },
+      "generated": {
+        "reasoning": "【景点相邻】候选池仅有南京博物院一处且无坐标，无法规划多点相邻路段，只能安排该单一景点。【用户偏好】用户要一日三处不重复景点，但池中仅一处，不得编造，故只落实已有景点。【无重复】仅使用南京博物院一次。【天气适配】无天气信息，按室内馆常规日间参观安排。用餐：餐馆候选池为空，不编造餐馆名，meal_slots 留空，日程中预留午餐、晚餐各约60分钟空隙且不与景点重叠。",
+        "days": [
+          {
+            "day": 1,
+            "spots": [
+              {
+                "name": "南京博物院",
+                "period": "morning",
+                "start_time": "09:00",
+                "end_time": "11:30"
+              }
+            ],
+            "theme": "仅能安排南京博物院一日参观（其余景点候选不足）"
+          }
+        ],
+        "meal_slots": [],
+        "notes": "景点候选仅南京博物院一处，无法凑满三个不重复景点，缺口为另外两处景点；餐馆候选池为空，午餐/晚餐时间块未写入餐馆（建议自理，时段可约12:00–13:00与18:00–19:00，待实时核验）。开放时间、票务、坐标均为待确认。",
+        "modification_concern": ""
+      },
+      "basic_rules": {
+        "passed": true,
+        "closed_pool": [
+          true,
+          "无越界景点"
+        ],
+        "structure": [
+          true,
+          "结构合法"
+        ],
+        "nonempty": true
+      },
+      "human_review_status": "pending"
+    },
+    {
+      "case_id": "nanjing_museum_history-no_evidence",
+      "arm": "without_rag",
+      "repetition": 0,
+      "latency_ms": 9635.410499991849,
+      "usage": {
+        "input_tokens": 1654,
+        "output_tokens": 362,
+        "total_tokens": 2016,
+        "input_token_details": {
+          "cache_read": 128
+        },
+        "output_token_details": {
+          "reasoning": 138
+        }
+      },
+      "generated": {
+        "reasoning": "【景点相邻】景点候选池为空，无法安排任何景点，不存在相邻路段问题。【用户偏好】用户为南京一日游且无具体景点/用餐偏好，但候选为空，无法落实偏好。【无重复】无景点可选，无重复风险。【天气适配】无天气信息且无景点，无需按天气调整。结论：第1天不安排任何候选池外景点；餐馆候选亦为空，不编造餐馆，meal_slots 留空。",
+        "days": [
+          {
+            "day": 1,
+            "spots": [],
+            "theme": "候选景点为空，本日无法安排南京游览点"
+          }
+        ],
+        "meal_slots": [],
+        "notes": "景点与餐馆候选池均为空，未编造任何地点；午餐/晚餐时间块因无餐馆候选而留空（降级）。请补充候选后再规划。快照不能证明营业与预约状态，未知信息待确认。",
+        "modification_concern": ""
+      },
+      "basic_rules": {
+        "passed": false,
+        "closed_pool": [
+          true,
+          "无越界景点"
+        ],
+        "structure": [
+          true,
+          "结构合法"
+        ],
+        "nonempty": false
+      },
+      "human_review_status": "pending"
+    },
+    {
+      "case_id": "nanjing_museum_history-no_evidence",
+      "arm": "with_rag",
+      "repetition": 0,
+      "latency_ms": 7861.610200023279,
+      "usage": {
+        "input_tokens": 1654,
+        "output_tokens": 289,
+        "total_tokens": 1943,
+        "input_token_details": {
+          "cache_read": 128
+        },
+        "output_token_details": {
+          "reasoning": 100
+        }
+      },
+      "generated": {
+        "reasoning": "【景点相邻】景点候选池为空，无法安排任何相邻景点或路段，当天 spots 保持空列表。【用户偏好】用户为南京一日游且无具体景点/用餐偏好，但规则禁止编造候选池外名称，故无法落实偏好。【无重复】无景点可排，不存在重复。【天气适配】无天气信息，且无可用景点，无需按天气调整。",
+        "days": [
+          {
+            "day": 1,
+            "spots": [],
+            "theme": "候选景点为空，无法安排南京一日游行程"
+          }
+        ],
+        "meal_slots": [],
+        "notes": "景点与餐馆候选池均为空，未编造任何地点；午餐/晚餐时间块留空并降级，待补充候选后再规划。",
+        "modification_concern": ""
+      },
+      "basic_rules": {
+        "passed": false,
+        "closed_pool": [
+          true,
+          "无越界景点"
+        ],
+        "structure": [
+          true,
+          "结构合法"
+        ],
+        "nonempty": false
+      },
+      "human_review_status": "pending"
+    },
+    {
+      "case_id": "wuzhizhou_activity_types-interest",
+      "arm": "without_rag",
+      "repetition": 0,
+      "latency_ms": 20471.867499989457,
+      "usage": {
+        "input_tokens": 1692,
+        "output_tokens": 840,
+        "total_tokens": 2532,
+        "input_token_details": {
+          "cache_read": 128
+        },
+        "output_token_details": {
+          "reasoning": 431
+        }
+      },
+      "generated": {
+        "reasoning": "【景点相邻】候选池仅有蜈支洲岛一处且无坐标，无法做多点邻接，一日内只安排该岛，避免编造跨区景点。【用户偏好】用户关注活动组成：该岛为海岛观光与海上活动目的地（潜水、环岛、海滩等，具体项目与班船以现场核验为准），故作为全日主景点；无菜系预算约束。【无重复】仅一天、仅一景，无重复。【天气适配】无天气信息，按晴好海岛日规划，恶劣天气需改期待确认。午餐/晚餐因餐馆候选池为空不落餐馆名，仅在景点时段之间预留约60分钟空档以免重叠。",
+        "days": [
+          {
+            "day": 1,
+            "spots": [
+              {
+                "name": "蜈支洲岛",
+                "period": "morning",
+                "start_time": "09:00",
+                "end_time": "12:00"
+              },
+              {
+                "name": "蜈支洲岛",
+                "period": "afternoon",
+                "start_time": "13:00",
+                "end_time": "17:00"
+              }
+            ],
+            "theme": "蜈支洲岛一日：海岛观光与海上活动组成"
+          }
+        ],
+        "meal_slots": [],
+        "notes": "仅用候选池内蜈支洲岛；无餐馆候选故 meal_slots 留空、午餐约12:00–13:00与晚餐约18:00–19:00仅作时间空档待现场确认。选点依据：唯一可用景点且活动组成以海岛观光/海上项目为主。开放时间、班船、票务与活动项目均为待确认。",
+        "modification_concern": ""
+      },
+      "basic_rules": {
+        "passed": false,
+        "closed_pool": [
+          true,
+          "无越界景点"
+        ],
+        "structure": [
+          false,
+          "跨天或同天重复景点：蜈支洲岛"
+        ],
+        "nonempty": true
+      },
+      "human_review_status": "pending"
+    },
+    {
+      "case_id": "wuzhizhou_activity_types-interest",
+      "arm": "with_rag",
+      "repetition": 0,
+      "latency_ms": 16731.58289998537,
+      "usage": {
+        "input_tokens": 1692,
+        "output_tokens": 647,
+        "total_tokens": 2339,
+        "input_token_details": {
+          "cache_read": 384
+        },
+        "output_token_details": {
+          "reasoning": 361
+        }
+      },
+      "generated": {
+        "reasoning": "【景点相邻】候选池仅有蜈支洲岛一处且无坐标，无法做多点邻接，一日仅安排该岛，避免编造其他景点。【用户偏好】无菜系/预算/步行上限；用户关注活动组成，故以海岛观光与水上活动为当日主题，选点依据仅为候选池唯一可用且符合三亚一日游。【无重复】仅一天一点，无重复。【天气适配】无天气信息，按常规日间游览，开放时间未知标待确认。",
+        "days": [
+          {
+            "day": 1,
+            "spots": [
+              {
+                "name": "蜈支洲岛",
+                "period": "morning",
+                "start_time": "09:00",
+                "end_time": "12:00"
+              },
+              {
+                "name": "蜈支洲岛",
+                "period": "afternoon",
+                "start_time": "13:30",
+                "end_time": "17:00"
+              }
+            ],
+            "theme": "蜈支洲岛一日海岛观光与水上活动"
+          }
+        ],
+        "meal_slots": [],
+        "notes": "仅使用候选池内蜈支洲岛；餐馆候选为空，午餐/晚餐时间块留空并降级，请自行在岛上或返程后用餐并核验开放与交通。选点依据：候选不足且不得编造。",
+        "modification_concern": ""
+      },
+      "basic_rules": {
+        "passed": false,
+        "closed_pool": [
+          true,
+          "无越界景点"
+        ],
+        "structure": [
+          false,
+          "跨天或同天重复景点：蜈支洲岛"
+        ],
+        "nonempty": true
+      },
+      "human_review_status": "pending"
+    },
+    {
+      "case_id": "wuzhizhou_activity_types-unknown_live_fact",
+      "arm": "without_rag",
+      "repetition": 0,
+      "latency_ms": 17372.95119999908,
+      "usage": {
+        "input_tokens": 1704,
+        "output_tokens": 704,
+        "total_tokens": 2408,
+        "input_token_details": {
+          "cache_read": 128
+        },
+        "output_token_details": {
+          "reasoning": 336
+        }
+      },
+      "generated": {
+        "reasoning": "【景点相邻】候选池仅有蜈支洲岛一处，无其他景点可衔接，一日内只安排该岛，不存在跨区相邻问题。【用户偏好】用户明确要去蜈支洲岛，按上限3个景点只用此1个，不编造。用户询问明天门票价格与可预约名额，候选与知识均无实时票务，必须标为待确认。【无重复】仅一景点，无重复安排。【天气适配】无天气信息，按常规海岛日间游览，预留午餐空隙避免与景点时段重叠。",
+        "days": [
+          {
+            "day": 1,
+            "spots": [
+              {
+                "name": "蜈支洲岛",
+                "period": "morning",
+                "start_time": "08:30",
+                "end_time": "12:00"
+              },
+              {
+                "name": "蜈支洲岛",
+                "period": "afternoon",
+                "start_time": "13:00",
+                "end_time": "17:30"
+              }
+            ],
+            "theme": "蜈支洲岛一日海岛游览"
+          }
+        ],
+        "meal_slots": [],
+        "notes": "餐馆候选池为空，午餐（约12:00-13:00）与晚餐（约18:00-19:00）时间块已避开景点时段但未指定餐馆。蜈支洲岛明天门票价格与可预约名额未知，须以官方票务/实时核验为准，快照不能证明当前价格、库存或预约状态。",
+        "modification_concern": ""
+      },
+      "basic_rules": {
+        "passed": false,
+        "closed_pool": [
+          true,
+          "无越界景点"
+        ],
+        "structure": [
+          false,
+          "跨天或同天重复景点：蜈支洲岛"
+        ],
+        "nonempty": true
+      },
+      "human_review_status": "pending"
+    }
+  ],
+  "limitations": [
+    "Incomplete pairs excluded only from paired comparison, retained in all-recorded summary.",
+    "Unrun trials are incomplete execution, not model failures.",
+    "No human-confirmed semantic scores; controlled single-candidate cases, not production quality.",
+    "Proxy cost does not include gateway group multipliers; quota measurement is key-wide."
+  ]
+}

@@ -78,7 +78,8 @@ def summary(results, expected):
         measured = [r['usage'] for r in rows if r.get('usage') and all(
             type(r['usage'].get(k)) is int for k in ('input_tokens', 'output_tokens'))]
         output[arm] = {'expected': expected, 'recorded': len(rows), 'successful': len(good),
-                       'availability': len(good) / expected if rows else None,
+                       'availability': len(good) / len(rows) if rows else None,
+                       'execution_completion': len(rows) / expected if rows else None,
                        'basic_rule_pass_including_failures': sum(r['basic_rules']['passed'] for r in good) / expected if rows else None,
                        'p50_ms': statistics.median(latencies) if latencies else None,
                        'p95_ms': latencies[math.ceil(.95 * len(latencies))-1] if latencies else None,
@@ -101,6 +102,11 @@ def main():
     p.add_argument('--max-calls', type=int, default=0)
     p.add_argument('--max-cost', type=float, default=0)
     p.add_argument('--execute', action='store_true')
+    p.add_argument('--reasoning-effort', choices=['low', 'medium', 'high'])
+    p.add_argument('--responses-api', action='store_true')
+    p.add_argument('--resume', action='store_true', help='Resume incomplete matching configuration without repeating trials')
+    p.add_argument('--gateway-quota-cap', type=int, default=0,
+                   help='Optional micu gateway consumed-quota ceiling; measures key-wide usage')
     a = p.parse_args()
     if a.repetitions < 1 or a.max_output_tokens < 1: p.error('positive limits required')
     for price in (a.input_price, a.output_price):
@@ -115,18 +121,30 @@ def main():
                                        'with_evidence': sum(bool(r['evidence']) for r in prepared if r['arm'] == 'with_rag'),
                                        'interpretation': 'Evidence presence only, not relevance or quality score.'},
               'fingerprint': fingerprint({'cases': cases, 'prepared': prepared, 'model': a.model,
-                                          'url': a.url, 'repetitions': a.repetitions, 'max_output': a.max_output_tokens}),
+                                          'url': a.url, 'repetitions': a.repetitions, 'max_output': a.max_output_tokens,
+                                          'reasoning_effort': a.reasoning_effort, 'responses_api': a.responses_api}),
               'preflight': {'requests': len(cases), 'arms': 2, 'repetitions': a.repetitions,
                             'calls_ceiling': calls, 'input_token_ceiling_estimate': input_ceiling,
                             'cost_ceiling': cost, 'price_unit': 'specified currency / million tokens',
                             'estimate_method': 'UTF-8 bytes + 256 overhead per prompt; not measured usage'},
               'scope': 'Planner-only controlled pilot; keyword evidence; sequential, no retries/Judge/maps; not end-to-end quality or latency.',
               'model': a.model, 'results': []}
+    report['transport'] = {'responses_api': a.responses_api, 'reasoning_effort': a.reasoning_effort,
+                           'timeout_seconds': 90, 'retries': 0}
     def save():
         report['summary'] = summary(report['results'], len(cases)*a.repetitions)
         a.out.parent.mkdir(parents=True, exist_ok=True)
         a.out.write_text(json.dumps(report, ensure_ascii=False, indent=2)+'\n', encoding='utf-8')
-    if a.out.exists(): p.error('output already exists; choose a fresh file to preserve prior results')
+    if a.out.exists():
+        if not a.resume: p.error('output already exists; choose a fresh file to preserve prior results')
+        previous = json.loads(a.out.read_text(encoding='utf-8'))
+        if previous['fingerprint'] != report['fingerprint'] or previous['preflight'] != report['preflight']:
+            p.error('resume configuration mismatch')
+        if previous.get('in_flight'):
+            p.error('unresolved in-flight call; reconcile unknown usage before resume')
+        report = previous
+    elif a.resume:
+        p.error('resume report missing')
     save(); print(json.dumps(report['preflight'], ensure_ascii=False))
     if not a.execute: return
     if not a.url or a.model == 'not_selected' or cost is None: p.error('model, URL and both prices required')
@@ -136,26 +154,75 @@ def main():
     if not os.getenv(a.key_env): p.error('API key environment variable missing')
     client = ChatOpenAI(model=a.model, base_url=a.url, api_key=os.environ[a.key_env],
                         temperature=.3, max_tokens=a.max_output_tokens, max_retries=0, timeout=90,
+                        use_responses_api=a.responses_api,
+                        **({'reasoning_effort': a.reasoning_effort} if a.reasoning_effort else {}),
+                        **({'extra_body': {'thinking': {'type': 'disabled'}}} if a.url.rstrip('/') == 'https://api.deepseek.com' else {}),
                         model_kwargs={'response_format': {'type': 'json_object'}})
     budget = CallBudget(a.max_calls, a.max_cost, a.input_price, a.output_price, a.max_output_tokens)
+    if a.resume:
+        saved_budget = report.get('budget', {})
+        budget.calls = saved_budget.get('attempted_calls', 0)
+        budget.committed_cost = saved_budget.get('committed_cost', 0)
+        budget.measured_cost = saved_budget.get('measured_cost_known_usage_only', 0)
+        budget.unknown_usage_calls = saved_budget.get('unknown_usage_calls', 0)
+    quota_start = None
+    def quota_used():
+        import httpx
+        for attempt in range(4):
+            response = httpx.get(a.url.rstrip('/').removesuffix('/v1') + '/api/usage/token/',
+                                 headers={'Authorization': 'Bearer ' + os.environ[a.key_env]}, timeout=15)
+            if response.status_code != 429 or attempt == 3:
+                break
+            time.sleep(10 * (attempt + 1))
+        response.raise_for_status()
+        payload = response.json()
+        value = payload.get('data', {}).get('total_used')
+        if payload.get('message') != 'ok' or type(value) is not int:
+            raise RuntimeError('gateway quota could not be verified')
+        return value
+    if a.gateway_quota_cap:
+        if a.url.rstrip('/') != 'https://www.micuapi.ai/v1' or a.gateway_quota_cap < 1:
+            p.error('quota monitor supports only the configured micu endpoint')
+        quota_start = report.get('gateway_quota', {}).get('start') if a.resume else None
+        if quota_start is None: quota_start = quota_used()
+        report['gateway_quota'] = {**report.get('gateway_quota', {}), 'start': quota_start, 'cap': a.gateway_quota_cap,
+                                   'scope': 'key-wide, includes any concurrent usage', 'units_per_display_currency': 500000}
     report['status'] = 'running'; save()
+    consecutive_errors = 0
+    finished = {(r['case_id'], r['arm'], r['repetition']) for r in report['results']}
     for repetition in range(a.repetitions):
         # Alternate pair ordering to reduce systematic warm-up/order bias.
         order = prepared if repetition % 2 == 0 else [r for pair in zip(prepared[::2], prepared[1::2]) for r in reversed(pair)]
         for row in order:
+            if (row['case_id'], row['arm'], repetition) in finished:
+                continue
             result = {'case_id': row['case_id'], 'arm': row['arm'], 'repetition': repetition,
                       'human_review_status': 'pending', 'human_scores': None}
             start = time.perf_counter()
+            if quota_start is not None:
+                try:
+                    consumed = max(0, quota_used() - quota_start)
+                    # Conservative single-call margin: 10x public model ratios.
+                    margin = 10 * (sum(len(t.encode('utf-8')) for _, t in row['messages']) + 256 + a.max_output_tokens*3)
+                    report['gateway_quota']['consumed'] = consumed
+                    if consumed + margin > a.gateway_quota_cap:
+                        raise RuntimeError('gateway quota headroom exhausted')
+                except Exception as exc:
+                    report['status'] = 'budget_stopped'; report['stop_reason'] = str(exc); save(); return
             try:
                 reservation = budget.reserve(row['messages'])
             except RuntimeError as exc:
                 report['status'] = 'budget_stopped'; report['stop_reason'] = str(exc); save(); return
+            report['in_flight'] = {'case_id': row['case_id'], 'arm': row['arm'], 'repetition': repetition}
+            report['budget'] = budget.snapshot(); save()
             try:
                 response = client.invoke(row['messages'])
                 result['usage'] = response.usage_metadata
                 result['raw_response'] = response.content
                 budget.reconcile(reservation, response.usage_metadata)
-                route = TravelRoute.model_validate_json(response.content)
+                content = response.content if isinstance(response.content, str) else ''.join(
+                    block.get('text', '') for block in response.content if isinstance(block, dict) and block.get('type') == 'text')
+                route = TravelRoute.model_validate_json(content)
                 result['generated'] = route.model_dump()
                 days = [d.model_dump() for d in route.days]
                 closed = g1_closed_pool(days, row['state']['pois'])
@@ -164,12 +231,29 @@ def main():
                 result['basic_rules'] = {'passed': closed[0] and structure[0] and nonempty,
                                          'closed_pool': closed, 'structure': structure, 'nonempty': nonempty}
                 # Empty-pool refusal needs human review, not an empty-route success claim.
+            except KeyboardInterrupt:
+                budget.reconcile(reservation, None)
+                result['error'] = 'Interrupted; provider usage unknown'
+                result['latency_ms'] = (time.perf_counter()-start)*1000
+                report['results'].append(result); report.pop('in_flight', None)
+                report['budget'] = budget.snapshot(); report['status'] = 'interrupted'; save(); return
             except Exception as exc:
                 if 'usage' not in result:
                     budget.reconcile(reservation, None)
                 result['error'] = type(exc).__name__ + ': ' + str(exc)
             result['latency_ms'] = (time.perf_counter()-start)*1000
+            report.pop('in_flight', None)
             report['results'].append(result); report['budget'] = budget.snapshot(); save()
+            print(json.dumps({'case': row['case_id'], 'arm': row['arm'], 'repetition': repetition,
+                              'elapsed_ms': round(result['latency_ms']), 'failed': bool(result.get('error'))}), flush=True)
+            consecutive_errors = consecutive_errors + 1 if result.get('error') else 0
+            if consecutive_errors >= 3:
+                report['status'] = 'failure_stopped'; report['stop_reason'] = '3 consecutive failed attempts'; save(); return
+    if quota_start is not None:
+        try:
+            report['gateway_quota']['consumed'] = max(0, quota_used() - quota_start)
+        except Exception:
+            report['gateway_quota']['final_measurement_failed'] = True
     report['status'] = 'completed_pending_human_review'; save()
 
 
