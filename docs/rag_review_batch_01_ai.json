@@ -1,0 +1,127 @@
+{
+  "schema_version": 1,
+  "scope": "dev_only",
+  "status": "ai_review_proposal_pending_human",
+  "reviewer": "Codex AI; also participated in project implementation; not independent human annotation",
+  "review_date": "2026-10-08",
+  "input_packet": "docs/rag_review_batch_01.json",
+  "corpus_fingerprint": "5bf231483310c9c74108c2a0d31491e69f8e24c13942aa8960103d82e7356d1f",
+  "all_annotations_fingerprint": "2677679c38a063df4db9df8d8d9de2c0d318e90fa379d5710f285f72f75e6802",
+  "protocol": {
+    "retriever_names_and_scores_consulted": false,
+    "evidence_scope": "All curated Nanjing and Shanghai chunks inspected; no frozen test queries or retrieval rankings consulted.",
+    "grades": {"0": "Does not support an answer to this query", "1": "Indirectly relevant background", "2": "Directly supports at least one required answer fact; does not alone imply full query coverage"},
+    "human_reviewed": false,
+    "original_assets_modified": false,
+    "importable_as_gold": false,
+    "live_check_limit": "A successful HTTP response or matching excerpt does not certify every source statement or future applicability. No current ticket availability verified."
+  },
+  "source_checks": [
+    {"url": "https://www.njmuseum.com/api/visit/notes", "checked_at": "2026-10-08T07:49:42.284636+00:00", "http_status": 200, "observations": ["页面仍包含每日18:00放票与提前7日预约条款", "页面仍包含电动轮椅、老年代步车禁用提示", "页面优待段落的免预约权益与总则的均须实名预约存在需要解释的措辞，不据此保证免预约"]},
+    {"url": "https://www.njmuseum.com/api/service/shop", "checked_at": "2026-10-08T07:49:42.284636+00:00", "http_status": 200, "observations": ["文渊广场公众餐厅及其他餐饮位置描述仍存在", "未验证实时营业、菜单、价格或空位"]},
+    {"url": "https://reservation.shanghaimuseum.net/", "checked_at": "2026-10-08T07:49:42.284636+00:00", "http_status": 200, "observations": ["东馆10:00–18:00、17:00停止入场、周二闭馆且国定节假日例外仍存在", "页面区分人民广场馆与东馆，不能推广为整个上海或所有场馆的开放时间", "页面有未满12周岁成年人全程陪同条款，但当前选用语料中未收录该事实"]},
+    {"url": "https://wlj.nanjing.gov.cn/whyw/202608/t20260810_5891397.html", "checked_at": "2026-10-08T07:49:42.284636+00:00", "http_status": 403, "observations": ["无法实时核验；仅能审核保存的快照", "URL指向2026年8月通知，快照涉及临时台风管控，不能当作2026年10月当前闭园事实"]}
+  ],
+  "groups": [
+    {
+      "case_ids": ["v2-0-0-0", "v2-0-0-1"],
+      "decision": "retain_query_expand_evidence",
+      "proposed_type": "answerable",
+      "reason": "原证据支持预约渠道与证件，却遗漏语料已有的放票时间、提前天数与按预约时段入馆要求；原事实直接复制整段，混入条件性亲子规定。",
+      "proposed_labels": [
+        {"chunk_id": "dynamic-4099b51516468dbb6050861d", "relevance": 2},
+        {"chunk_id": "dynamic-f265f66794dff2b0a63d70c4", "relevance": 2},
+        {"chunk_id": "dynamic-8a3f90ee608ded9d145c31e8", "relevance": 1},
+        {"chunk_id": "dynamic-d25ccbd0daeba9c9f3c48e5b", "relevance": 1}
+      ],
+      "required_fact_groups": [
+        {"fact": "通过南京博物院官方微信小程序实名预约；快照写明每日18:00放票，可提前7日且不包括当日。", "evidence_ids": ["dynamic-f265f66794dff2b0a63d70c4"]},
+        {"fact": "按预约日期与时段入馆，准备与预约一致的有效证件原件；特殊证件持有人按页面要求人工核验。", "evidence_ids": ["dynamic-4099b51516468dbb6050861d", "dynamic-f265f66794dff2b0a63d70c4"]}
+      ],
+      "human_checks": ["是否将提前预约窗口与证件设为必答事实；儿童等条件性条款不应要求所有答案照抄", "按出行日期确认规则仍适用，不保证抢票成功"]
+    },
+    {
+      "case_ids": ["v2-0-2-0", "v2-0-2-1"],
+      "decision": "retain_query_mark_missing_facts",
+      "proposed_type": "in_corpus_missing",
+      "reason": "安检、行李和禁带物品不是到达路线。当前南京语料没有支持地铁出口、公交换乘和从出发点到入口路径的必要事实；个别特殊证件的绿色通道不能当普通游客交通答案。",
+      "rejected_labels": [{"chunk_id": "dynamic-0fc5403a875b2874a939c600", "relevance": 0}],
+      "proposed_labels": [],
+      "missing_facts": ["出发位置或交通方式需要澄清", "普通游客适用的入口、地铁或公交换乘证据", "从交通下客点到入口的真实路径"],
+      "expected_behavior": "说明现有材料不足并询问出发点，可定向调用地图工具；不能用安检须知编造交通路线。",
+      "human_checks": ["确认保持原题并重新分类；若另补交通语料，必须生成新语料版本再重新标注，不能沿用本次无答案结论"]
+    },
+    {
+      "case_ids": ["v2-0-4-0", "v2-0-4-1"],
+      "decision": "retain_query_add_advice_and_constraints",
+      "proposed_type": "answerable",
+      "answer_scope": "一般低强度安排建议；不支持具体逐展厅路线、无障碍入口或精确休息点承诺",
+      "reason": "优待政策只能支持特定年龄与身份条件，不能单独回答慢游安排。项目明确标为建议的老人出行规则直接支持控制步行与休息；设备禁用和陪护条款提供边界。",
+      "proposed_labels": [
+        {"chunk_id": "rule-e4a4f130e54c0e9d761bded3", "relevance": 2},
+        {"chunk_id": "dynamic-da84c7d313c702b96e45af04", "relevance": 2},
+        {"chunk_id": "dynamic-fae699ff413a4719e41d3d65", "relevance": 2},
+        {"chunk_id": "dynamic-0fc5403a875b2874a939c600", "relevance": 2},
+        {"chunk_id": "dynamic-38acf508b169ee6ddb5dad0f", "relevance": 1}
+      ],
+      "required_fact_groups": [
+        {"fact": "询问步行能力与陪护需求，降低连续活动强度、安排休息；这是规划建议，不是官方保证。", "evidence_ids": ["rule-e4a4f130e54c0e9d761bded3"]},
+        {"fact": "设备类型不能一概放行；快照明确谢绝电动轮椅、老年代步车。", "evidence_ids": ["dynamic-0fc5403a875b2874a939c600"]},
+        {"fact": "70岁及以上老人等优待条件和行动不便者陪护条件要按具体资格确认；不承诺免预约或免安检。", "evidence_ids": ["dynamic-da84c7d313c702b96e45af04", "dynamic-fae699ff413a4719e41d3d65"]}
+      ],
+      "human_checks": ["是否接受项目建议作为此题答案的一部分；若只评官方事实，应改记部分可回答", "官方预约总则与免预约权益措辞需要进一步确认，不自行消解冲突"]
+    },
+    {
+      "case_ids": ["v2-0-6-0"],
+      "decision": "retain_query_expand_evidence",
+      "proposed_type": "answerable",
+      "reason": "原证据主要讲亲子和优待对象，遗漏普通游客实名预约、时段、证件、常设陈列免费与市场化临展例外；不能从优待条款推出所有人免费或无需预约。",
+      "proposed_labels": [
+        {"chunk_id": "dynamic-f265f66794dff2b0a63d70c4", "relevance": 2},
+        {"chunk_id": "dynamic-4099b51516468dbb6050861d", "relevance": 2},
+        {"chunk_id": "dynamic-8a3f90ee608ded9d145c31e8", "relevance": 2},
+        {"chunk_id": "dynamic-0fc5403a875b2874a939c600", "relevance": 2},
+        {"chunk_id": "dynamic-da84c7d313c702b96e45af04", "relevance": 1},
+        {"chunk_id": "dynamic-fae699ff413a4719e41d3d65", "relevance": 1},
+        {"chunk_id": "dynamic-d25ccbd0daeba9c9f3c48e5b", "relevance": 2}
+      ],
+      "required_fact_groups": [
+        {"fact": "常设基本陈列和以院藏文物为主的专题展免费，市场化临时展览及展演不在免费范围；不编造具体临展价格。", "evidence_ids": ["dynamic-8a3f90ee608ded9d145c31e8", "dynamic-0fc5403a875b2874a939c600"]},
+        {"fact": "实名预约，按时段、持相符有效证件原件核验并安检入馆。", "evidence_ids": ["dynamic-f265f66794dff2b0a63d70c4", "dynamic-4099b51516468dbb6050861d", "dynamic-d25ccbd0daeba9c9f3c48e5b"]}
+      ],
+      "human_checks": ["同一事实的多个片段为替代证据，不应要求检索器必须全部召回；事实组与证据组需最终整理"]
+    },
+    {
+      "case_ids": ["v2-0-8-0"],
+      "decision": "retain_query_remove_unrelated_add_service_rules",
+      "proposed_type": "answerable",
+      "answer_scope": "列举已收录的餐饮、寄存及使用限制；不是完整设施目录",
+      "reason": "历史台风管控不是南京博物院设施证据，且不能当成当前闭园事实。餐饮、行李寄存及禁用设备规则可以支持有限的设施回答。",
+      "rejected_labels": [{"chunk_id": "official-54da8e0f874e62514e24db8d", "relevance": 0}],
+      "proposed_labels": [
+        {"chunk_id": "dynamic-38acf508b169ee6ddb5dad0f", "relevance": 2},
+        {"chunk_id": "dynamic-8a3f90ee608ded9d145c31e8", "relevance": 2},
+        {"chunk_id": "dynamic-0fc5403a875b2874a939c600", "relevance": 2}
+      ],
+      "required_fact_groups": [
+        {"fact": "文渊广场公众餐厅，以及小剧场旁甜品店、特展馆茶社、民国馆咖啡厅等餐饮位置；不保证实时营业。", "evidence_ids": ["dynamic-38acf508b169ee6ddb5dad0f"]},
+        {"fact": "大件行李需入馆前寄存，须知写明正门右侧寄存处；寄存物品应在闭馆前取回，不保证费用与柜位。", "evidence_ids": ["dynamic-8a3f90ee608ded9d145c31e8", "dynamic-0fc5403a875b2874a939c600"]},
+        {"fact": "展厅和指定区域禁止饮食，电动轮椅及老年代步车禁用等使用限制按页面说明。", "evidence_ids": ["dynamic-8a3f90ee608ded9d145c31e8", "dynamic-0fc5403a875b2874a939c600"]}
+      ],
+      "human_checks": ["广义设施问题是否按列举已收录设施评估，还是需要先收窄范围；不能假设语料是完整设施清单"]
+    },
+    {
+      "case_ids": ["v2-1-1-0", "v2-1-1-1"],
+      "decision": "needs_clarification_not_silent_rewrite",
+      "proposed_type": null,
+      "reason": "上海旅行不是具体场馆，没有统一开放时间。原团队电话预约的提前7天条款也不是每日开放时间。语料有上海博物馆东馆开放时间，但用户未指定东馆，不能直接套用。",
+      "rejected_labels": [{"chunk_id": "official-2d293e2c6c5d5bd32e6d3035", "relevance": 0}],
+      "proposed_labels": [],
+      "expected_behavior": "询问具体景点及场馆；确认是上海博物馆东馆后才能回答其时间。",
+      "optional_new_query_after_human_confirmation": "上海博物馆东馆几点开放、几点停止入场，周二和节假日有什么限制？",
+      "conditional_labels": [{"chunk_id": "official-b4cf6edff2ccf440d7d8d429", "relevance": 2}],
+      "conditional_reference_facts": ["东馆常规10:00–18:00，17:00后停止入场，周二闭馆，国定节假日除外；以出行日期公告为准。"],
+      "human_checks": ["保留原题作为澄清案例，还是另建明确东馆的问题；现有三类标注不含澄清类，不能硬塞成范围外", "若改题需记录版本与改题原因，原题保留，不能默默替换以提升得分"]
+    }
+  ]
+}
