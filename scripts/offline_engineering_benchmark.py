@@ -221,6 +221,10 @@ def benchmark_post_intent_fanout(runs: int, delay_ms: float) -> dict[str, Any]:
         active_patch.start()
     try:
         app = graph_module.build_graph()
+        # Warm the compiled graph once so one-time LangGraph/Pydantic setup is
+        # not attributed to either scheduling arm. This also makes the small
+        # five-run CI sample stable across slower Windows runners.
+        app.invoke(TravelPlanState(query="南京一日游"), config={"recursion_limit": 30})
         serial_ms: list[float] = []
         concurrent_ms: list[float] = []
         for _ in range(runs):
