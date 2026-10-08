@@ -1,0 +1,48 @@
+{
+  "pages": [
+    {
+      "city": "南京",
+      "url": "https://www.njmuseum.com/api/visit/notes",
+      "snapshot": "knowledge\\benchmark_v2_dynamic\\7917577c830b2e52.txt",
+      "raw_hash": "822fae1ac7b578a435fb2e812bf76e38072cf41ab756a7de23cf597483fd2700",
+      "collected_at": "2026-10-08"
+    },
+    {
+      "city": "南京",
+      "url": "https://www.njmuseum.com/api/home/daolan",
+      "snapshot": "knowledge\\benchmark_v2_dynamic\\312df56743a7d4d6.txt",
+      "raw_hash": "25a3e87436df60e29945a3fb01256026bc85189e765c1885966becfd942f99a6",
+      "collected_at": "2026-10-08"
+    },
+    {
+      "city": "南京",
+      "url": "https://www.njmuseum.com/api/home/yylg",
+      "snapshot": "knowledge\\benchmark_v2_dynamic\\e6f89b1bc9bc8309.txt",
+      "raw_hash": "b02472292e19e4700ec0d1bd0404a2e876b12aa1fae3abc3218c51554fa58b86",
+      "collected_at": "2026-10-08"
+    },
+    {
+      "city": "南京",
+      "url": "https://www.njmuseum.com/api/service/shop",
+      "snapshot": "knowledge\\benchmark_v2_dynamic\\3a5d77ea58541cfe.txt",
+      "raw_hash": "7446d8a006ae2dc765ea6e27d44771fdd2d5668ed66681ae418d286c34fd1dca",
+      "collected_at": "2026-10-08"
+    },
+    {
+      "city": "南京",
+      "url": "https://www.njmuseum.com/api/news/logisticService",
+      "snapshot": "knowledge\\benchmark_v2_dynamic\\1f0b5fa2089eecdf.txt",
+      "raw_hash": "b6e1c047a0f3b92515d5ecb7f7c82afd8b85f2d7a0b2bb4fdb665ea829538970",
+      "collected_at": "2026-10-08"
+    },
+    {
+      "city": "三亚",
+      "url": "https://www.wuzhizhou.com/strategy/detail_11213.html",
+      "snapshot": "knowledge\\benchmark_v2_dynamic\\5ecc49183021bbca.txt",
+      "raw_hash": "f26e72d854cf921eaf16d65eafbbc33bd07023d9efeef188ee0769609b608dbe",
+      "collected_at": "2026-10-08"
+    }
+  ],
+  "attempts": [],
+  "chunks": 11
+}

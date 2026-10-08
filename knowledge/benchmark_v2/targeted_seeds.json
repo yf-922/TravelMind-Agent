@@ -1,0 +1,13 @@
+[
+ {"city":"三亚","url":"https://www.wuzhizhou.com/strategy/page/","source_type":"official_attraction"},
+ {"city":"三亚","url":"https://www.wuzhizhou.com/ticket/","source_type":"official_attraction"},
+ {"city":"三亚","url":"https://www.wuzhizhou.com/islandStyle/page/","source_type":"official_attraction"},
+ {"city":"丽江","url":"https://www.lijiang.cn/article/181634.html","source_type":"local_media"},
+ {"city":"丽江","url":"https://www.lijiang.cn/article/178146.html","source_type":"local_media"},
+ {"city":"丽江","url":"https://whlyj.lijiang.gov.cn/","source_type":"official_tourism"},
+ {"city":"南京","url":"https://www.zslychina.org/","source_type":"official_attraction"},
+ {"city":"南京","url":"https://www.njztf.cn/","source_type":"official_attraction"},
+ {"city":"重庆","url":"https://www.cqmetro.cn/","source_type":"official_transport"},
+ {"city":"上海","url":"https://www.shanghaimuseum.cn/mu/frontend/pg/infomation/reservation","source_type":"official_museum"},
+ {"city":"景德镇","url":"https://www.jdz.gov.cn/zwzx/gggs/t1089159.shtml","source_type":"official_transport"}
+]

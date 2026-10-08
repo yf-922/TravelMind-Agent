@@ -1,0 +1,13 @@
+[
+  {"city":"南京","url":"https://www.njmuseum.com/","source_type":"official_museum"},
+  {"city":"南京","url":"https://wlj.nanjing.gov.cn/","source_type":"official_tourism"},
+  {"city":"上海","url":"https://www.shanghaimuseum.cn/mu/frontend/pg/index","source_type":"official_museum"},
+  {"city":"重庆","url":"https://whlyw.cq.gov.cn/zwfwww/lyly/index.html","source_type":"official_tourism"},
+  {"city":"重庆","url":"https://www.cqmetro.cn/","source_type":"official_transport"},
+  {"city":"丽江","url":"https://www.lijiang.gov.cn/","source_type":"official_government"},
+  {"city":"丽江","url":"https://www.lijiang.gov.cn/ljsrmzf/c102145/common_list.shtml","source_type":"official_tourism"},
+  {"city":"三亚","url":"https://www.sanya.gov.cn/","source_type":"official_government"},
+  {"city":"三亚","url":"https://www.wuzhizhou.com/","source_type":"official_attraction"},
+  {"city":"景德镇","url":"https://www.jdz.gov.cn/zwzx/gggs/t1089159.shtml","source_type":"official_transport"},
+  {"city":"景德镇","url":"https://www.jdz.gov.cn/","source_type":"official_government"}
+]

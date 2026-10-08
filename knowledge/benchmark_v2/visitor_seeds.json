@@ -1,0 +1,19 @@
+[
+ {"city":"重庆","url":"https://www.cqmetro.cn/yyfw/ckxz/","source_type":"official_transport"},
+ {"city":"重庆","url":"https://www.cqmetro.cn/yyfw/aqcs/","source_type":"official_transport"},
+ {"city":"重庆","url":"https://www.cqmetro.cn/yyfw/pwzc/","source_type":"official_transport"},
+ {"city":"重庆","url":"https://www.cqmetro.cn/smbsj/","source_type":"official_transport"},
+ {"city":"重庆","url":"https://www.3gmuseum.cn/","source_type":"official_museum"},
+ {"city":"丽江","url":"https://www.lijiang.cn/article/181634.html","source_type":"local_media"},
+ {"city":"丽江","url":"https://www.lijiang.gov.cn/ljsrmzf/c101859/common_list.shtml","source_type":"official_tourism"},
+ {"city":"丽江","url":"https://www.lijiang.gov.cn/ljsrmzf/c101860/common_list.shtml","source_type":"official_tourism"},
+ {"city":"丽江","url":"https://www.lijiang.gov.cn/ljsrmzf/c101861/common_list.shtml","source_type":"official_tourism"},
+ {"city":"南京","url":"https://www.njmuseum.com/","source_type":"official_museum"},
+ {"city":"南京","url":"https://www.njztf.cn/","source_type":"official_attraction"},
+ {"city":"上海","url":"https://www.shanghaimuseum.cn/mu/frontend/pg/infomation/team-reservation","source_type":"official_museum"},
+ {"city":"上海","url":"https://www.sstm.org.cn/","source_type":"official_museum"},
+ {"city":"景德镇","url":"https://www.jdz.gov.cn/zwzx/gggs/t1089159.shtml","source_type":"official_transport"},
+ {"city":"景德镇","url":"https://www.jdz.gov.cn/zwzx/jrcd/","source_type":"official_government"},
+ {"city":"三亚","url":"https://www.wuzhizhou.com/ticket/","source_type":"official_attraction"},
+ {"city":"三亚","url":"https://www.sanyananshan.com/","source_type":"official_attraction"}
+]

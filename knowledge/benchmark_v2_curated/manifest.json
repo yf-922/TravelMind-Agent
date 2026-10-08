@@ -1,0 +1,449 @@
+{
+  "corpus_fingerprint": "5bf231483310c9c74108c2a0d31491e69f8e24c13942aa8960103d82e7356d1f",
+  "cities": {
+    "南京": 23,
+    "丽江": 20,
+    "上海": 20,
+    "景德镇": 21,
+    "三亚": 21,
+    "重庆": 23
+  },
+  "inputs": [
+    {
+      "path": "knowledge\\benchmark_v2\\chunks.json",
+      "fingerprint": "66f0e0a8e33137b3eb52bbdce90b99da8c43fe6e01a574bc5bb9eb4f59b8569a"
+    },
+    {
+      "path": "knowledge\\benchmark_v2_targeted\\chunks.json",
+      "fingerprint": "8f945651a6d023432cbc8761675d16b9d1042be9fcccfbce7dac3d2a0d5208b2"
+    },
+    {
+      "path": "knowledge\\benchmark_v2_dynamic\\chunks.json",
+      "fingerprint": "141780ce4faca4097c0405e0fc563f8f3b04e76e6e00cd97d3e165caaa9ca83d"
+    },
+    {
+      "path": "knowledge\\benchmark_v2_visitor\\chunks.json",
+      "fingerprint": "9dbfaf67ead6db8998b46269f6d06d67ec7aa29e9277b170b78fa6d1a74b5192"
+    },
+    {
+      "path": "knowledge\\benchmark_v2\\rule_chunks.json",
+      "fingerprint": "4de725761e254e484b6d6394d04c83877916caec9a2612e27f4965e2e17b98b6"
+    }
+  ],
+  "excluded": [
+    {
+      "chunk_id": "official-31e3891043ccb5720a38855f",
+      "reason": "expired_campaign_or_nonvisitor_content"
+    },
+    {
+      "chunk_id": "official-660002d78d271051efe48d0f",
+      "reason": "expired_campaign_or_nonvisitor_content"
+    },
+    {
+      "chunk_id": "official-72f2c0141cd11f4ef32c6179",
+      "reason": "expired_campaign_or_nonvisitor_content"
+    },
+    {
+      "chunk_id": "official-94e938a8400232708c5b7c3c",
+      "reason": "expired_campaign_or_nonvisitor_content"
+    },
+    {
+      "chunk_id": "official-c684bf11016fce66669cec34",
+      "reason": "expired_campaign_or_nonvisitor_content"
+    },
+    {
+      "chunk_id": "official-ff22b6ceab8acabac58a26bc",
+      "reason": "near_duplicate",
+      "canonical": "official-2b511fc7ce83f3b73dbd271f"
+    },
+    {
+      "chunk_id": "official-0abb0404829987e1f75a27bb",
+      "reason": "expired_campaign_or_nonvisitor_content"
+    },
+    {
+      "chunk_id": "official-0e9595fa1114a72a98c962b9",
+      "reason": "near_duplicate",
+      "canonical": "official-0e9595fa1114a72a98c962b9"
+    },
+    {
+      "chunk_id": "official-12f4c6a57d4c198f0ff5b1d4",
+      "reason": "near_duplicate",
+      "canonical": "official-12f4c6a57d4c198f0ff5b1d4"
+    },
+    {
+      "chunk_id": "official-1bc56b5a9f2eef0a9567e415",
+      "reason": "near_duplicate",
+      "canonical": "official-1bc56b5a9f2eef0a9567e415"
+    },
+    {
+      "chunk_id": "official-32bb27810b5dac9321544189",
+      "reason": "expired_campaign_or_nonvisitor_content"
+    },
+    {
+      "chunk_id": "official-3c5ff557758e51226bed8323",
+      "reason": "near_duplicate",
+      "canonical": "official-3c5ff557758e51226bed8323"
+    },
+    {
+      "chunk_id": "official-3f7cadef334844b8c3779b68",
+      "reason": "near_duplicate",
+      "canonical": "official-2b767a6f9c454680e28e9efd"
+    },
+    {
+      "chunk_id": "official-474005a336ad39ebeb6a3e0c",
+      "reason": "near_duplicate",
+      "canonical": "official-474005a336ad39ebeb6a3e0c"
+    },
+    {
+      "chunk_id": "official-561b17da83b63a5c4cf332a5",
+      "reason": "expired_campaign_or_nonvisitor_content"
+    },
+    {
+      "chunk_id": "official-586481818d23f6f0bd517dc4",
+      "reason": "near_duplicate",
+      "canonical": "official-586481818d23f6f0bd517dc4"
+    },
+    {
+      "chunk_id": "official-660002d78d271051efe48d0f",
+      "reason": "expired_campaign_or_nonvisitor_content"
+    },
+    {
+      "chunk_id": "official-669e507ed24e25de44e4bb10",
+      "reason": "near_duplicate",
+      "canonical": "official-669e507ed24e25de44e4bb10"
+    },
+    {
+      "chunk_id": "official-6810144eb958bf61149e69ca",
+      "reason": "near_duplicate",
+      "canonical": "official-4f49784704a20817c5fe1567"
+    },
+    {
+      "chunk_id": "official-823c853ae1f97d7119621208",
+      "reason": "near_duplicate",
+      "canonical": "official-4f49784704a20817c5fe1567"
+    },
+    {
+      "chunk_id": "official-82e9d750c42dda014f0e6c70",
+      "reason": "expired_campaign_or_nonvisitor_content"
+    },
+    {
+      "chunk_id": "official-8463db805cf244b5d5bd6434",
+      "reason": "near_duplicate",
+      "canonical": "official-8463db805cf244b5d5bd6434"
+    },
+    {
+      "chunk_id": "official-8cbcaedc2de42967610d2054",
+      "reason": "near_duplicate",
+      "canonical": "official-64c6d2f2c8abeddf8037fdb8"
+    },
+    {
+      "chunk_id": "official-8cf841e1030a831f0a8205d9",
+      "reason": "near_duplicate",
+      "canonical": "official-538e9d02c7b3edf6a7c87f17"
+    },
+    {
+      "chunk_id": "official-a02dbf23d1f130241746380c",
+      "reason": "expired_campaign_or_nonvisitor_content"
+    },
+    {
+      "chunk_id": "official-a2f0aa0304fa397bde3ed23c",
+      "reason": "near_duplicate",
+      "canonical": "official-4f49784704a20817c5fe1567"
+    },
+    {
+      "chunk_id": "official-a66774c713d3d35b3a522444",
+      "reason": "expired_campaign_or_nonvisitor_content"
+    },
+    {
+      "chunk_id": "official-b34402362e848c358873e250",
+      "reason": "expired_campaign_or_nonvisitor_content"
+    },
+    {
+      "chunk_id": "official-b4cf6edff2ccf440d7d8d429",
+      "reason": "near_duplicate",
+      "canonical": "official-b4cf6edff2ccf440d7d8d429"
+    },
+    {
+      "chunk_id": "official-ba302218e71f59858b6bbf1f",
+      "reason": "near_duplicate",
+      "canonical": "official-77c9c4ac4ec6ced8b38a8d58"
+    },
+    {
+      "chunk_id": "official-c0afefe1ba5bf06bcd6179de",
+      "reason": "near_duplicate",
+      "canonical": "official-c0011ab490889151ec199a74"
+    },
+    {
+      "chunk_id": "official-c4d8fcef32b579f2d325b5b1",
+      "reason": "expired_campaign_or_nonvisitor_content"
+    },
+    {
+      "chunk_id": "official-c6d1c9cb22f654d44cea9e5a",
+      "reason": "near_duplicate",
+      "canonical": "official-c6d1c9cb22f654d44cea9e5a"
+    },
+    {
+      "chunk_id": "official-d9686d4f620f9bfd3ebcad69",
+      "reason": "near_duplicate",
+      "canonical": "official-c0011ab490889151ec199a74"
+    },
+    {
+      "chunk_id": "official-dee9016791af14cfb8ce82db",
+      "reason": "expired_campaign_or_nonvisitor_content"
+    },
+    {
+      "chunk_id": "official-e22d0151115f0923c00d2985",
+      "reason": "near_duplicate",
+      "canonical": "official-e22d0151115f0923c00d2985"
+    },
+    {
+      "chunk_id": "official-f5d6747a347990c4e00c47d3",
+      "reason": "near_duplicate",
+      "canonical": "official-2b767a6f9c454680e28e9efd"
+    },
+    {
+      "chunk_id": "official-0160537ebb4723b82416e479",
+      "reason": "near_duplicate",
+      "canonical": "official-0160537ebb4723b82416e479"
+    },
+    {
+      "chunk_id": "official-0e9595fa1114a72a98c962b9",
+      "reason": "near_duplicate",
+      "canonical": "official-0e9595fa1114a72a98c962b9"
+    },
+    {
+      "chunk_id": "official-12a0f229407630085b6e2925",
+      "reason": "near_duplicate",
+      "canonical": "official-12a0f229407630085b6e2925"
+    },
+    {
+      "chunk_id": "official-12f4c6a57d4c198f0ff5b1d4",
+      "reason": "near_duplicate",
+      "canonical": "official-12f4c6a57d4c198f0ff5b1d4"
+    },
+    {
+      "chunk_id": "official-188c735906d517a436e8309f",
+      "reason": "near_duplicate",
+      "canonical": "official-188c735906d517a436e8309f"
+    },
+    {
+      "chunk_id": "official-1bc56b5a9f2eef0a9567e415",
+      "reason": "near_duplicate",
+      "canonical": "official-1bc56b5a9f2eef0a9567e415"
+    },
+    {
+      "chunk_id": "official-256c23b3c4673568216366c0",
+      "reason": "near_duplicate",
+      "canonical": "official-256c23b3c4673568216366c0"
+    },
+    {
+      "chunk_id": "official-2b767a6f9c454680e28e9efd",
+      "reason": "near_duplicate",
+      "canonical": "official-2b767a6f9c454680e28e9efd"
+    },
+    {
+      "chunk_id": "official-2d293e2c6c5d5bd32e6d3035",
+      "reason": "near_duplicate",
+      "canonical": "official-2d293e2c6c5d5bd32e6d3035"
+    },
+    {
+      "chunk_id": "official-34fccea1053a43bcd8ee8aae",
+      "reason": "near_duplicate",
+      "canonical": "official-34fccea1053a43bcd8ee8aae"
+    },
+    {
+      "chunk_id": "official-3c5ff557758e51226bed8323",
+      "reason": "near_duplicate",
+      "canonical": "official-3c5ff557758e51226bed8323"
+    },
+    {
+      "chunk_id": "official-3f7cadef334844b8c3779b68",
+      "reason": "near_duplicate",
+      "canonical": "official-2b767a6f9c454680e28e9efd"
+    },
+    {
+      "chunk_id": "official-474005a336ad39ebeb6a3e0c",
+      "reason": "near_duplicate",
+      "canonical": "official-474005a336ad39ebeb6a3e0c"
+    },
+    {
+      "chunk_id": "official-4b213fe0f7be6f08901c8b02",
+      "reason": "near_duplicate",
+      "canonical": "official-4b213fe0f7be6f08901c8b02"
+    },
+    {
+      "chunk_id": "official-4f49784704a20817c5fe1567",
+      "reason": "near_duplicate",
+      "canonical": "official-4f49784704a20817c5fe1567"
+    },
+    {
+      "chunk_id": "official-538e9d02c7b3edf6a7c87f17",
+      "reason": "near_duplicate",
+      "canonical": "official-538e9d02c7b3edf6a7c87f17"
+    },
+    {
+      "chunk_id": "official-586481818d23f6f0bd517dc4",
+      "reason": "near_duplicate",
+      "canonical": "official-586481818d23f6f0bd517dc4"
+    },
+    {
+      "chunk_id": "official-64c6d2f2c8abeddf8037fdb8",
+      "reason": "near_duplicate",
+      "canonical": "official-64c6d2f2c8abeddf8037fdb8"
+    },
+    {
+      "chunk_id": "official-660002d78d271051efe48d0f",
+      "reason": "expired_campaign_or_nonvisitor_content"
+    },
+    {
+      "chunk_id": "official-669e507ed24e25de44e4bb10",
+      "reason": "near_duplicate",
+      "canonical": "official-669e507ed24e25de44e4bb10"
+    },
+    {
+      "chunk_id": "official-6810144eb958bf61149e69ca",
+      "reason": "near_duplicate",
+      "canonical": "official-4f49784704a20817c5fe1567"
+    },
+    {
+      "chunk_id": "official-68def0ce425834d494b9e6a6",
+      "reason": "near_duplicate",
+      "canonical": "official-68def0ce425834d494b9e6a6"
+    },
+    {
+      "chunk_id": "official-77c9c4ac4ec6ced8b38a8d58",
+      "reason": "near_duplicate",
+      "canonical": "official-77c9c4ac4ec6ced8b38a8d58"
+    },
+    {
+      "chunk_id": "official-7a7b097ababb26e77c6e9f77",
+      "reason": "near_duplicate",
+      "canonical": "official-7a7b097ababb26e77c6e9f77"
+    },
+    {
+      "chunk_id": "official-7adf54d781d94b4b9ae1c95e",
+      "reason": "near_duplicate",
+      "canonical": "official-7adf54d781d94b4b9ae1c95e"
+    },
+    {
+      "chunk_id": "official-823c853ae1f97d7119621208",
+      "reason": "near_duplicate",
+      "canonical": "official-4f49784704a20817c5fe1567"
+    },
+    {
+      "chunk_id": "official-8463db805cf244b5d5bd6434",
+      "reason": "near_duplicate",
+      "canonical": "official-8463db805cf244b5d5bd6434"
+    },
+    {
+      "chunk_id": "official-8ae6c2adcb0761daf7f0164b",
+      "reason": "near_duplicate",
+      "canonical": "official-8ae6c2adcb0761daf7f0164b"
+    },
+    {
+      "chunk_id": "official-8cbcaedc2de42967610d2054",
+      "reason": "near_duplicate",
+      "canonical": "official-64c6d2f2c8abeddf8037fdb8"
+    },
+    {
+      "chunk_id": "official-8cf841e1030a831f0a8205d9",
+      "reason": "near_duplicate",
+      "canonical": "official-538e9d02c7b3edf6a7c87f17"
+    },
+    {
+      "chunk_id": "official-973fe07cf88fc14c0c7225a0",
+      "reason": "near_duplicate",
+      "canonical": "official-973fe07cf88fc14c0c7225a0"
+    },
+    {
+      "chunk_id": "official-9aa2896ce5c0f3fe0a097aa5",
+      "reason": "expired_campaign_or_nonvisitor_content"
+    },
+    {
+      "chunk_id": "official-9d42a6bfe31c798293a52aa3",
+      "reason": "near_duplicate",
+      "canonical": "official-9d42a6bfe31c798293a52aa3"
+    },
+    {
+      "chunk_id": "official-a2f0aa0304fa397bde3ed23c",
+      "reason": "near_duplicate",
+      "canonical": "official-4f49784704a20817c5fe1567"
+    },
+    {
+      "chunk_id": "official-a411bfeffd13c23b70c8249a",
+      "reason": "near_duplicate",
+      "canonical": "official-a411bfeffd13c23b70c8249a"
+    },
+    {
+      "chunk_id": "official-b4cf6edff2ccf440d7d8d429",
+      "reason": "near_duplicate",
+      "canonical": "official-b4cf6edff2ccf440d7d8d429"
+    },
+    {
+      "chunk_id": "official-b715d7caf71bc43286ab9814",
+      "reason": "near_duplicate",
+      "canonical": "official-b715d7caf71bc43286ab9814"
+    },
+    {
+      "chunk_id": "official-b76f6784919b7d8dfd7ca0c2",
+      "reason": "near_duplicate",
+      "canonical": "official-b76f6784919b7d8dfd7ca0c2"
+    },
+    {
+      "chunk_id": "official-ba302218e71f59858b6bbf1f",
+      "reason": "near_duplicate",
+      "canonical": "official-77c9c4ac4ec6ced8b38a8d58"
+    },
+    {
+      "chunk_id": "official-c0011ab490889151ec199a74",
+      "reason": "near_duplicate",
+      "canonical": "official-c0011ab490889151ec199a74"
+    },
+    {
+      "chunk_id": "official-c0afefe1ba5bf06bcd6179de",
+      "reason": "near_duplicate",
+      "canonical": "official-c0011ab490889151ec199a74"
+    },
+    {
+      "chunk_id": "official-c4d8fcef32b579f2d325b5b1",
+      "reason": "expired_campaign_or_nonvisitor_content"
+    },
+    {
+      "chunk_id": "official-c6d1c9cb22f654d44cea9e5a",
+      "reason": "near_duplicate",
+      "canonical": "official-c6d1c9cb22f654d44cea9e5a"
+    },
+    {
+      "chunk_id": "official-d9686d4f620f9bfd3ebcad69",
+      "reason": "near_duplicate",
+      "canonical": "official-c0011ab490889151ec199a74"
+    },
+    {
+      "chunk_id": "official-e1fb0c8926e90bfbea4dd4ed",
+      "reason": "near_duplicate",
+      "canonical": "official-e1fb0c8926e90bfbea4dd4ed"
+    },
+    {
+      "chunk_id": "official-e22d0151115f0923c00d2985",
+      "reason": "near_duplicate",
+      "canonical": "official-e22d0151115f0923c00d2985"
+    },
+    {
+      "chunk_id": "official-f07cc310268788e401660f6b",
+      "reason": "near_duplicate",
+      "canonical": "official-f07cc310268788e401660f6b"
+    },
+    {
+      "chunk_id": "official-f24de5d7c85a5090132127b6",
+      "reason": "near_duplicate",
+      "canonical": "official-f24de5d7c85a5090132127b6"
+    },
+    {
+      "chunk_id": "official-f5d6747a347990c4e00c47d3",
+      "reason": "near_duplicate",
+      "canonical": "official-2b767a6f9c454680e28e9efd"
+    }
+  ],
+  "acceptance_errors": [],
+  "status": "pending_source_and_annotation_review"
+}

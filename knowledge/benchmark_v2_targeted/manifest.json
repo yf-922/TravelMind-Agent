@@ -1,0 +1,316 @@
+{
+  "version": "benchmark_v2_targeted",
+  "collected_at": "2026-10-08",
+  "pages": [
+    {
+      "city": "三亚",
+      "url": "https://www.wuzhizhou.com/strategy/page/",
+      "source_type": "official_attraction",
+      "title": "游玩攻略_海南旅游_三亚蜈支洲岛旅游区",
+      "collected_at": "2026-10-08",
+      "content_hash": "d23f44ea9396c88c8cd7548156ad6aae661580d4d14449f6c0eca1f4a4948ce4",
+      "snapshot": "knowledge\\benchmark_v2_targeted\\snapshots\\0180669cf27b0e57.txt"
+    },
+    {
+      "city": "三亚",
+      "url": "https://www.wuzhizhou.com/ticket/",
+      "source_type": "official_attraction",
+      "title": "海南旅游_景区门票预订_三亚蜈支洲岛旅游区",
+      "collected_at": "2026-10-08",
+      "content_hash": "ceebaa97e0128f79ed208b53ceae78ec4dcf91ba4dcf965b1f4745c613c2cff5",
+      "snapshot": "knowledge\\benchmark_v2_targeted\\snapshots\\f221d29ec1303291.txt"
+    },
+    {
+      "city": "三亚",
+      "url": "https://www.wuzhizhou.com/islandNotice/detail_9988.html",
+      "source_type": "official_attraction",
+      "title": "三亚蜈支洲岛旅游区安全生产承诺书_海岛公告详情_三亚蜈支洲岛旅游区",
+      "collected_at": "2026-10-08",
+      "content_hash": "d23f44ea9396c88c8cd7548156ad6aae661580d4d14449f6c0eca1f4a4948ce4",
+      "snapshot": "knowledge\\benchmark_v2_targeted\\snapshots\\91e72652a7bae30d.txt"
+    },
+    {
+      "city": "三亚",
+      "url": "https://www.wuzhizhou.com/ticket/",
+      "source_type": "official_attraction",
+      "title": "海南旅游_景区门票预订_三亚蜈支洲岛旅游区",
+      "collected_at": "2026-10-08",
+      "content_hash": "ceebaa97e0128f79ed208b53ceae78ec4dcf91ba4dcf965b1f4745c613c2cff5",
+      "snapshot": "knowledge\\benchmark_v2_targeted\\snapshots\\f221d29ec1303291.txt"
+    },
+    {
+      "city": "三亚",
+      "url": "https://www.wuzhizhou.com/strategy/page/",
+      "source_type": "official_attraction",
+      "title": "游玩攻略_海南旅游_三亚蜈支洲岛旅游区",
+      "collected_at": "2026-10-08",
+      "content_hash": "d23f44ea9396c88c8cd7548156ad6aae661580d4d14449f6c0eca1f4a4948ce4",
+      "snapshot": "knowledge\\benchmark_v2_targeted\\snapshots\\0180669cf27b0e57.txt"
+    },
+    {
+      "city": "三亚",
+      "url": "https://www.wuzhizhou.com/islandNotice/detail_9988.html",
+      "source_type": "official_attraction",
+      "title": "三亚蜈支洲岛旅游区安全生产承诺书_海岛公告详情_三亚蜈支洲岛旅游区",
+      "collected_at": "2026-10-08",
+      "content_hash": "d23f44ea9396c88c8cd7548156ad6aae661580d4d14449f6c0eca1f4a4948ce4",
+      "snapshot": "knowledge\\benchmark_v2_targeted\\snapshots\\91e72652a7bae30d.txt"
+    },
+    {
+      "city": "三亚",
+      "url": "https://www.wuzhizhou.com/islandStyle/page/",
+      "source_type": "official_attraction",
+      "title": "海岛游玩推荐_岛屿风貌_三亚蜈支洲岛旅游区",
+      "collected_at": "2026-10-08",
+      "content_hash": "d23f44ea9396c88c8cd7548156ad6aae661580d4d14449f6c0eca1f4a4948ce4",
+      "snapshot": "knowledge\\benchmark_v2_targeted\\snapshots\\d932f604f0e14aa0.txt"
+    },
+    {
+      "city": "三亚",
+      "url": "https://www.wuzhizhou.com/ticket/",
+      "source_type": "official_attraction",
+      "title": "海南旅游_景区门票预订_三亚蜈支洲岛旅游区",
+      "collected_at": "2026-10-08",
+      "content_hash": "ceebaa97e0128f79ed208b53ceae78ec4dcf91ba4dcf965b1f4745c613c2cff5",
+      "snapshot": "knowledge\\benchmark_v2_targeted\\snapshots\\f221d29ec1303291.txt"
+    },
+    {
+      "city": "三亚",
+      "url": "https://www.wuzhizhou.com/strategy/page/",
+      "source_type": "official_attraction",
+      "title": "游玩攻略_海南旅游_三亚蜈支洲岛旅游区",
+      "collected_at": "2026-10-08",
+      "content_hash": "d23f44ea9396c88c8cd7548156ad6aae661580d4d14449f6c0eca1f4a4948ce4",
+      "snapshot": "knowledge\\benchmark_v2_targeted\\snapshots\\0180669cf27b0e57.txt"
+    },
+    {
+      "city": "三亚",
+      "url": "https://www.wuzhizhou.com/islandNotice/detail_9988.html",
+      "source_type": "official_attraction",
+      "title": "三亚蜈支洲岛旅游区安全生产承诺书_海岛公告详情_三亚蜈支洲岛旅游区",
+      "collected_at": "2026-10-08",
+      "content_hash": "d23f44ea9396c88c8cd7548156ad6aae661580d4d14449f6c0eca1f4a4948ce4",
+      "snapshot": "knowledge\\benchmark_v2_targeted\\snapshots\\91e72652a7bae30d.txt"
+    },
+    {
+      "city": "丽江",
+      "url": "https://www.lijiang.cn/article/181634.html",
+      "source_type": "local_media",
+      "title": "践行“有一种叫云南的生活”文明旅游十条倡议 - 丽江网",
+      "collected_at": "2026-10-08",
+      "content_hash": "f5c6b5024710d64c8732599cf78ddbbe33f2d224cd4b905405ea2c5b32db5d64",
+      "snapshot": "knowledge\\benchmark_v2_targeted\\snapshots\\74983078cd55d661.txt"
+    },
+    {
+      "city": "丽江",
+      "url": "https://www.lijiang.cn/article/178146.html",
+      "source_type": "local_media",
+      "title": "丽江虎跳峡景区暑期自驾专属福利来啦！ - 丽江网",
+      "collected_at": "2026-10-08",
+      "content_hash": "9ba38e1f3cfa467c11acb6db542e6dcc944ce2987e953f56bd3b8bcaee3bba59",
+      "snapshot": "knowledge\\benchmark_v2_targeted\\snapshots\\ff3f08b1c690b573.txt"
+    },
+    {
+      "city": "丽江",
+      "url": "https://www.lijiang.cn/article/181952.html",
+      "source_type": "local_media",
+      "title": "秋韵满潭 文明随行！国庆假期黑龙潭公园解锁最美出游新风 - 丽江网",
+      "collected_at": "2026-10-08",
+      "content_hash": "b16497edd6e865556ebec3c715d98f9decdf5eeab674cfb3e3888c6e49efcbe6",
+      "snapshot": "knowledge\\benchmark_v2_targeted\\snapshots\\dd16aac022cfa3e4.txt"
+    },
+    {
+      "city": "丽江",
+      "url": "https://whlyj.lijiang.gov.cn/",
+      "source_type": "official_tourism",
+      "title": "丽江市文化和旅游局官网",
+      "collected_at": "2026-10-08",
+      "content_hash": "8cc7b7f52fa0d4e69c2ac2a416d82d5bd401f699390ec1d7119f651b1c3d9e54",
+      "snapshot": "knowledge\\benchmark_v2_targeted\\snapshots\\f8be0e253c0e27fc.txt"
+    },
+    {
+      "city": "丽江",
+      "url": "https://whlyj.lijiang.gov.cn/ljwlj/c100671/202609/6b74788e6cd34dd89eaac6ac8e3e28cc.shtml",
+      "source_type": "official_tourism",
+      "title": "丽江市文化和旅游局关于公示第八批省级非物质文化遗产代表性传承人拟推荐人选的公告-丽江市文化和旅游局",
+      "collected_at": "2026-10-08",
+      "content_hash": "ce71c366f45607113fc18b3e4debbe12c2a86fbc290cbc7c6a97ecba7affeb29",
+      "snapshot": "knowledge\\benchmark_v2_targeted\\snapshots\\a0bd2782051c11eb.txt"
+    },
+    {
+      "city": "丽江",
+      "url": "https://whlyj.lijiang.gov.cn/ljwlj/c100671/202609/3fdbbe74a427431ea0403a90f051a6e2.shtml",
+      "source_type": "official_tourism",
+      "title": "丽江市文化和旅游局行政处罚案例公示（五）-丽江市文化和旅游局",
+      "collected_at": "2026-10-08",
+      "content_hash": "6b905d5374a9b1d982946e3e958512275c73a2750a145fc8be22488859347e21",
+      "snapshot": "knowledge\\benchmark_v2_targeted\\snapshots\\7bf058990e6395bf.txt"
+    },
+    {
+      "city": "丽江",
+      "url": "https://whlyj.lijiang.gov.cn/ljwlj/c100671/202609/097e1d02a8b64a57b23bf30ed5ff7cdf.shtml",
+      "source_type": "official_tourism",
+      "title": "2026年丽江市文物博物系列中级职称评审会前公示-丽江市文化和旅游局",
+      "collected_at": "2026-10-08",
+      "content_hash": "1dc824d9d43e56e94f066c19cd7aba401935e20fcf8fd45a5ee35bde6818083d",
+      "snapshot": "knowledge\\benchmark_v2_targeted\\snapshots\\3df05ab6f3843a92.txt"
+    },
+    {
+      "city": "丽江",
+      "url": "https://whlyj.lijiang.gov.cn/ljwlj/c100569/202505/36dbbddbd54a44e296ffbc5bd631f3a9.shtml",
+      "source_type": "official_tourism",
+      "title": "丽江市旅游诚信名录-丽江市文化和旅游局",
+      "collected_at": "2026-10-08",
+      "content_hash": "8a6cd68533d6fc80fb29384b9252e1d23d8cb2ca045d01a6042e398b10667aa6",
+      "snapshot": "knowledge\\benchmark_v2_targeted\\snapshots\\493e7272d3822db4.txt"
+    },
+    {
+      "city": "上海",
+      "url": "https://reservation.shanghaimuseum.net/",
+      "source_type": "official_museum",
+      "title": "上海博物馆参观公告",
+      "collected_at": "2026-10-08",
+      "content_hash": "47bb8974159f087cd24421dabc4de77f3db870495dfeacf803896b404fb2d6fa",
+      "snapshot": "knowledge\\benchmark_v2_targeted\\snapshots\\2ad16d777cf6350e.txt"
+    },
+    {
+      "city": "景德镇",
+      "url": "https://www.jdz.gov.cn/zwzx/gggs/t1089159.shtml",
+      "source_type": "official_transport",
+      "title": "景德镇北站15条客运线路全新开通！直达乐平、瑶里景区等地！ -\n        景德镇市人民政府",
+      "collected_at": "2026-10-08",
+      "content_hash": "ccda0ee6ee6e853d7960e3657d52ca0c58e83e4f18b5ab9491c3e0ab76b877b5",
+      "snapshot": "knowledge\\benchmark_v2_targeted\\snapshots\\968bb564c464a7aa.txt"
+    }
+  ],
+  "attempts": [
+    {
+      "url": "https://www.wuzhizhou.com/strategy/page/",
+      "status": "ok",
+      "bytes": 13924
+    },
+    {
+      "url": "https://www.wuzhizhou.com/ticket/",
+      "status": "ok",
+      "bytes": 439189
+    },
+    {
+      "url": "https://www.wuzhizhou.com/islandNotice/detail_9988.html",
+      "status": "ok",
+      "bytes": 16836
+    },
+    {
+      "url": "https://www.wuzhizhou.com/ticket/",
+      "status": "ok",
+      "bytes": 439189
+    },
+    {
+      "url": "https://www.wuzhizhou.com/strategy/page/",
+      "status": "ok",
+      "bytes": 13924
+    },
+    {
+      "url": "https://www.wuzhizhou.com/islandNotice/detail_9988.html",
+      "status": "ok",
+      "bytes": 16836
+    },
+    {
+      "url": "https://www.wuzhizhou.com/islandStyle/page/",
+      "status": "ok",
+      "bytes": 13940
+    },
+    {
+      "url": "https://www.wuzhizhou.com/ticket/",
+      "status": "ok",
+      "bytes": 439189
+    },
+    {
+      "url": "https://www.wuzhizhou.com/strategy/page/",
+      "status": "ok",
+      "bytes": 13924
+    },
+    {
+      "url": "https://www.wuzhizhou.com/islandNotice/detail_9988.html",
+      "status": "ok",
+      "bytes": 16836
+    },
+    {
+      "url": "https://www.lijiang.cn/article/181634.html",
+      "status": "ok",
+      "bytes": 42968
+    },
+    {
+      "url": "https://www.lijiang.cn/article/178146.html",
+      "status": "ok",
+      "bytes": 64086
+    },
+    {
+      "url": "https://www.lijiang.cn/article/181952.html",
+      "status": "ok",
+      "bytes": 30847
+    },
+    {
+      "url": "https://whlyj.lijiang.gov.cn/",
+      "status": "ok",
+      "bytes": 41309
+    },
+    {
+      "url": "https://whlyj.lijiang.gov.cn/ljwlj/c100568/common_list_child.shtml",
+      "status": "ok",
+      "bytes": 51334
+    },
+    {
+      "url": "https://whlyj.lijiang.gov.cn/ljwlj/c100569/common_list_child.shtml",
+      "status": "ok",
+      "bytes": 50895
+    },
+    {
+      "url": "https://whlyj.lijiang.gov.cn/ljwlj/c100671/202609/6b74788e6cd34dd89eaac6ac8e3e28cc.shtml",
+      "status": "ok",
+      "bytes": 43972
+    },
+    {
+      "url": "https://whlyj.lijiang.gov.cn/ljwlj/c100671/202609/3fdbbe74a427431ea0403a90f051a6e2.shtml",
+      "status": "ok",
+      "bytes": 40642
+    },
+    {
+      "url": "https://whlyj.lijiang.gov.cn/ljwlj/c100671/202609/097e1d02a8b64a57b23bf30ed5ff7cdf.shtml",
+      "status": "ok",
+      "bytes": 36395
+    },
+    {
+      "url": "https://whlyj.lijiang.gov.cn/ljwlj/c100569/202505/36dbbddbd54a44e296ffbc5bd631f3a9.shtml",
+      "status": "ok",
+      "bytes": 169948
+    },
+    {
+      "url": "https://www.zslychina.org/",
+      "status": "failed",
+      "error": "URLError"
+    },
+    {
+      "url": "https://www.njztf.cn/",
+      "status": "failed",
+      "error": "TimeoutError"
+    },
+    {
+      "url": "https://www.cqmetro.cn/",
+      "status": "ok",
+      "bytes": 30703
+    },
+    {
+      "url": "https://www.shanghaimuseum.cn/mu/frontend/pg/infomation/reservation",
+      "status": "ok",
+      "bytes": 154000
+    },
+    {
+      "url": "https://www.jdz.gov.cn/zwzx/gggs/t1089159.shtml",
+      "status": "ok",
+      "bytes": 235626
+    }
+  ],
+  "chunk_count": 55,
+  "corpus_fingerprint": "8f945651a6d023432cbc8761675d16b9d1042be9fcccfbce7dac3d2a0d5208b2",
+  "boundary": "Extracted official snapshots, pending source/content review. Not live ticket/weather/inventory facts."
+}

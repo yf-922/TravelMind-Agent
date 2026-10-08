@@ -1,0 +1,397 @@
+{
+  "version": "benchmark_v2",
+  "collected_at": "2026-10-08",
+  "pages": [
+    {
+      "city": "南京",
+      "url": "https://wlj.nanjing.gov.cn/whyw/202608/t20260810_5891397.html",
+      "source_type": "official_tourism",
+      "title": "台风 “白海豚” 来袭！南京出游安全温馨提示_文旅要闻_\t南京市文化和旅游局",
+      "collected_at": "2026-10-08",
+      "content_hash": "95ac99aae1c7da48930c5d82aa917ac4153c2536aad7a9f3da6ee6851e440077",
+      "snapshot": "knowledge\\benchmark_v2\\snapshots\\3f6c5875367f06a7.txt"
+    },
+    {
+      "city": "南京",
+      "url": "https://wlj.nanjing.gov.cn/hdjl/dczj/202607/t20260716_5877878.html",
+      "source_type": "official_tourism",
+      "title": "2025年度南京市博物总馆观众满意度调查问卷_调查征集_\t南京市文化和旅游局",
+      "collected_at": "2026-10-08",
+      "content_hash": "398ab50fde2276d61130e4515989ecc109546885d99abb62cfdf86627b32f95b",
+      "snapshot": "knowledge\\benchmark_v2\\snapshots\\d9916f08b3283aee.txt"
+    },
+    {
+      "city": "上海",
+      "url": "https://www.shanghaimuseum.cn/mu/frontend/pg/index",
+      "source_type": "official_museum",
+      "title": "上海博物馆",
+      "collected_at": "2026-10-08",
+      "content_hash": "76a1166ea2c744d069cd94b6e6eb353dd073e2a4ff2dc9b5c316f969060bb922",
+      "snapshot": "knowledge\\benchmark_v2\\snapshots\\a6895a3284dde654.txt"
+    },
+    {
+      "city": "上海",
+      "url": "https://reservation.shanghaimuseum.net/",
+      "source_type": "official_museum",
+      "title": "上海博物馆参观公告",
+      "collected_at": "2026-10-08",
+      "content_hash": "47bb8974159f087cd24421dabc4de77f3db870495dfeacf803896b404fb2d6fa",
+      "snapshot": "knowledge\\benchmark_v2\\snapshots\\2ad16d777cf6350e.txt"
+    },
+    {
+      "city": "上海",
+      "url": "https://www.shanghaimuseum.cn/mu/frontend/pg/infomation/team-reservation",
+      "source_type": "official_museum",
+      "title": "上海博物馆",
+      "collected_at": "2026-10-08",
+      "content_hash": "96a6b134c2436cdf18fde989f831063ed8e7d0c3ad300bc5e6c260b3339425ca",
+      "snapshot": "knowledge\\benchmark_v2\\snapshots\\d4cca9105b50395f.txt"
+    },
+    {
+      "city": "上海",
+      "url": "https://www.shanghaimuseum.cn/mu/frontend/pg/service/shop",
+      "source_type": "official_museum",
+      "title": "上海博物馆",
+      "collected_at": "2026-10-08",
+      "content_hash": "76488e895cefbf1374715189438753c03bb37e1c3f184ce9fb5d906a4758df6d",
+      "snapshot": "knowledge\\benchmark_v2\\snapshots\\37542e64f22f909f.txt"
+    },
+    {
+      "city": "重庆",
+      "url": "http://whlyw.cq.gov.cn/zwgk_221/zfxxgkml/jyta_205577/202601/t20260106_15295091.html",
+      "source_type": "official_tourism",
+      "title": "重庆市A级旅游景区名单（等级排序）（截至2025年12月）_重庆市文化和旅游发展委员会",
+      "collected_at": "2026-10-08",
+      "content_hash": "dad99514a618dd120b3f952bfa9fdd9a08bead8c1002243405c844f23c7941a7",
+      "snapshot": "knowledge\\benchmark_v2\\snapshots\\16d2420e6e13ca26.txt"
+    },
+    {
+      "city": "丽江",
+      "url": "https://www.lijiang.gov.cn/",
+      "source_type": "official_government",
+      "title": "丽江市人民政府",
+      "collected_at": "2026-10-08",
+      "content_hash": "702887f8498e6d80a57f2502de2dd308ed1b6301b9693439ecb73bbd71dfa4cf",
+      "snapshot": "knowledge\\benchmark_v2\\snapshots\\413014eed936747d.txt"
+    },
+    {
+      "city": "丽江",
+      "url": "https://www.lijiang.gov.cn/ljsrmzf/c102982/202609/09376994db884e7f974d4cefa7e1decf.shtml",
+      "source_type": "official_government",
+      "title": "聂金辉调研玉龙雪山景区高质量发展工作时强调：统筹保护与发展  推动文旅高质量发展 - 丽江市人民政府",
+      "collected_at": "2026-10-08",
+      "content_hash": "df4fc4bdc9359bf3379673479dc6a0c4ab263aae006381666720eb4fdf016504",
+      "snapshot": "knowledge\\benchmark_v2\\snapshots\\ab623226532d6082.txt"
+    },
+    {
+      "city": "丽江",
+      "url": "https://www.lijiang.gov.cn/ljsrmzf/c102982/202609/bdebbccc6b0e4ad996c0171c5ec99ad3.shtml",
+      "source_type": "official_government",
+      "title": "聂金辉参加古城区代表团讨论时强调：聚焦高质量发展抓落实  既为古城争光  更要为全市发展作贡献 - 丽江市人民政府",
+      "collected_at": "2026-10-08",
+      "content_hash": "12cade02d4f4b6e0bef78160d813abdda8935558b0ea274890e37fd16e939942",
+      "snapshot": "knowledge\\benchmark_v2\\snapshots\\4f281e8ff1d32f72.txt"
+    },
+    {
+      "city": "丽江",
+      "url": "https://www.lijiang.gov.cn/ljsrmzf/c102219/202604/c85a5c3223ec4f0ba00b0af0e0e5d1ad.shtml",
+      "source_type": "official_government",
+      "title": "《关于古城区、玉龙县2026年4月至10月天然气上下游价格联动有关事项的通知》政策解读 - 丽江市人民政府",
+      "collected_at": "2026-10-08",
+      "content_hash": "9c40b5d01ed519be73e35dd610fe89174ecbe3149f7e0bc9c6fb2db5634cae42",
+      "snapshot": "knowledge\\benchmark_v2\\snapshots\\34e42126b3524526.txt"
+    },
+    {
+      "city": "丽江",
+      "url": "https://www.lijiang.gov.cn/ljsrmzf/c102156/202609/fc4c02e5160b4809b2d04ff605d5df83.shtml",
+      "source_type": "official_government",
+      "title": "丽江古城景区旅游发展有限责任公司直管公房公开招租白龙文化广场4幢（原历史文化展馆南馆）（二次）流标公告 - 丽江市人民政府",
+      "collected_at": "2026-10-08",
+      "content_hash": "9c112e086d2fde8f2e3ffa8914f38d737a287c5a861b8a4bc4da6666308512a1",
+      "snapshot": "knowledge\\benchmark_v2\\snapshots\\6851739222a638e7.txt"
+    },
+    {
+      "city": "丽江",
+      "url": "https://www.lijiang.gov.cn/ljsrmzf/c102156/202609/cdd8d0aab7494b948f9a53e64dff2572.shtml",
+      "source_type": "official_government",
+      "title": "丽江古城景区旅游发展有限责任公司直管公房公开招租七一街24号-铺面11号（三次）流标公告 - 丽江市人民政府",
+      "collected_at": "2026-10-08",
+      "content_hash": "6186b5715f8fb7469613227990e084d2109d7563a26508471a4375ac642f153c",
+      "snapshot": "knowledge\\benchmark_v2\\snapshots\\76fc31afbbfb1605.txt"
+    },
+    {
+      "city": "丽江",
+      "url": "https://www.lijiang.gov.cn/ljsrmzf/c102156/202609/e6841b2798ce40e294c6e356401ba92e.shtml",
+      "source_type": "official_government",
+      "title": "丽江古城景区旅游发展有限责任公司直管公房公开招租七一街24号-铺面7、8、9、10号（三次）流标公告 - 丽江市人民政府",
+      "collected_at": "2026-10-08",
+      "content_hash": "b62a2a23ebc4595f6e982fd283ae47bb748ebcfae3598661255d2e81d3a5939b",
+      "snapshot": "knowledge\\benchmark_v2\\snapshots\\ee89ed28c737973c.txt"
+    },
+    {
+      "city": "丽江",
+      "url": "https://www.lijiang.gov.cn/ljsrmzf/c102156/202609/ae96b887fe30460ca609e9f96d1b4764.shtml",
+      "source_type": "official_government",
+      "title": "丽江古城景区旅游发展有限责任公司直管公房公开招租新义街铺面52号流标公告 - 丽江市人民政府",
+      "collected_at": "2026-10-08",
+      "content_hash": "2871678c6e00803e36da90b70a92a4d5d45b8a4ae2eb70a4be7c3b84794e8c6a",
+      "snapshot": "knowledge\\benchmark_v2\\snapshots\\fd99dfe6a5650a7d.txt"
+    },
+    {
+      "city": "丽江",
+      "url": "https://www.lijiang.gov.cn/ljsrmzf/c101852/dmlj.shtml",
+      "source_type": "official_government",
+      "title": "大美丽江 - 丽江市人民政府",
+      "collected_at": "2026-10-08",
+      "content_hash": "8141fe86a95ff2f1d1068c4fc9da87fee2623f35991ccef444639b75a2004bf2",
+      "snapshot": "knowledge\\benchmark_v2\\snapshots\\8effe0e9b8684b21.txt"
+    },
+    {
+      "city": "丽江",
+      "url": "https://www.lijiang.gov.cn/ljsrmzf/c102178/202604/13524548f98b494ab5ea7d58e608c5a1.shtml",
+      "source_type": "official_government",
+      "title": "丽江市发展和改革委员会关于古城区、玉龙县2026年4月至10月天然气上下游价格联动有关事项的通知 - 丽江市人民政府",
+      "collected_at": "2026-10-08",
+      "content_hash": "e74c373490f5a14bde745e6d6365e047fba9542e64fdf238ec1dbc71dafb9f5b",
+      "snapshot": "knowledge\\benchmark_v2\\snapshots\\eae580dc0cbebef3.txt"
+    },
+    {
+      "city": "三亚",
+      "url": "https://www.wuzhizhou.com/",
+      "source_type": "official_attraction",
+      "title": "三亚蜈支洲岛旅游区_海南三亚海岛旅游潜水娱乐极限玩家推荐目的地",
+      "collected_at": "2026-10-08",
+      "content_hash": "d23f44ea9396c88c8cd7548156ad6aae661580d4d14449f6c0eca1f4a4948ce4",
+      "snapshot": "knowledge\\benchmark_v2\\snapshots\\1d280c9d08af0dfc.txt"
+    },
+    {
+      "city": "三亚",
+      "url": "https://www.wuzhizhou.com/newsCenter/detail_9975.html",
+      "source_type": "official_attraction",
+      "title": "三亚旅游攻略“双鱼月”的海岛旅游，邂逅阳光与大海_新闻中心详情_三亚蜈支洲岛旅游区",
+      "collected_at": "2026-10-08",
+      "content_hash": "6ba605642e347a5b2f66f7ceeb053d690653f3e9158bac721babb352ce19037e",
+      "snapshot": "knowledge\\benchmark_v2\\snapshots\\4e05677ffe4daa5f.txt"
+    },
+    {
+      "city": "三亚",
+      "url": "https://www.wuzhizhou.com/newsCenter/detail_9977.html",
+      "source_type": "official_attraction",
+      "title": "三亚旅游攻略：牵马折花，漫步沙滩，海骑究竟是什么体验？_新闻中心详情_三亚蜈支洲岛旅游区",
+      "collected_at": "2026-10-08",
+      "content_hash": "eedb19e800e58b4849c2deef4c5b2e69307386009b1d095c8bb11e683876c214",
+      "snapshot": "knowledge\\benchmark_v2\\snapshots\\e7194db165b2fb61.txt"
+    },
+    {
+      "city": "景德镇",
+      "url": "https://www.jdz.gov.cn/zwzx/gggs/t1089159.shtml",
+      "source_type": "official_transport",
+      "title": "景德镇北站15条客运线路全新开通！直达乐平、瑶里景区等地！ -\n        景德镇市人民政府",
+      "collected_at": "2026-10-08",
+      "content_hash": "ccda0ee6ee6e853d7960e3657d52ca0c58e83e4f18b5ab9491c3e0ab76b877b5",
+      "snapshot": "knowledge\\benchmark_v2\\snapshots\\968bb564c464a7aa.txt"
+    },
+    {
+      "city": "景德镇",
+      "url": "https://www.jdz.gov.cn/",
+      "source_type": "official_government",
+      "title": "景德镇市人民政府",
+      "collected_at": "2026-10-08",
+      "content_hash": "c9824ed2fea9aea2b70043bf8bc3c4e69ceedeb18533b58b9bbb4584b0c62f21",
+      "snapshot": "knowledge\\benchmark_v2\\snapshots\\a5e255598ab5dbd7.txt"
+    },
+    {
+      "city": "景德镇",
+      "url": "https://www.jdz.gov.cn/zwzx/jrcd/t1107590.shtml",
+      "source_type": "official_government",
+      "title": "瓷都迎客“路路通”，景德镇全方位护航国庆假期交通畅行！ -\n        景德镇市人民政府",
+      "collected_at": "2026-10-08",
+      "content_hash": "ce32535dbb1e9eede17aa0a365d15610635cf0223fa8363af847ff6f24ae3923",
+      "snapshot": "knowledge\\benchmark_v2\\snapshots\\744fd671dcf3c8c8.txt"
+    },
+    {
+      "city": "景德镇",
+      "url": "https://www.jdz.gov.cn/zwzx/gggs/t1089159.shtml",
+      "source_type": "official_government",
+      "title": "景德镇北站15条客运线路全新开通！直达乐平、瑶里景区等地！ -\n        景德镇市人民政府",
+      "collected_at": "2026-10-08",
+      "content_hash": "ccda0ee6ee6e853d7960e3657d52ca0c58e83e4f18b5ab9491c3e0ab76b877b5",
+      "snapshot": "knowledge\\benchmark_v2\\snapshots\\968bb564c464a7aa.txt"
+    }
+  ],
+  "attempts": [
+    {
+      "url": "https://www.njmuseum.com/",
+      "status": "ok",
+      "bytes": 7661
+    },
+    {
+      "url": "https://wlj.nanjing.gov.cn/",
+      "status": "ok",
+      "bytes": 43124
+    },
+    {
+      "url": "https://wlj.nanjing.gov.cn/whyw/202608/t20260810_5891397.html",
+      "status": "ok",
+      "bytes": 20558
+    },
+    {
+      "url": "https://wlj.nanjing.gov.cn/njswhgdxwcbj/202601/t20260114_5766382.html",
+      "status": "ok",
+      "bytes": 13161
+    },
+    {
+      "url": "https://wlj.nanjing.gov.cn/hdjl/dczj/202607/t20260716_5877878.html",
+      "status": "ok",
+      "bytes": 15452
+    },
+    {
+      "url": "https://www.shanghaimuseum.cn/mu/frontend/pg/index",
+      "status": "ok",
+      "bytes": 58128
+    },
+    {
+      "url": "https://www.shanghaimuseum.cn/mu/frontend/pg/display/index",
+      "status": "ok",
+      "bytes": 41049
+    },
+    {
+      "url": "https://www.shanghaimuseum.cn/mu/frontend/pg/infomation/reservation",
+      "status": "ok",
+      "bytes": 154000
+    },
+    {
+      "url": "https://www.shanghaimuseum.cn/mu/frontend/pg/infomation/team-reservation",
+      "status": "ok",
+      "bytes": 29190
+    },
+    {
+      "url": "https://www.shanghaimuseum.cn/mu/frontend/pg/service/shop",
+      "status": "ok",
+      "bytes": 29244
+    },
+    {
+      "url": "https://www.shanghaimuseum.cn/mu/frontend/pg/infomation/activity",
+      "status": "ok",
+      "bytes": 21338
+    },
+    {
+      "url": "https://whlyw.cq.gov.cn/zwfwww/lyly/index.html",
+      "status": "ok",
+      "bytes": 80632
+    },
+    {
+      "url": "http://whlyw.cq.gov.cn/zwgk_221/zfxxgkml/jyta_205577/202601/t20260106_15295091.html",
+      "status": "ok",
+      "bytes": 1524078
+    },
+    {
+      "url": "https://www.cqmetro.cn/",
+      "status": "ok",
+      "bytes": 30703
+    },
+    {
+      "url": "https://www.lijiang.gov.cn/",
+      "status": "ok",
+      "bytes": 65398
+    },
+    {
+      "url": "https://www.lijiang.gov.cn/ljsrmzf/c102982/202609/09376994db884e7f974d4cefa7e1decf.shtml",
+      "status": "ok",
+      "bytes": 24320
+    },
+    {
+      "url": "https://www.lijiang.gov.cn/ljsrmzf/c102982/202609/bdebbccc6b0e4ad996c0171c5ec99ad3.shtml",
+      "status": "ok",
+      "bytes": 24338
+    },
+    {
+      "url": "https://www.lijiang.gov.cn/ljsrmzf/c102219/202604/c85a5c3223ec4f0ba00b0af0e0e5d1ad.shtml",
+      "status": "ok",
+      "bytes": 30907
+    },
+    {
+      "url": "https://www.lijiang.gov.cn/ljsrmzf/c102156/202609/fc4c02e5160b4809b2d04ff605d5df83.shtml",
+      "status": "ok",
+      "bytes": 24843
+    },
+    {
+      "url": "https://www.lijiang.gov.cn/ljsrmzf/c102156/202609/cdd8d0aab7494b948f9a53e64dff2572.shtml",
+      "status": "ok",
+      "bytes": 24648
+    },
+    {
+      "url": "https://www.lijiang.gov.cn/ljsrmzf/c102156/202609/e6841b2798ce40e294c6e356401ba92e.shtml",
+      "status": "ok",
+      "bytes": 24732
+    },
+    {
+      "url": "https://www.lijiang.gov.cn/ljsrmzf/c102156/202609/ae96b887fe30460ca609e9f96d1b4764.shtml",
+      "status": "ok",
+      "bytes": 24542
+    },
+    {
+      "url": "https://www.lijiang.gov.cn/ljsrmzf/c101852/dmlj.shtml",
+      "status": "ok",
+      "bytes": 29466
+    },
+    {
+      "url": "https://www.lijiang.gov.cn/ljsrmzf/c102178/202604/13524548f98b494ab5ea7d58e608c5a1.shtml",
+      "status": "ok",
+      "bytes": 30133
+    },
+    {
+      "url": "https://www.lijiang.gov.cn/ljsrmzf/c102145/common_list.shtml",
+      "status": "failed",
+      "error": "HTTPError"
+    },
+    {
+      "url": "https://www.sanya.gov.cn/",
+      "status": "failed",
+      "error": "URLError"
+    },
+    {
+      "url": "https://www.wuzhizhou.com/",
+      "status": "ok",
+      "bytes": 39265
+    },
+    {
+      "url": "https://www.wuzhizhou.com/newsCenter/detail_9975.html",
+      "status": "ok",
+      "bytes": 22265
+    },
+    {
+      "url": "https://www.wuzhizhou.com/newsCenter/detail_9977.html",
+      "status": "ok",
+      "bytes": 20465
+    },
+    {
+      "url": "https://www.jdz.gov.cn/zwzx/gggs/t1089159.shtml",
+      "status": "ok",
+      "bytes": 235626
+    },
+    {
+      "url": "https://www.jdz.gov.cn/",
+      "status": "ok",
+      "bytes": 74134
+    },
+    {
+      "url": "https://www.jdz.gov.cn/zwzx/jrcd/t1107590.shtml",
+      "status": "ok",
+      "bytes": 50103
+    },
+    {
+      "url": "https://www.jdz.gov.cn/zwzx/gggs/t1089159.shtml",
+      "status": "ok",
+      "bytes": 235626
+    },
+    {
+      "url": "https://www.jdz.gov.cn/zwzx/bmdt/t1107613.shtml",
+      "status": "failed",
+      "error": "TimeoutError"
+    }
+  ],
+  "chunk_count": 46,
+  "corpus_fingerprint": "66f0e0a8e33137b3eb52bbdce90b99da8c43fe6e01a574bc5bb9eb4f59b8569a",
+  "boundary": "Extracted official snapshots, pending source/content review. Not live ticket/weather/inventory facts."
+}

@@ -1,0 +1,319 @@
+{
+  "version": "benchmark_v2_visitor",
+  "collected_at": "2026-10-08",
+  "pages": [
+    {
+      "city": "重庆",
+      "url": "https://www.cqmetro.cn/yyfw/aqcs/",
+      "source_type": "official_transport",
+      "title": "重庆轨道交通 - 安全常识",
+      "collected_at": "2026-10-08",
+      "content_hash": "a05d8315e3a2e8a55a808738246831e78e0c4aa44d4231691acdb8b3b003cb4c",
+      "snapshot": "knowledge\\benchmark_v2_visitor\\snapshots\\9bb3968960b9b581.txt"
+    },
+    {
+      "city": "重庆",
+      "url": "https://www.cqmetro.cn/yyfw/pwzc/",
+      "source_type": "official_transport",
+      "title": "重庆轨道交通 - 票务政策",
+      "collected_at": "2026-10-08",
+      "content_hash": "1fddd02d505b6924745a35551c966aabd249001bfe2249380b829d7b8bb387ba",
+      "snapshot": "knowledge\\benchmark_v2_visitor\\snapshots\\ede3b1338f188b97.txt"
+    },
+    {
+      "city": "重庆",
+      "url": "https://www.3gmuseum.cn/web/article/1551252495156314112/web/content_1551252495156314112.html",
+      "source_type": "official_museum",
+      "title": "重庆白鹤梁水下博物馆亮相天津2026中国文化旅游产业博览会——长江水下奇观引客来_重庆中国三峡博物馆",
+      "collected_at": "2026-10-08",
+      "content_hash": "dc4c9382541b332db0448a977d9b6328d16a4b0aaafea5498bfa4d07bf28fdc7",
+      "snapshot": "knowledge\\benchmark_v2_visitor\\snapshots\\1db1b078c9ae5feb.txt"
+    },
+    {
+      "city": "重庆",
+      "url": "https://www.3gmuseum.cn/web/article/1551256444756230144/web/content_1551256444756230144.html",
+      "source_type": "official_museum",
+      "title": "我馆选手在第二届“博协杯”全国博物馆讲解大赛斩获佳绩_重庆中国三峡博物馆",
+      "collected_at": "2026-10-08",
+      "content_hash": "636b71160204f4de4612ea008c141470d382435f192c3298e53a54bf34df6d41",
+      "snapshot": "knowledge\\benchmark_v2_visitor\\snapshots\\0f374ddac11df8bc.txt"
+    },
+    {
+      "city": "重庆",
+      "url": "https://www.3gmuseum.cn/web/article/1430010139317059584/web/content_1430010139317059584.html",
+      "source_type": "official_museum",
+      "title": "重庆中国三峡博物馆关于取消预约入馆的公告_重庆中国三峡博物馆",
+      "collected_at": "2026-10-08",
+      "content_hash": "282e2cb5272076be80c89b0b8aa5f02fff317c363df4542d231238277a112aa1",
+      "snapshot": "knowledge\\benchmark_v2_visitor\\snapshots\\e5cdcf3045c5ffea.txt"
+    },
+    {
+      "city": "重庆",
+      "url": "https://www.3gmuseum.cn/web/article/1430010416905293824/web/content_1430010416905293824.html",
+      "source_type": "official_museum",
+      "title": "参观须知_重庆中国三峡博物馆",
+      "collected_at": "2026-10-08",
+      "content_hash": "e42512eedd27b128e33751704a3b19b599476fab636c87646d8312fdbcb5bb2a",
+      "snapshot": "knowledge\\benchmark_v2_visitor\\snapshots\\ccd73533bd9922e7.txt"
+    },
+    {
+      "city": "重庆",
+      "url": "https://www.3gmuseum.cn/web/article/1430011539590451200/web/content_1430011539590451200.html",
+      "source_type": "official_museum",
+      "title": "参观礼仪_重庆中国三峡博物馆",
+      "collected_at": "2026-10-08",
+      "content_hash": "3cbf314d73efc5a40dc89eaf941ed2ef8c2f0e6c3d025db9d8dc813d5f94a2ad",
+      "snapshot": "knowledge\\benchmark_v2_visitor\\snapshots\\abc8c8f629069be9.txt"
+    },
+    {
+      "city": "重庆",
+      "url": "https://www.3gmuseum.cn/web/article/1538262939071385600/web/content_1538262939071385600.html",
+      "source_type": "official_museum",
+      "title": "重庆中国三峡博物馆关于2026年第二季度公开遴选工作人员总成绩及体检有关事宜的通知_重庆中国三峡博物馆",
+      "collected_at": "2026-10-08",
+      "content_hash": "94c7e7494252a9c5d06ae740ced45125534a7b890254fc55340927cce18acdfb",
+      "snapshot": "knowledge\\benchmark_v2_visitor\\snapshots\\0658a9dd0f7e01e5.txt"
+    },
+    {
+      "city": "丽江",
+      "url": "https://www.lijiang.cn/article/181634.html",
+      "source_type": "local_media",
+      "title": "践行“有一种叫云南的生活”文明旅游十条倡议 - 丽江网",
+      "collected_at": "2026-10-08",
+      "content_hash": "f5c6b5024710d64c8732599cf78ddbbe33f2d224cd4b905405ea2c5b32db5d64",
+      "snapshot": "knowledge\\benchmark_v2_visitor\\snapshots\\74983078cd55d661.txt"
+    },
+    {
+      "city": "上海",
+      "url": "https://www.shanghaimuseum.cn/mu/frontend/pg/infomation/team-reservation",
+      "source_type": "official_museum",
+      "title": "上海博物馆",
+      "collected_at": "2026-10-08",
+      "content_hash": "96a6b134c2436cdf18fde989f831063ed8e7d0c3ad300bc5e6c260b3339425ca",
+      "snapshot": "knowledge\\benchmark_v2_visitor\\snapshots\\d4cca9105b50395f.txt"
+    },
+    {
+      "city": "上海",
+      "url": "https://www.shanghaimuseum.cn/mu/frontend/pg/display/index",
+      "source_type": "official_museum",
+      "title": "上海博物馆",
+      "collected_at": "2026-10-08",
+      "content_hash": "2d6b39dd120277a4d1d720b04104924e2ac80788910f5b62c1403c7caf39846a",
+      "snapshot": "knowledge\\benchmark_v2_visitor\\snapshots\\7e17deeda13bda2a.txt"
+    },
+    {
+      "city": "上海",
+      "url": "https://reservation.shanghaimuseum.net/",
+      "source_type": "official_museum",
+      "title": "上海博物馆参观公告",
+      "collected_at": "2026-10-08",
+      "content_hash": "47bb8974159f087cd24421dabc4de77f3db870495dfeacf803896b404fb2d6fa",
+      "snapshot": "knowledge\\benchmark_v2_visitor\\snapshots\\2ad16d777cf6350e.txt"
+    },
+    {
+      "city": "上海",
+      "url": "https://events.shanghaimuseum.net/sheduplatform/activityOut/out/activityPage",
+      "source_type": "official_museum",
+      "title": "活动预约 - 上海博物馆",
+      "collected_at": "2026-10-08",
+      "content_hash": "9c257c36b66c8eaf123d1d1c0ae441c99a83630e4025b0b1a5f5af0dabfd58ec",
+      "snapshot": "knowledge\\benchmark_v2_visitor\\snapshots\\20edc2cd711c89c5.txt"
+    },
+    {
+      "city": "景德镇",
+      "url": "https://www.jdz.gov.cn/zwzx/gggs/t1089159.shtml",
+      "source_type": "official_transport",
+      "title": "景德镇北站15条客运线路全新开通！直达乐平、瑶里景区等地！ -\n        景德镇市人民政府",
+      "collected_at": "2026-10-08",
+      "content_hash": "ccda0ee6ee6e853d7960e3657d52ca0c58e83e4f18b5ab9491c3e0ab76b877b5",
+      "snapshot": "knowledge\\benchmark_v2_visitor\\snapshots\\968bb564c464a7aa.txt"
+    },
+    {
+      "city": "三亚",
+      "url": "https://www.wuzhizhou.com/ticket/",
+      "source_type": "official_attraction",
+      "title": "海南旅游_景区门票预订_三亚蜈支洲岛旅游区",
+      "collected_at": "2026-10-08",
+      "content_hash": "ceebaa97e0128f79ed208b53ceae78ec4dcf91ba4dcf965b1f4745c613c2cff5",
+      "snapshot": "knowledge\\benchmark_v2_visitor\\snapshots\\f221d29ec1303291.txt"
+    },
+    {
+      "city": "三亚",
+      "url": "https://www.wuzhizhou.com/strategy/page/",
+      "source_type": "official_attraction",
+      "title": "游玩攻略_海南旅游_三亚蜈支洲岛旅游区",
+      "collected_at": "2026-10-08",
+      "content_hash": "d23f44ea9396c88c8cd7548156ad6aae661580d4d14449f6c0eca1f4a4948ce4",
+      "snapshot": "knowledge\\benchmark_v2_visitor\\snapshots\\0180669cf27b0e57.txt"
+    },
+    {
+      "city": "三亚",
+      "url": "https://www.wuzhizhou.com/islandNotice/detail_9988.html",
+      "source_type": "official_attraction",
+      "title": "三亚蜈支洲岛旅游区安全生产承诺书_海岛公告详情_三亚蜈支洲岛旅游区",
+      "collected_at": "2026-10-08",
+      "content_hash": "d23f44ea9396c88c8cd7548156ad6aae661580d4d14449f6c0eca1f4a4948ce4",
+      "snapshot": "knowledge\\benchmark_v2_visitor\\snapshots\\91e72652a7bae30d.txt"
+    }
+  ],
+  "attempts": [
+    {
+      "url": "https://www.cqmetro.cn/yyfw/ckxz/",
+      "status": "ok",
+      "bytes": 188816
+    },
+    {
+      "url": "https://www.cqmetro.cn/yyfw/aqcs/",
+      "status": "ok",
+      "bytes": 31097
+    },
+    {
+      "url": "https://www.cqmetro.cn/yyfw/pwzc/",
+      "status": "ok",
+      "bytes": 17612
+    },
+    {
+      "url": "https://www.cqmetro.cn/smbsj/",
+      "status": "ok",
+      "bytes": 5463
+    },
+    {
+      "url": "https://www.3gmuseum.cn/",
+      "status": "ok",
+      "bytes": 2562223
+    },
+    {
+      "url": "https://www.3gmuseum.cn/web/column/col5009304.html",
+      "status": "ok",
+      "bytes": 56084
+    },
+    {
+      "url": "https://www.3gmuseum.cn/web/column/col5009275.html",
+      "status": "ok",
+      "bytes": 1786
+    },
+    {
+      "url": "https://www.3gmuseum.cn/web/article/1551252495156314112/web/content_1551252495156314112.html",
+      "status": "ok",
+      "bytes": 122525
+    },
+    {
+      "url": "https://www.3gmuseum.cn/web/article/1551256444756230144/web/content_1551256444756230144.html",
+      "status": "ok",
+      "bytes": 123190
+    },
+    {
+      "url": "https://www.3gmuseum.cn/web/column/col5009758.html",
+      "status": "ok",
+      "bytes": 85414
+    },
+    {
+      "url": "https://www.3gmuseum.cn/web/article/1430010139317059584/web/content_1430010139317059584.html",
+      "status": "ok",
+      "bytes": 87034
+    },
+    {
+      "url": "https://www.3gmuseum.cn/web/article/1430010416905293824/web/content_1430010416905293824.html",
+      "status": "ok",
+      "bytes": 90285
+    },
+    {
+      "url": "https://www.3gmuseum.cn/web/article/1430011539590451200/web/content_1430011539590451200.html",
+      "status": "ok",
+      "bytes": 88382
+    },
+    {
+      "url": "https://www.3gmuseum.cn/web/article/1538262939071385600/web/content_1538262939071385600.html",
+      "status": "ok",
+      "bytes": 128729
+    },
+    {
+      "url": "https://www.lijiang.cn/article/181634.html",
+      "status": "ok",
+      "bytes": 42968
+    },
+    {
+      "url": "https://www.lijiang.gov.cn/ljsrmzf/c101859/common_list.shtml",
+      "status": "failed",
+      "error": "HTTPError"
+    },
+    {
+      "url": "https://www.lijiang.gov.cn/ljsrmzf/c101860/common_list.shtml",
+      "status": "ok",
+      "bytes": 15387
+    },
+    {
+      "url": "https://www.lijiang.gov.cn/ljsrmzf/c101861/common_list.shtml",
+      "status": "ok",
+      "bytes": 16714
+    },
+    {
+      "url": "https://www.njmuseum.com/",
+      "status": "ok",
+      "bytes": 7661
+    },
+    {
+      "url": "https://www.njztf.cn/",
+      "status": "failed",
+      "error": "TimeoutError"
+    },
+    {
+      "url": "https://www.shanghaimuseum.cn/mu/frontend/pg/infomation/team-reservation",
+      "status": "ok",
+      "bytes": 29190
+    },
+    {
+      "url": "https://www.shanghaimuseum.cn/mu/frontend/pg/display/index",
+      "status": "ok",
+      "bytes": 41049
+    },
+    {
+      "url": "https://www.shanghaimuseum.cn/mu/frontend/pg/infomation/reservation",
+      "status": "ok",
+      "bytes": 154000
+    },
+    {
+      "url": "https://www.shanghaimuseum.cn/mu/frontend/pg/infomation/activity",
+      "status": "ok",
+      "bytes": 21338
+    },
+    {
+      "url": "https://www.sstm.org.cn/",
+      "status": "ok",
+      "bytes": 2243
+    },
+    {
+      "url": "https://www.jdz.gov.cn/zwzx/gggs/t1089159.shtml",
+      "status": "ok",
+      "bytes": 235626
+    },
+    {
+      "url": "https://www.jdz.gov.cn/zwzx/jrcd/",
+      "status": "failed",
+      "error": "URLError"
+    },
+    {
+      "url": "https://www.wuzhizhou.com/ticket/",
+      "status": "ok",
+      "bytes": 439189
+    },
+    {
+      "url": "https://www.wuzhizhou.com/strategy/page/",
+      "status": "ok",
+      "bytes": 13924
+    },
+    {
+      "url": "https://www.wuzhizhou.com/islandNotice/detail_9988.html",
+      "status": "ok",
+      "bytes": 16836
+    },
+    {
+      "url": "https://www.sanyananshan.com/",
+      "status": "failed",
+      "error": "URLError"
+    }
+  ],
+  "chunk_count": 74,
+  "corpus_fingerprint": "9dbfaf67ead6db8998b46269f6d06d67ec7aa29e9277b170b78fa6d1a74b5192",
+  "boundary": "Extracted official snapshots, pending source/content review. Not live ticket/weather/inventory facts."
+}

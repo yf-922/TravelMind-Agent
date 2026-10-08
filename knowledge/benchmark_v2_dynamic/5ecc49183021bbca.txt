@@ -1,0 +1,207 @@
+<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=auto, user-scalable=yes"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><meta name="description" content="三亚蜈支洲岛旅游区拥有海上一站式全方位的海岛旅游项目，是国内首座集海 上娱乐、特色潜水、高端酒店、美食餐饮与休闲观光于一身的海岛旅游度假胜地，素有 中国的马尔代夫之称，以“蓝绿互动”的发展理念，打造出国内游客海岛度假的重要目的地。"><meta name="keywords" content="海南旅游,海岛游玩推荐,三亚旅游攻略,三亚蜈支洲岛旅游区"><meta name="copyright" content="版权信息"><title>不是city walk是island walk！蜈支洲岛不玩项目纯打卡攻略_游玩攻略详情_三亚蜈支洲岛旅游区</title><link rel="stylesheet" href="/fonts/iconfont.css"><!--link(rel='stylesheet', href='//at.alicdn.com/t/font_975255_wgum5q939pm.css')--><link rel="stylesheet" href="/stylesheets/reset.css"><link rel="stylesheet" href="/stylesheets/common.css"><link rel="stylesheet" href="/stylesheets/header.css"><link rel="stylesheet" href="/stylesheets/information/detail.css?v=1.0"><script type="text/javascript" src="/javascripts/jquery-1.8.3.min.js"></script><script type="text/javascript" src="/javascripts/public.js"></script><!--script(type='text/javascript', src='/javascripts/list/index.js')--><script type="text/javascript" src="/javascripts/jquery.SuperSlide.2.1.1.js"></script></head><body><script type="text/javascript">$(function () {
+    //搜索下拉
+    $(".search-select-box").click(function (e) {
+        e.stopPropagation()
+        var selectPop = $(".search-select-list")
+        if (selectPop.hasClass("hide")) {
+            selectPop.removeClass("hide")
+        } else {
+            selectPop.addClass("hide")
+        }
+    })
+    //选中下拉搜索
+    $(".search-select-item").click(function (e) {
+        e.stopPropagation()
+        var selected = $(this).text()
+        $(".search-selected").text(selected)
+        $(".search-select-list").addClass("hide")
+    })
+})</script><div class="holeday"><div class="headerBox"><div class="headTop"><div class="headLogo"><a href="/"><img src="/images/index/logo.png"></a><!--img(src="/images/index/AAAAA.png")--></div><!--.headA--><div class="main-language"><div class="language select"><div>中文</div><ul><li><a href="/" rel="nofollow" class="c"><span class="flag"></span><img src="/en/img/ch.png" width="17" height="17"><span class="country">中文</span></a></li><li><a href="/en" rel="nofollow" class="c"><span class="flag"></span><img src="/en/img/icong1.png" width="17" height="17"><span class="country">English</span></a></li><li><a href="/kr" rel="nofollow" class="c"><span class="flag"></span><img src="/en/img/icong6.png" width="17" height="17"><span class="country">한국어</span></a></li><li><a href="/ru" rel="nofollow" class="c"><span class="flag"></span><img src="/en/img/icong3.png" width="17" height="17"><span class="country">Pусский</span></a></li></ul></div><style>.language {
+    position: absolute;
+    z-index: 10;
+    width: 120px;
+    height: 31px;
+    background:url(/en/img/bg.png) 0 0 no-repeat;
+    right:0;
+}
+.language div {
+    padding-left:20px;
+    width:100px;
+    cursor: pointer;
+    line-height:30px;
+    color:#FFF;
+}
+
+.language ul {
+    display: none;
+    position: absolute;
+    top: -73px;
+    right :0;
+    padding-bottom: 10px;
+    width: 358px!important;
+    background: #e5e5e5!important;
+}
+.language li {
+    float: left;
+    /*width:100%;*/
+
+    background: #e5e5e5;
+}
+.language li a {
+    float: left;
+    width: 118px;
+    height: 32px;
+    line-height: 32px;
+    overflow: hidden;
+    color: #000;
+    background: #e5e5e5;
+}
+.language li a img{
+    vertical-align:middle;
+}
+.language li .selected {
+    background: #e5e5e5;
+}
+.language li a:hover {
+    background: #fff;
+}
+.language .flag {
+    float: left;
+    margin: 9px 0 0 7px;
+    width: 17px;
+    height: 17px;
+    overflow: hidden;
+}
+.language .country {
+    padding-left: 4px;
+    color: #000;
+    display: inline-block;
+    vertical-align: middle;
+}</style><script>$(function(){
+    $('.language').hover(function(){
+            $('.language ul').show();
+        },function(){
+            $('.language ul').hide();
+        }
+    );
+});</script></div></div></div><div class="headNav"></div><div class="headFind"><div class="findBox"><div class="hf-left"><ul><li><a href="/">首页</a></li><li><a href="/ticket/">门票玩乐</a></li><li><a href="/hotel/">酒店预订</a></li><li><a href="/islandStyle/page/">岛屿风貌</a></li><li class="newsActive"><a href="/newsCenter/page/">新闻中心</a><ul class="newsNav"><li class="newsLi"><a href="/islandNotice/page/">海岛公告</a></li><li class="newsLi"><a href="/islandNews/page/">海岛新闻</a></li></ul></li><li><a href="/seaPasture/page/">海洋牧场</a></li><li class="on"><a href="/strategy/page/">游玩攻略</a></li><li><a href="/video/">视频中心</a></li></ul></div><div class="hf-right"><!--.userHf--><!--    a(href="")--><!--        img(src="/images/index/loginBuy.png")--><!--        span 购物车-->
+</div></div></div></div><!-- 侧边悬浮框--><!-- 侧边悬浮框--><div class="suspended-frame"><ul class="suspended-list"><li class="suspended-item"><a href="https://wzzdlyq.qiyukf.com/client?k=9043442f1a44a1780180c5459734227c&amp;wp=1" target="view_window"><img src="/images/common/suspended1.png" class="suspended-img"><p class="suspended-name">在线客服</p></a></li><li class="suspended-item hot-telphone"><img src="/images/common/suspended2.png" class="suspended-img"><p class="suspended-name">热线电话</p><!-- 热线电话--><div class="hot-telphone-box hide"><p class="hot-telphone">400-114-6666</p><i class="iconfont icon-arrow-right-black"></i></div></li><li class="suspended-item"><a href="https://720yun.com/t/b34jurmv5n7?scene_id=21405320" target="view_window"><img src="/images/common/suspended3.png" class="suspended-img"><p class="suspended-name">360观景</p></a></li><li class="suspended-item scanning-concern"><img src="/images/common/suspended5.png" style="margin: 10px 0 5px;" class="suspended-img"><p class="suspended-name">扫码关注</p><div class="scanning-concern-box1 hide"><img src="/images/common/codeImg.jpg"></div></li><li id="toTop" class="suspended-item"><img src="/images/common/suspended4.png" class="suspended-img"><p class="suspended-name">Top</p></li></ul><!-- 扫码关注--></div><div class="mask"></div><div class="suspended-frame-pop"><!--扫码关注--><div class="scanning-concern-box"><img src="/images/common/codeImg.jpg"></div></div><!-- 主体内容--><div class="body-content"><!--.nav-location--><!--    span.nav-location-lable 您当前所在的位置：--><!--    a.locat-home(href='/') 首页>--><!--    span.nav-location-value--><!--        |#{moduleName}--><!--        i.iconfont.icon-jiantou_xiangyouliangci--><!--        |详情--><div class="nav-location"><span class="nav-location-lable">您当前所在的位置：</span><a href="/" class="locat-home">首页></a><span class="nav-location-value"></span>><span>不是city walk是island walk！蜈支洲岛不玩项目纯打卡攻略</span></div><!--主要内容--><div class="main-box"><div class="main-box-left"><div class="news-title-box"><div class="news-title">不是city walk是island walk！蜈支洲岛不玩项目纯打卡攻略</div><div class="news-sub-title">发布时间：2024-09-15 09:55:09</div></div><div class="news-content-box"><p><img src="https://xxsc.lotsmall.cn/image/20240915/3775f0ceddef48f1a4f30f39eed56160.jpg" alt=""/><img src="https://xxsc.lotsmall.cn/image/20240915/6fa935d93add447ea6eac27f9723dcb6.jpg" alt=""/><img src="https://xxsc.lotsmall.cn/image/20240915/88943c756f2745aa84eccc32fc18f8cf.jpg" alt=""/><img src="https://xxsc.lotsmall.cn/image/20240915/65a4e05d209b494baa5b59001b8c2955.jpg" alt=""/><img src="https://xxsc.lotsmall.cn/image/20240915/8d31f42d708b4e878d03cff39623b22d.jpg" alt=""/><img src="https://xxsc.lotsmall.cn/image/20240915/866f3bec05754573b5df7c0b2cc0c6ad.jpg" alt=""/><img src="https://xxsc.lotsmall.cn/image/20240915/b16643c8748a470b8174f38ed08111e1.jpg" alt=""/><img src="https://xxsc.lotsmall.cn/image/20240915/f68684eb7a62467aad5f0f262d8e78e3.jpg" alt=""/><img src="https://xxsc.lotsmall.cn/image/20240915/d3d99f6aa6a14216bfc9eba2c8c58e94.jpg" alt=""/><img src="https://xxsc.lotsmall.cn/image/20240915/78a2fa67148041fc9d86e866ea579e36.jpg" alt=""/><img src="https://xxsc.lotsmall.cn/image/20240915/6637ac0824af4d00bde7a93b36937375.jpg" alt=""/><img src="https://xxsc.lotsmall.cn/image/20240915/e1bd98bd46fc4b4eb24e642976806f1e.jpg" alt=""/><img src="https://xxsc.lotsmall.cn/image/20240915/68543ffb2b6b442699f02fa668a4c092.jpg" alt=""/><img src="https://xxsc.lotsmall.cn/image/20240915/5381a1aa5ab043849980425defccfd89.jpg" alt=""/><img src="https://xxsc.lotsmall.cn/image/20240915/0e14e94827cf4dc4955f6cc5ef82a927.jpg" alt=""/><a href="https://wap.wuzhizhou.com/vue/detail/ticket/detail?scenicId=34039&ticketId=137994&m_id=1452&promoterId=27358&channelId=56&promoteSrcCode=aa67ed84-a38e-4938-b34c-06ddf5a3a254&distId=274" target="_self"><img src="https://xxsc.lotsmall.cn/image/20240915/78001ba67d4d4626a2cc248687d3353c.jpg" alt=""/></a><a href="https://wap.wuzhizhou.com/vue/detail/ticket/detail?scenicId=34039&ticketId=137785&m_id=1452&promoterId=27358&channelId=56&promoteSrcCode=aa67ed84-a38e-4938-b34c-06ddf5a3a254&distId=274" target="_self"><img src="https://xxsc.lotsmall.cn/image/20240915/aa9ccd3f5811486ea39c71186b9be9cb.jpg" alt=""/></a><a href="https://wap.wuzhizhou.com/vue/detail/ticket/detail?scenicId=34039&ticketId=146051&m_id=1452&promoterId=27358&channelId=56&promoteSrcCode=aa67ed84-a38e-4938-b34c-06ddf5a3a254&distId=274" target="_self"><img src="https://xxsc.lotsmall.cn/image/20240915/7e672d9f3e854f62865e1f13dee38513.jpg" alt=""/><img src="https://xxsc.lotsmall.cn/image/20240915/6c08bc27e34441d5b4b77bcfa5b02ffe.jpg" alt=""/></a><a href="https://wap.wuzhizhou.com/vue/detail/ticket/detail?scenicId=34039&ticketId=137763&m_id=1452&promoterId=27358&channelId=56&promoteSrcCode=aa67ed84-a38e-4938-b34c-06ddf5a3a254&distId=274" target="_self"><img src="https://xxsc.lotsmall.cn/image/20240915/00507015a93e4a6a91a00ddc3a5c0010.jpg" alt=""/></a><a href="https://wap.wuzhizhou.com/vue/detail/ticket/detail?scenicId=34039&ticketId=133672&m_id=1452&promoterId=27358&channelId=56&promoteSrcCode=aa67ed84-a38e-4938-b34c-06ddf5a3a254&distId=274" target="_self"><img src="https://xxsc.lotsmall.cn/image/20240915/abd5658d6ef74e658155596ec9bd8de9.jpg" alt=""/></a><img src="https://xxsc.lotsmall.cn/image/20240915/c6dccc37b37445f699f323937c155f70.jpg" alt=""/><a href="https://wap.wuzhizhou.com/vue/detail/ticket/detail?scenicId=34039&ticketId=168400&m_id=1452&promoterId=27358&channelId=56&promoteSrcCode=aa67ed84-a38e-4938-b34c-06ddf5a3a254&distId=274" target="_self"><img src="https://xxsc.lotsmall.cn/image/20240915/cb1dd31e136d48af84d452c9ee2ee360.jpg" alt=""/></a><a href="https://wap.wuzhizhou.com/detail/ticket/34039/park2023120711272296066?m_id=1452" target="_self"><img src="https://xxsc.lotsmall.cn/image/20240915/30284eca20624f408759e4cfed15eded.jpg" alt=""/></a><img src="https://xxsc.lotsmall.cn/image/20240915/48da627543b545d8b0282e7cb452d203.jpg" alt=""/><img src="https://xxsc.lotsmall.cn/image/20240915/51eaed7ba78a40d9b0d9fba2d2c55e8d.jpg" alt=""/></p></div></div><div class="main-box-right"><!-- 热门产品--><div class="hot-product"><div class="side-bar-title">热门产品</div><ul class="hot-product-list"><li class="hot-product-item"><a href="https://www.wuzhizhou.com/ticket/detail.html?modelCode=MP2023122820323714168"><span class="hot-product-order">1</span><span class="product-name">极限玩家</span><span class="product-price">￥1880.00</span></a></li><li class="hot-product-item"><a href="https://wap.wuzhizhou.com/vue/detail/ticket/detail?scenicId=34039&amp;ticketId=136857&amp;m_id=1452"><span class="hot-product-order">2</span><span class="product-name">蜈支洲探索潜水培训</span><span class="product-price">￥1280.00</span></a></li><li class="hot-product-item"><a href="https://www.wuzhizhou.com/ticket/detail.html?modelCode=MP2024010216461158242"><span class="hot-product-order">3</span><span class="product-name">彩虹拖伞</span><span class="product-price">￥350.00</span></a></li><li class="hot-product-item"><a href="https://www.wuzhizhou.com/ticket/detail.html?modelCode=MP2024011617031952350"><span class="hot-product-order">4</span><span class="product-name">门船票+电瓶车环岛游+City Walk</span><span class="product-price">￥0.00</span></a></li><li class="hot-product-item"><a href="https://www.wuzhizhou.com/ticket/detail.html?modelCode=MP2023122821044188926"><span class="hot-product-order">5</span><span class="product-name">珊瑚礁潜水</span><span class="product-price">￥550.00</span></a></li></ul></div><!-- 最近浏览--><div class="recently-browse"><div class="side-bar-title">最近浏览</div><ul class="recently-browse-list"><li class="recently-browse-item">暂无浏览记录</li></ul><!--if userinfo && userinfo.id--><!--else--><!--  li.recently-browse-item 请先登录--></div><!-- 最新文章--><div class="recently-news"><div class="side-bar-title">最新文章</div><a href="https://mp.weixin.qq.com/s/gRPLXGDvIlgwfmXnmVGB5g" target="_blank"><div class="recently-news-img img-scale-box"><img src="https://cdn-static.lotsmall.cn/image/20240329/20240329144128z3036n.png" class="img-scale"></div><div class="recently-news-info">心所潜，梦必达，来蜈支洲岛潜入非凡</div></a><ul class="recently-news-list"><li class="recently-news-item"><a href="https://mp.weixin.qq.com/s/-g_fMCnGlKyrgUQZeci-Bw" target="_blank"><span class="recently-news-title">椰+来袭，在蜈支洲岛，“万事皆可椰”！！</span><span class="recently-news-time">2024-03-29</span></a></li><li class="recently-news-item"><a href="https://mp.weixin.qq.com/s/ukNacdgu8BHtB20mcQqxuw" target="_blank"><span class="recently-news-title">情人节这天在蜈支洲岛用婚纱告白</span><span class="recently-news-time">2024-03-29</span></a></li></ul></div></div></div><!--不是精彩回归（单页）--><div class="dpage-switch"><a href="/islandStyle/detail_10076.html" class="prev"><i class="iconfont icon-jiantou_xiangzuoliangci"></i><span class="dpage-name">扬帆起航，在蜈支洲岛开启帆潜之旅</span></a><a href="/islandStyle/detail_11215.html" class="next"><span class="dpage-name">海上项目免费玩！惊喜活动享不停，月团圆，越好玩</span><i class="iconfont icon-jiantou_xiangyouliangci"></i></a></div><a href="/strategy/" class="goback-list">返回列表</a></div><div class="footer-box"><div class="footer-max"><div class="footer-top"><div class="footer-left"><div class="fl-box"><div class="fl-con"><img src="/images/index/address.png"><span>海南省三亚市海棠区三亚蜈支洲岛旅游区</span></div><div class="fl-con"><img src="/images/index/tell.png"><span>咨询热线：400-114-6666</span></div><div class="fl-con"><img src="/images/index/link.png"><span>投诉热线：0898-88751257</span></div><div class="fl-con"><img src="/images/index/dy.png"><span>服务时间：周一至周日08:00-17:30</span></div></div><p class="fl-copy fs-14">三亚蜈支洲岛旅游区 版权所有</p><p class="fl-copy fs-12">Copyright ©2012-2015 www.wuzhizhou.com All Rights Reserve  Mail:pac@wuzhizhou.com</p><a href="/islandNotice/detail_9988.html" target="_blank" class="fl-copy fs-12">《三亚蜈支洲岛旅游区安全安全生产承诺书》</a><p style="display:flex;"><a href="http://beian.miit.gov.cn" target="_blank" class="fl-copy fs-12">备案号：琼ICP备05002749号 |</a><a href="https://statics.lotsmall.cn/file/2024031311203376wcgm.pdf" target="_blank" class="fl-copy fs-12">营业执照 |</a><a href="https://statics.lotsmall.cn/file/20240313112131ku0yhx.pdf" target="_blank" class="fl-copy fs-12">食品卫生许可证</a></p></div><div class="footer-right"><div class="fr-box"><div class="fr-con"><span>官方微信</span><img style="width:100px;height:100px" src="/images/index/ewm.png"><span class="scan">扫一扫  关注蜈支洲旅游区</span></div><!--.fr-con--><!--    span 抖音号--><!--    img(src="/images/index/ewm.png")--><!--    span.scan 扫一扫  关注蜈支洲旅游区-->
+</div></div></div><div class="footer-bottom"><div class="language select"><div>中文</div><ul><li><a href="/" rel="nofollow" class="c"><span class="flag"></span><img src="/en/img/ch.png" width="17" height="17"><span class="country">中文</span></a></li><li><a href="/en" rel="nofollow" class="c"><span class="flag"></span><img src="/en/img/icong1.png" width="17" height="17"><span class="country">English</span></a></li><li><a href="/kr" rel="nofollow" class="c"><span class="flag"></span><img src="/en/img/icong6.png" width="17" height="17"><span class="country">한국어</span></a></li><li><a href="/ru" rel="nofollow" class="c"><span class="flag"></span><img src="/en/img/icong3.png" width="17" height="17"><span class="country">Pусский</span></a></li></ul></div><style>.language {
+    position: absolute;
+    z-index: 10;
+    width: 120px;
+    height: 31px;
+    background:url(/en/img/bg.png) 0 0 no-repeat;
+    right:0;
+}
+.language div {
+    padding-left:20px;
+    width:100px;
+    cursor: pointer;
+    line-height:30px;
+    color:#FFF;
+}
+
+.language ul {
+    display: none;
+    position: absolute;
+    top: -73px;
+    right :0;
+    padding-bottom: 10px;
+    width: 358px!important;
+    background: #e5e5e5!important;
+}
+.language li {
+    float: left;
+    /*width:100%;*/
+
+    background: #e5e5e5;
+}
+.language li a {
+    float: left;
+    width: 118px;
+    height: 32px;
+    line-height: 32px;
+    overflow: hidden;
+    color: #000;
+    background: #e5e5e5;
+}
+.language li a img{
+    vertical-align:middle;
+}
+.language li .selected {
+    background: #e5e5e5;
+}
+.language li a:hover {
+    background: #fff;
+}
+.language .flag {
+    float: left;
+    margin: 9px 0 0 7px;
+    width: 17px;
+    height: 17px;
+    overflow: hidden;
+}
+.language .country {
+    padding-left: 4px;
+    color: #000;
+    display: inline-block;
+    vertical-align: middle;
+}</style><script>$(function(){
+    $('.language').hover(function(){
+            $('.language ul').show();
+        },function(){
+            $('.language ul').hide();
+        }
+    );
+});</script><div class="footer-find"><span>友情链接</span><select onchange="window.open(this.value)"><option value="http://www.hainan.net">海南在线</option><option value="http://hi.people.com.cn/">人民网海南视窗</option><option value="http://www.binglanggu.com/">海南槟榔谷黎苗文化旅游区</option><!--option(value="http://www.baidu.com") 拓极水运动--><!--option(value="http://www.baidu.com") 拓极水运动--><!--option(value="http://www.baidu.com") 拓极水运动--></select></div></div></div></div><script>$(function(){
+    //- min ≤ r ≤ max 的随机数
+    //- function RandomNumBoth(Min,Max){
+    //-     var Range = Max - Min;
+    //-     var Rand = Math.random();
+    //-     var num = Min + Math.round(Rand * Range); //四舍五入
+    //-     return num;
+    //- }
+    //- function getTodayKeliu(){
+    //-     var today = getDateStr(new Date(),0)
+    //-     var num = ''
+    //-     var keliu = JSON.parse(localStorage.getItem('keliu')||'{}')
+    //-     if(keliu.day===today){
+    //-         num = parseInt(keliu.num) 
+    //-         $('.keliu-value').text(num)
+    //-         return
+    //-     }
+    //-     $.post('/keliu').success(function(res){
+    //-         const peopleNumber = res?.[0]?.data?.peopleNumber
+    //-         if(peopleNumber){
+    //-             let num = Number(peopleNumber)||0
+    //-             console.log(num)
+    //-             if(!num){
+    //-                 const keliuArr = peopleNumber.split('-')
+    //-                 if(keliuArr.length===2){
+    //-                     num = RandomNumBoth(Number(keliuArr[0]),Number(keliuArr[1]))
+    //-                 }
+    //-             }
+    //-             keliu.day = today
+    //-             keliu.num = num
+    //-             localStorage.setItem('keliu',JSON.stringify(keliu))
+    //-             $('.keliu-value').text(num)
+    //-         }
+    //-     })
+    //- }
+    //- getTodayKeliu()
+});           
+         </script><script>$(function () {
+    if($('.news-slider').length>0){
+        $(".news-slider").slide({titCell: ".smallImgb li", mainCell: ".bigImgb", effect: "fold", autoPlay: false, delayTime: 400, prevCell: ".sPrevb", nextCell: ".sNextb", pnLoop: false});
+        $(".news-slider .smallScrollb").slide({
+            mainCell: "ul",
+            autoPage: true,
+            effect: "left",
+            autoPlay: false,
+            vis: 5,
+            prevCell: ".sPrevb",
+            nextCell: ".sNextb",
+            pnLoop: false});
+    }
+})</script></body></html>
