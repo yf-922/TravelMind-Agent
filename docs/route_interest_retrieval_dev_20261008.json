@@ -31,8 +31,8 @@
     "upstream": "fixed_verified_candidates_weather_and_drive_replay"
   },
   "cases": "354d34473c3af8235ac40dbe862b30cdf73a70a05b09a09a2931b76fe4625d7b",
-  "facts": "892912aea35699bdd276994445b73276f3353b94e8c5ef69b88c783b3b6c9f67",
-  "maps": "a6cfa7b4ff3415db5a515e9c9a69a7f08663667e6326154c2005d193aca12d1c",
+  "facts": "ed66c18d28867e020592e6c70edf4377308379cb011a54d50c9828d0d525194f",
+  "maps": "9fb911a7aaf5c8fa785119c2b79daea13536dd08f65b9a55a53911998a2c6f6c",
   "implementation": "8cb73d47ad6b8e6a6764d6d1a24b9c4ddadc243d44286b40d6aeafd2bcff874e",
   "preflight": {
     "requests": 15,
@@ -132,16 +132,15 @@
       "case_id": "interest-三亚-01",
       "sources": [
         "wuzhizhou_activity_types",
-        "interest_493b6e346dac06d7",
-        "interest_f463160d936a96b9"
+        "interest_29f816a87be08528",
+        "interest_939e4045f8981f6a"
       ],
       "candidate_entities": [
-        "南山大小洞天旅游区",
-        "大小洞天",
-        "天涯海角游览区",
+        "三亚西岛海洋文化旅游区",
         "蜈支洲岛",
         "蜈支洲岛旅游区",
-        "蜈支洲岛旅游风景区"
+        "蜈支洲岛旅游风景区",
+        "鹿回头风景区"
       ]
     },
     {
@@ -176,15 +175,15 @@
       "case_id": "interest-三亚-02",
       "sources": [
         "wuzhizhou_activity_types",
-        "interest_493b6e346dac06d7",
-        "interest_d78fbeaccfb68d62"
+        "interest_29f816a87be08528",
+        "interest_939e4045f8981f6a"
       ],
       "candidate_entities": [
-        "三亚南山文化旅游区",
-        "天涯海角游览区",
+        "三亚西岛海洋文化旅游区",
         "蜈支洲岛",
         "蜈支洲岛旅游区",
-        "蜈支洲岛旅游风景区"
+        "蜈支洲岛旅游风景区",
+        "鹿回头风景区"
       ]
     },
     {
@@ -219,15 +218,15 @@
       "case_id": "interest-三亚-03",
       "sources": [
         "wuzhizhou_activity_types",
-        "interest_493b6e346dac06d7",
-        "interest_d78fbeaccfb68d62"
+        "interest_29f816a87be08528",
+        "interest_939e4045f8981f6a"
       ],
       "candidate_entities": [
-        "三亚南山文化旅游区",
-        "天涯海角游览区",
+        "三亚西岛海洋文化旅游区",
         "蜈支洲岛",
         "蜈支洲岛旅游区",
-        "蜈支洲岛旅游风景区"
+        "蜈支洲岛旅游风景区",
+        "鹿回头风景区"
       ]
     },
     {
@@ -262,15 +261,15 @@
       "case_id": "interest-三亚-04",
       "sources": [
         "wuzhizhou_activity_types",
-        "interest_493b6e346dac06d7",
-        "interest_d78fbeaccfb68d62"
+        "interest_29f816a87be08528",
+        "interest_939e4045f8981f6a"
       ],
       "candidate_entities": [
-        "三亚南山文化旅游区",
-        "天涯海角游览区",
+        "三亚西岛海洋文化旅游区",
         "蜈支洲岛",
         "蜈支洲岛旅游区",
-        "蜈支洲岛旅游风景区"
+        "蜈支洲岛旅游风景区",
+        "鹿回头风景区"
       ]
     },
     {
@@ -305,16 +304,15 @@
       "case_id": "interest-三亚-05",
       "sources": [
         "wuzhizhou_activity_types",
-        "interest_493b6e346dac06d7",
-        "interest_f463160d936a96b9"
+        "interest_29f816a87be08528",
+        "interest_939e4045f8981f6a"
       ],
       "candidate_entities": [
-        "南山大小洞天旅游区",
-        "大小洞天",
-        "天涯海角游览区",
+        "三亚西岛海洋文化旅游区",
         "蜈支洲岛",
         "蜈支洲岛旅游区",
-        "蜈支洲岛旅游风景区"
+        "蜈支洲岛旅游风景区",
+        "鹿回头风景区"
       ]
     }
   ]
