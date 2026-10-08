@@ -29,9 +29,9 @@ def main():
     report = {
         'status': 'offline_diagnostic_not_quality_benchmark',
         'external_calls': 0, 'embedding_calls': 0,
-        'method': 'Read factory/node source; inventory runtime Markdown; keyword-only probes without human relevance labels.',
+        'method': 'Read factory/node source; inventory runtime Markdown and planning facts; keyword-only probes without human relevance labels.',
         'default_planner': 'make_joint_planner_node' if 'return make_joint_planner_node(model_name)' in factory else 'unknown',
-        'joint_planner_calls_rag': 'search_travel_knowledge(' in joint,
+        'joint_planner_calls_rag': 'search_planning_knowledge(' in joint,
         'legacy_planner_calls_rag': 'search_travel_knowledge(' in legacy,
         'runtime_source_directory': 'knowledge/travel',
         'runtime_documents': [d['source'] for d in docs],
