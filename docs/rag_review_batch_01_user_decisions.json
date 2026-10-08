@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "recorded_on": "2026-10-08",
+  "scope": "dev_only",
+  "status": "user_scope_decisions_pending_evidence_annotation",
+  "decision_source": "Direct user reply in this chat",
+  "annotator": null,
+  "importable_as_gold": false,
+  "original_assets_modified": false,
+  "decisions": [
+    {
+      "case_ids": ["v2-0-0-0", "v2-0-0-1"],
+      "user_reply": "可以将预约渠道 时间窗口 需要的证件补进去",
+      "action": "retain_expand_required_facts",
+      "requirements": ["预约渠道", "预约时间窗口", "所需证件"],
+      "evidence_status": "pending_final_annotation"
+    },
+    {
+      "case_ids": ["v2-0-2-0", "v2-0-2-1"],
+      "user_reply": "这个问题不需要 因为我的路线规划里面有实时规划的",
+      "action": "exclude_from_next_knowledge_retrieval_benchmark",
+      "reason": "用户将实时交通路线需求划入地图工具链路，而非静态知识检索范围。",
+      "retain_in_audit": true,
+      "quality_claim": "Scope exclusion is not a passed query and does not repair missing traffic evidence."
+    },
+    {
+      "case_ids": ["v2-0-4-0", "v2-0-4-1"],
+      "user_reply": "给一般建议 增加休息建议 陪护条件就行 不用加优惠条款",
+      "action": "retain_narrow_answer_scope",
+      "requirements": ["一般低强度游览建议", "休息建议", "有证据支持且适用的陪护条件"],
+      "exclude_from_required_facts": ["优惠条款"],
+      "constraints": ["一般建议与官方事实分开表述", "不承诺免预约、具体休息点或优惠资格"],
+      "evidence_status": "pending_final_annotation"
+    },
+    {
+      "case_ids": ["v2-0-6-0"],
+      "user_reply": "统一",
+      "action": "pending_clarification",
+      "reason": "未明确是否表示同意 AI 门票审核建议，不能推断为统一票价或全部免费。"
+    },
+    {
+      "case_ids": ["v2-0-8-0"],
+      "user_reply": "不需要这个问题",
+      "action": "exclude_from_next_knowledge_retrieval_benchmark",
+      "reason": "用户明确要求移出此题；此项属于评测范围变更，不是证据充分性确认。",
+      "retain_in_audit": true,
+      "quality_claim": "Scope exclusion is not a passed query."
+    },
+    {
+      "case_ids": ["v2-1-1-0", "v2-1-1-1"],
+      "user_reply": "模糊问题可以不召回 一定保证正确性",
+      "action": "retain_as_clarification_behavior_cases",
+      "requirements": ["先询问具体场馆", "明确实体前不检索或引用具体场馆的开放时间", "不能承诺绝对正确性"],
+      "scoring_scope": "Clarification behavior; exclude from answerable-query retrieval Recall denominator.",
+      "implementation_status": "requirement_recorded_not_runtime_verified"
+    }
+  ],
+  "next_version_policy": {
+    "preserve_original_cases_and_reports": true,
+    "report_excluded_case_ids_and_reasons": true,
+    "do_not_compare_changed_scope_scores_directly_with_old_scores": true,
+    "do_not_remove_frozen_test_cases_based_on_dev_review": true,
+    "require_new_fingerprints_and_human_evidence_confirmation": true
+  }
+}
