@@ -31,6 +31,8 @@ def score_case(case, retrieved, k=None):
         chunk_id=str(x.get("chunk_id"))
         if chunk_id not in ranked:
             ranked.append(chunk_id)
+    if k is not None:
+        ranked=ranked[:k]
     rel=[relevant.get(x,0) for x in ranked]
     first=next((i+1 for i,x in enumerate(rel) if x>0),None)
     ideal=sorted(relevant.values(), reverse=True)[:k if k is not None else len(rel)]
@@ -55,7 +57,7 @@ def evaluate(cases, mode, k, c=60, corpus=None):
         except Exception as exc: error=type(exc).__name__+': '+str(exc)
         latency.append((time.perf_counter()-started)*1000)
         grade=score_case(case,result,k) if not error else None
-        rows.append({"id":case["id"],"intent_group":case.get("intent_group",case['id']),"type":case.get("type"),"answerable":bool(case.get("relevant_chunks")),"error":error,"retrieved":[x.get("chunk_id") for x in result],"grade":grade,
+        rows.append({"id":case["id"],"intent_group":case.get("intent_group",case['id']),"type":case.get("type"),"answerable":case.get('type')=='answerable' if case.get('type') else any(x.get('relevance',2)>0 for x in case.get('relevant_chunks',[])),"error":error,"retrieved":[x.get("chunk_id") for x in result],"grade":grade,
                      "context_chars":sum(len(x.get("text","")) for x in result),"latency_ms":latency[-1]})
     valid=[x["grade"] for x in rows if x["grade"] and x["answerable"]]
     answerable=[x for x in rows if x["answerable"]]

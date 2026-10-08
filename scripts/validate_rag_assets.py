@@ -17,7 +17,7 @@ def main():
     p.add_argument('--require-review',action='store_true')
     a=p.parse_args()
     rows=json.loads(a.corpus.read_text(encoding='utf-8'))
-    errors=validate_corpus(rows,a.require_quota)
+    errors=validate_corpus(rows,a.require_quota,a.require_review)
     if a.cases:
         cases=json.loads(a.cases.read_text(encoding='utf-8'))
         errors+=validate_annotations(cases,rows,a.require_review,a.require_quota)

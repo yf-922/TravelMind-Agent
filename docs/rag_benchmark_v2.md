@@ -31,6 +31,7 @@ Run from the repository root with Python 3.11 or 3.12:
 ```powershell
 python -m pip install torch==2.6.0 --index-url https://download.pytorch.org/whl/cpu
 python -m pip install -r requirements-rag-eval.txt
+python scripts/prepare_rag_embedding.py --download
 python scripts/validate_rag_assets.py --corpus knowledge/benchmark_v2_curated/chunks.json --cases evaluation/rag_benchmark_v2_draft.json --require-quota
 python scripts/review_rag_annotations.py export --cases evaluation/rag_benchmark_v2_draft.json --corpus knowledge/benchmark_v2_curated/chunks.json --out evaluation/rag_v2_review_packet.json
 ```
@@ -42,14 +43,17 @@ One reviewer is sufficient; do not claim multi-rater agreement.
 
 ```powershell
 python scripts/review_rag_annotations.py import --cases evaluation/rag_v2_review_packet.json --corpus knowledge/benchmark_v2_curated/chunks.json --out evaluation/rag_benchmark_v2_reviewed.json
-python scripts/build_rag_variants.py --corpus knowledge/benchmark_v2_curated/chunks.json --cases evaluation/rag_benchmark_v2_draft.json --out knowledge/benchmark_v2_variants
+python scripts/review_rag_annotations.py import-corpus --cases evaluation/rag_v2_review_packet.json --corpus knowledge/benchmark_v2_curated/chunks.json --out knowledge/benchmark_v2_reviewed/chunks.json
+python scripts/build_rag_variants.py --corpus knowledge/benchmark_v2_curated/chunks.json --source-corpora knowledge/benchmark_v2/chunks.json knowledge/benchmark_v2_targeted/chunks.json knowledge/benchmark_v2_dynamic/chunks.json knowledge/benchmark_v2_visitor/chunks.json knowledge/benchmark_v2/rule_chunks.json --cases evaluation/rag_benchmark_v2_draft.json --out knowledge/benchmark_v2_variants
 python scripts/sweep_rag_v2.py --cases evaluation/rag_benchmark_v2_draft.json --corpus knowledge/benchmark_v2_curated/chunks.json --out evaluation/rag_v2_dev_draft.json
 ```
 
 For chunk comparisons run the sweep separately with `semantic.json` and
 `semantic.cases.json`, then `token.json` and `token.cases.json`. Remapped labels
 remain pending and must be reviewed. Both variants are derived from identical
-source text. No silent tokenizer truncation; actual BGE tokenizer ceiling 512
+source text reconstructed in capture order by URL/evidence group; curated omissions
+are retained. This avoids treating previously split 420-character blocks as original
+paragraphs. No silent tokenizer truncation; actual BGE tokenizer ceiling 512
 including special tokens, semantic soft target 420 characters, overlap zero.
 This is not evidence that character splitting is better than token splitting.
 
@@ -61,6 +65,15 @@ embedding is BAAI/bge-small-zh-v1.5 revision
 Its query instruction is recorded in every embedding configuration. Index names
 include corpus and embedding configuration fingerprints; stored IDs/text are
 validated. Explicit hybrid errors never masquerade as keyword success.
+Retrieval never downloads a model during a request: prepare the pinned snapshot
+explicitly first. A missing local tokenizer/model is a recorded failure.
+
+MiniLM is retained as an explicit diagnostic: supply `--embedding-config` to
+`prepare_rag_embedding.py` and `sweep_rag_v2.py`. The JSON requires `model`
+(`sentence-transformers/all-MiniLM-L6-v2`), an actual 40-hex revision, cosine,
+normalize=true, query_prefix="", and max_tokens=256. Obtain the immutable revision
+from the model repository; `main` is forbidden. Model fingerprints ensure a distinct
+index. No MiniLM diagnostic was run here, and its old index is never reused.
 
 ## Metrics and selection
 
@@ -68,6 +81,14 @@ Relevant chunks have grades 1 or 2, irrelevant 0. Recall and Precision count
 unique IDs; MRR uses the first relevant rank. nDCG uses linear relevance gains
 (not exponential gains), documented as formula v2. Fact coverage uses annotated
 evidence groups; paragraph hash proposals are not yet semantic fact gold.
+
+Metric formulas at k: Hit=1 if any relevant unique ID is retrieved, else 0;
+Recall=positive IDs retrieved / all annotated positive IDs; Precision=positive IDs
+retrieved / k (unfilled positions count as irrelevant); RR=1/first relevant rank,
+or 0; MRR is mean RR. DCG=sum(grade_i/log2(i+1)) with ranks starting at 1;
+nDCG=DCG/ideal DCG at k, or 0 if ideal DCG is zero. Fact coverage=annotated evidence
+groups retrieved / required evidence groups. No-answer cases are excluded from
+positive relevance averages and reported separately, not assigned perfect Recall.
 
 Main quality metrics include failed answerable requests as zero. Completed-only
 quality and availability are separate. Missing/outside cases report retrieval,
@@ -96,13 +117,16 @@ After development selection, put only mode/k/rrf_c in a final config JSON.
 `rag_v2_config_candidate.json` is an unmeasured candidate, not the selected best.
 
 ```powershell
-python scripts/review_rag_annotations.py freeze --cases evaluation/rag_benchmark_v2_reviewed.json --corpus knowledge/benchmark_v2_curated/chunks.json --config evaluation/rag_v2_config_candidate.json --out evaluation/rag_v2_freeze.json
-python scripts/evaluate_rag_v2.py --cases evaluation/rag_benchmark_v2_reviewed.json --corpus knowledge/benchmark_v2_curated/chunks.json --split test --mode hybrid --k 3 --rrf-c 60 --freeze evaluation/rag_v2_freeze.json --allow-vector --out evaluation/rag_v2_test.json
+python scripts/review_rag_annotations.py freeze --cases evaluation/rag_benchmark_v2_reviewed.json --corpus knowledge/benchmark_v2_reviewed/chunks.json --config evaluation/rag_v2_config_candidate.json --out evaluation/rag_v2_freeze.json
+python scripts/evaluate_rag_v2.py --cases evaluation/rag_benchmark_v2_reviewed.json --corpus knowledge/benchmark_v2_reviewed/chunks.json --split test --mode hybrid --k 3 --rrf-c 60 --freeze evaluation/rag_v2_freeze.json --allow-vector --out evaluation/rag_v2_test.json
 ```
 
 Any change to corpus, labels, final configuration or embedding configuration
 invalidates the freeze. Do not use test outcomes to tune; create a new protocol
 version with a fresh holdout if further tuning is necessary.
+Sources must also be signed: `review_status=human_reviewed`, annotator, ISO
+reviewed_at and change_log. Review validity and whether each assertion is official
+fact or authored advice. Importing query labels does not approve sources.
 
 `evaluate_rag_generation.py` defaults to dry-run. Supply cases/corpus/config/
 freeze, generator/judge model and endpoint, input/output price per million tokens,
@@ -118,6 +142,16 @@ generator/Judge latency and actual provider usage (null if unavailable), errors
 and pending human review. One trial per case at selected k plus all errors is
 selected for human review. Judge scores are not human ground truth or retrieval
 gain. No paid calls have been authorized by this implementation request.
+Reports aggregate per k, count failed/unrecorded trials in availability, and report
+provider-measured input/output tokens separately for generator and Judge. Unknown
+usage is not fabricated. Each attempted call reserves a cost ceiling before it
+runs; failures/unknown usage retain their reservation, and known usage reconciles
+the estimate. Exceeding the budget stops further calls and preserves prior results.
+Dry-run quality fields are null, not invented zero scores.
+
+The committed preflight example uses illustrative prices 1/2 per million tokens,
+not verified provider rates: 60 test requests × 3 k × 3 trials × generator/Judge
+= 1080 calls. Review actual model prices and budget before authorizing execution.
 
 ## Verification and remaining gates
 

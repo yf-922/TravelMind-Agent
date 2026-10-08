@@ -11,7 +11,7 @@ from app.evaluation.rag_retrieval import corpus_fingerprint, load_chunks
 import statistics
 import argparse
 from scripts.evaluate_rag_v2 import summarize_rows
-from app.evaluation.rag_retrieval import embedding_config,lexical_config
+from app.evaluation.rag_retrieval import embedding_config,lexical_config,configure_embedding
 from app.evaluation.rag_protocol import fingerprint
 
 
@@ -19,9 +19,11 @@ def main():
     p=argparse.ArgumentParser()
     p.add_argument('--cases',type=Path,default=ROOT/'evaluation/rag_benchmark_v1_draft.json')
     p.add_argument('--corpus',type=Path)
+    p.add_argument('--embedding-config',type=Path,help='Pinned MiniLM diagnostic configuration; separate index and report')
     p.add_argument('--modes',nargs='+',default=['keyword','bm25','vector','hybrid','keyword_rrf','legacy_hybrid'])
     p.add_argument('--out',type=Path,default=ROOT/'evaluation/rag_v2_dev_sweep_draft.json')
     a=p.parse_args()
+    if a.embedding_config:configure_embedding(json.loads(a.embedding_config.read_text(encoding='utf-8')))
     cases=json.loads(a.cases.read_text(encoding='utf-8'))
     cases=[c for c in cases if c['split']=='dev']
     reports=[]
@@ -46,7 +48,8 @@ def main():
                 valid=[x['grade'] for x in report['cases'] if x['answerable'] and x['grade']]
                 report.update(summarize_rows(report['cases']))
                 reports.append(report)
-    out={'schema_version':2,'annotation_status':'pending_review','scope':'dev only, smoke metrics, not gold conclusions',
+    statuses={c.get('annotation_status','pending_review') for c in cases}
+    out={'schema_version':2,'annotation_status':next(iter(statuses)) if len(statuses)==1 else 'mixed','scope':'dev only; production selection requires signed labels and source review',
          'corpus_fingerprint':corpus_fingerprint(corpus),'annotation_fingerprint':fingerprint(cases),'production_default_changed':False,
          'embedding':embedding_config(),
          'tokenizer':lexical_config(),
@@ -65,6 +68,7 @@ def main():
         eligible=[r for r in options if best_recall-r['metrics']['recall']<=.02+1e-9 and best_ndcg-r['metrics']['ndcg']<=.02+1e-9]
         selected=min(eligible,key=lambda r:(r['k'],-r['metrics']['ndcg'],abs(r['rrf_c']-60))) if eligible else max(options,key=lambda r:(r['metrics']['recall'],r['metrics']['ndcg'],-r['k']))
         out['draft_configuration_candidates'][mode]={key:selected[key] for key in ('mode','k','rrf_c')}
+    a.out.parent.mkdir(parents=True,exist_ok=True)
     a.out.write_text(json.dumps(out,ensure_ascii=False,indent=2),encoding='utf-8')
     print(out['draft_k_candidates'])
 

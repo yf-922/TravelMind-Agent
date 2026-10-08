@@ -1,9 +1,10 @@
 {
   "instructions": "Edit query, type, facts and relevance. Sign annotator/reviewed_at/change_log per case. Do not mark drafts reviewed without reading sources.",
+  "source_instructions": "Review each source validity and advice/fact distinction. Sign review_status=human_reviewed, annotator, reviewed_at and change_log. import-corpus exports evidence separately.",
   "cases": [
     {
       "id": "v2-0-0-0",
-      "query": "南京 /visit/notes，怎么预约，需要提前准备什么？",
+      "query": "南京博物院：怎么预约，需要提前准备什么？",
       "city": "南京",
       "type": "answerable",
       "intent_group": "南京-intent-0",
@@ -30,7 +31,7 @@
     },
     {
       "id": "v2-0-0-1",
-      "query": "我准备去南京，关于预约的事想问一下：怎么预约，需要提前准备什么？",
+      "query": "我准备去南京博物院，关于预约的事想问一下：怎么预约，需要提前准备什么？",
       "city": "南京",
       "type": "answerable",
       "intent_group": "南京-intent-0",
@@ -57,7 +58,7 @@
     },
     {
       "id": "v2-0-1-0",
-      "query": "南京 /visit/notes，几点开放，有哪些时间限制？",
+      "query": "南京博物院：几点开放，有哪些时间限制？",
       "city": "南京",
       "type": "answerable",
       "intent_group": "南京-intent-1",
@@ -84,7 +85,7 @@
     },
     {
       "id": "v2-0-1-1",
-      "query": "我准备去南京，关于开放的事想问一下：几点开放，有哪些时间限制？",
+      "query": "我准备去南京博物院，关于开放的事想问一下：几点开放，有哪些时间限制？",
       "city": "南京",
       "type": "answerable",
       "intent_group": "南京-intent-1",
@@ -111,7 +112,7 @@
     },
     {
       "id": "v2-0-2-0",
-      "query": "南京 /visit/notes，怎样到达，入口和换乘怎么选？",
+      "query": "南京博物院：怎样到达，入口和换乘怎么选？",
       "city": "南京",
       "type": "answerable",
       "intent_group": "南京-intent-2",
@@ -138,7 +139,7 @@
     },
     {
       "id": "v2-0-2-1",
-      "query": "我准备去南京，关于交通的事想问一下：怎样到达，入口和换乘怎么选？",
+      "query": "我准备去南京博物院，关于交通的事想问一下：怎样到达，入口和换乘怎么选？",
       "city": "南京",
       "type": "answerable",
       "intent_group": "南京-intent-2",
@@ -165,7 +166,7 @@
     },
     {
       "id": "v2-0-3-0",
-      "query": "南京 /visit/notes，带孩子出行，有什么注意事项？",
+      "query": "南京博物院：带孩子出行，有什么注意事项？",
       "city": "南京",
       "type": "answerable",
       "intent_group": "南京-intent-3",
@@ -192,12 +193,12 @@
     },
     {
       "id": "v2-0-3-1",
-      "query": "我准备去南京，关于亲子的事想问一下：带孩子出行，有什么注意事项？",
+      "query": "不要用上海的攻略，我是问南京博物院：带孩子出行，有什么注意事项？",
       "city": "南京",
       "type": "answerable",
       "intent_group": "南京-intent-3",
       "split": "test",
-      "challenge": "colloquial",
+      "challenge": "cross_city",
       "relevant_chunks": [
         {
           "chunk_id": "dynamic-4099b51516468dbb6050861d",
@@ -219,7 +220,7 @@
     },
     {
       "id": "v2-0-4-0",
-      "query": "南京 /visit/notes，带老人慢慢游览，有什么安排建议？",
+      "query": "南京博物院：带老人慢慢游览，有什么安排建议？",
       "city": "南京",
       "type": "answerable",
       "intent_group": "南京-intent-4",
@@ -246,12 +247,12 @@
     },
     {
       "id": "v2-0-4-1",
-      "query": "我准备去南京，关于老人的事想问一下：带老人慢慢游览，有什么安排建议？",
+      "query": "网上攻略里城市容易搞混，请只按南京的南京博物院回答：带老人慢慢游览，有什么安排建议？",
       "city": "南京",
       "type": "answerable",
       "intent_group": "南京-intent-4",
       "split": "dev",
-      "challenge": "colloquial",
+      "challenge": "city_disambiguation",
       "relevant_chunks": [
         {
           "chunk_id": "dynamic-da84c7d313c702b96e45af04",
@@ -273,7 +274,7 @@
     },
     {
       "id": "v2-0-5-0",
-      "query": "南京 雨天室内方案的开放与通勤，遇上下雨，游览时应注意什么？",
+      "query": "南京旅行：遇上下雨，游览时应注意什么？",
       "city": "南京",
       "type": "answerable",
       "intent_group": "南京-intent-5",
@@ -300,7 +301,7 @@
     },
     {
       "id": "v2-0-6-0",
-      "query": "南京 /visit/notes，购票和入场有哪些条件？",
+      "query": "南京博物院：购票和入场有哪些条件？",
       "city": "南京",
       "type": "answerable",
       "intent_group": "南京-intent-6",
@@ -327,7 +328,7 @@
     },
     {
       "id": "v2-0-7-0",
-      "query": "南京 /visit/notes，游览有哪些安全提醒？",
+      "query": "南京博物院：游览有哪些安全提醒？",
       "city": "南京",
       "type": "answerable",
       "intent_group": "南京-intent-7",
@@ -354,7 +355,7 @@
     },
     {
       "id": "v2-0-8-0",
-      "query": "南京 /service/shop，有哪些服务设施和使用要求？",
+      "query": "南京博物院：有哪些服务设施和使用要求？",
       "city": "南京",
       "type": "answerable",
       "intent_group": "南京-intent-8",
@@ -387,7 +388,7 @@
     },
     {
       "id": "v2-0-9-0",
-      "query": "南京 老人辅助出行与设施限制，不想赶路，游览路线怎么安排？",
+      "query": "南京旅行：不想赶路，游览路线怎么安排？",
       "city": "南京",
       "type": "answerable",
       "intent_group": "南京-intent-9",
@@ -420,7 +421,7 @@
     },
     {
       "id": "v2-1-0-0",
-      "query": "上海 团队预约，怎么预约，需要提前准备什么？",
+      "query": "上海旅行：怎么预约，需要提前准备什么？",
       "city": "上海",
       "type": "answerable",
       "intent_group": "上海-intent-0",
@@ -447,7 +448,7 @@
     },
     {
       "id": "v2-1-0-1",
-      "query": "我准备去上海，关于预约的事想问一下：怎么预约，需要提前准备什么？",
+      "query": "我准备去上海旅行，关于预约的事想问一下：怎么预约，需要提前准备什么？",
       "city": "上海",
       "type": "answerable",
       "intent_group": "上海-intent-0",
@@ -474,7 +475,7 @@
     },
     {
       "id": "v2-1-1-0",
-      "query": "上海 团队预约，几点开放，有哪些时间限制？",
+      "query": "上海旅行：几点开放，有哪些时间限制？",
       "city": "上海",
       "type": "answerable",
       "intent_group": "上海-intent-1",
@@ -501,7 +502,7 @@
     },
     {
       "id": "v2-1-1-1",
-      "query": "我准备去上海，关于开放的事想问一下：几点开放，有哪些时间限制？",
+      "query": "我准备去上海旅行，关于开放的事想问一下：几点开放，有哪些时间限制？",
       "city": "上海",
       "type": "answerable",
       "intent_group": "上海-intent-1",
@@ -528,7 +529,7 @@
     },
     {
       "id": "v2-1-2-0",
-      "query": "上海 活动预约，怎样到达，入口和换乘怎么选？",
+      "query": "上海博物馆：怎样到达，入口和换乘怎么选？",
       "city": "上海",
       "type": "answerable",
       "intent_group": "上海-intent-2",
@@ -555,7 +556,7 @@
     },
     {
       "id": "v2-1-2-1",
-      "query": "我准备去上海，关于交通的事想问一下：怎样到达，入口和换乘怎么选？",
+      "query": "我准备去上海博物馆，关于交通的事想问一下：怎样到达，入口和换乘怎么选？",
       "city": "上海",
       "type": "answerable",
       "intent_group": "上海-intent-2",
@@ -582,7 +583,7 @@
     },
     {
       "id": "v2-1-3-0",
-      "query": "上海 活动预约，带孩子出行，有什么注意事项？",
+      "query": "上海博物馆：带孩子出行，有什么注意事项？",
       "city": "上海",
       "type": "answerable",
       "intent_group": "上海-intent-3",
@@ -609,12 +610,12 @@
     },
     {
       "id": "v2-1-3-1",
-      "query": "我准备去上海，关于亲子的事想问一下：带孩子出行，有什么注意事项？",
+      "query": "不要用重庆的攻略，我是问上海博物馆：带孩子出行，有什么注意事项？",
       "city": "上海",
       "type": "answerable",
       "intent_group": "上海-intent-3",
       "split": "dev",
-      "challenge": "colloquial",
+      "challenge": "cross_city",
       "relevant_chunks": [
         {
           "chunk_id": "official-02acea8fddc610facef0d2ae",
@@ -636,7 +637,7 @@
     },
     {
       "id": "v2-1-4-0",
-      "query": "上海 活动预约，带老人慢慢游览，有什么安排建议？",
+      "query": "上海博物馆：带老人慢慢游览，有什么安排建议？",
       "city": "上海",
       "type": "answerable",
       "intent_group": "上海-intent-4",
@@ -663,12 +664,12 @@
     },
     {
       "id": "v2-1-4-1",
-      "query": "我准备去上海，关于老人的事想问一下：带老人慢慢游览，有什么安排建议？",
+      "query": "网上攻略里城市容易搞混，请只按上海的上海博物馆回答：带老人慢慢游览，有什么安排建议？",
       "city": "上海",
       "type": "answerable",
       "intent_group": "上海-intent-4",
       "split": "test",
-      "challenge": "colloquial",
+      "challenge": "city_disambiguation",
       "relevant_chunks": [
         {
           "chunk_id": "official-02acea8fddc610facef0d2ae",
@@ -690,7 +691,7 @@
     },
     {
       "id": "v2-1-5-0",
-      "query": "上海 活动预约，遇上下雨，游览时应注意什么？",
+      "query": "上海博物馆：遇上下雨，游览时应注意什么？",
       "city": "上海",
       "type": "answerable",
       "intent_group": "上海-intent-5",
@@ -717,7 +718,7 @@
     },
     {
       "id": "v2-1-6-0",
-      "query": "上海 活动预约，购票和入场有哪些条件？",
+      "query": "上海博物馆：购票和入场有哪些条件？",
       "city": "上海",
       "type": "answerable",
       "intent_group": "上海-intent-6",
@@ -744,7 +745,7 @@
     },
     {
       "id": "v2-1-7-0",
-      "query": "上海 团队预约，游览有哪些安全提醒？",
+      "query": "上海旅行：游览有哪些安全提醒？",
       "city": "上海",
       "type": "answerable",
       "intent_group": "上海-intent-7",
@@ -771,7 +772,7 @@
     },
     {
       "id": "v2-1-8-0",
-      "query": "上海 活动预约，有哪些服务设施和使用要求？",
+      "query": "上海博物馆：有哪些服务设施和使用要求？",
       "city": "上海",
       "type": "answerable",
       "intent_group": "上海-intent-8",
@@ -804,7 +805,7 @@
     },
     {
       "id": "v2-1-9-0",
-      "query": "上海 活动预约，不想赶路，游览路线怎么安排？",
+      "query": "上海博物馆：不想赶路，游览路线怎么安排？",
       "city": "上海",
       "type": "answerable",
       "intent_group": "上海-intent-9",
@@ -837,7 +838,7 @@
     },
     {
       "id": "v2-2-0-0",
-      "query": "重庆 重庆中国三峡博物馆关于取消预约入馆的公告，怎么预约，需要提前准备什么？",
+      "query": "重庆中国三峡博物馆：怎么预约，需要提前准备什么？",
       "city": "重庆",
       "type": "answerable",
       "intent_group": "重庆-intent-0",
@@ -864,7 +865,7 @@
     },
     {
       "id": "v2-2-0-1",
-      "query": "我准备去重庆，关于预约的事想问一下：怎么预约，需要提前准备什么？",
+      "query": "我准备去重庆中国三峡博物馆，关于预约的事想问一下：怎么预约，需要提前准备什么？",
       "city": "重庆",
       "type": "answerable",
       "intent_group": "重庆-intent-0",
@@ -891,7 +892,7 @@
     },
     {
       "id": "v2-2-1-0",
-      "query": "重庆 重庆白鹤梁水下博物馆亮相天津2026中国文化旅游产业博览会——长江水下奇观引客来 2026-09-20，几点开放，有哪些时间限制？",
+      "query": "重庆中国三峡博物馆：几点开放，有哪些时间限制？",
       "city": "重庆",
       "type": "answerable",
       "intent_group": "重庆-intent-1",
@@ -918,7 +919,7 @@
     },
     {
       "id": "v2-2-1-1",
-      "query": "我准备去重庆，关于开放的事想问一下：几点开放，有哪些时间限制？",
+      "query": "我准备去重庆中国三峡博物馆，关于开放的事想问一下：几点开放，有哪些时间限制？",
       "city": "重庆",
       "type": "answerable",
       "intent_group": "重庆-intent-1",
@@ -945,7 +946,7 @@
     },
     {
       "id": "v2-2-2-0",
-      "query": "重庆 重庆轨道交通 - 票务政策，怎样到达，入口和换乘怎么选？",
+      "query": "重庆轨道交通：怎样到达，入口和换乘怎么选？",
       "city": "重庆",
       "type": "answerable",
       "intent_group": "重庆-intent-2",
@@ -972,7 +973,7 @@
     },
     {
       "id": "v2-2-2-1",
-      "query": "我准备去重庆，关于交通的事想问一下：怎样到达，入口和换乘怎么选？",
+      "query": "我准备去重庆轨道交通，关于交通的事想问一下：怎样到达，入口和换乘怎么选？",
       "city": "重庆",
       "type": "answerable",
       "intent_group": "重庆-intent-2",
@@ -999,7 +1000,7 @@
     },
     {
       "id": "v2-2-3-0",
-      "query": "重庆 重庆白鹤梁水下博物馆亮相天津2026中国文化旅游产业博览会——长江水下奇观引客来 2026-09-20，带孩子出行，有什么注意事项？",
+      "query": "重庆中国三峡博物馆：带孩子出行，有什么注意事项？",
       "city": "重庆",
       "type": "answerable",
       "intent_group": "重庆-intent-3",
@@ -1026,12 +1027,12 @@
     },
     {
       "id": "v2-2-3-1",
-      "query": "我准备去重庆，关于亲子的事想问一下：带孩子出行，有什么注意事项？",
+      "query": "不要用丽江的攻略，我是问重庆中国三峡博物馆：带孩子出行，有什么注意事项？",
       "city": "重庆",
       "type": "answerable",
       "intent_group": "重庆-intent-3",
       "split": "test",
-      "challenge": "colloquial",
+      "challenge": "cross_city",
       "relevant_chunks": [
         {
           "chunk_id": "official-2358c570609a92bf2a323569",
@@ -1053,7 +1054,7 @@
     },
     {
       "id": "v2-2-4-0",
-      "query": "重庆 重庆白鹤梁水下博物馆亮相天津2026中国文化旅游产业博览会——长江水下奇观引客来 2026-09-20，带老人慢慢游览，有什么安排建议？",
+      "query": "重庆中国三峡博物馆：带老人慢慢游览，有什么安排建议？",
       "city": "重庆",
       "type": "answerable",
       "intent_group": "重庆-intent-4",
@@ -1080,12 +1081,12 @@
     },
     {
       "id": "v2-2-4-1",
-      "query": "我准备去重庆，关于老人的事想问一下：带老人慢慢游览，有什么安排建议？",
+      "query": "网上攻略里城市容易搞混，请只按重庆的重庆中国三峡博物馆回答：带老人慢慢游览，有什么安排建议？",
       "city": "重庆",
       "type": "answerable",
       "intent_group": "重庆-intent-4",
       "split": "dev",
-      "challenge": "colloquial",
+      "challenge": "city_disambiguation",
       "relevant_chunks": [
         {
           "chunk_id": "official-2358c570609a92bf2a323569",
@@ -1107,7 +1108,7 @@
     },
     {
       "id": "v2-2-5-0",
-      "query": "重庆 重庆白鹤梁水下博物馆亮相天津2026中国文化旅游产业博览会——长江水下奇观引客来 2026-09-20，遇上下雨，游览时应注意什么？",
+      "query": "重庆中国三峡博物馆：遇上下雨，游览时应注意什么？",
       "city": "重庆",
       "type": "answerable",
       "intent_group": "重庆-intent-5",
@@ -1134,7 +1135,7 @@
     },
     {
       "id": "v2-2-6-0",
-      "query": "重庆 A级旅游景区名单，购票和入场有哪些条件？",
+      "query": "重庆旅行：购票和入场有哪些条件？",
       "city": "重庆",
       "type": "answerable",
       "intent_group": "重庆-intent-6",
@@ -1161,7 +1162,7 @@
     },
     {
       "id": "v2-2-7-0",
-      "query": "重庆 参观须知，游览有哪些安全提醒？",
+      "query": "重庆中国三峡博物馆：游览有哪些安全提醒？",
       "city": "重庆",
       "type": "answerable",
       "intent_group": "重庆-intent-7",
@@ -1188,7 +1189,7 @@
     },
     {
       "id": "v2-2-8-0",
-      "query": "重庆 重庆白鹤梁水下博物馆亮相天津2026中国文化旅游产业博览会——长江水下奇观引客来 2026-09-20，有哪些服务设施和使用要求？",
+      "query": "重庆中国三峡博物馆：有哪些服务设施和使用要求？",
       "city": "重庆",
       "type": "answerable",
       "intent_group": "重庆-intent-8",
@@ -1221,7 +1222,7 @@
     },
     {
       "id": "v2-2-9-0",
-      "query": "重庆 重庆白鹤梁水下博物馆亮相天津2026中国文化旅游产业博览会——长江水下奇观引客来 2026-09-20，不想赶路，游览路线怎么安排？",
+      "query": "重庆中国三峡博物馆：不想赶路，游览路线怎么安排？",
       "city": "重庆",
       "type": "answerable",
       "intent_group": "重庆-intent-9",
@@ -1254,7 +1255,7 @@
     },
     {
       "id": "v2-3-0-0",
-      "query": "丽江 信息不足时局部替换与确认，怎么预约，需要提前准备什么？",
+      "query": "丽江旅行：怎么预约，需要提前准备什么？",
       "city": "丽江",
       "type": "answerable",
       "intent_group": "丽江-intent-0",
@@ -1281,7 +1282,7 @@
     },
     {
       "id": "v2-3-0-1",
-      "query": "我准备去丽江，关于预约的事想问一下：怎么预约，需要提前准备什么？",
+      "query": "我准备去丽江旅行，关于预约的事想问一下：怎么预约，需要提前准备什么？",
       "city": "丽江",
       "type": "answerable",
       "intent_group": "丽江-intent-0",
@@ -1308,7 +1309,7 @@
     },
     {
       "id": "v2-3-1-0",
-      "query": "丽江 大研束河白沙相似名称消歧，几点开放，有哪些时间限制？",
+      "query": "丽江旅行：几点开放，有哪些时间限制？",
       "city": "丽江",
       "type": "answerable",
       "intent_group": "丽江-intent-1",
@@ -1335,7 +1336,7 @@
     },
     {
       "id": "v2-3-1-1",
-      "query": "我准备去丽江，关于开放的事想问一下：几点开放，有哪些时间限制？",
+      "query": "我准备去丽江旅行，关于开放的事想问一下：几点开放，有哪些时间限制？",
       "city": "丽江",
       "type": "answerable",
       "intent_group": "丽江-intent-1",
@@ -1362,7 +1363,7 @@
     },
     {
       "id": "v2-3-2-0",
-      "query": "丽江 大研束河白沙相似名称消歧，怎样到达，入口和换乘怎么选？",
+      "query": "丽江旅行：怎样到达，入口和换乘怎么选？",
       "city": "丽江",
       "type": "answerable",
       "intent_group": "丽江-intent-2",
@@ -1389,7 +1390,7 @@
     },
     {
       "id": "v2-3-2-1",
-      "query": "我准备去丽江，关于交通的事想问一下：怎样到达，入口和换乘怎么选？",
+      "query": "我准备去丽江旅行，关于交通的事想问一下：怎样到达，入口和换乘怎么选？",
       "city": "丽江",
       "type": "answerable",
       "intent_group": "丽江-intent-2",
@@ -1416,7 +1417,7 @@
     },
     {
       "id": "v2-3-3-0",
-      "query": "丽江 亲子出行与晚间活动节奏，带孩子出行，有什么注意事项？",
+      "query": "丽江旅行：带孩子出行，有什么注意事项？",
       "city": "丽江",
       "type": "answerable",
       "intent_group": "丽江-intent-3",
@@ -1443,12 +1444,12 @@
     },
     {
       "id": "v2-3-3-1",
-      "query": "我准备去丽江，关于亲子的事想问一下：带孩子出行，有什么注意事项？",
+      "query": "不要用三亚的攻略，我是问丽江旅行：带孩子出行，有什么注意事项？",
       "city": "丽江",
       "type": "answerable",
       "intent_group": "丽江-intent-3",
       "split": "dev",
-      "challenge": "colloquial",
+      "challenge": "cross_city",
       "relevant_chunks": [
         {
           "chunk_id": "rule-3db5d478fe0953ea29e42837",
@@ -1470,7 +1471,7 @@
     },
     {
       "id": "v2-3-4-0",
-      "query": "丽江 古城步行与车辆入口分离，带老人慢慢游览，有什么安排建议？",
+      "query": "丽江旅行：带老人慢慢游览，有什么安排建议？",
       "city": "丽江",
       "type": "answerable",
       "intent_group": "丽江-intent-4",
@@ -1497,12 +1498,12 @@
     },
     {
       "id": "v2-3-4-1",
-      "query": "我准备去丽江，关于老人的事想问一下：带老人慢慢游览，有什么安排建议？",
+      "query": "网上攻略里城市容易搞混，请只按丽江的丽江旅行回答：带老人慢慢游览，有什么安排建议？",
       "city": "丽江",
       "type": "answerable",
       "intent_group": "丽江-intent-4",
       "split": "test",
-      "challenge": "colloquial",
+      "challenge": "city_disambiguation",
       "relevant_chunks": [
         {
           "chunk_id": "rule-b87e817b872381e172290269",
@@ -1524,7 +1525,7 @@
     },
     {
       "id": "v2-3-5-0",
-      "query": "丽江 雨天石路与缓冲安排，遇上下雨，游览时应注意什么？",
+      "query": "丽江旅行：遇上下雨，游览时应注意什么？",
       "city": "丽江",
       "type": "answerable",
       "intent_group": "丽江-intent-5",
@@ -1551,7 +1552,7 @@
     },
     {
       "id": "v2-3-6-0",
-      "query": "丽江 虎跳峡游览强度与道路核验，购票和入场有哪些条件？",
+      "query": "丽江旅行：购票和入场有哪些条件？",
       "city": "丽江",
       "type": "answerable",
       "intent_group": "丽江-intent-6",
@@ -1578,7 +1579,7 @@
     },
     {
       "id": "v2-3-7-0",
-      "query": "丽江 秋韵满潭 文明随行！国庆假期黑龙潭公园解锁最美出游新风，游览有哪些安全提醒？",
+      "query": "丽江旅行：游览有哪些安全提醒？",
       "city": "丽江",
       "type": "answerable",
       "intent_group": "丽江-intent-7",
@@ -1605,7 +1606,7 @@
     },
     {
       "id": "v2-3-8-0",
-      "query": "丽江 秋韵满潭 文明随行！国庆假期黑龙潭公园解锁最美出游新风，有哪些服务设施和使用要求？",
+      "query": "丽江旅行：有哪些服务设施和使用要求？",
       "city": "丽江",
       "type": "answerable",
       "intent_group": "丽江-intent-8",
@@ -1638,7 +1639,7 @@
     },
     {
       "id": "v2-3-9-0",
-      "query": "丽江 践行“有一种叫云南的生活”文明旅游十条倡议 - 丽江网，不想赶路，游览路线怎么安排？",
+      "query": "丽江旅行：不想赶路，游览路线怎么安排？",
       "city": "丽江",
       "type": "answerable",
       "intent_group": "丽江-intent-9",
@@ -1671,7 +1672,7 @@
     },
     {
       "id": "v2-4-0-0",
-      "query": "三亚 门票玩乐，怎么预约，需要提前准备什么？",
+      "query": "蜈支洲岛：怎么预约，需要提前准备什么？",
       "city": "三亚",
       "type": "answerable",
       "intent_group": "三亚-intent-0",
@@ -1698,7 +1699,7 @@
     },
     {
       "id": "v2-4-0-1",
-      "query": "我准备去三亚，关于预约的事想问一下：怎么预约，需要提前准备什么？",
+      "query": "我准备去蜈支洲岛，关于预约的事想问一下：怎么预约，需要提前准备什么？",
       "city": "三亚",
       "type": "answerable",
       "intent_group": "三亚-intent-0",
@@ -1725,7 +1726,7 @@
     },
     {
       "id": "v2-4-1-0",
-      "query": "三亚 门票玩乐，几点开放，有哪些时间限制？",
+      "query": "蜈支洲岛：几点开放，有哪些时间限制？",
       "city": "三亚",
       "type": "answerable",
       "intent_group": "三亚-intent-1",
@@ -1752,7 +1753,7 @@
     },
     {
       "id": "v2-4-1-1",
-      "query": "我准备去三亚，关于开放的事想问一下：几点开放，有哪些时间限制？",
+      "query": "我准备去蜈支洲岛，关于开放的事想问一下：几点开放，有哪些时间限制？",
       "city": "三亚",
       "type": "answerable",
       "intent_group": "三亚-intent-1",
@@ -1779,7 +1780,7 @@
     },
     {
       "id": "v2-4-2-0",
-      "query": "三亚 门票玩乐，怎样到达，入口和换乘怎么选？",
+      "query": "蜈支洲岛：怎样到达，入口和换乘怎么选？",
       "city": "三亚",
       "type": "answerable",
       "intent_group": "三亚-intent-2",
@@ -1806,7 +1807,7 @@
     },
     {
       "id": "v2-4-2-1",
-      "query": "我准备去三亚，关于交通的事想问一下：怎样到达，入口和换乘怎么选？",
+      "query": "我准备去蜈支洲岛，关于交通的事想问一下：怎样到达，入口和换乘怎么选？",
       "city": "三亚",
       "type": "answerable",
       "intent_group": "三亚-intent-2",
@@ -1833,7 +1834,7 @@
     },
     {
       "id": "v2-4-3-0",
-      "query": "三亚 亲子海上项目分项核验，带孩子出行，有什么注意事项？",
+      "query": "三亚旅行：带孩子出行，有什么注意事项？",
       "city": "三亚",
       "type": "answerable",
       "intent_group": "三亚-intent-3",
@@ -1860,12 +1861,12 @@
     },
     {
       "id": "v2-4-3-1",
-      "query": "我准备去三亚，关于亲子的事想问一下：带孩子出行，有什么注意事项？",
+      "query": "不要用景德镇的攻略，我是问三亚旅行：带孩子出行，有什么注意事项？",
       "city": "三亚",
       "type": "answerable",
       "intent_group": "三亚-intent-3",
       "split": "test",
-      "challenge": "colloquial",
+      "challenge": "cross_city",
       "relevant_chunks": [
         {
           "chunk_id": "rule-5999a4124471f1f33345d46b",
@@ -1887,7 +1888,7 @@
     },
     {
       "id": "v2-4-4-0",
-      "query": "三亚 门票玩乐，带老人慢慢游览，有什么安排建议？",
+      "query": "蜈支洲岛：带老人慢慢游览，有什么安排建议？",
       "city": "三亚",
       "type": "answerable",
       "intent_group": "三亚-intent-4",
@@ -1914,12 +1915,12 @@
     },
     {
       "id": "v2-4-4-1",
-      "query": "我准备去三亚，关于老人的事想问一下：带老人慢慢游览，有什么安排建议？",
+      "query": "网上攻略里城市容易搞混，请只按三亚的蜈支洲岛回答：带老人慢慢游览，有什么安排建议？",
       "city": "三亚",
       "type": "answerable",
       "intent_group": "三亚-intent-4",
       "split": "dev",
-      "challenge": "colloquial",
+      "challenge": "city_disambiguation",
       "relevant_chunks": [
         {
           "chunk_id": "official-256c23b3c4673568216366c0",
@@ -1941,7 +1942,7 @@
     },
     {
       "id": "v2-4-5-0",
-      "query": "三亚 门票玩乐，遇上下雨，游览时应注意什么？",
+      "query": "蜈支洲岛：遇上下雨，游览时应注意什么？",
       "city": "三亚",
       "type": "answerable",
       "intent_group": "三亚-intent-5",
@@ -1968,7 +1969,7 @@
     },
     {
       "id": "v2-4-6-0",
-      "query": "三亚 门票玩乐，购票和入场有哪些条件？",
+      "query": "蜈支洲岛：购票和入场有哪些条件？",
       "city": "三亚",
       "type": "answerable",
       "intent_group": "三亚-intent-6",
@@ -1995,7 +1996,7 @@
     },
     {
       "id": "v2-4-7-0",
-      "query": "三亚 门票玩乐，游览有哪些安全提醒？",
+      "query": "蜈支洲岛：游览有哪些安全提醒？",
       "city": "三亚",
       "type": "answerable",
       "intent_group": "三亚-intent-7",
@@ -2022,7 +2023,7 @@
     },
     {
       "id": "v2-4-8-0",
-      "query": "三亚 门票玩乐，有哪些服务设施和使用要求？",
+      "query": "蜈支洲岛：有哪些服务设施和使用要求？",
       "city": "三亚",
       "type": "answerable",
       "intent_group": "三亚-intent-8",
@@ -2055,7 +2056,7 @@
     },
     {
       "id": "v2-4-9-0",
-      "query": "三亚 门票玩乐，不想赶路，游览路线怎么安排？",
+      "query": "蜈支洲岛：不想赶路，游览路线怎么安排？",
       "city": "三亚",
       "type": "answerable",
       "intent_group": "三亚-intent-9",
@@ -2088,7 +2089,7 @@
     },
     {
       "id": "v2-5-0-0",
-      "query": "景德镇 瓷都迎客“路路通”，景德镇全方位护航国庆假期交通畅行！，怎么预约，需要提前准备什么？",
+      "query": "景德镇旅行：怎么预约，需要提前准备什么？",
       "city": "景德镇",
       "type": "answerable",
       "intent_group": "景德镇-intent-0",
@@ -2115,7 +2116,7 @@
     },
     {
       "id": "v2-5-0-1",
-      "query": "我准备去景德镇，关于预约的事想问一下：怎么预约，需要提前准备什么？",
+      "query": "我准备去景德镇旅行，关于预约的事想问一下：怎么预约，需要提前准备什么？",
       "city": "景德镇",
       "type": "answerable",
       "intent_group": "景德镇-intent-0",
@@ -2142,7 +2143,7 @@
     },
     {
       "id": "v2-5-1-0",
-      "query": "景德镇 瓷都迎客“路路通”，景德镇全方位护航国庆假期交通畅行！，几点开放，有哪些时间限制？",
+      "query": "景德镇旅行：几点开放，有哪些时间限制？",
       "city": "景德镇",
       "type": "answerable",
       "intent_group": "景德镇-intent-1",
@@ -2169,7 +2170,7 @@
     },
     {
       "id": "v2-5-1-1",
-      "query": "我准备去景德镇，关于开放的事想问一下：几点开放，有哪些时间限制？",
+      "query": "我准备去景德镇旅行，关于开放的事想问一下：几点开放，有哪些时间限制？",
       "city": "景德镇",
       "type": "answerable",
       "intent_group": "景德镇-intent-1",
@@ -2196,7 +2197,7 @@
     },
     {
       "id": "v2-5-2-0",
-      "query": "景德镇 景德镇北站15条客运线路全新开通！直达乐平、瑶里景区等地！ -\n        景德镇市人民政府，怎样到达，入口和换乘怎么选？",
+      "query": "景德镇旅行：怎样到达，入口和换乘怎么选？",
       "city": "景德镇",
       "type": "answerable",
       "intent_group": "景德镇-intent-2",
@@ -2223,7 +2224,7 @@
     },
     {
       "id": "v2-5-2-1",
-      "query": "我准备去景德镇，关于交通的事想问一下：怎样到达，入口和换乘怎么选？",
+      "query": "我准备去景德镇旅行，关于交通的事想问一下：怎样到达，入口和换乘怎么选？",
       "city": "景德镇",
       "type": "answerable",
       "intent_group": "景德镇-intent-2",
@@ -2250,7 +2251,7 @@
     },
     {
       "id": "v2-5-3-0",
-      "query": "景德镇 瓷都迎客“路路通”，景德镇全方位护航国庆假期交通畅行！，带孩子出行，有什么注意事项？",
+      "query": "景德镇旅行：带孩子出行，有什么注意事项？",
       "city": "景德镇",
       "type": "answerable",
       "intent_group": "景德镇-intent-3",
@@ -2277,12 +2278,12 @@
     },
     {
       "id": "v2-5-3-1",
-      "query": "我准备去景德镇，关于亲子的事想问一下：带孩子出行，有什么注意事项？",
+      "query": "不要用南京的攻略，我是问景德镇旅行：带孩子出行，有什么注意事项？",
       "city": "景德镇",
       "type": "answerable",
       "intent_group": "景德镇-intent-3",
       "split": "dev",
-      "challenge": "colloquial",
+      "challenge": "cross_city",
       "relevant_chunks": [
         {
           "chunk_id": "official-11377143c56f7a517ba09994",
@@ -2304,7 +2305,7 @@
     },
     {
       "id": "v2-5-4-0",
-      "query": "景德镇 瑶里与市区慢游分日安排，带老人慢慢游览，有什么安排建议？",
+      "query": "景德镇旅行：带老人慢慢游览，有什么安排建议？",
       "city": "景德镇",
       "type": "answerable",
       "intent_group": "景德镇-intent-4",
@@ -2331,12 +2332,12 @@
     },
     {
       "id": "v2-5-4-1",
-      "query": "我准备去景德镇，关于老人的事想问一下：带老人慢慢游览，有什么安排建议？",
+      "query": "网上攻略里城市容易搞混，请只按景德镇的景德镇旅行回答：带老人慢慢游览，有什么安排建议？",
       "city": "景德镇",
       "type": "answerable",
       "intent_group": "景德镇-intent-4",
       "split": "test",
-      "challenge": "colloquial",
+      "challenge": "city_disambiguation",
       "relevant_chunks": [
         {
           "chunk_id": "rule-bac7c5affe50194c07b2060f",
@@ -2358,7 +2359,7 @@
     },
     {
       "id": "v2-5-5-0",
-      "query": "景德镇 瓷都迎客“路路通”，景德镇全方位护航国庆假期交通畅行！，遇上下雨，游览时应注意什么？",
+      "query": "景德镇旅行：遇上下雨，游览时应注意什么？",
       "city": "景德镇",
       "type": "answerable",
       "intent_group": "景德镇-intent-5",
@@ -2385,7 +2386,7 @@
     },
     {
       "id": "v2-5-6-0",
-      "query": "景德镇 瓷都迎客“路路通”，景德镇全方位护航国庆假期交通畅行！，购票和入场有哪些条件？",
+      "query": "景德镇旅行：购票和入场有哪些条件？",
       "city": "景德镇",
       "type": "answerable",
       "intent_group": "景德镇-intent-6",
@@ -2412,7 +2413,7 @@
     },
     {
       "id": "v2-5-7-0",
-      "query": "景德镇 瓷都迎客“路路通”，景德镇全方位护航国庆假期交通畅行！，游览有哪些安全提醒？",
+      "query": "景德镇旅行：游览有哪些安全提醒？",
       "city": "景德镇",
       "type": "answerable",
       "intent_group": "景德镇-intent-7",
@@ -2439,7 +2440,7 @@
     },
     {
       "id": "v2-5-8-0",
-      "query": "景德镇 瓷都迎客“路路通”，景德镇全方位护航国庆假期交通畅行！，有哪些服务设施和使用要求？",
+      "query": "景德镇旅行：有哪些服务设施和使用要求？",
       "city": "景德镇",
       "type": "answerable",
       "intent_group": "景德镇-intent-8",
@@ -2472,7 +2473,7 @@
     },
     {
       "id": "v2-5-9-0",
-      "query": "景德镇 瓷都迎客“路路通”，景德镇全方位护航国庆假期交通畅行！，不想赶路，游览路线怎么安排？",
+      "query": "景德镇旅行：不想赶路，游览路线怎么安排？",
       "city": "景德镇",
       "type": "answerable",
       "intent_group": "景德镇-intent-9",

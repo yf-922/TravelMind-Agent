@@ -14,6 +14,17 @@ INTENTS=[('预约','怎么预约，需要提前准备什么？'),('开放','几�
  ('设施','有哪些服务设施和使用要求？'),('路线','不想赶路，游览路线怎么安排？')]
 
 
+def entity_name(row):
+    url=row['url']
+    if 'njmuseum.com' in url:return '南京博物院'
+    if 'shanghaimuseum.net' in url:return '上海博物馆'
+    if '3gmuseum.cn' in url:return '重庆中国三峡博物馆'
+    if 'cqmetro.cn' in url:return '重庆轨道交通'
+    if 'wuzhizhou.com' in url:return '蜈支洲岛'
+    # Collector topics and API paths are not visitor-facing attraction names.
+    return row['city']+'旅行'
+
+
 def main():
     p=argparse.ArgumentParser()
     p.add_argument('--corpus',type=Path,required=True)
@@ -32,9 +43,21 @@ def main():
             # Rotate split assignment by city; each city contributes 7 or 8.
             split='dev' if (i+ci)%2==0 else 'test'
             for variant in range(2 if i<5 else 1):
-                query=f'{city} {evidence[0]["topic"]}，{question}' if not variant else f'我准备去{city}，关于{term}的事想问一下：{question}'
+                name=entity_name(evidence[0])
+                challenge='multi_evidence' if i>=8 else 'exact_name'
+                query=f'{name}：{question}'
+                if variant:
+                    challenge='colloquial'
+                    query=f'我准备去{name}，关于{term}的事想问一下：{question}'
+                    if i==3:
+                        challenge='cross_city'
+                        other=CITIES[(ci+1)%len(CITIES)]
+                        query=f'不要用{other}的攻略，我是问{name}：{question}'
+                    elif i==4:
+                        challenge='city_disambiguation'
+                        query=f'网上攻略里城市容易搞混，请只按{city}的{name}回答：{question}'
                 cases.append({'id':f'v2-{ci}-{i}-{variant}','query':query,'city':city,'type':'answerable',
-                    'intent_group':group,'split':split,'challenge':['exact_name','colloquial','multi_evidence'][2 if i>=8 else variant],
+                    'intent_group':group,'split':split,'challenge':challenge,
                     'relevant_chunks':[{'chunk_id':r['chunk_id'],'relevance':2,'evidence_group':r['evidence_group']} for r in evidence],
                     'reference_facts':[r['text'] for r in evidence], 'annotation_status':'pending_review',
                     'annotator':None,'reviewed_at':None,'annotation_version':'v2-draft','drafted_by':'template_evidence_proposal',

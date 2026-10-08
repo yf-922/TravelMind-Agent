@@ -24,11 +24,26 @@ INDEX_DIR = ROOT / "data" / "travel_knowledge_benchmark_v1"
 MODEL = "BAAI/bge-small-zh-v1.5"
 REVISION = "7999e1d3359715c523056ef9478215996d62a620"
 QUERY_PREFIX = "为这个句子生成表示以用于检索相关文章："
+MAX_TOKENS = 512
 
 
 def embedding_config():
     return {"model": MODEL, "revision": REVISION, "distance": "cosine",
-            "normalize": True, "query_prefix": QUERY_PREFIX, "max_tokens": 512}
+            "normalize": True, "query_prefix": QUERY_PREFIX, "max_tokens": MAX_TOKENS}
+
+
+def configure_embedding(config):
+    """Diagnostic model selection is explicit and never reuses another index."""
+    global MODEL,REVISION,QUERY_PREFIX,MAX_TOKENS
+    if (config.get('model') not in ('BAAI/bge-small-zh-v1.5','sentence-transformers/all-MiniLM-L6-v2') or
+            not re.fullmatch(r'[0-9a-f]{40}',str(config.get('revision',''))) or
+            config.get('distance')!='cosine' or config.get('normalize') is not True or
+            type(config.get('max_tokens')) is not int or not 3<=config['max_tokens']<=512 or
+            not isinstance(config.get('query_prefix'),str)):
+        raise ValueError('embedding diagnostics require a supported model and pinned complete configuration')
+    MODEL=config['model'];REVISION=config['revision']
+    QUERY_PREFIX=config['query_prefix'];MAX_TOKENS=config['max_tokens']
+    embedding_model.cache_clear();embedding_tokenizer.cache_clear()
 
 
 def lexical_config():
@@ -41,13 +56,24 @@ def lexical_config():
 @lru_cache(maxsize=1)
 def embedding_model():
     from sentence_transformers import SentenceTransformer
-    model = SentenceTransformer(MODEL, revision=REVISION, device="cpu")
-    model.max_seq_length = 512
+    from huggingface_hub import snapshot_download
+    snapshot=Path(snapshot_download(MODEL, revision=REVISION,
+        allow_patterns=['*.json','*.txt','1_Pooling/*','model.safetensors'],local_files_only=True))
+    if not (snapshot/'modules.json').is_file() or not (snapshot/'model.safetensors').is_file():
+        raise RuntimeError('pinned BGE snapshot incomplete; fallback pooling is forbidden')
+    model = SentenceTransformer(str(snapshot), device="cpu", local_files_only=True)
+    model.max_seq_length = MAX_TOKENS
     return model
 
 
 def token_count(text):
-    return len(embedding_model().tokenizer.encode(text, add_special_tokens=True))
+    return len(embedding_tokenizer().encode(text, add_special_tokens=True))
+
+
+@lru_cache(maxsize=1)
+def embedding_tokenizer():
+    from transformers import AutoTokenizer
+    return AutoTokenizer.from_pretrained(MODEL, revision=REVISION,local_files_only=True)
 
 
 def index_fingerprint(rows, config=None):
@@ -108,7 +134,7 @@ def _collection(rows: list[dict[str, Any]], rebuild: bool = False):
     stored = collection.get(include=["documents"])
     actual = dict(zip(stored["ids"], stored.get("documents") or []))
     if rebuild or actual != expected:
-        if any(token_count(row["text"]) > 512 for row in rows):
+        if any(token_count(row["text"]) > MAX_TOKENS for row in rows):
             raise ValueError("chunk exceeds embedding tokenizer budget; rechunk instead of truncating")
         old = collection.get(include=[]).get("ids") or []
         if old:
@@ -124,7 +150,7 @@ def _collection(rows: list[dict[str, Any]], rebuild: bool = False):
 
 def _vector(query: str, rows: list[dict[str, Any]], limit: int = 20):
     collection = _collection(rows)
-    if token_count(QUERY_PREFIX + query) > 512:
+    if token_count(QUERY_PREFIX + query) > MAX_TOKENS:
         raise ValueError("query exceeds embedding token budget")
     embedding = embedding_model().encode([QUERY_PREFIX + query], normalize_embeddings=True).tolist()
     result = collection.query(query_embeddings=embedding, n_results=min(limit, len(rows)), include=["documents", "metadatas", "distances"])
