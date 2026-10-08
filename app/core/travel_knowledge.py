@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
+import json
 import logging
 import os
 from pathlib import Path
@@ -72,13 +74,22 @@ def _split_text(text: str, size: int = _CHUNK_SIZE, overlap: int = _CHUNK_OVERLA
     return chunks
 
 
-def load_documents() -> list[dict[str, str]]:
-    """Load the version-controlled Markdown knowledge sources."""
-    documents: list[dict[str, str]] = []
+def load_documents() -> list[dict[str, Any]]:
+    """Load version-controlled legacy guides and sourced planning facts."""
+    documents: list[dict[str, Any]] = []
     for path in sorted(_SOURCE_DIR.glob("*.md")):
         text = path.read_text(encoding="utf-8").strip()
         if text:
             documents.append({"source": path.stem, "text": text})
+    facts_path = _SOURCE_DIR / "planning_facts.json"
+    if facts_path.exists():
+        facts = json.loads(facts_path.read_text(encoding="utf-8"))
+        sources = {d["source"] for d in documents}
+        for fact in facts:
+            if fact["source"] in sources:
+                raise ValueError("duplicate planning knowledge source")
+            sources.add(fact["source"])
+            documents.append(fact)
     return documents
 
 
@@ -93,13 +104,17 @@ def build_index(rebuild: bool = False) -> int:
         existing_ids = collection.get(include=[]).get("ids") or []
         if existing_ids:
             collection.delete(ids=existing_ids)
-    if not rebuild and collection.count() > 0:
+    documents = load_documents()
+    fingerprint = hashlib.sha256(json.dumps({
+        "documents": documents, "chunker": "paragraph-v1",
+        "size": _CHUNK_SIZE, "overlap": _CHUNK_OVERLAP,
+    }, ensure_ascii=False, sort_keys=True).encode()).hexdigest()
+    if not rebuild and collection.count() > 0 and (collection.metadata or {}).get("corpus_fingerprint") == fingerprint:
         return collection.count()
 
     ids: list[str] = []
     texts: list[str] = []
     metadatas: list[dict[str, Any]] = []
-    documents = load_documents()
     for document in documents:
         for index, chunk in enumerate(_split_text(document["text"])):
             chunk_id = f"{document['source']}-{index}"
@@ -108,6 +123,10 @@ def build_index(rebuild: bool = False) -> int:
             metadatas.append({"source": document["source"], "chunk_id": chunk_id})
     if ids:
         collection.upsert(ids=ids, documents=texts, metadatas=metadatas)
+    obsolete = set(collection.get(include=[]).get("ids") or []) - set(ids)
+    if obsolete:
+        collection.delete(ids=sorted(obsolete))
+    collection.modify(metadata={**(collection.metadata or {}), "corpus_fingerprint": fingerprint})
     logger.info("[travel_rag] indexed=%d chunks from %d documents", len(ids), len(documents))
     return len(ids)
 
@@ -125,11 +144,13 @@ def _all_chunks() -> list[dict[str, str]]:
     return chunks
 
 
-def _keyword_candidates(query: str, candidate_limit: int = 10) -> list[dict[str, Any]]:
+def _keyword_candidates(query: str, candidate_limit: int = 10, allowed_sources=None) -> list[dict[str, Any]]:
     """Independently retrieve lexical candidates before score fusion."""
     rows: list[dict[str, Any]] = []
     minimum_score = float(os.getenv("RAG_MIN_KEYWORD_SCORE", "0.25"))
     for chunk in _all_chunks():
+        if allowed_sources is not None and chunk["source"] not in allowed_sources:
+            continue
         score = _keyword_score(query, chunk["text"])
         if score < minimum_score:
             continue
@@ -194,7 +215,7 @@ def _rrf_fuse(
     )[:max(1, limit)]
 
 
-def search_travel_knowledge(query: str, limit: int = 3, mode: str = "auto") -> list[dict[str, Any]]:
+def search_travel_knowledge(query: str, limit: int = 3, mode: str = "auto", *, source_filter=None) -> list[dict[str, Any]]:
     """RAG tool with independent lexical/vector recall and optional RRF fusion.
 
     ``auto`` uses hybrid retrieval when Chroma is available and falls back to
@@ -207,7 +228,10 @@ def search_travel_knowledge(query: str, limit: int = 3, mode: str = "auto") -> l
     if mode not in {"auto", "hybrid", "keyword"}:
         raise ValueError("mode must be one of: auto, hybrid, keyword")
     requested_limit = max(1, min(limit, 5))
-    keyword_rows = _keyword_candidates(query, candidate_limit=requested_limit * 2)
+    if source_filter is not None and not source_filter:
+        return []
+    keyword_options = {"allowed_sources": set(source_filter)} if source_filter is not None else {}
+    keyword_rows = _keyword_candidates(query, candidate_limit=requested_limit * 2, **keyword_options)
     if mode == "keyword":
         for rank, row in enumerate(keyword_rows[:requested_limit], start=1):
             row.update({
@@ -240,6 +264,7 @@ def search_travel_knowledge(query: str, limit: int = 3, mode: str = "auto") -> l
             query_texts=[query],
             n_results=min(10, requested_limit * 2),
             include=["documents", "metadatas", "distances"],
+            **({"where": {"source": {"$in": sorted(source_filter)}}} if source_filter is not None else {}),
         )
         docs = (result.get("documents") or [[]])[0] or []
         metas = (result.get("metadatas") or [[]])[0] or []
@@ -250,6 +275,8 @@ def search_travel_knowledge(query: str, limit: int = 3, mode: str = "auto") -> l
             if distance is not None and float(distance) > max_distance:
                 continue
             metadata = meta or {}
+            if source_filter is not None and metadata.get("source") not in source_filter:
+                continue
             vector_rows.append({
                 "source": str(metadata.get("source") or "unknown"),
                 "chunk_id": str(metadata.get("chunk_id") or "unknown"),
@@ -274,6 +301,26 @@ def search_travel_knowledge(query: str, limit: int = 3, mode: str = "auto") -> l
     except Exception:
         logger.warning("[travel_rag] retrieval failed", exc_info=True)
         return []
+
+
+def search_planning_knowledge(destination: str, pois: list[dict[str, Any]], query: str, limit: int = 3):
+    """Only retrieve sourced facts about verified candidates in this city."""
+    city = (destination or "").strip().removesuffix("市")
+    names = {str(p.get("name") or "").strip() for p in pois}
+    eligible = {
+        d["source"]: d for d in load_documents()
+        if d.get("city") == city and names.intersection(d.get("entities", []))
+        and d.get("knowledge_type") == "stable_planning_fact"
+    }
+    if not eligible:
+        return []
+    # Candidate names participate in recall; city/entity filtering happens
+    # before ranking so generic city advice cannot crowd out actual evidence.
+    scoped_query = f"{city} {' '.join(sorted(names))} {query}"
+    rows = search_travel_knowledge(scoped_query, limit=limit, source_filter=list(eligible))
+    return [{**r, **{k: eligible[r['source']][k] for k in
+                     ('city', 'entities', 'url', 'collected_at', 'evidence_id', 'knowledge_type', 'validity')}}
+            for r in rows if r.get('source') in eligible]
 
 
 def search_docs(query: str, limit: int = 3) -> str:

@@ -1,0 +1,38 @@
+[
+  {
+    "source": "nanjing_museum_history",
+    "city": "南京",
+    "entities": ["南京博物院"],
+    "knowledge_type": "stable_planning_fact",
+    "topic": "展陈主题",
+    "url": "https://www.njmuseum.com/api/home/yylg",
+    "collected_at": "2026-10-08",
+    "evidence_id": "dynamic-711869f339f33a7c27e0155b",
+    "validity": "official_snapshot_not_live_guarantee",
+    "text": "南京博物院馆藏文物展示从旧石器时代到唐、宋、元、明、清时期的江苏古代文明、中国南方水乡文化，以及江苏古代物质与精神文化的多样性。可作为用户历史文化兴趣的选点依据；不提供逐展厅动线、准确参观时长、当前票价或临时展览状态。"
+  },
+  {
+    "source": "wuzhizhou_activity_types",
+    "city": "三亚",
+    "entities": ["蜈支洲岛", "蜈支洲岛旅游区", "蜈支洲岛旅游风景区"],
+    "knowledge_type": "stable_planning_fact",
+    "topic": "活动组成",
+    "url": "https://www.wuzhizhou.com/ticket/",
+    "collected_at": "2026-10-08",
+    "evidence_id": "official-f07cc310268788e401660f6b",
+    "validity": "official_snapshot_not_live_guarantee",
+    "text": "蜈支洲岛官方介绍列举潜水、摩托艇、风洞等海陆运动项目，以及环岛观光、海鲜自助餐等休闲资源。可区分用户想观光还是参加具体运动项目；存在某类活动不代表它包含在基础门票内，也不保证出行当天运营、可预约或适合所有人。具体价格、开放和资格需要另行核验。"
+  },
+  {
+    "source": "shanghai_museum_special_products",
+    "city": "上海",
+    "entities": ["上海博物馆东馆"],
+    "knowledge_type": "stable_planning_fact",
+    "topic": "参观产品组成",
+    "url": "https://reservation.shanghaimuseum.net/",
+    "collected_at": "2026-10-08",
+    "evidence_id": "official-669e507ed24e25de44e4bb10",
+    "validity": "product_structure_snapshot_recheck_booking_policy",
+    "text": "上海博物馆东馆的古代文明探索宫、数字馆属于需要区分的专项参观项目。官方快照给出的办理入口是上海博物馆微信公众号进入参观预约小程序，再在东馆界面选择专项预约。普通进馆与专项项目不能混为同一产品；当前预约要求、名额、价格与可用时段应另行确认。"
+  }
+]
