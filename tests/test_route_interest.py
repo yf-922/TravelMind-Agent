@@ -95,6 +95,13 @@ def test_missing_evidence_returns_empty_instead_of_nearest_forced_match():
     assert scoped_lookup(facts)('南京', [{'name': '南京博物院'}], '量子机器人新展名额') == []
 
 
+def test_interest_lookup_uses_curated_topic_for_short_official_facts():
+    _, facts = load_assets()
+    rows = scoped_lookup(facts)('上海', [{'name': '上海自然博物馆'}], '生命演化的科学展示')
+    assert rows and rows[0]['entities'] == ['上海自然博物馆']
+    assert rows[0]['text']
+
+
 @pytest.mark.parametrize('duplicate_day', [1, 2])
 def test_joint_planner_removes_lunch_split_and_cross_day_duplicate(monkeypatch, duplicate_day):
     monkeypatch.setattr(nodes, 'build_structured_llm', lambda *a, **kw: object())

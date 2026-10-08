@@ -64,7 +64,13 @@ def scoped_lookup(facts, limit=3, mode='keyword'):
     from app.core.travel_knowledge import _keyword_score
     def lookup(city, pois, query):
         names = {p['name'] for p in pois}
-        rows = [{**f, 'chunk_id': f['source']+'-0', 'score': _keyword_score(query, f['text'])}
+        rows = [{**f, 'chunk_id': f['source']+'-0',
+                 # Interest facts are intentionally short.  Include the
+                 # curated topic in lexical matching so a query such as
+                 # “生命演化” can find an official fact whose verbatim quote
+                 # is concise, without changing the evidence text returned
+                 # to Planner.
+                 'score': _keyword_score(query, f['text'] + ' ' + f.get('topic', ''))}
                 for f in facts if f['city'] == city and names.intersection(f['entities'])]
         if not rows: return []
         if mode == 'keyword':

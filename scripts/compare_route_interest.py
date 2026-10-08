@@ -146,6 +146,21 @@ def main():
                 row['candidate_entities'] = sorted({n for r in rows for n in r['entities']})
             except Exception as exc: row['error'] = type(exc).__name__+': '+str(exc)[:240]
             report['retrieval_diagnostics'].append(row)
+        by_id = {c['id']: c for c in selected}
+        answerable = [r for r in report['retrieval_diagnostics'] if by_id[r['case_id']]['answerable']]
+        negatives = [r for r in report['retrieval_diagnostics'] if not by_id[r['case_id']]['answerable']]
+        report['retrieval_summary'] = {
+            'status': 'exploratory_retrieval_only_not_final_route_quality',
+            'answerable_cases': len(answerable),
+            'answerable_candidate_hit': sum(bool(set(r.get('candidate_entities', [])) & set(by_id[r['case_id']]['acceptable_pois'])) for r in answerable),
+            'answerable_candidate_hit_rate': (
+                sum(bool(set(r.get('candidate_entities', [])) & set(by_id[r['case_id']]['acceptable_pois'])) for r in answerable) / len(answerable)
+                if answerable else None
+            ),
+            'unanswerable_cases': len(negatives),
+            'unanswerable_nonempty_rate': sum(bool(r.get('candidate_entities')) for r in negatives) / len(negatives) if negatives else None,
+            'errors': sum(bool(r.get('error')) for r in report['retrieval_diagnostics']),
+        }
         report['status'] = 'retrieval_diagnostics_only_not_final_route_evidence'; save(); return
     if not a.execute: print(json.dumps(report['preflight'])); return
     try:
