@@ -29,13 +29,13 @@
 草稿 k 候选不是默认配置建议，更不能据此宣称 BM25 优于向量。
 
 模型选择：BAAI/bge-small-zh-v1.5，revision `7999e1d3359715c523056ef9478215996d62a620`。
-模型依赖安装完成，但 Hugging Face 的权重/tokenizer 下载连接超时；直接读取固定 revision
-的 tokenizer 配置也超时。评测查询改为只读本地缓存，下载通过 prepare_rag_embedding 显式执行。
+首次实验时模型依赖已安装，但 Hugging Face 的权重/tokenizer 下载连接超时；直接读取固定 revision
+的 tokenizer 配置也超时。评测查询只读本地缓存，下载通过 prepare_rag_embedding 显式执行。
 MiniLM 支持显式固定 revision 的独立诊断配置，未运行该诊断。
 
 已验证可以按采集顺序恢复 122 个来源段落，保留文本总字符数不变；分块对照工具已经改为
-从这些段落出发。**实际 tokenizer 的两套分块产物尚未生成**，原因同上，不能用模拟 tokenizer
-测试结果替代真实分块验收。
+从这些段落出发。首次实验未能生成实际 tokenizer 的两套分块；同日网络重试的结果见下节，
+不能用模拟 tokenizer 测试结果替代真实分块验收。
 
 BM25 单查询本地时延诊断（“上海博物馆怎么预约”，同一 128 块语料）：独立进程冷启动 3 次，
 预热后 10 次。冷 P50/P95 为 543.16/569.03 ms，暖 P50/P95 为 0.195/0.301 ms。
@@ -60,8 +60,68 @@ BM25 单查询本地时延诊断（“上海博物馆怎么预约”，同一 12
 
 ## 尚需完成
 
-1. 下载并加载固定 BGE 模型/tokenizer，生成两种真实分块，执行向量和混合检索的开发对照与时延测试。
+1. BGE 下载、真实分块及开发诊断已完成（见下节）；MiniLM 诊断对照尚未运行。
 2. 人工核验来源、修订 120 条查询的事实/证据组，尤其补齐同名景点与真实多证据问题。
 3. 用人工确认后的开发集选配置，再签名冻结一次性测试集评估；当前候选配置未测定最优。
 4. 确认真实模型价格与付费预算后，运行三次重复生成及独立 Judge，完成抽样人工核查。
 5. 仅在以上证据与复现结果支持时调整生产默认，提交冻结报告；本次不提前执行这两阶段。
+
+## 同日网络重试与真实 BGE 诊断
+
+使用本机代理后小文件下载成功，但整份权重传输曾在约 17 MB 中断。改为可重试的 HTTP Range
+分段下载，最终获得 95,827,648 字节；整份权重 SHA256 与固定 revision 的上游 LFS 哈希一致：
+`354763b9b1357bc9c44f62c6be2276321081ed2567773608c0d0785b61d5a026`。
+本地 `prepare_rag_embedding.py` 验证 `model_loaded=true`，输出向量形状 `[1, 512]`。
+权重保存在用户 Hugging Face 缓存，不提交模型或运行时索引。
+
+`knowledge/benchmark_v2_variants/` 保存同源的实际 tokenizer 分块与重新映射的待审标签：
+
+| 分块 | 块数 | 最大 Token（含特殊符号） | 硬上限 |
+|---|---:|---:|---:|
+| 段落/句子语义分块 | 128 | 400 | 512 |
+| Token 边界分块 | 126 | 508 | 512 |
+
+两套语料的城市配额、唯一 ID、哈希及查询引用校验均通过。原段落计数时的超长警告不代表
+最终分块截断；最终每块都已按真实 tokenizer 检查。每套仍是待审标签，不是人工金标准。
+
+分别在 60 条开发查询上运行六种检索方式、六个 k，以及融合 c=20/60/100，得到每套 60 个
+配置结果。两套均无请求失败，保留逐请求排名、指标、指纹与分组 bootstrap：
+
+- `evaluation/rag_v2_bge_semantic_dev_sweep_draft.json`
+- `evaluation/rag_v2_bge_token_dev_sweep_draft.json`
+
+以下仅展示语义分块 k=3、c=60 在 **45 条待审可回答查询**上的诊断，不用于简历或正式结论：
+
+| 检索方式 | Recall | Hit | MRR | nDCG |
+|---|---:|---:|---:|---:|
+| 关键词 | 0.080 | 0.156 | 0.100 | 0.079 |
+| BM25 | 0.093 | 0.111 | 0.070 | 0.073 |
+| 向量 | 0.171 | 0.200 | 0.152 | 0.148 |
+| BM25+向量 RRF | 0.120 | 0.178 | 0.126 | 0.113 |
+| 关键词+向量 RRF | 0.160 | 0.200 | 0.130 | 0.128 |
+| 旧融合 | 0.160 | 0.200 | 0.130 | 0.128 |
+
+草稿得分较低，不能把“模型可加载”当作“检索质量合格”。所有模式的草稿候选 k 都为 10，
+优先核查标签与事实覆盖，不能据此直接扩大生产召回。混合检索相对 BM25 的 Recall 差值
+为 0.0267，意图组 bootstrap 区间为 [0, 0.0643]，不足以建立稳定提升结论。
+草稿改善案例包含南京博物院老人出行、公共设施与景德镇雨天安排，逐请求证据保留在 JSON。
+
+15 条待审无答案查询（缺关键事实 8、范围外 7）均仍返回检索结果。当前没有标定拒答阈值，
+这暴露了需要后续验证的无答案处理，不能宣称拒答有效，更不是生成幻觉率。
+
+真实 BGE 混合检索单查询时延诊断：独立进程冷启动 3 次，预热后 10 次，
+冷 P50/P95=5561.33/5894.76 ms，暖 P50/P95=16.17/28.65 ms，错误数 0。
+原始数据见 `evaluation/rag_v2_bge_hybrid_latency.json`。冷启动包含解释器、导入、模型加载与查询；
+仅 CPU 本地单查询，非线上 SLA，也不能与先前 BM25 时延直接推导优化比例。
+
+复现新增实验：
+
+```powershell
+python scripts/prepare_rag_embedding.py
+python scripts/sweep_rag_v2.py --corpus knowledge/benchmark_v2_variants/semantic.json --cases knowledge/benchmark_v2_variants/semantic.cases.json --out evaluation/rag_v2_bge_semantic_dev_sweep_draft.json
+python scripts/sweep_rag_v2.py --corpus knowledge/benchmark_v2_variants/token.json --cases knowledge/benchmark_v2_variants/token.cases.json --out evaluation/rag_v2_bge_token_dev_sweep_draft.json
+python scripts/benchmark_rag_latency.py --corpus knowledge/benchmark_v2_variants/semantic.json --query "上海博物馆怎么预约" --mode hybrid --out evaluation/rag_v2_bge_hybrid_latency.json
+```
+
+本次重跑评测资产校验、两套分块配额/标注引用校验和 RAG 专项：49 passed。
+没有运行冻结测试集、付费生成或 Judge；生产默认不变。
