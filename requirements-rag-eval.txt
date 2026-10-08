@@ -2,3 +2,8 @@ jieba==0.42.1
 rank-bm25==0.2.2
 beautifulsoup4==4.13.4
 chromadb==1.5.9
+sentence-transformers==3.4.1
+transformers==4.48.3
+torch==2.6.0
+huggingface-hub==0.36.2
+tokenizers==0.21.4

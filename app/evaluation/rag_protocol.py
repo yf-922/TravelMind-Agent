@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+from datetime import datetime
 from collections import Counter
 from pathlib import Path
 
@@ -53,6 +54,11 @@ def validate_annotations(cases, rows, require_review=False, require_quota=True):
             errors.append(f"{case['id']}: answerable without evidence")
         if require_review and (case.get("annotation_status") != "human_reviewed" or not case.get("annotator") or not case.get("reviewed_at") or not case.get("change_log")):
             errors.append(f"{case['id']}: missing signed human review")
+        if require_review:
+            try:datetime.fromisoformat(str(case.get('reviewed_at')))
+            except ValueError:errors.append(f"{case['id']}: invalid review timestamp")
+        if not case.get('intent_group') or case.get('split') not in ('dev','test'):
+            errors.append(f"{case['id']}: missing intent group or invalid split")
     if any(len(splits) != 1 for splits in groups.values()):
         errors.append("intent group leaks across splits")
     if require_quota:
@@ -64,12 +70,13 @@ def validate_annotations(cases, rows, require_review=False, require_quota=True):
 
 
 def freeze_payload(cases, rows, config):
-    from app.evaluation.rag_retrieval import embedding_config
+    from app.evaluation.rag_retrieval import embedding_config,lexical_config
     errors = validate_corpus(rows, True) + validate_annotations(cases, rows, True)
     if errors:
         raise ValueError("; ".join(errors))
     return {"schema_version": 1, "corpus": fingerprint(rows), "annotations": fingerprint(cases),
-            "configuration": fingerprint(config), "config": config, "embedding": embedding_config(), "status": "frozen"}
+            "configuration": fingerprint(config), "config": config, "embedding": embedding_config(),
+            "lexical":lexical_config(), "status": "frozen"}
 
 
 def verify_freeze(path: Path, cases, rows, config):

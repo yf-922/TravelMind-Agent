@@ -19,6 +19,8 @@ jobs:
         run: python -m compileall -q app tests scripts
       - name: Validate evaluation manifest without external calls
         run: python scripts/validate_eval_assets.py
+      - name: Validate RAG corpus and draft split without model downloads
+        run: python scripts/validate_rag_assets.py --corpus knowledge/benchmark_v2_curated/chunks.json --cases evaluation/rag_benchmark_v2_draft.json --require-quota
       - name: Run complete offline test suite
         run: pytest -q
       - uses: actions/setup-node@v4
