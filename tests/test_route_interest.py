@@ -40,6 +40,20 @@ def test_collector_rejects_quote_corrupted_by_invalid_bytes(tmp_path, monkeypatc
     assert facts == [] and records[0]['status'] == 'unavailable'
 
 
+def test_collector_uses_identifiable_html_headers(tmp_path, monkeypatch):
+    import httpx
+    from scripts import build_route_interest_assets as builder
+    monkeypatch.setattr(builder, 'SOURCES', [('上海', ['上海豫园'], 'https://official.example/yuyuan', '官方销售渠道购票', '购票')])
+    seen = {}
+    def fake_get(*args, **kwargs):
+        seen.update(kwargs.get('headers', {}))
+        return httpx.Response(200, content='官方销售渠道购票'.encode(), request=httpx.Request('GET', args[0]))
+    monkeypatch.setattr(httpx, 'get', fake_get)
+    facts, _ = builder.collect_sources(tmp_path)
+    assert facts and 'TravelMind-eval-source-capture' in seen['User-Agent']
+    assert seen['Accept'].startswith('text/html')
+
+
 def test_assets_have_30_cases_18_distinct_real_candidates_and_provenance():
     cases, facts = load_assets()
     assert not validate_assets(cases, facts)
@@ -54,6 +68,9 @@ def test_frozen_test_refuses_unsigned_labels_and_incomplete_knowledge():
         freeze_assets(cases, facts, {'model': 'fake'})
     for c in cases:
         c.update(annotation_status='human_reviewed', annotator='test', reviewed_at='2026-10-08', change_log=['test only'])
+    # Simulate an incomplete corpus in the gate test; the checked-in corpus is
+    # currently complete for all three cities.
+    facts = [f for f in facts if '上海豫园' not in f.get('entities', [])]
     for f in facts:
         f.update(review_status='human_reviewed', annotator='test', reviewed_at='2026-10-08', change_log=['test only'])
     with pytest.raises(ValueError, match='coverage below six'):

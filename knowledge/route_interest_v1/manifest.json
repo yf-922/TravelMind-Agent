@@ -136,6 +136,17 @@
       "collected_at": "2026-10-08T15:18:39.697089+00:00"
     },
     {
+      "url": "https://www.yugarden.com.cn/page/articleView/index.html",
+      "entities": [
+        "上海豫园"
+      ],
+      "city": "上海",
+      "source": "interest_5b79ac56d84575c5",
+      "status": "verified_quote",
+      "snapshot_hash": "a042296d5482857051dd82107b505799989542fab026cbd3a1328f96a4db1ff7",
+      "collected_at": "2026-10-08T15:42:37.155606+00:00"
+    },
+    {
       "url": "https://www.aitianya.cn/",
       "entities": [
         "天涯海角游览区"
@@ -166,10 +177,10 @@
   },
   "evidenced_candidates_per_city": {
     "南京": 6,
-    "上海": 5,
+    "上海": 6,
     "三亚": 6
   },
-  "fact_fingerprint": "272515732f593d659a0aaec00349424a2cb36a650ecb012feffa294944d9b74d",
+  "fact_fingerprint": "4237b62fe5b5d5aed2e442ae2495e5cdb7e155e838d3982e377f14098c21f87b",
   "case_fingerprint": "354d34473c3af8235ac40dbe862b30cdf73a70a05b09a09a2931b76fe4625d7b",
   "label_status": "draft_not_human_confirmed",
   "splits": {

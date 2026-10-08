@@ -44,6 +44,8 @@ SOURCES = [
      "大熊猫 华南虎 大猩猩 金丝猴 火烈鸟 蓝黄金刚鹦鹉 小熊猫 斑嘴环企鹅 亚洲象 长颈鹿", "活体动物观察"),
     ("上海", ["上海海洋水族馆"], "https://www.sh-aquarium.com/",
      "主题展区 中国区 南美洲区 澳大利亚区 非洲区 东南亚区 冷水区 极地区 海岸区 深海区", "水生生物与海洋科普"),
+    ("上海", ["上海豫园"], "https://www.yugarden.com.cn/page/articleView/index.html",
+     "请在豫园官方销售渠道购票，避免不必要的经济损失。", "官方购票渠道与游览安全"),
     ("三亚", ["天涯海角游览区"], "https://www.aitianya.cn/",
      "这就是著名的“天涯”石，是景区的标志和象征", "海滨石刻与文化"),
     ("三亚", ["南山大小洞天旅游区", "大小洞天"], "https://www.sanyapark.com/",
@@ -116,7 +118,15 @@ def collect_sources(directory: Path, *, only_missing: bool = False):
                 records.append({k: old[k] for k in ('url', 'entities', 'city', 'source', 'status', 'snapshot_hash', 'collected_at') if k in old})
                 continue
         try:
-            response = httpx.get(url, timeout=20, follow_redirects=True)
+            response = httpx.get(
+                url,
+                timeout=20,
+                follow_redirects=True,
+                headers={
+                    "User-Agent": "TravelMind-eval-source-capture/1.0 (+offline evaluation)",
+                    "Accept": "text/html,application/xhtml+xml",
+                },
+            )
             response.raise_for_status()
             # Some official Chinese pages contain a few legacy/invalid bytes.
             # Prefer strict UTF-8, but permit replacement decoding only when the

@@ -262,6 +262,24 @@
     "review_status": "pending"
   },
   {
+    "url": "https://www.yugarden.com.cn/page/articleView/index.html",
+    "entities": [
+      "上海豫园"
+    ],
+    "city": "上海",
+    "source": "interest_5b79ac56d84575c5",
+    "status": "verified_quote",
+    "snapshot_hash": "a042296d5482857051dd82107b505799989542fab026cbd3a1328f96a4db1ff7",
+    "collected_at": "2026-10-08T15:42:37.155606+00:00",
+    "topic": "官方购票渠道与游览安全",
+    "knowledge_type": "stable_planning_fact",
+    "evidence_id": "interest_5b79ac56d84575c5",
+    "validity": "official_snapshot_not_live_guarantee",
+    "text": "请在豫园官方销售渠道购票，避免不必要的经济损失。",
+    "content_hash": "8512ac727fdac75ca81313001a28a0ac5eac038bbc4db2064dbbf17639be15ee",
+    "review_status": "pending"
+  },
+  {
     "url": "https://www.aitianya.cn/",
     "entities": [
       "天涯海角游览区"
