@@ -33,7 +33,7 @@ def evaluate(cases, mode, k, c=60):
         except Exception as exc: error=type(exc).__name__
         latency.append((time.perf_counter()-started)*1000)
         grade=score_case(case,result) if not error else None
-        rows.append({"id":case["id"],"type":case.get("type"),"answerable":bool(case.get("relevant_chunks")),"error":error,"retrieved":[x.get("chunk_id") for x in result],"grade":grade,
+        rows.append({"id":case["id"],"intent_group":case.get("intent_group",case['id']),"type":case.get("type"),"answerable":bool(case.get("relevant_chunks")),"error":error,"retrieved":[x.get("chunk_id") for x in result],"grade":grade,
                      "context_chars":sum(len(x.get("text","")) for x in result),"latency_ms":latency[-1]})
     valid=[x["grade"] for x in rows if x["grade"] and x["answerable"]]
     negatives=[x for x in rows if not x["answerable"]]
@@ -41,6 +41,8 @@ def evaluate(cases, mode, k, c=60):
             "metrics": {name: round(statistics.mean(g[name] for g in valid),4) if valid else None for name in ("hit","recall","precision","rr","ndcg","fact_coverage")},
             "no_answer_by_type":{kind:{"count":len(sub),"empty_rate":sum(not x['retrieved'] and not x['error'] for x in sub)/len(sub),"retrieved_rate":sum(bool(x['retrieved']) for x in sub)/len(sub)} for kind in sorted({str(x['type']) for x in negatives}) for sub in [[x for x in negatives if str(x['type'])==kind]]},
             "mean_context_chars":statistics.mean(x['context_chars'] for x in rows),
+            "cold_first_query_ms":latency[0],
+            "warm_latency_ms":{"p50":statistics.median(latency[1:]) if len(latency)>1 else None,"p95":sorted(latency[1:])[max(0,math.ceil(.95*(len(latency)-1))-1)] if len(latency)>1 else None},
             "latency_ms":{"p50":round(statistics.median(latency),2),"p95":round(sorted(latency)[max(0,math.ceil(.95*len(latency))-1)],2)},"cases":rows}
 
 
@@ -60,9 +62,15 @@ def paired_bootstrap(a,b,metric='recall',seed=20261008,iterations=1000):
     ids=sorted(amap.keys() & bmap.keys())
     if not ids:return None
     delta=[bmap[i]['grade'][metric]-amap[i]['grade'][metric] for i in ids]
+    groups={}
+    for i,d in zip(ids,delta):groups.setdefault(amap[i].get('intent_group',i),[]).append(d)
     rng=random.Random(seed)
-    samples=sorted(statistics.mean(rng.choices(delta,k=len(delta))) for _ in range(iterations))
-    return {'paired_n':len(ids),'seed':seed,'iterations':iterations,'mean_delta':statistics.mean(delta),'ci95':[samples[int(.025*iterations)],samples[int(.975*iterations)-1]],'improved':[i for i,d in zip(ids,delta) if d>0],'degraded':[i for i,d in zip(ids,delta) if d<0]}
+    samples=[]
+    for _ in range(iterations):
+        selected=rng.choices(list(groups),k=len(groups))
+        samples.append(statistics.mean(d for group in selected for d in groups[group]))
+    samples.sort()
+    return {'paired_n':len(ids),'intent_groups':len(groups),'resampling_unit':'intent_group','seed':seed,'iterations':iterations,'mean_delta':statistics.mean(delta),'ci95':[samples[int(.025*iterations)],samples[int(.975*iterations)-1]],'improved':[i for i,d in zip(ids,delta) if d>0],'degraded':[i for i,d in zip(ids,delta) if d<0]}
 
 def main():
     p=argparse.ArgumentParser(); p.add_argument("--cases",type=Path,default=ROOT/"evaluation/rag_benchmark_v1.json"); p.add_argument("--split",choices=("dev","test"),default="dev"); p.add_argument("--mode",choices=MODES,default="keyword"); p.add_argument("--k",type=int,choices=KS,default=3); p.add_argument("--rrf-c",type=int,choices=(20,60,100),default=60); p.add_argument("--out",type=Path,default=ROOT/"evaluation/rag_v2_report.json"); p.add_argument("--allow-vector",action="store_true")
