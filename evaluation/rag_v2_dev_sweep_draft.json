@@ -1185,11 +1185,12 @@
         }
       ],
       "latency_boundary": "Measured full Top20 channel retrieval; k prefix scoring adds no model calls. First request includes initialization, remaining are warm.",
-      "cold_first_query_ms": 2.736199996434152,
       "warm_latency_ms": {
         "p50": 1.3427999801933765,
         "p95": 1.4801999786868691
-      }
+      },
+      "initialization_first_query_ms": 2.736199996434152,
+      "cold_process_start_measured": false
     },
     {
       "mode": "keyword",
@@ -2413,11 +2414,12 @@
         }
       ],
       "latency_boundary": "Measured full Top20 channel retrieval; k prefix scoring adds no model calls. First request includes initialization, remaining are warm.",
-      "cold_first_query_ms": 2.736199996434152,
       "warm_latency_ms": {
         "p50": 1.3427999801933765,
         "p95": 1.4801999786868691
-      }
+      },
+      "initialization_first_query_ms": 2.736199996434152,
+      "cold_process_start_measured": false
     },
     {
       "mode": "keyword",
@@ -3695,11 +3697,12 @@
         }
       ],
       "latency_boundary": "Measured full Top20 channel retrieval; k prefix scoring adds no model calls. First request includes initialization, remaining are warm.",
-      "cold_first_query_ms": 2.736199996434152,
       "warm_latency_ms": {
         "p50": 1.3427999801933765,
         "p95": 1.4801999786868691
-      }
+      },
+      "initialization_first_query_ms": 2.736199996434152,
+      "cold_process_start_measured": false
     },
     {
       "mode": "keyword",
@@ -5085,11 +5088,12 @@
         }
       ],
       "latency_boundary": "Measured full Top20 channel retrieval; k prefix scoring adds no model calls. First request includes initialization, remaining are warm.",
-      "cold_first_query_ms": 2.736199996434152,
       "warm_latency_ms": {
         "p50": 1.3427999801933765,
         "p95": 1.4801999786868691
-      }
+      },
+      "initialization_first_query_ms": 2.736199996434152,
+      "cold_process_start_measured": false
     },
     {
       "mode": "keyword",
@@ -6637,11 +6641,12 @@
         }
       ],
       "latency_boundary": "Measured full Top20 channel retrieval; k prefix scoring adds no model calls. First request includes initialization, remaining are warm.",
-      "cold_first_query_ms": 2.736199996434152,
       "warm_latency_ms": {
         "p50": 1.3427999801933765,
         "p95": 1.4801999786868691
-      }
+      },
+      "initialization_first_query_ms": 2.736199996434152,
+      "cold_process_start_measured": false
     },
     {
       "mode": "keyword",
@@ -8297,11 +8302,12 @@
         }
       ],
       "latency_boundary": "Measured full Top20 channel retrieval; k prefix scoring adds no model calls. First request includes initialization, remaining are warm.",
-      "cold_first_query_ms": 2.736199996434152,
       "warm_latency_ms": {
         "p50": 1.3427999801933765,
         "p95": 1.4801999786868691
-      }
+      },
+      "initialization_first_query_ms": 2.736199996434152,
+      "cold_process_start_measured": false
     },
     {
       "mode": "bm25",
@@ -9471,11 +9477,12 @@
         }
       ],
       "latency_boundary": "Measured full Top20 channel retrieval; k prefix scoring adds no model calls. First request includes initialization, remaining are warm.",
-      "cold_first_query_ms": 365.2719999663532,
       "warm_latency_ms": {
         "p50": 6.771299988031387,
         "p95": 7.635100046172738
-      }
+      },
+      "initialization_first_query_ms": 365.2719999663532,
+      "cold_process_start_measured": false
     },
     {
       "mode": "bm25",
@@ -10699,11 +10706,12 @@
         }
       ],
       "latency_boundary": "Measured full Top20 channel retrieval; k prefix scoring adds no model calls. First request includes initialization, remaining are warm.",
-      "cold_first_query_ms": 365.2719999663532,
       "warm_latency_ms": {
         "p50": 6.771299988031387,
         "p95": 7.635100046172738
-      }
+      },
+      "initialization_first_query_ms": 365.2719999663532,
+      "cold_process_start_measured": false
     },
     {
       "mode": "bm25",
@@ -11981,11 +11989,12 @@
         }
       ],
       "latency_boundary": "Measured full Top20 channel retrieval; k prefix scoring adds no model calls. First request includes initialization, remaining are warm.",
-      "cold_first_query_ms": 365.2719999663532,
       "warm_latency_ms": {
         "p50": 6.771299988031387,
         "p95": 7.635100046172738
-      }
+      },
+      "initialization_first_query_ms": 365.2719999663532,
+      "cold_process_start_measured": false
     },
     {
       "mode": "bm25",
@@ -13371,11 +13380,12 @@
         }
       ],
       "latency_boundary": "Measured full Top20 channel retrieval; k prefix scoring adds no model calls. First request includes initialization, remaining are warm.",
-      "cold_first_query_ms": 365.2719999663532,
       "warm_latency_ms": {
         "p50": 6.771299988031387,
         "p95": 7.635100046172738
-      }
+      },
+      "initialization_first_query_ms": 365.2719999663532,
+      "cold_process_start_measured": false
     },
     {
       "mode": "bm25",
@@ -14923,11 +14933,12 @@
         }
       ],
       "latency_boundary": "Measured full Top20 channel retrieval; k prefix scoring adds no model calls. First request includes initialization, remaining are warm.",
-      "cold_first_query_ms": 365.2719999663532,
       "warm_latency_ms": {
         "p50": 6.771299988031387,
         "p95": 7.635100046172738
-      }
+      },
+      "initialization_first_query_ms": 365.2719999663532,
+      "cold_process_start_measured": false
     },
     {
       "mode": "bm25",
@@ -16583,11 +16594,12 @@
         }
       ],
       "latency_boundary": "Measured full Top20 channel retrieval; k prefix scoring adds no model calls. First request includes initialization, remaining are warm.",
-      "cold_first_query_ms": 365.2719999663532,
       "warm_latency_ms": {
         "p50": 6.771299988031387,
         "p95": 7.635100046172738
-      }
+      },
+      "initialization_first_query_ms": 365.2719999663532,
+      "cold_process_start_measured": false
     },
     {
       "mode": "vector",
@@ -17757,11 +17769,12 @@
         }
       ],
       "latency_boundary": "Measured full Top20 channel retrieval; k prefix scoring adds no model calls. First request includes initialization, remaining are warm.",
-      "cold_first_query_ms": 878.2264000037685,
       "warm_latency_ms": {
         "p50": 160.57099995668977,
         "p95": 185.66200003260747
-      }
+      },
+      "initialization_first_query_ms": 878.2264000037685,
+      "cold_process_start_measured": false
     },
     {
       "mode": "vector",
@@ -18985,11 +18998,12 @@
         }
       ],
       "latency_boundary": "Measured full Top20 channel retrieval; k prefix scoring adds no model calls. First request includes initialization, remaining are warm.",
-      "cold_first_query_ms": 878.2264000037685,
       "warm_latency_ms": {
         "p50": 160.57099995668977,
         "p95": 185.66200003260747
-      }
+      },
+      "initialization_first_query_ms": 878.2264000037685,
+      "cold_process_start_measured": false
     },
     {
       "mode": "vector",
@@ -20267,11 +20281,12 @@
         }
       ],
       "latency_boundary": "Measured full Top20 channel retrieval; k prefix scoring adds no model calls. First request includes initialization, remaining are warm.",
-      "cold_first_query_ms": 878.2264000037685,
       "warm_latency_ms": {
         "p50": 160.57099995668977,
         "p95": 185.66200003260747
-      }
+      },
+      "initialization_first_query_ms": 878.2264000037685,
+      "cold_process_start_measured": false
     },
     {
       "mode": "vector",
@@ -21657,11 +21672,12 @@
         }
       ],
       "latency_boundary": "Measured full Top20 channel retrieval; k prefix scoring adds no model calls. First request includes initialization, remaining are warm.",
-      "cold_first_query_ms": 878.2264000037685,
       "warm_latency_ms": {
         "p50": 160.57099995668977,
         "p95": 185.66200003260747
-      }
+      },
+      "initialization_first_query_ms": 878.2264000037685,
+      "cold_process_start_measured": false
     },
     {
       "mode": "vector",
@@ -23209,11 +23225,12 @@
         }
       ],
       "latency_boundary": "Measured full Top20 channel retrieval; k prefix scoring adds no model calls. First request includes initialization, remaining are warm.",
-      "cold_first_query_ms": 878.2264000037685,
       "warm_latency_ms": {
         "p50": 160.57099995668977,
         "p95": 185.66200003260747
-      }
+      },
+      "initialization_first_query_ms": 878.2264000037685,
+      "cold_process_start_measured": false
     },
     {
       "mode": "vector",
@@ -24869,11 +24886,12 @@
         }
       ],
       "latency_boundary": "Measured full Top20 channel retrieval; k prefix scoring adds no model calls. First request includes initialization, remaining are warm.",
-      "cold_first_query_ms": 878.2264000037685,
       "warm_latency_ms": {
         "p50": 160.57099995668977,
         "p95": 185.66200003260747
-      }
+      },
+      "initialization_first_query_ms": 878.2264000037685,
+      "cold_process_start_measured": false
     },
     {
       "mode": "hybrid",
@@ -26043,11 +26061,12 @@
         }
       ],
       "latency_boundary": "Measured full Top20 channel retrieval; k prefix scoring adds no model calls. First request includes initialization, remaining are warm.",
-      "cold_first_query_ms": 157.92739996686578,
       "warm_latency_ms": {
         "p50": 159.46160000748932,
         "p95": 171.48699995595962
-      }
+      },
+      "initialization_first_query_ms": 157.92739996686578,
+      "cold_process_start_measured": false
     },
     {
       "mode": "hybrid",
@@ -27271,11 +27290,12 @@
         }
       ],
       "latency_boundary": "Measured full Top20 channel retrieval; k prefix scoring adds no model calls. First request includes initialization, remaining are warm.",
-      "cold_first_query_ms": 157.92739996686578,
       "warm_latency_ms": {
         "p50": 159.46160000748932,
         "p95": 171.48699995595962
-      }
+      },
+      "initialization_first_query_ms": 157.92739996686578,
+      "cold_process_start_measured": false
     },
     {
       "mode": "hybrid",
@@ -28553,11 +28573,12 @@
         }
       ],
       "latency_boundary": "Measured full Top20 channel retrieval; k prefix scoring adds no model calls. First request includes initialization, remaining are warm.",
-      "cold_first_query_ms": 157.92739996686578,
       "warm_latency_ms": {
         "p50": 159.46160000748932,
         "p95": 171.48699995595962
-      }
+      },
+      "initialization_first_query_ms": 157.92739996686578,
+      "cold_process_start_measured": false
     },
     {
       "mode": "hybrid",
@@ -29943,11 +29964,12 @@
         }
       ],
       "latency_boundary": "Measured full Top20 channel retrieval; k prefix scoring adds no model calls. First request includes initialization, remaining are warm.",
-      "cold_first_query_ms": 157.92739996686578,
       "warm_latency_ms": {
         "p50": 159.46160000748932,
         "p95": 171.48699995595962
-      }
+      },
+      "initialization_first_query_ms": 157.92739996686578,
+      "cold_process_start_measured": false
     },
     {
       "mode": "hybrid",
@@ -31495,11 +31517,12 @@
         }
       ],
       "latency_boundary": "Measured full Top20 channel retrieval; k prefix scoring adds no model calls. First request includes initialization, remaining are warm.",
-      "cold_first_query_ms": 157.92739996686578,
       "warm_latency_ms": {
         "p50": 159.46160000748932,
         "p95": 171.48699995595962
-      }
+      },
+      "initialization_first_query_ms": 157.92739996686578,
+      "cold_process_start_measured": false
     },
     {
       "mode": "hybrid",
@@ -33155,11 +33178,12 @@
         }
       ],
       "latency_boundary": "Measured full Top20 channel retrieval; k prefix scoring adds no model calls. First request includes initialization, remaining are warm.",
-      "cold_first_query_ms": 157.92739996686578,
       "warm_latency_ms": {
         "p50": 159.46160000748932,
         "p95": 171.48699995595962
-      }
+      },
+      "initialization_first_query_ms": 157.92739996686578,
+      "cold_process_start_measured": false
     },
     {
       "mode": "hybrid",
@@ -34329,11 +34353,12 @@
         }
       ],
       "latency_boundary": "Measured full Top20 channel retrieval; k prefix scoring adds no model calls. First request includes initialization, remaining are warm.",
-      "cold_first_query_ms": 152.91489998344332,
       "warm_latency_ms": {
         "p50": 157.63049997622147,
         "p95": 167.84520004875958
-      }
+      },
+      "initialization_first_query_ms": 152.91489998344332,
+      "cold_process_start_measured": false
     },
     {
       "mode": "hybrid",
@@ -35557,11 +35582,12 @@
         }
       ],
       "latency_boundary": "Measured full Top20 channel retrieval; k prefix scoring adds no model calls. First request includes initialization, remaining are warm.",
-      "cold_first_query_ms": 152.91489998344332,
       "warm_latency_ms": {
         "p50": 157.63049997622147,
         "p95": 167.84520004875958
-      }
+      },
+      "initialization_first_query_ms": 152.91489998344332,
+      "cold_process_start_measured": false
     },
     {
       "mode": "hybrid",
@@ -36839,11 +36865,12 @@
         }
       ],
       "latency_boundary": "Measured full Top20 channel retrieval; k prefix scoring adds no model calls. First request includes initialization, remaining are warm.",
-      "cold_first_query_ms": 152.91489998344332,
       "warm_latency_ms": {
         "p50": 157.63049997622147,
         "p95": 167.84520004875958
-      }
+      },
+      "initialization_first_query_ms": 152.91489998344332,
+      "cold_process_start_measured": false
     },
     {
       "mode": "hybrid",
@@ -38229,11 +38256,12 @@
         }
       ],
       "latency_boundary": "Measured full Top20 channel retrieval; k prefix scoring adds no model calls. First request includes initialization, remaining are warm.",
-      "cold_first_query_ms": 152.91489998344332,
       "warm_latency_ms": {
         "p50": 157.63049997622147,
         "p95": 167.84520004875958
-      }
+      },
+      "initialization_first_query_ms": 152.91489998344332,
+      "cold_process_start_measured": false
     },
     {
       "mode": "hybrid",
@@ -39781,11 +39809,12 @@
         }
       ],
       "latency_boundary": "Measured full Top20 channel retrieval; k prefix scoring adds no model calls. First request includes initialization, remaining are warm.",
-      "cold_first_query_ms": 152.91489998344332,
       "warm_latency_ms": {
         "p50": 157.63049997622147,
         "p95": 167.84520004875958
-      }
+      },
+      "initialization_first_query_ms": 152.91489998344332,
+      "cold_process_start_measured": false
     },
     {
       "mode": "hybrid",
@@ -41441,11 +41470,12 @@
         }
       ],
       "latency_boundary": "Measured full Top20 channel retrieval; k prefix scoring adds no model calls. First request includes initialization, remaining are warm.",
-      "cold_first_query_ms": 152.91489998344332,
       "warm_latency_ms": {
         "p50": 157.63049997622147,
         "p95": 167.84520004875958
-      }
+      },
+      "initialization_first_query_ms": 152.91489998344332,
+      "cold_process_start_measured": false
     },
     {
       "mode": "hybrid",
@@ -42615,11 +42645,12 @@
         }
       ],
       "latency_boundary": "Measured full Top20 channel retrieval; k prefix scoring adds no model calls. First request includes initialization, remaining are warm.",
-      "cold_first_query_ms": 156.91880002850667,
       "warm_latency_ms": {
         "p50": 157.3488000431098,
         "p95": 167.6432000240311
-      }
+      },
+      "initialization_first_query_ms": 156.91880002850667,
+      "cold_process_start_measured": false
     },
     {
       "mode": "hybrid",
@@ -43843,11 +43874,12 @@
         }
       ],
       "latency_boundary": "Measured full Top20 channel retrieval; k prefix scoring adds no model calls. First request includes initialization, remaining are warm.",
-      "cold_first_query_ms": 156.91880002850667,
       "warm_latency_ms": {
         "p50": 157.3488000431098,
         "p95": 167.6432000240311
-      }
+      },
+      "initialization_first_query_ms": 156.91880002850667,
+      "cold_process_start_measured": false
     },
     {
       "mode": "hybrid",
@@ -45125,11 +45157,12 @@
         }
       ],
       "latency_boundary": "Measured full Top20 channel retrieval; k prefix scoring adds no model calls. First request includes initialization, remaining are warm.",
-      "cold_first_query_ms": 156.91880002850667,
       "warm_latency_ms": {
         "p50": 157.3488000431098,
         "p95": 167.6432000240311
-      }
+      },
+      "initialization_first_query_ms": 156.91880002850667,
+      "cold_process_start_measured": false
     },
     {
       "mode": "hybrid",
@@ -46515,11 +46548,12 @@
         }
       ],
       "latency_boundary": "Measured full Top20 channel retrieval; k prefix scoring adds no model calls. First request includes initialization, remaining are warm.",
-      "cold_first_query_ms": 156.91880002850667,
       "warm_latency_ms": {
         "p50": 157.3488000431098,
         "p95": 167.6432000240311
-      }
+      },
+      "initialization_first_query_ms": 156.91880002850667,
+      "cold_process_start_measured": false
     },
     {
       "mode": "hybrid",
@@ -48067,11 +48101,12 @@
         }
       ],
       "latency_boundary": "Measured full Top20 channel retrieval; k prefix scoring adds no model calls. First request includes initialization, remaining are warm.",
-      "cold_first_query_ms": 156.91880002850667,
       "warm_latency_ms": {
         "p50": 157.3488000431098,
         "p95": 167.6432000240311
-      }
+      },
+      "initialization_first_query_ms": 156.91880002850667,
+      "cold_process_start_measured": false
     },
     {
       "mode": "hybrid",
@@ -49727,11 +49762,12 @@
         }
       ],
       "latency_boundary": "Measured full Top20 channel retrieval; k prefix scoring adds no model calls. First request includes initialization, remaining are warm.",
-      "cold_first_query_ms": 156.91880002850667,
       "warm_latency_ms": {
         "p50": 157.3488000431098,
         "p95": 167.6432000240311
-      }
+      },
+      "initialization_first_query_ms": 156.91880002850667,
+      "cold_process_start_measured": false
     },
     {
       "mode": "keyword_rrf",
@@ -50901,11 +50937,12 @@
         }
       ],
       "latency_boundary": "Measured full Top20 channel retrieval; k prefix scoring adds no model calls. First request includes initialization, remaining are warm.",
-      "cold_first_query_ms": 145.2591000124812,
       "warm_latency_ms": {
         "p50": 150.24770004674792,
         "p95": 168.73829998075962
-      }
+      },
+      "initialization_first_query_ms": 145.2591000124812,
+      "cold_process_start_measured": false
     },
     {
       "mode": "keyword_rrf",
@@ -52129,11 +52166,12 @@
         }
       ],
       "latency_boundary": "Measured full Top20 channel retrieval; k prefix scoring adds no model calls. First request includes initialization, remaining are warm.",
-      "cold_first_query_ms": 145.2591000124812,
       "warm_latency_ms": {
         "p50": 150.24770004674792,
         "p95": 168.73829998075962
-      }
+      },
+      "initialization_first_query_ms": 145.2591000124812,
+      "cold_process_start_measured": false
     },
     {
       "mode": "keyword_rrf",
@@ -53411,11 +53449,12 @@
         }
       ],
       "latency_boundary": "Measured full Top20 channel retrieval; k prefix scoring adds no model calls. First request includes initialization, remaining are warm.",
-      "cold_first_query_ms": 145.2591000124812,
       "warm_latency_ms": {
         "p50": 150.24770004674792,
         "p95": 168.73829998075962
-      }
+      },
+      "initialization_first_query_ms": 145.2591000124812,
+      "cold_process_start_measured": false
     },
     {
       "mode": "keyword_rrf",
@@ -54801,11 +54840,12 @@
         }
       ],
       "latency_boundary": "Measured full Top20 channel retrieval; k prefix scoring adds no model calls. First request includes initialization, remaining are warm.",
-      "cold_first_query_ms": 145.2591000124812,
       "warm_latency_ms": {
         "p50": 150.24770004674792,
         "p95": 168.73829998075962
-      }
+      },
+      "initialization_first_query_ms": 145.2591000124812,
+      "cold_process_start_measured": false
     },
     {
       "mode": "keyword_rrf",
@@ -56353,11 +56393,12 @@
         }
       ],
       "latency_boundary": "Measured full Top20 channel retrieval; k prefix scoring adds no model calls. First request includes initialization, remaining are warm.",
-      "cold_first_query_ms": 145.2591000124812,
       "warm_latency_ms": {
         "p50": 150.24770004674792,
         "p95": 168.73829998075962
-      }
+      },
+      "initialization_first_query_ms": 145.2591000124812,
+      "cold_process_start_measured": false
     },
     {
       "mode": "keyword_rrf",
@@ -58013,11 +58054,12 @@
         }
       ],
       "latency_boundary": "Measured full Top20 channel retrieval; k prefix scoring adds no model calls. First request includes initialization, remaining are warm.",
-      "cold_first_query_ms": 145.2591000124812,
       "warm_latency_ms": {
         "p50": 150.24770004674792,
         "p95": 168.73829998075962
-      }
+      },
+      "initialization_first_query_ms": 145.2591000124812,
+      "cold_process_start_measured": false
     },
     {
       "mode": "keyword_rrf",
@@ -59187,11 +59229,12 @@
         }
       ],
       "latency_boundary": "Measured full Top20 channel retrieval; k prefix scoring adds no model calls. First request includes initialization, remaining are warm.",
-      "cold_first_query_ms": 149.02339997934178,
       "warm_latency_ms": {
         "p50": 144.69079999253154,
         "p95": 156.51379997143522
-      }
+      },
+      "initialization_first_query_ms": 149.02339997934178,
+      "cold_process_start_measured": false
     },
     {
       "mode": "keyword_rrf",
@@ -60415,11 +60458,12 @@
         }
       ],
       "latency_boundary": "Measured full Top20 channel retrieval; k prefix scoring adds no model calls. First request includes initialization, remaining are warm.",
-      "cold_first_query_ms": 149.02339997934178,
       "warm_latency_ms": {
         "p50": 144.69079999253154,
         "p95": 156.51379997143522
-      }
+      },
+      "initialization_first_query_ms": 149.02339997934178,
+      "cold_process_start_measured": false
     },
     {
       "mode": "keyword_rrf",
@@ -61697,11 +61741,12 @@
         }
       ],
       "latency_boundary": "Measured full Top20 channel retrieval; k prefix scoring adds no model calls. First request includes initialization, remaining are warm.",
-      "cold_first_query_ms": 149.02339997934178,
       "warm_latency_ms": {
         "p50": 144.69079999253154,
         "p95": 156.51379997143522
-      }
+      },
+      "initialization_first_query_ms": 149.02339997934178,
+      "cold_process_start_measured": false
     },
     {
       "mode": "keyword_rrf",
@@ -63087,11 +63132,12 @@
         }
       ],
       "latency_boundary": "Measured full Top20 channel retrieval; k prefix scoring adds no model calls. First request includes initialization, remaining are warm.",
-      "cold_first_query_ms": 149.02339997934178,
       "warm_latency_ms": {
         "p50": 144.69079999253154,
         "p95": 156.51379997143522
-      }
+      },
+      "initialization_first_query_ms": 149.02339997934178,
+      "cold_process_start_measured": false
     },
     {
       "mode": "keyword_rrf",
@@ -64639,11 +64685,12 @@
         }
       ],
       "latency_boundary": "Measured full Top20 channel retrieval; k prefix scoring adds no model calls. First request includes initialization, remaining are warm.",
-      "cold_first_query_ms": 149.02339997934178,
       "warm_latency_ms": {
         "p50": 144.69079999253154,
         "p95": 156.51379997143522
-      }
+      },
+      "initialization_first_query_ms": 149.02339997934178,
+      "cold_process_start_measured": false
     },
     {
       "mode": "keyword_rrf",
@@ -66299,11 +66346,12 @@
         }
       ],
       "latency_boundary": "Measured full Top20 channel retrieval; k prefix scoring adds no model calls. First request includes initialization, remaining are warm.",
-      "cold_first_query_ms": 149.02339997934178,
       "warm_latency_ms": {
         "p50": 144.69079999253154,
         "p95": 156.51379997143522
-      }
+      },
+      "initialization_first_query_ms": 149.02339997934178,
+      "cold_process_start_measured": false
     },
     {
       "mode": "keyword_rrf",
@@ -67473,11 +67521,12 @@
         }
       ],
       "latency_boundary": "Measured full Top20 channel retrieval; k prefix scoring adds no model calls. First request includes initialization, remaining are warm.",
-      "cold_first_query_ms": 153.35350000532344,
       "warm_latency_ms": {
         "p50": 146.189899998717,
         "p95": 166.11919994466007
-      }
+      },
+      "initialization_first_query_ms": 153.35350000532344,
+      "cold_process_start_measured": false
     },
     {
       "mode": "keyword_rrf",
@@ -68701,11 +68750,12 @@
         }
       ],
       "latency_boundary": "Measured full Top20 channel retrieval; k prefix scoring adds no model calls. First request includes initialization, remaining are warm.",
-      "cold_first_query_ms": 153.35350000532344,
       "warm_latency_ms": {
         "p50": 146.189899998717,
         "p95": 166.11919994466007
-      }
+      },
+      "initialization_first_query_ms": 153.35350000532344,
+      "cold_process_start_measured": false
     },
     {
       "mode": "keyword_rrf",
@@ -69983,11 +70033,12 @@
         }
       ],
       "latency_boundary": "Measured full Top20 channel retrieval; k prefix scoring adds no model calls. First request includes initialization, remaining are warm.",
-      "cold_first_query_ms": 153.35350000532344,
       "warm_latency_ms": {
         "p50": 146.189899998717,
         "p95": 166.11919994466007
-      }
+      },
+      "initialization_first_query_ms": 153.35350000532344,
+      "cold_process_start_measured": false
     },
     {
       "mode": "keyword_rrf",
@@ -71373,11 +71424,12 @@
         }
       ],
       "latency_boundary": "Measured full Top20 channel retrieval; k prefix scoring adds no model calls. First request includes initialization, remaining are warm.",
-      "cold_first_query_ms": 153.35350000532344,
       "warm_latency_ms": {
         "p50": 146.189899998717,
         "p95": 166.11919994466007
-      }
+      },
+      "initialization_first_query_ms": 153.35350000532344,
+      "cold_process_start_measured": false
     },
     {
       "mode": "keyword_rrf",
@@ -72925,11 +72977,12 @@
         }
       ],
       "latency_boundary": "Measured full Top20 channel retrieval; k prefix scoring adds no model calls. First request includes initialization, remaining are warm.",
-      "cold_first_query_ms": 153.35350000532344,
       "warm_latency_ms": {
         "p50": 146.189899998717,
         "p95": 166.11919994466007
-      }
+      },
+      "initialization_first_query_ms": 153.35350000532344,
+      "cold_process_start_measured": false
     },
     {
       "mode": "keyword_rrf",
@@ -74585,11 +74638,12 @@
         }
       ],
       "latency_boundary": "Measured full Top20 channel retrieval; k prefix scoring adds no model calls. First request includes initialization, remaining are warm.",
-      "cold_first_query_ms": 153.35350000532344,
       "warm_latency_ms": {
         "p50": 146.189899998717,
         "p95": 166.11919994466007
-      }
+      },
+      "initialization_first_query_ms": 153.35350000532344,
+      "cold_process_start_measured": false
     },
     {
       "mode": "legacy_hybrid",
@@ -75759,11 +75813,12 @@
         }
       ],
       "latency_boundary": "Measured full Top20 channel retrieval; k prefix scoring adds no model calls. First request includes initialization, remaining are warm.",
-      "cold_first_query_ms": 168.0900000501424,
       "warm_latency_ms": {
         "p50": 147.11329998681322,
         "p95": 158.7693000328727
-      }
+      },
+      "initialization_first_query_ms": 168.0900000501424,
+      "cold_process_start_measured": false
     },
     {
       "mode": "legacy_hybrid",
@@ -76987,11 +77042,12 @@
         }
       ],
       "latency_boundary": "Measured full Top20 channel retrieval; k prefix scoring adds no model calls. First request includes initialization, remaining are warm.",
-      "cold_first_query_ms": 168.0900000501424,
       "warm_latency_ms": {
         "p50": 147.11329998681322,
         "p95": 158.7693000328727
-      }
+      },
+      "initialization_first_query_ms": 168.0900000501424,
+      "cold_process_start_measured": false
     },
     {
       "mode": "legacy_hybrid",
@@ -78269,11 +78325,12 @@
         }
       ],
       "latency_boundary": "Measured full Top20 channel retrieval; k prefix scoring adds no model calls. First request includes initialization, remaining are warm.",
-      "cold_first_query_ms": 168.0900000501424,
       "warm_latency_ms": {
         "p50": 147.11329998681322,
         "p95": 158.7693000328727
-      }
+      },
+      "initialization_first_query_ms": 168.0900000501424,
+      "cold_process_start_measured": false
     },
     {
       "mode": "legacy_hybrid",
@@ -79659,11 +79716,12 @@
         }
       ],
       "latency_boundary": "Measured full Top20 channel retrieval; k prefix scoring adds no model calls. First request includes initialization, remaining are warm.",
-      "cold_first_query_ms": 168.0900000501424,
       "warm_latency_ms": {
         "p50": 147.11329998681322,
         "p95": 158.7693000328727
-      }
+      },
+      "initialization_first_query_ms": 168.0900000501424,
+      "cold_process_start_measured": false
     },
     {
       "mode": "legacy_hybrid",
@@ -81211,11 +81269,12 @@
         }
       ],
       "latency_boundary": "Measured full Top20 channel retrieval; k prefix scoring adds no model calls. First request includes initialization, remaining are warm.",
-      "cold_first_query_ms": 168.0900000501424,
       "warm_latency_ms": {
         "p50": 147.11329998681322,
         "p95": 158.7693000328727
-      }
+      },
+      "initialization_first_query_ms": 168.0900000501424,
+      "cold_process_start_measured": false
     },
     {
       "mode": "legacy_hybrid",
@@ -82871,11 +82930,12 @@
         }
       ],
       "latency_boundary": "Measured full Top20 channel retrieval; k prefix scoring adds no model calls. First request includes initialization, remaining are warm.",
-      "cold_first_query_ms": 168.0900000501424,
       "warm_latency_ms": {
         "p50": 147.11329998681322,
         "p95": 158.7693000328727
-      }
+      },
+      "initialization_first_query_ms": 168.0900000501424,
+      "cold_process_start_measured": false
     }
   ],
   "draft_k_candidates": {

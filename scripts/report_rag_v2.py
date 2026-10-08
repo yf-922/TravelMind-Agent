@@ -30,7 +30,7 @@ def main():
               'Machine questions were drafted from source topics. They are too generic and need manual rewrite/0-1-2 relevance review, cross-chunk and cross-city cases before conclusions.',
               'All draft k candidates reach 10. Do NOT change the production default: inspect corpus/topic quality, query labels and Chinese embedding suitability first.',
               'Independent annotation/review is still missing. Query-group bootstrap intervals are diagnostic, not confidence in real users or multi-annotator agreement.',
-              'Cold latency: first query per strategy includes setup; warm P50/P95 must be read separately, not sold as online latency. Context lengths are characters, not billed tokens.', '',
+              'Fresh-process cold-start latency has NOT been measured. First query per strategy includes setup in a reused process; warm P50/P95 are separate, not online SLA. Context lengths are characters, not billed tokens.', '',
               '## Generation Stage Dry Run', '',
               'After review and retriever selection: 120 questions x 3 neighboring k values x 3 repeats = 1080 generation calls. One independent judge per answer adds 1080 calls (2160 logical calls before provider retries).',
               'No generation/Judge calls executed. Monetary estimate cannot be supplied until model prices, prompt/context budget and actual usage are specified. Human spot checks remain required.', '',

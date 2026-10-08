@@ -41,7 +41,7 @@ def evaluate(cases, mode, k, c=60):
             "metrics": {name: round(statistics.mean(g[name] for g in valid),4) if valid else None for name in ("hit","recall","precision","rr","ndcg","fact_coverage")},
             "no_answer_by_type":{kind:{"count":len(sub),"empty_rate":sum(not x['retrieved'] and not x['error'] for x in sub)/len(sub),"retrieved_rate":sum(bool(x['retrieved']) for x in sub)/len(sub)} for kind in sorted({str(x['type']) for x in negatives}) for sub in [[x for x in negatives if str(x['type'])==kind]]},
             "mean_context_chars":statistics.mean(x['context_chars'] for x in rows),
-            "cold_first_query_ms":latency[0],
+            "initialization_first_query_ms":latency[0], "cold_process_start_measured":False,
             "warm_latency_ms":{"p50":statistics.median(latency[1:]) if len(latency)>1 else None,"p95":sorted(latency[1:])[max(0,math.ceil(.95*(len(latency)-1))-1)] if len(latency)>1 else None},
             "latency_ms":{"p50":round(statistics.median(latency),2),"p95":round(sorted(latency)[max(0,math.ceil(.95*len(latency))-1)],2)},"cases":rows}
 
