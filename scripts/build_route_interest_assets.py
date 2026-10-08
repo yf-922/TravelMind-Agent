@@ -20,10 +20,16 @@ from app.evaluation.rag_protocol import fingerprint
 OUT = ROOT / "knowledge/route_interest_v1"
 # city, official entity aliases, URL, verbatim stable fact quote, interest
 SOURCES = [
+    ("南京", ["中国科举博物馆(江南贡院)"], "https://www.njlyw.cn/websitenew/web/ScenicDetail?m=173&c=QH&i=1280",
+     "科举制度自隋创建、唐完备、宋改革、元中落、明鼎盛至清灭亡，历时逾千年", "科举制度与中国古代教育史"),
     ("上海", ["上海迪士尼度假区"], "https://www.shanghaidisneyresort.com/zh-cn/",
      "游乐项目 娱乐演出 迪士尼朋友", "主题乐园游乐与角色娱乐"),
     ("三亚", ["三亚南山文化旅游区"], "https://www.nanshan.com/nanshan/byjd.html",
      "南山寺 海上观音 不二法门 三十三观音堂", "佛教建筑与观音文化"),
+    ("三亚", ["三亚西岛海洋文化旅游区"], "https://www.visitsanya.com/zh/destination/%e8%a5%bf%e5%b2%9b",
+     "西岛更自然、更生活化。岛上有原住民渔村、咖啡馆、海景民宿、艺术墙与完整的海岛生态", "渔村生活与海岛生态"),
+    ("三亚", ["鹿回头风景区"], "https://www.visitsanya.com/zh/destination/%e9%b9%bf%e5%9b%9e%e5%a4%b4%e9%a3%8e%e6%99%af%e5%8c%ba",
+     "因黎族爱情传说而得名，是三亚最知名的城市山顶公园之一", "城市山顶观景与黎族爱情传说"),
     ("南京", ["玄武湖景区", "玄武湖"], "https://www.xuanwuhu.net/mhls/mhls1.aspx",
      "六朝时期为皇家园林湖泊，明代为保存黄册的国家档案馆", "皇家园林与城市历史"),
     ("南京", ["总统府", "南京总统府"], "https://www.njztf.cn/",
