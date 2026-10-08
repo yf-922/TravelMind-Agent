@@ -1,0 +1,211 @@
+[
+  {
+    "source": "nanjing_museum_history",
+    "city": "南京",
+    "entities": [
+      "南京博物院"
+    ],
+    "knowledge_type": "stable_planning_fact",
+    "topic": "展陈主题",
+    "url": "https://www.njmuseum.com/api/home/yylg",
+    "collected_at": "2026-10-08",
+    "evidence_id": "dynamic-711869f339f33a7c27e0155b",
+    "validity": "official_snapshot_not_live_guarantee",
+    "text": "南京博物院馆藏文物展示从旧石器时代到唐、宋、元、明、清时期的江苏古代文明、中国南方水乡文化，以及江苏古代物质与精神文化的多样性。可作为用户历史文化兴趣的选点依据；不提供逐展厅动线、准确参观时长、当前票价或临时展览状态。"
+  },
+  {
+    "source": "wuzhizhou_activity_types",
+    "city": "三亚",
+    "entities": [
+      "蜈支洲岛",
+      "蜈支洲岛旅游区",
+      "蜈支洲岛旅游风景区"
+    ],
+    "knowledge_type": "stable_planning_fact",
+    "topic": "活动组成",
+    "url": "https://www.wuzhizhou.com/ticket/",
+    "collected_at": "2026-10-08",
+    "evidence_id": "official-f07cc310268788e401660f6b",
+    "validity": "official_snapshot_not_live_guarantee",
+    "text": "蜈支洲岛官方介绍列举潜水、摩托艇、风洞等海陆运动项目，以及环岛观光、海鲜自助餐等休闲资源。可区分用户想观光还是参加具体运动项目；存在某类活动不代表它包含在基础门票内，也不保证出行当天运营、可预约或适合所有人。具体价格、开放和资格需要另行核验。"
+  },
+  {
+    "source": "shanghai_museum_special_products",
+    "city": "上海",
+    "entities": [
+      "上海博物馆东馆"
+    ],
+    "knowledge_type": "stable_planning_fact",
+    "topic": "参观产品组成",
+    "url": "https://reservation.shanghaimuseum.net/",
+    "collected_at": "2026-10-08",
+    "evidence_id": "official-669e507ed24e25de44e4bb10",
+    "validity": "product_structure_snapshot_recheck_booking_policy",
+    "text": "上海博物馆东馆的古代文明探索宫、数字馆属于需要区分的专项参观项目。官方快照给出的办理入口是上海博物馆微信公众号进入参观预约小程序，再在东馆界面选择专项预约。普通进馆与专项项目不能混为同一产品；当前预约要求、名额、价格与可用时段应另行确认。"
+  },
+  {
+    "url": "https://www.shanghaidisneyresort.com/zh-cn/",
+    "entities": [
+      "上海迪士尼度假区"
+    ],
+    "city": "上海",
+    "source": "interest_25a29915abb41827",
+    "status": "verified_quote",
+    "snapshot_hash": "88d41cb37e1ec129dcf6a21493690ca11b4fcbeb6594f7bd4cbeb74aa70f5e45",
+    "collected_at": "2026-10-08T10:05:05.465508+00:00",
+    "topic": "主题乐园游乐与角色娱乐",
+    "knowledge_type": "stable_planning_fact",
+    "evidence_id": "interest_25a29915abb41827",
+    "validity": "official_snapshot_not_live_guarantee",
+    "text": "游乐项目 娱乐演出 迪士尼朋友",
+    "content_hash": "ed6bcb5ede106a96efffa11d0969c8da7010d2ad9a46aa4e2f279a96d0001533",
+    "review_status": "pending"
+  },
+  {
+    "url": "https://www.nanshan.com/nanshan/byjd.html",
+    "entities": [
+      "三亚南山文化旅游区"
+    ],
+    "city": "三亚",
+    "source": "interest_d78fbeaccfb68d62",
+    "status": "verified_quote",
+    "snapshot_hash": "478d4b68b3a0804437eabcf541d23902f1d461878cb16fa60c6b2cd2ef813637",
+    "collected_at": "2026-10-08T10:05:05.887525+00:00",
+    "topic": "佛教建筑与观音文化",
+    "knowledge_type": "stable_planning_fact",
+    "evidence_id": "interest_d78fbeaccfb68d62",
+    "validity": "official_snapshot_not_live_guarantee",
+    "text": "南山寺 海上观音 不二法门 三十三观音堂",
+    "content_hash": "c26e732be1cf6997b9c896cbfc565c16f85b4adb665169a8ac71411b90ea455c",
+    "review_status": "pending"
+  },
+  {
+    "url": "https://www.xuanwuhu.net/mhls/mhls1.aspx",
+    "entities": [
+      "玄武湖景区",
+      "玄武湖"
+    ],
+    "city": "南京",
+    "source": "interest_b4c5aa40346c042a",
+    "status": "verified_quote",
+    "snapshot_hash": "329414d3f74613c0a038d1b4a427caf0836b445de807e43e7596756e2ad1e587",
+    "collected_at": "2026-10-08T10:05:06.368486+00:00",
+    "topic": "皇家园林与城市历史",
+    "knowledge_type": "stable_planning_fact",
+    "evidence_id": "interest_b4c5aa40346c042a",
+    "validity": "official_snapshot_not_live_guarantee",
+    "text": "六朝时期为皇家园林湖泊，明代为保存黄册的国家档案馆",
+    "content_hash": "dca7fd4efbc16641f148f813a5f6ad10ebfd0c8e3370d674fc747822d8d30808",
+    "review_status": "pending"
+  },
+  {
+    "url": "https://www.njztf.cn/",
+    "entities": [
+      "总统府",
+      "南京总统府"
+    ],
+    "city": "南京",
+    "source": "interest_bcd0981a9c64dc89",
+    "status": "verified_quote",
+    "snapshot_hash": "bb3dd0b5d3d1fef15caf3c8f0ceea549e8c835fe855e2d51178b9b6f7244ad5e",
+    "collected_at": "2026-10-08T10:05:07.268997+00:00",
+    "topic": "近代史与临时政府",
+    "knowledge_type": "stable_planning_fact",
+    "evidence_id": "interest_bcd0981a9c64dc89",
+    "validity": "official_snapshot_not_live_guarantee",
+    "text": "孙中山与南京临时政府",
+    "content_hash": "36c3fe1e9bfcd41ab1dc3a144baaf5a585760b68c813377c1bb09eb7ae294f40",
+    "review_status": "pending"
+  },
+  {
+    "url": "https://www.snhm.org.cn/cszl/zggk.htm",
+    "entities": [
+      "上海自然博物馆"
+    ],
+    "city": "上海",
+    "source": "interest_90ec80f62860ffdf",
+    "status": "verified_quote",
+    "snapshot_hash": "f06882206ca97433d797098ee9400122c90a6e9d411fd52ee1dc88ab06c67212",
+    "collected_at": "2026-10-08T10:05:07.830813+00:00",
+    "topic": "生命演化与自然科学",
+    "knowledge_type": "stable_planning_fact",
+    "evidence_id": "interest_90ec80f62860ffdf",
+    "validity": "official_snapshot_not_live_guarantee",
+    "text": "上海自然博物馆的展示以“自然•人•和谐”为主题，以“演化”为主线",
+    "content_hash": "bff465c3a6d62319fe5a88ba312f31b6467742596cb1c5d221a74734d6d3768c",
+    "review_status": "pending"
+  },
+  {
+    "url": "https://www.shanghaizoo.cn/",
+    "entities": [
+      "上海动物园"
+    ],
+    "city": "上海",
+    "source": "interest_15bfb1df39cfb7e5",
+    "status": "verified_quote",
+    "snapshot_hash": "4207044420e071b7ec8bb556d0eb15d6583f396e68f3ce72dcd54bc7b4dcd908",
+    "collected_at": "2026-10-08T10:05:08.282794+00:00",
+    "topic": "活体动物观察",
+    "knowledge_type": "stable_planning_fact",
+    "evidence_id": "interest_15bfb1df39cfb7e5",
+    "validity": "official_snapshot_not_live_guarantee",
+    "text": "大熊猫 华南虎 大猩猩 金丝猴 火烈鸟 蓝黄金刚鹦鹉 小熊猫 斑嘴环企鹅 亚洲象 长颈鹿",
+    "content_hash": "0e4cb3cff9337a384ccf29133444d37f6d39e49e360fc5dbf6f43b381500680e",
+    "review_status": "pending"
+  },
+  {
+    "url": "https://www.sh-aquarium.com/",
+    "entities": [
+      "上海海洋水族馆"
+    ],
+    "city": "上海",
+    "source": "interest_33012e0d9d6b1788",
+    "status": "verified_quote",
+    "snapshot_hash": "2a6cb057f4536f48020995baa4ca0534d65d0810b6bddec135bfe6b58b6c509f",
+    "collected_at": "2026-10-08T10:05:08.770614+00:00",
+    "topic": "水生生物与海洋科普",
+    "knowledge_type": "stable_planning_fact",
+    "evidence_id": "interest_33012e0d9d6b1788",
+    "validity": "official_snapshot_not_live_guarantee",
+    "text": "主题展区 中国区 南美洲区 澳大利亚区 非洲区 东南亚区 冷水区 极地区 海岸区 深海区",
+    "content_hash": "2ff9212ebd2f096a40a44bf14072995850fcd63010e3ca8fcf338e2a4b424d16",
+    "review_status": "pending"
+  },
+  {
+    "url": "https://www.aitianya.cn/",
+    "entities": [
+      "天涯海角游览区"
+    ],
+    "city": "三亚",
+    "source": "interest_493b6e346dac06d7",
+    "status": "verified_quote",
+    "snapshot_hash": "4a184e7d3ea81328f604d104bd8348c85d53d52f18c4d1024c0435faf882e404",
+    "collected_at": "2026-10-08T10:05:09.578855+00:00",
+    "topic": "海滨石刻与文化",
+    "knowledge_type": "stable_planning_fact",
+    "evidence_id": "interest_493b6e346dac06d7",
+    "validity": "official_snapshot_not_live_guarantee",
+    "text": "这就是著名的“天涯”石，是景区的标志和象征",
+    "content_hash": "fa59656e9fdf90667ab01780167c273bc9834a61b87685b80bd5bb402654db13",
+    "review_status": "pending"
+  },
+  {
+    "url": "https://www.sanyapark.com/",
+    "entities": [
+      "南山大小洞天旅游区",
+      "大小洞天"
+    ],
+    "city": "三亚",
+    "source": "interest_f463160d936a96b9",
+    "status": "verified_quote",
+    "snapshot_hash": "c0a78b54f31b1b55aef6dec6bc8c83bd17c25d2d2533db3f738c1fda3d17fb51",
+    "collected_at": "2026-10-08T10:05:11.298246+00:00",
+    "topic": "摩崖石刻与自然博物馆",
+    "knowledge_type": "stable_planning_fact",
+    "evidence_id": "interest_f463160d936a96b9",
+    "validity": "official_snapshot_not_live_guarantee",
+    "text": "寻踪自然博物馆 漫游旅拍基地 摩崖石刻",
+    "content_hash": "41461750a586d4a94aea5abd157479d763c060852a225efe6c6e64f3ebcb244f",
+    "review_status": "pending"
+  }
+]

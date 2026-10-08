@@ -1,0 +1,4560 @@
+[
+  {
+    "id": "interest-南京-01",
+    "split": "dev",
+    "intent_group": "南京-古代文明",
+    "query": "南京一日游，每天最多两个不同景点。想了解江苏古代文明和水乡文化。",
+    "destination": "南京",
+    "days": 1,
+    "max_per_day": 2,
+    "travel_start_date": "2026-10-15",
+    "travel_end_date": "2026-10-15",
+    "pois": [
+      {
+        "name": "南京博物院",
+        "provenance": {
+          "kind": "real_amap_exact_city_name",
+          "captured_at": "2026-10-08T09:40:30.530364+00:00"
+        },
+        "rating": 4.9,
+        "open_time": "周一 闭馆(法定节假日除外)；周二至周日 09:00-17:00开放(16:00停止入园)",
+        "location": {
+          "lng": 118.825064,
+          "lat": 32.040802
+        },
+        "photo": "http://store.is.autonavi.com/showpic/6d9679442d9f514b78d55213b43d9417",
+        "adname": "玄武区",
+        "address": "中山东路321号",
+        "tel": "025-84807923",
+        "cost": null,
+        "indoor": true,
+        "indoor_source": "amap_category_inference"
+      },
+      {
+        "name": "玄武湖景区",
+        "rating": 4.8,
+        "open_time": "周一至周日 00:00-24:00",
+        "location": {
+          "lng": 118.812688,
+          "lat": 32.069455
+        },
+        "photo": "http://store.is.autonavi.com/showpic/ff2f4114639e0110ae96ae76ad0c0287",
+        "adname": "玄武区",
+        "address": "玄武门路1号钟山风景名胜区西侧",
+        "tel": "025-83614286",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "nanjing-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "总统府",
+        "rating": 4.9,
+        "open_time": "08:30-18:00（17:00停止入场，周一闭馆）(数据来源:江苏省文旅厅公共服务平台苏心游)",
+        "location": {
+          "lng": 118.797398,
+          "lat": 32.044228
+        },
+        "photo": "http://aos-cdn-image.amap.com/sns/ugccomment/21acde57-d540-4737-974a-11b6c69d23de.jpg",
+        "adname": "玄武区",
+        "address": "长江路292号",
+        "tel": "025-84578716;025-84578888",
+        "cost": "[]",
+        "indoor": true,
+        "provenance": {
+          "fixture": "nanjing-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "中国科举博物馆(江南贡院)",
+        "rating": 4.7,
+        "open_time": "周一至周日 09:00-22:00 最晚进入22:00",
+        "location": {
+          "lng": 118.790669,
+          "lat": 32.020795
+        },
+        "photo": "http://store.is.autonavi.com/showpic/f5bea28c1ade934769756aaa80cdf653",
+        "adname": "秦淮区",
+        "address": "贡院街95号",
+        "tel": "025-86626556;025-86626653",
+        "cost": "[]",
+        "indoor": true,
+        "provenance": {
+          "fixture": "nanjing-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "中山陵景区",
+        "rating": 4.9,
+        "open_time": "08:30-17:00(周一闭馆)；法定节假日及孙中山先生诞辰、逝世纪念日正常开放,墓室仅周二至周五开放(数据来源:江苏省文旅厅公共服务平台苏心游)",
+        "location": {
+          "lng": 118.854097,
+          "lat": 32.054508
+        },
+        "photo": "http://store.is.autonavi.com/showpic/46bf800a21c42453ff756fc2b77c710f",
+        "adname": "玄武区",
+        "address": "石象路7号",
+        "tel": "025-85769047",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "nanjing-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "南京欢乐谷",
+        "rating": 4.7,
+        "open_time": "8月31日-9月11日:10:00-18:00；9月12日-10月22日:10:00-21:00；10月23日-11月1日:10:00-23:00；11月2日-11月29日:10:00-21:00",
+        "location": {
+          "lng": 118.998553,
+          "lat": 32.163841
+        },
+        "photo": "http://store.is.autonavi.com/showpic/2dfc1135d63b593dd79428ed00da81c9",
+        "adname": "栖霞区",
+        "address": "经济技术开发区欢乐谷北路8号",
+        "tel": "025-83091666",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "nanjing-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      }
+    ],
+    "acceptable_pois": [
+      "南京博物院"
+    ],
+    "forbidden_pois": [],
+    "required_evidence": [
+      "nanjing_museum_history"
+    ],
+    "answerable": true,
+    "annotation_status": "draft",
+    "annotation_version": "route-interest-v1",
+    "annotator": null,
+    "reviewed_at": null,
+    "change_log": [],
+    "reference_note": "Acceptable sets are draft labels, not unique optimal routes; missing knowledge is not proof of absence.",
+    "route_distance_mode": "drive",
+    "weather_forecast": [
+      {
+        "date": "2026-10-15",
+        "dayweather": "晴",
+        "nightweather": "晴",
+        "is_bad": false
+      }
+    ],
+    "weather_note": "固定晴天评测场景，非真实天气预报；两组共享"
+  },
+  {
+    "id": "interest-南京-02",
+    "split": "dev",
+    "intent_group": "南京-近代史",
+    "query": "南京一日游，每天最多两个不同景点。想看孙中山与南京临时政府的史料。",
+    "destination": "南京",
+    "days": 1,
+    "max_per_day": 2,
+    "travel_start_date": "2026-10-15",
+    "travel_end_date": "2026-10-15",
+    "pois": [
+      {
+        "name": "南京博物院",
+        "provenance": {
+          "kind": "real_amap_exact_city_name",
+          "captured_at": "2026-10-08T09:40:30.530364+00:00"
+        },
+        "rating": 4.9,
+        "open_time": "周一 闭馆(法定节假日除外)；周二至周日 09:00-17:00开放(16:00停止入园)",
+        "location": {
+          "lng": 118.825064,
+          "lat": 32.040802
+        },
+        "photo": "http://store.is.autonavi.com/showpic/6d9679442d9f514b78d55213b43d9417",
+        "adname": "玄武区",
+        "address": "中山东路321号",
+        "tel": "025-84807923",
+        "cost": null,
+        "indoor": true,
+        "indoor_source": "amap_category_inference"
+      },
+      {
+        "name": "玄武湖景区",
+        "rating": 4.8,
+        "open_time": "周一至周日 00:00-24:00",
+        "location": {
+          "lng": 118.812688,
+          "lat": 32.069455
+        },
+        "photo": "http://store.is.autonavi.com/showpic/ff2f4114639e0110ae96ae76ad0c0287",
+        "adname": "玄武区",
+        "address": "玄武门路1号钟山风景名胜区西侧",
+        "tel": "025-83614286",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "nanjing-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "总统府",
+        "rating": 4.9,
+        "open_time": "08:30-18:00（17:00停止入场，周一闭馆）(数据来源:江苏省文旅厅公共服务平台苏心游)",
+        "location": {
+          "lng": 118.797398,
+          "lat": 32.044228
+        },
+        "photo": "http://aos-cdn-image.amap.com/sns/ugccomment/21acde57-d540-4737-974a-11b6c69d23de.jpg",
+        "adname": "玄武区",
+        "address": "长江路292号",
+        "tel": "025-84578716;025-84578888",
+        "cost": "[]",
+        "indoor": true,
+        "provenance": {
+          "fixture": "nanjing-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "中国科举博物馆(江南贡院)",
+        "rating": 4.7,
+        "open_time": "周一至周日 09:00-22:00 最晚进入22:00",
+        "location": {
+          "lng": 118.790669,
+          "lat": 32.020795
+        },
+        "photo": "http://store.is.autonavi.com/showpic/f5bea28c1ade934769756aaa80cdf653",
+        "adname": "秦淮区",
+        "address": "贡院街95号",
+        "tel": "025-86626556;025-86626653",
+        "cost": "[]",
+        "indoor": true,
+        "provenance": {
+          "fixture": "nanjing-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "中山陵景区",
+        "rating": 4.9,
+        "open_time": "08:30-17:00(周一闭馆)；法定节假日及孙中山先生诞辰、逝世纪念日正常开放,墓室仅周二至周五开放(数据来源:江苏省文旅厅公共服务平台苏心游)",
+        "location": {
+          "lng": 118.854097,
+          "lat": 32.054508
+        },
+        "photo": "http://store.is.autonavi.com/showpic/46bf800a21c42453ff756fc2b77c710f",
+        "adname": "玄武区",
+        "address": "石象路7号",
+        "tel": "025-85769047",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "nanjing-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "南京欢乐谷",
+        "rating": 4.7,
+        "open_time": "8月31日-9月11日:10:00-18:00；9月12日-10月22日:10:00-21:00；10月23日-11月1日:10:00-23:00；11月2日-11月29日:10:00-21:00",
+        "location": {
+          "lng": 118.998553,
+          "lat": 32.163841
+        },
+        "photo": "http://store.is.autonavi.com/showpic/2dfc1135d63b593dd79428ed00da81c9",
+        "adname": "栖霞区",
+        "address": "经济技术开发区欢乐谷北路8号",
+        "tel": "025-83091666",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "nanjing-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      }
+    ],
+    "acceptable_pois": [
+      "总统府"
+    ],
+    "forbidden_pois": [],
+    "required_evidence": [
+      "interest_bcd0981a9c64dc89"
+    ],
+    "answerable": true,
+    "annotation_status": "draft",
+    "annotation_version": "route-interest-v1",
+    "annotator": null,
+    "reviewed_at": null,
+    "change_log": [],
+    "reference_note": "Acceptable sets are draft labels, not unique optimal routes; missing knowledge is not proof of absence.",
+    "route_distance_mode": "drive",
+    "weather_forecast": [
+      {
+        "date": "2026-10-15",
+        "dayweather": "晴",
+        "nightweather": "晴",
+        "is_bad": false
+      }
+    ],
+    "weather_note": "固定晴天评测场景，非真实天气预报；两组共享"
+  },
+  {
+    "id": "interest-南京-03",
+    "split": "dev",
+    "intent_group": "南京-近代史",
+    "query": "南京一日游，每天最多两个不同景点。想了解孙中山时期的政府，不去欢乐谷。",
+    "destination": "南京",
+    "days": 1,
+    "max_per_day": 2,
+    "travel_start_date": "2026-10-15",
+    "travel_end_date": "2026-10-15",
+    "pois": [
+      {
+        "name": "南京博物院",
+        "provenance": {
+          "kind": "real_amap_exact_city_name",
+          "captured_at": "2026-10-08T09:40:30.530364+00:00"
+        },
+        "rating": 4.9,
+        "open_time": "周一 闭馆(法定节假日除外)；周二至周日 09:00-17:00开放(16:00停止入园)",
+        "location": {
+          "lng": 118.825064,
+          "lat": 32.040802
+        },
+        "photo": "http://store.is.autonavi.com/showpic/6d9679442d9f514b78d55213b43d9417",
+        "adname": "玄武区",
+        "address": "中山东路321号",
+        "tel": "025-84807923",
+        "cost": null,
+        "indoor": true,
+        "indoor_source": "amap_category_inference"
+      },
+      {
+        "name": "玄武湖景区",
+        "rating": 4.8,
+        "open_time": "周一至周日 00:00-24:00",
+        "location": {
+          "lng": 118.812688,
+          "lat": 32.069455
+        },
+        "photo": "http://store.is.autonavi.com/showpic/ff2f4114639e0110ae96ae76ad0c0287",
+        "adname": "玄武区",
+        "address": "玄武门路1号钟山风景名胜区西侧",
+        "tel": "025-83614286",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "nanjing-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "总统府",
+        "rating": 4.9,
+        "open_time": "08:30-18:00（17:00停止入场，周一闭馆）(数据来源:江苏省文旅厅公共服务平台苏心游)",
+        "location": {
+          "lng": 118.797398,
+          "lat": 32.044228
+        },
+        "photo": "http://aos-cdn-image.amap.com/sns/ugccomment/21acde57-d540-4737-974a-11b6c69d23de.jpg",
+        "adname": "玄武区",
+        "address": "长江路292号",
+        "tel": "025-84578716;025-84578888",
+        "cost": "[]",
+        "indoor": true,
+        "provenance": {
+          "fixture": "nanjing-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "中国科举博物馆(江南贡院)",
+        "rating": 4.7,
+        "open_time": "周一至周日 09:00-22:00 最晚进入22:00",
+        "location": {
+          "lng": 118.790669,
+          "lat": 32.020795
+        },
+        "photo": "http://store.is.autonavi.com/showpic/f5bea28c1ade934769756aaa80cdf653",
+        "adname": "秦淮区",
+        "address": "贡院街95号",
+        "tel": "025-86626556;025-86626653",
+        "cost": "[]",
+        "indoor": true,
+        "provenance": {
+          "fixture": "nanjing-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "中山陵景区",
+        "rating": 4.9,
+        "open_time": "08:30-17:00(周一闭馆)；法定节假日及孙中山先生诞辰、逝世纪念日正常开放,墓室仅周二至周五开放(数据来源:江苏省文旅厅公共服务平台苏心游)",
+        "location": {
+          "lng": 118.854097,
+          "lat": 32.054508
+        },
+        "photo": "http://store.is.autonavi.com/showpic/46bf800a21c42453ff756fc2b77c710f",
+        "adname": "玄武区",
+        "address": "石象路7号",
+        "tel": "025-85769047",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "nanjing-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "南京欢乐谷",
+        "rating": 4.7,
+        "open_time": "8月31日-9月11日:10:00-18:00；9月12日-10月22日:10:00-21:00；10月23日-11月1日:10:00-23:00；11月2日-11月29日:10:00-21:00",
+        "location": {
+          "lng": 118.998553,
+          "lat": 32.163841
+        },
+        "photo": "http://store.is.autonavi.com/showpic/2dfc1135d63b593dd79428ed00da81c9",
+        "adname": "栖霞区",
+        "address": "经济技术开发区欢乐谷北路8号",
+        "tel": "025-83091666",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "nanjing-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      }
+    ],
+    "acceptable_pois": [
+      "总统府"
+    ],
+    "forbidden_pois": [
+      "南京欢乐谷"
+    ],
+    "required_evidence": [
+      "interest_bcd0981a9c64dc89"
+    ],
+    "answerable": true,
+    "annotation_status": "draft",
+    "annotation_version": "route-interest-v1",
+    "annotator": null,
+    "reviewed_at": null,
+    "change_log": [],
+    "reference_note": "Acceptable sets are draft labels, not unique optimal routes; missing knowledge is not proof of absence.",
+    "route_distance_mode": "drive",
+    "weather_forecast": [
+      {
+        "date": "2026-10-15",
+        "dayweather": "晴",
+        "nightweather": "晴",
+        "is_bad": false
+      }
+    ],
+    "weather_note": "固定晴天评测场景，非真实天气预报；两组共享"
+  },
+  {
+    "id": "interest-南京-04",
+    "split": "dev",
+    "intent_group": "南京-排除娱乐",
+    "query": "南京一日游，每天最多两个不同景点。想了解江苏古代文明，不要去欢乐谷。",
+    "destination": "南京",
+    "days": 1,
+    "max_per_day": 2,
+    "travel_start_date": "2026-10-15",
+    "travel_end_date": "2026-10-15",
+    "pois": [
+      {
+        "name": "南京博物院",
+        "provenance": {
+          "kind": "real_amap_exact_city_name",
+          "captured_at": "2026-10-08T09:40:30.530364+00:00"
+        },
+        "rating": 4.9,
+        "open_time": "周一 闭馆(法定节假日除外)；周二至周日 09:00-17:00开放(16:00停止入园)",
+        "location": {
+          "lng": 118.825064,
+          "lat": 32.040802
+        },
+        "photo": "http://store.is.autonavi.com/showpic/6d9679442d9f514b78d55213b43d9417",
+        "adname": "玄武区",
+        "address": "中山东路321号",
+        "tel": "025-84807923",
+        "cost": null,
+        "indoor": true,
+        "indoor_source": "amap_category_inference"
+      },
+      {
+        "name": "玄武湖景区",
+        "rating": 4.8,
+        "open_time": "周一至周日 00:00-24:00",
+        "location": {
+          "lng": 118.812688,
+          "lat": 32.069455
+        },
+        "photo": "http://store.is.autonavi.com/showpic/ff2f4114639e0110ae96ae76ad0c0287",
+        "adname": "玄武区",
+        "address": "玄武门路1号钟山风景名胜区西侧",
+        "tel": "025-83614286",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "nanjing-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "总统府",
+        "rating": 4.9,
+        "open_time": "08:30-18:00（17:00停止入场，周一闭馆）(数据来源:江苏省文旅厅公共服务平台苏心游)",
+        "location": {
+          "lng": 118.797398,
+          "lat": 32.044228
+        },
+        "photo": "http://aos-cdn-image.amap.com/sns/ugccomment/21acde57-d540-4737-974a-11b6c69d23de.jpg",
+        "adname": "玄武区",
+        "address": "长江路292号",
+        "tel": "025-84578716;025-84578888",
+        "cost": "[]",
+        "indoor": true,
+        "provenance": {
+          "fixture": "nanjing-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "中国科举博物馆(江南贡院)",
+        "rating": 4.7,
+        "open_time": "周一至周日 09:00-22:00 最晚进入22:00",
+        "location": {
+          "lng": 118.790669,
+          "lat": 32.020795
+        },
+        "photo": "http://store.is.autonavi.com/showpic/f5bea28c1ade934769756aaa80cdf653",
+        "adname": "秦淮区",
+        "address": "贡院街95号",
+        "tel": "025-86626556;025-86626653",
+        "cost": "[]",
+        "indoor": true,
+        "provenance": {
+          "fixture": "nanjing-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "中山陵景区",
+        "rating": 4.9,
+        "open_time": "08:30-17:00(周一闭馆)；法定节假日及孙中山先生诞辰、逝世纪念日正常开放,墓室仅周二至周五开放(数据来源:江苏省文旅厅公共服务平台苏心游)",
+        "location": {
+          "lng": 118.854097,
+          "lat": 32.054508
+        },
+        "photo": "http://store.is.autonavi.com/showpic/46bf800a21c42453ff756fc2b77c710f",
+        "adname": "玄武区",
+        "address": "石象路7号",
+        "tel": "025-85769047",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "nanjing-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "南京欢乐谷",
+        "rating": 4.7,
+        "open_time": "8月31日-9月11日:10:00-18:00；9月12日-10月22日:10:00-21:00；10月23日-11月1日:10:00-23:00；11月2日-11月29日:10:00-21:00",
+        "location": {
+          "lng": 118.998553,
+          "lat": 32.163841
+        },
+        "photo": "http://store.is.autonavi.com/showpic/2dfc1135d63b593dd79428ed00da81c9",
+        "adname": "栖霞区",
+        "address": "经济技术开发区欢乐谷北路8号",
+        "tel": "025-83091666",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "nanjing-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      }
+    ],
+    "acceptable_pois": [
+      "南京博物院"
+    ],
+    "forbidden_pois": [
+      "南京欢乐谷"
+    ],
+    "required_evidence": [
+      "nanjing_museum_history"
+    ],
+    "answerable": true,
+    "annotation_status": "draft",
+    "annotation_version": "route-interest-v1",
+    "annotator": null,
+    "reviewed_at": null,
+    "change_log": [],
+    "reference_note": "Acceptable sets are draft labels, not unique optimal routes; missing knowledge is not proof of absence.",
+    "route_distance_mode": "drive",
+    "weather_forecast": [
+      {
+        "date": "2026-10-15",
+        "dayweather": "晴",
+        "nightweather": "晴",
+        "is_bad": false
+      }
+    ],
+    "weather_note": "固定晴天评测场景，非真实天气预报；两组共享"
+  },
+  {
+    "id": "interest-南京-05",
+    "split": "dev",
+    "intent_group": "南京-多兴趣",
+    "query": "南京一日游，每天最多两个不同景点。想了解古代文明，也想看近代政府历史，尽量兼顾。",
+    "destination": "南京",
+    "days": 1,
+    "max_per_day": 2,
+    "travel_start_date": "2026-10-15",
+    "travel_end_date": "2026-10-15",
+    "pois": [
+      {
+        "name": "南京博物院",
+        "provenance": {
+          "kind": "real_amap_exact_city_name",
+          "captured_at": "2026-10-08T09:40:30.530364+00:00"
+        },
+        "rating": 4.9,
+        "open_time": "周一 闭馆(法定节假日除外)；周二至周日 09:00-17:00开放(16:00停止入园)",
+        "location": {
+          "lng": 118.825064,
+          "lat": 32.040802
+        },
+        "photo": "http://store.is.autonavi.com/showpic/6d9679442d9f514b78d55213b43d9417",
+        "adname": "玄武区",
+        "address": "中山东路321号",
+        "tel": "025-84807923",
+        "cost": null,
+        "indoor": true,
+        "indoor_source": "amap_category_inference"
+      },
+      {
+        "name": "玄武湖景区",
+        "rating": 4.8,
+        "open_time": "周一至周日 00:00-24:00",
+        "location": {
+          "lng": 118.812688,
+          "lat": 32.069455
+        },
+        "photo": "http://store.is.autonavi.com/showpic/ff2f4114639e0110ae96ae76ad0c0287",
+        "adname": "玄武区",
+        "address": "玄武门路1号钟山风景名胜区西侧",
+        "tel": "025-83614286",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "nanjing-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "总统府",
+        "rating": 4.9,
+        "open_time": "08:30-18:00（17:00停止入场，周一闭馆）(数据来源:江苏省文旅厅公共服务平台苏心游)",
+        "location": {
+          "lng": 118.797398,
+          "lat": 32.044228
+        },
+        "photo": "http://aos-cdn-image.amap.com/sns/ugccomment/21acde57-d540-4737-974a-11b6c69d23de.jpg",
+        "adname": "玄武区",
+        "address": "长江路292号",
+        "tel": "025-84578716;025-84578888",
+        "cost": "[]",
+        "indoor": true,
+        "provenance": {
+          "fixture": "nanjing-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "中国科举博物馆(江南贡院)",
+        "rating": 4.7,
+        "open_time": "周一至周日 09:00-22:00 最晚进入22:00",
+        "location": {
+          "lng": 118.790669,
+          "lat": 32.020795
+        },
+        "photo": "http://store.is.autonavi.com/showpic/f5bea28c1ade934769756aaa80cdf653",
+        "adname": "秦淮区",
+        "address": "贡院街95号",
+        "tel": "025-86626556;025-86626653",
+        "cost": "[]",
+        "indoor": true,
+        "provenance": {
+          "fixture": "nanjing-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "中山陵景区",
+        "rating": 4.9,
+        "open_time": "08:30-17:00(周一闭馆)；法定节假日及孙中山先生诞辰、逝世纪念日正常开放,墓室仅周二至周五开放(数据来源:江苏省文旅厅公共服务平台苏心游)",
+        "location": {
+          "lng": 118.854097,
+          "lat": 32.054508
+        },
+        "photo": "http://store.is.autonavi.com/showpic/46bf800a21c42453ff756fc2b77c710f",
+        "adname": "玄武区",
+        "address": "石象路7号",
+        "tel": "025-85769047",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "nanjing-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "南京欢乐谷",
+        "rating": 4.7,
+        "open_time": "8月31日-9月11日:10:00-18:00；9月12日-10月22日:10:00-21:00；10月23日-11月1日:10:00-23:00；11月2日-11月29日:10:00-21:00",
+        "location": {
+          "lng": 118.998553,
+          "lat": 32.163841
+        },
+        "photo": "http://store.is.autonavi.com/showpic/2dfc1135d63b593dd79428ed00da81c9",
+        "adname": "栖霞区",
+        "address": "经济技术开发区欢乐谷北路8号",
+        "tel": "025-83091666",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "nanjing-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      }
+    ],
+    "acceptable_pois": [
+      "南京博物院",
+      "总统府"
+    ],
+    "forbidden_pois": [],
+    "required_evidence": [
+      "nanjing_museum_history",
+      "interest_bcd0981a9c64dc89"
+    ],
+    "answerable": true,
+    "annotation_status": "draft",
+    "annotation_version": "route-interest-v1",
+    "annotator": null,
+    "reviewed_at": null,
+    "change_log": [],
+    "reference_note": "Acceptable sets are draft labels, not unique optimal routes; missing knowledge is not proof of absence.",
+    "route_distance_mode": "drive",
+    "weather_forecast": [
+      {
+        "date": "2026-10-15",
+        "dayweather": "晴",
+        "nightweather": "晴",
+        "is_bad": false
+      }
+    ],
+    "weather_note": "固定晴天评测场景，非真实天气预报；两组共享"
+  },
+  {
+    "id": "interest-南京-06",
+    "split": "test",
+    "intent_group": "南京-制度史",
+    "query": "南京一日游，每天最多两个不同景点。对黄册国家档案馆的历史感兴趣。",
+    "destination": "南京",
+    "days": 1,
+    "max_per_day": 2,
+    "travel_start_date": "2026-10-15",
+    "travel_end_date": "2026-10-15",
+    "pois": [
+      {
+        "name": "南京博物院",
+        "provenance": {
+          "kind": "real_amap_exact_city_name",
+          "captured_at": "2026-10-08T09:40:30.530364+00:00"
+        },
+        "rating": 4.9,
+        "open_time": "周一 闭馆(法定节假日除外)；周二至周日 09:00-17:00开放(16:00停止入园)",
+        "location": {
+          "lng": 118.825064,
+          "lat": 32.040802
+        },
+        "photo": "http://store.is.autonavi.com/showpic/6d9679442d9f514b78d55213b43d9417",
+        "adname": "玄武区",
+        "address": "中山东路321号",
+        "tel": "025-84807923",
+        "cost": null,
+        "indoor": true,
+        "indoor_source": "amap_category_inference"
+      },
+      {
+        "name": "玄武湖景区",
+        "rating": 4.8,
+        "open_time": "周一至周日 00:00-24:00",
+        "location": {
+          "lng": 118.812688,
+          "lat": 32.069455
+        },
+        "photo": "http://store.is.autonavi.com/showpic/ff2f4114639e0110ae96ae76ad0c0287",
+        "adname": "玄武区",
+        "address": "玄武门路1号钟山风景名胜区西侧",
+        "tel": "025-83614286",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "nanjing-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "总统府",
+        "rating": 4.9,
+        "open_time": "08:30-18:00（17:00停止入场，周一闭馆）(数据来源:江苏省文旅厅公共服务平台苏心游)",
+        "location": {
+          "lng": 118.797398,
+          "lat": 32.044228
+        },
+        "photo": "http://aos-cdn-image.amap.com/sns/ugccomment/21acde57-d540-4737-974a-11b6c69d23de.jpg",
+        "adname": "玄武区",
+        "address": "长江路292号",
+        "tel": "025-84578716;025-84578888",
+        "cost": "[]",
+        "indoor": true,
+        "provenance": {
+          "fixture": "nanjing-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "中国科举博物馆(江南贡院)",
+        "rating": 4.7,
+        "open_time": "周一至周日 09:00-22:00 最晚进入22:00",
+        "location": {
+          "lng": 118.790669,
+          "lat": 32.020795
+        },
+        "photo": "http://store.is.autonavi.com/showpic/f5bea28c1ade934769756aaa80cdf653",
+        "adname": "秦淮区",
+        "address": "贡院街95号",
+        "tel": "025-86626556;025-86626653",
+        "cost": "[]",
+        "indoor": true,
+        "provenance": {
+          "fixture": "nanjing-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "中山陵景区",
+        "rating": 4.9,
+        "open_time": "08:30-17:00(周一闭馆)；法定节假日及孙中山先生诞辰、逝世纪念日正常开放,墓室仅周二至周五开放(数据来源:江苏省文旅厅公共服务平台苏心游)",
+        "location": {
+          "lng": 118.854097,
+          "lat": 32.054508
+        },
+        "photo": "http://store.is.autonavi.com/showpic/46bf800a21c42453ff756fc2b77c710f",
+        "adname": "玄武区",
+        "address": "石象路7号",
+        "tel": "025-85769047",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "nanjing-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "南京欢乐谷",
+        "rating": 4.7,
+        "open_time": "8月31日-9月11日:10:00-18:00；9月12日-10月22日:10:00-21:00；10月23日-11月1日:10:00-23:00；11月2日-11月29日:10:00-21:00",
+        "location": {
+          "lng": 118.998553,
+          "lat": 32.163841
+        },
+        "photo": "http://store.is.autonavi.com/showpic/2dfc1135d63b593dd79428ed00da81c9",
+        "adname": "栖霞区",
+        "address": "经济技术开发区欢乐谷北路8号",
+        "tel": "025-83091666",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "nanjing-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      }
+    ],
+    "acceptable_pois": [
+      "玄武湖景区"
+    ],
+    "forbidden_pois": [],
+    "required_evidence": [
+      "interest_b4c5aa40346c042a"
+    ],
+    "answerable": true,
+    "annotation_status": "draft",
+    "annotation_version": "route-interest-v1",
+    "annotator": null,
+    "reviewed_at": null,
+    "change_log": [],
+    "reference_note": "Acceptable sets are draft labels, not unique optimal routes; missing knowledge is not proof of absence.",
+    "route_distance_mode": "drive",
+    "weather_forecast": [
+      {
+        "date": "2026-10-15",
+        "dayweather": "晴",
+        "nightweather": "晴",
+        "is_bad": false
+      }
+    ],
+    "weather_note": "固定晴天评测场景，非真实天气预报；两组共享"
+  },
+  {
+    "id": "interest-南京-07",
+    "split": "test",
+    "intent_group": "南京-制度史",
+    "query": "南京一日游，每天最多两个不同景点。以前喜欢游乐园，这次只想看皇家园林湖泊，不要欢乐谷。",
+    "destination": "南京",
+    "days": 1,
+    "max_per_day": 2,
+    "travel_start_date": "2026-10-15",
+    "travel_end_date": "2026-10-15",
+    "pois": [
+      {
+        "name": "南京博物院",
+        "provenance": {
+          "kind": "real_amap_exact_city_name",
+          "captured_at": "2026-10-08T09:40:30.530364+00:00"
+        },
+        "rating": 4.9,
+        "open_time": "周一 闭馆(法定节假日除外)；周二至周日 09:00-17:00开放(16:00停止入园)",
+        "location": {
+          "lng": 118.825064,
+          "lat": 32.040802
+        },
+        "photo": "http://store.is.autonavi.com/showpic/6d9679442d9f514b78d55213b43d9417",
+        "adname": "玄武区",
+        "address": "中山东路321号",
+        "tel": "025-84807923",
+        "cost": null,
+        "indoor": true,
+        "indoor_source": "amap_category_inference"
+      },
+      {
+        "name": "玄武湖景区",
+        "rating": 4.8,
+        "open_time": "周一至周日 00:00-24:00",
+        "location": {
+          "lng": 118.812688,
+          "lat": 32.069455
+        },
+        "photo": "http://store.is.autonavi.com/showpic/ff2f4114639e0110ae96ae76ad0c0287",
+        "adname": "玄武区",
+        "address": "玄武门路1号钟山风景名胜区西侧",
+        "tel": "025-83614286",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "nanjing-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "总统府",
+        "rating": 4.9,
+        "open_time": "08:30-18:00（17:00停止入场，周一闭馆）(数据来源:江苏省文旅厅公共服务平台苏心游)",
+        "location": {
+          "lng": 118.797398,
+          "lat": 32.044228
+        },
+        "photo": "http://aos-cdn-image.amap.com/sns/ugccomment/21acde57-d540-4737-974a-11b6c69d23de.jpg",
+        "adname": "玄武区",
+        "address": "长江路292号",
+        "tel": "025-84578716;025-84578888",
+        "cost": "[]",
+        "indoor": true,
+        "provenance": {
+          "fixture": "nanjing-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "中国科举博物馆(江南贡院)",
+        "rating": 4.7,
+        "open_time": "周一至周日 09:00-22:00 最晚进入22:00",
+        "location": {
+          "lng": 118.790669,
+          "lat": 32.020795
+        },
+        "photo": "http://store.is.autonavi.com/showpic/f5bea28c1ade934769756aaa80cdf653",
+        "adname": "秦淮区",
+        "address": "贡院街95号",
+        "tel": "025-86626556;025-86626653",
+        "cost": "[]",
+        "indoor": true,
+        "provenance": {
+          "fixture": "nanjing-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "中山陵景区",
+        "rating": 4.9,
+        "open_time": "08:30-17:00(周一闭馆)；法定节假日及孙中山先生诞辰、逝世纪念日正常开放,墓室仅周二至周五开放(数据来源:江苏省文旅厅公共服务平台苏心游)",
+        "location": {
+          "lng": 118.854097,
+          "lat": 32.054508
+        },
+        "photo": "http://store.is.autonavi.com/showpic/46bf800a21c42453ff756fc2b77c710f",
+        "adname": "玄武区",
+        "address": "石象路7号",
+        "tel": "025-85769047",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "nanjing-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "南京欢乐谷",
+        "rating": 4.7,
+        "open_time": "8月31日-9月11日:10:00-18:00；9月12日-10月22日:10:00-21:00；10月23日-11月1日:10:00-23:00；11月2日-11月29日:10:00-21:00",
+        "location": {
+          "lng": 118.998553,
+          "lat": 32.163841
+        },
+        "photo": "http://store.is.autonavi.com/showpic/2dfc1135d63b593dd79428ed00da81c9",
+        "adname": "栖霞区",
+        "address": "经济技术开发区欢乐谷北路8号",
+        "tel": "025-83091666",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "nanjing-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      }
+    ],
+    "acceptable_pois": [
+      "玄武湖景区"
+    ],
+    "forbidden_pois": [
+      "南京欢乐谷"
+    ],
+    "required_evidence": [
+      "interest_b4c5aa40346c042a"
+    ],
+    "answerable": true,
+    "annotation_status": "draft",
+    "annotation_version": "route-interest-v1",
+    "annotator": null,
+    "reviewed_at": null,
+    "change_log": [],
+    "reference_note": "Acceptable sets are draft labels, not unique optimal routes; missing knowledge is not proof of absence.",
+    "route_distance_mode": "drive",
+    "weather_forecast": [
+      {
+        "date": "2026-10-15",
+        "dayweather": "晴",
+        "nightweather": "晴",
+        "is_bad": false
+      }
+    ],
+    "weather_note": "固定晴天评测场景，非真实天气预报；两组共享"
+  },
+  {
+    "id": "interest-南京-08",
+    "split": "test",
+    "intent_group": "南京-制度史",
+    "query": "南京一日游，每天最多两个不同景点。想了解保存黄册的湖泊历史，不要套用杭州西湖的资料。",
+    "destination": "南京",
+    "days": 1,
+    "max_per_day": 2,
+    "travel_start_date": "2026-10-15",
+    "travel_end_date": "2026-10-15",
+    "pois": [
+      {
+        "name": "南京博物院",
+        "provenance": {
+          "kind": "real_amap_exact_city_name",
+          "captured_at": "2026-10-08T09:40:30.530364+00:00"
+        },
+        "rating": 4.9,
+        "open_time": "周一 闭馆(法定节假日除外)；周二至周日 09:00-17:00开放(16:00停止入园)",
+        "location": {
+          "lng": 118.825064,
+          "lat": 32.040802
+        },
+        "photo": "http://store.is.autonavi.com/showpic/6d9679442d9f514b78d55213b43d9417",
+        "adname": "玄武区",
+        "address": "中山东路321号",
+        "tel": "025-84807923",
+        "cost": null,
+        "indoor": true,
+        "indoor_source": "amap_category_inference"
+      },
+      {
+        "name": "玄武湖景区",
+        "rating": 4.8,
+        "open_time": "周一至周日 00:00-24:00",
+        "location": {
+          "lng": 118.812688,
+          "lat": 32.069455
+        },
+        "photo": "http://store.is.autonavi.com/showpic/ff2f4114639e0110ae96ae76ad0c0287",
+        "adname": "玄武区",
+        "address": "玄武门路1号钟山风景名胜区西侧",
+        "tel": "025-83614286",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "nanjing-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "总统府",
+        "rating": 4.9,
+        "open_time": "08:30-18:00（17:00停止入场，周一闭馆）(数据来源:江苏省文旅厅公共服务平台苏心游)",
+        "location": {
+          "lng": 118.797398,
+          "lat": 32.044228
+        },
+        "photo": "http://aos-cdn-image.amap.com/sns/ugccomment/21acde57-d540-4737-974a-11b6c69d23de.jpg",
+        "adname": "玄武区",
+        "address": "长江路292号",
+        "tel": "025-84578716;025-84578888",
+        "cost": "[]",
+        "indoor": true,
+        "provenance": {
+          "fixture": "nanjing-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "中国科举博物馆(江南贡院)",
+        "rating": 4.7,
+        "open_time": "周一至周日 09:00-22:00 最晚进入22:00",
+        "location": {
+          "lng": 118.790669,
+          "lat": 32.020795
+        },
+        "photo": "http://store.is.autonavi.com/showpic/f5bea28c1ade934769756aaa80cdf653",
+        "adname": "秦淮区",
+        "address": "贡院街95号",
+        "tel": "025-86626556;025-86626653",
+        "cost": "[]",
+        "indoor": true,
+        "provenance": {
+          "fixture": "nanjing-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "中山陵景区",
+        "rating": 4.9,
+        "open_time": "08:30-17:00(周一闭馆)；法定节假日及孙中山先生诞辰、逝世纪念日正常开放,墓室仅周二至周五开放(数据来源:江苏省文旅厅公共服务平台苏心游)",
+        "location": {
+          "lng": 118.854097,
+          "lat": 32.054508
+        },
+        "photo": "http://store.is.autonavi.com/showpic/46bf800a21c42453ff756fc2b77c710f",
+        "adname": "玄武区",
+        "address": "石象路7号",
+        "tel": "025-85769047",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "nanjing-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "南京欢乐谷",
+        "rating": 4.7,
+        "open_time": "8月31日-9月11日:10:00-18:00；9月12日-10月22日:10:00-21:00；10月23日-11月1日:10:00-23:00；11月2日-11月29日:10:00-21:00",
+        "location": {
+          "lng": 118.998553,
+          "lat": 32.163841
+        },
+        "photo": "http://store.is.autonavi.com/showpic/2dfc1135d63b593dd79428ed00da81c9",
+        "adname": "栖霞区",
+        "address": "经济技术开发区欢乐谷北路8号",
+        "tel": "025-83091666",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "nanjing-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      }
+    ],
+    "acceptable_pois": [
+      "玄武湖景区"
+    ],
+    "forbidden_pois": [],
+    "required_evidence": [
+      "interest_b4c5aa40346c042a"
+    ],
+    "answerable": true,
+    "annotation_status": "draft",
+    "annotation_version": "route-interest-v1",
+    "annotator": null,
+    "reviewed_at": null,
+    "change_log": [],
+    "reference_note": "Acceptable sets are draft labels, not unique optimal routes; missing knowledge is not proof of absence.",
+    "route_distance_mode": "drive",
+    "weather_forecast": [
+      {
+        "date": "2026-10-15",
+        "dayweather": "晴",
+        "nightweather": "晴",
+        "is_bad": false
+      }
+    ],
+    "weather_note": "固定晴天评测场景，非真实天气预报；两组共享"
+  },
+  {
+    "id": "interest-南京-09",
+    "split": "test",
+    "intent_group": "南京-证据不足",
+    "query": "南京一日游，每天最多两个不同景点。想看明天新增的沉浸式VR特展，没证据就说不知道。",
+    "destination": "南京",
+    "days": 1,
+    "max_per_day": 2,
+    "travel_start_date": "2026-10-15",
+    "travel_end_date": "2026-10-15",
+    "pois": [
+      {
+        "name": "南京博物院",
+        "provenance": {
+          "kind": "real_amap_exact_city_name",
+          "captured_at": "2026-10-08T09:40:30.530364+00:00"
+        },
+        "rating": 4.9,
+        "open_time": "周一 闭馆(法定节假日除外)；周二至周日 09:00-17:00开放(16:00停止入园)",
+        "location": {
+          "lng": 118.825064,
+          "lat": 32.040802
+        },
+        "photo": "http://store.is.autonavi.com/showpic/6d9679442d9f514b78d55213b43d9417",
+        "adname": "玄武区",
+        "address": "中山东路321号",
+        "tel": "025-84807923",
+        "cost": null,
+        "indoor": true,
+        "indoor_source": "amap_category_inference"
+      },
+      {
+        "name": "玄武湖景区",
+        "rating": 4.8,
+        "open_time": "周一至周日 00:00-24:00",
+        "location": {
+          "lng": 118.812688,
+          "lat": 32.069455
+        },
+        "photo": "http://store.is.autonavi.com/showpic/ff2f4114639e0110ae96ae76ad0c0287",
+        "adname": "玄武区",
+        "address": "玄武门路1号钟山风景名胜区西侧",
+        "tel": "025-83614286",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "nanjing-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "总统府",
+        "rating": 4.9,
+        "open_time": "08:30-18:00（17:00停止入场，周一闭馆）(数据来源:江苏省文旅厅公共服务平台苏心游)",
+        "location": {
+          "lng": 118.797398,
+          "lat": 32.044228
+        },
+        "photo": "http://aos-cdn-image.amap.com/sns/ugccomment/21acde57-d540-4737-974a-11b6c69d23de.jpg",
+        "adname": "玄武区",
+        "address": "长江路292号",
+        "tel": "025-84578716;025-84578888",
+        "cost": "[]",
+        "indoor": true,
+        "provenance": {
+          "fixture": "nanjing-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "中国科举博物馆(江南贡院)",
+        "rating": 4.7,
+        "open_time": "周一至周日 09:00-22:00 最晚进入22:00",
+        "location": {
+          "lng": 118.790669,
+          "lat": 32.020795
+        },
+        "photo": "http://store.is.autonavi.com/showpic/f5bea28c1ade934769756aaa80cdf653",
+        "adname": "秦淮区",
+        "address": "贡院街95号",
+        "tel": "025-86626556;025-86626653",
+        "cost": "[]",
+        "indoor": true,
+        "provenance": {
+          "fixture": "nanjing-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "中山陵景区",
+        "rating": 4.9,
+        "open_time": "08:30-17:00(周一闭馆)；法定节假日及孙中山先生诞辰、逝世纪念日正常开放,墓室仅周二至周五开放(数据来源:江苏省文旅厅公共服务平台苏心游)",
+        "location": {
+          "lng": 118.854097,
+          "lat": 32.054508
+        },
+        "photo": "http://store.is.autonavi.com/showpic/46bf800a21c42453ff756fc2b77c710f",
+        "adname": "玄武区",
+        "address": "石象路7号",
+        "tel": "025-85769047",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "nanjing-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "南京欢乐谷",
+        "rating": 4.7,
+        "open_time": "8月31日-9月11日:10:00-18:00；9月12日-10月22日:10:00-21:00；10月23日-11月1日:10:00-23:00；11月2日-11月29日:10:00-21:00",
+        "location": {
+          "lng": 118.998553,
+          "lat": 32.163841
+        },
+        "photo": "http://store.is.autonavi.com/showpic/2dfc1135d63b593dd79428ed00da81c9",
+        "adname": "栖霞区",
+        "address": "经济技术开发区欢乐谷北路8号",
+        "tel": "025-83091666",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "nanjing-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      }
+    ],
+    "acceptable_pois": [],
+    "forbidden_pois": [],
+    "required_evidence": [],
+    "answerable": false,
+    "annotation_status": "draft",
+    "annotation_version": "route-interest-v1",
+    "annotator": null,
+    "reviewed_at": null,
+    "change_log": [],
+    "reference_note": "Acceptable sets are draft labels, not unique optimal routes; missing knowledge is not proof of absence.",
+    "route_distance_mode": "drive",
+    "weather_forecast": [
+      {
+        "date": "2026-10-15",
+        "dayweather": "晴",
+        "nightweather": "晴",
+        "is_bad": false
+      }
+    ],
+    "weather_note": "固定晴天评测场景，非真实天气预报；两组共享"
+  },
+  {
+    "id": "interest-南京-10",
+    "split": "test",
+    "intent_group": "南京-模糊兴趣",
+    "query": "南京一日游，每天最多两个不同景点。想看那个馆的神秘展厅，没有明确证据不要猜。",
+    "destination": "南京",
+    "days": 1,
+    "max_per_day": 2,
+    "travel_start_date": "2026-10-15",
+    "travel_end_date": "2026-10-15",
+    "pois": [
+      {
+        "name": "南京博物院",
+        "provenance": {
+          "kind": "real_amap_exact_city_name",
+          "captured_at": "2026-10-08T09:40:30.530364+00:00"
+        },
+        "rating": 4.9,
+        "open_time": "周一 闭馆(法定节假日除外)；周二至周日 09:00-17:00开放(16:00停止入园)",
+        "location": {
+          "lng": 118.825064,
+          "lat": 32.040802
+        },
+        "photo": "http://store.is.autonavi.com/showpic/6d9679442d9f514b78d55213b43d9417",
+        "adname": "玄武区",
+        "address": "中山东路321号",
+        "tel": "025-84807923",
+        "cost": null,
+        "indoor": true,
+        "indoor_source": "amap_category_inference"
+      },
+      {
+        "name": "玄武湖景区",
+        "rating": 4.8,
+        "open_time": "周一至周日 00:00-24:00",
+        "location": {
+          "lng": 118.812688,
+          "lat": 32.069455
+        },
+        "photo": "http://store.is.autonavi.com/showpic/ff2f4114639e0110ae96ae76ad0c0287",
+        "adname": "玄武区",
+        "address": "玄武门路1号钟山风景名胜区西侧",
+        "tel": "025-83614286",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "nanjing-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "总统府",
+        "rating": 4.9,
+        "open_time": "08:30-18:00（17:00停止入场，周一闭馆）(数据来源:江苏省文旅厅公共服务平台苏心游)",
+        "location": {
+          "lng": 118.797398,
+          "lat": 32.044228
+        },
+        "photo": "http://aos-cdn-image.amap.com/sns/ugccomment/21acde57-d540-4737-974a-11b6c69d23de.jpg",
+        "adname": "玄武区",
+        "address": "长江路292号",
+        "tel": "025-84578716;025-84578888",
+        "cost": "[]",
+        "indoor": true,
+        "provenance": {
+          "fixture": "nanjing-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "中国科举博物馆(江南贡院)",
+        "rating": 4.7,
+        "open_time": "周一至周日 09:00-22:00 最晚进入22:00",
+        "location": {
+          "lng": 118.790669,
+          "lat": 32.020795
+        },
+        "photo": "http://store.is.autonavi.com/showpic/f5bea28c1ade934769756aaa80cdf653",
+        "adname": "秦淮区",
+        "address": "贡院街95号",
+        "tel": "025-86626556;025-86626653",
+        "cost": "[]",
+        "indoor": true,
+        "provenance": {
+          "fixture": "nanjing-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "中山陵景区",
+        "rating": 4.9,
+        "open_time": "08:30-17:00(周一闭馆)；法定节假日及孙中山先生诞辰、逝世纪念日正常开放,墓室仅周二至周五开放(数据来源:江苏省文旅厅公共服务平台苏心游)",
+        "location": {
+          "lng": 118.854097,
+          "lat": 32.054508
+        },
+        "photo": "http://store.is.autonavi.com/showpic/46bf800a21c42453ff756fc2b77c710f",
+        "adname": "玄武区",
+        "address": "石象路7号",
+        "tel": "025-85769047",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "nanjing-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "南京欢乐谷",
+        "rating": 4.7,
+        "open_time": "8月31日-9月11日:10:00-18:00；9月12日-10月22日:10:00-21:00；10月23日-11月1日:10:00-23:00；11月2日-11月29日:10:00-21:00",
+        "location": {
+          "lng": 118.998553,
+          "lat": 32.163841
+        },
+        "photo": "http://store.is.autonavi.com/showpic/2dfc1135d63b593dd79428ed00da81c9",
+        "adname": "栖霞区",
+        "address": "经济技术开发区欢乐谷北路8号",
+        "tel": "025-83091666",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "nanjing-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      }
+    ],
+    "acceptable_pois": [],
+    "forbidden_pois": [],
+    "required_evidence": [],
+    "answerable": false,
+    "annotation_status": "draft",
+    "annotation_version": "route-interest-v1",
+    "annotator": null,
+    "reviewed_at": null,
+    "change_log": [],
+    "reference_note": "Acceptable sets are draft labels, not unique optimal routes; missing knowledge is not proof of absence.",
+    "route_distance_mode": "drive",
+    "weather_forecast": [
+      {
+        "date": "2026-10-15",
+        "dayweather": "晴",
+        "nightweather": "晴",
+        "is_bad": false
+      }
+    ],
+    "weather_note": "固定晴天评测场景，非真实天气预报；两组共享"
+  },
+  {
+    "id": "interest-上海-01",
+    "split": "dev",
+    "intent_group": "上海-生命演化",
+    "query": "上海一日游，每天最多两个不同景点。想了解生命演化的科学展示。",
+    "destination": "上海",
+    "days": 1,
+    "max_per_day": 2,
+    "travel_start_date": "2026-10-15",
+    "travel_end_date": "2026-10-15",
+    "pois": [
+      {
+        "name": "上海博物馆东馆",
+        "provenance": {
+          "kind": "real_amap_exact_city_name",
+          "captured_at": "2026-10-08T09:46:50.051764+00:00"
+        },
+        "rating": 4.8,
+        "open_time": "周二 全天关闭(节假日除外),周一,周三至周日 10:00-18:00 最晚进入17:00,2026年2月15日至2026年2月23日10:00-18:00",
+        "location": {
+          "lng": 121.538745,
+          "lat": 31.219913
+        },
+        "photo": "https://store.is.autonavi.com/showpic/73e295834271cf670000004638558869?type=pic",
+        "adname": "浦东新区",
+        "address": "世纪大道1952号(上海科技馆地铁站8号口步行480米)",
+        "tel": "021-20729999",
+        "cost": null,
+        "indoor": true,
+        "indoor_source": "amap_category_inference"
+      },
+      {
+        "name": "上海自然博物馆",
+        "provenance": {
+          "kind": "real_amap_exact_city_name",
+          "captured_at": "2026-10-08T09:40:30.530364+00:00"
+        },
+        "rating": 4.8,
+        "open_time": "周一,周三至周五,周日 09:00-17:00开放 最晚进入16:00, 周二不开放, 周六 09:00-20:00开放 最晚进入19:00； 2026年9月25日 09:00-20:00开放 最晚进入19:00, 2026年10月1日-2026年10月2日 09:00-20:00开放 最晚进入19:00, 2026年10月6日 09:00-17:00开放 最晚进入16:00, 具体开放时间以官方通知为准",
+        "location": {
+          "lng": 121.462672,
+          "lat": 31.235021
+        },
+        "photo": "http://store.is.autonavi.com/showpic/239f758f8beacd1c49af5dc7677810e4",
+        "adname": "静安区",
+        "address": "北京西路510号",
+        "tel": "021-62620116;021-68622000",
+        "cost": null,
+        "indoor": true,
+        "indoor_source": "amap_category_inference"
+      },
+      {
+        "name": "上海动物园",
+        "rating": 4.8,
+        "open_time": "周一至周日 08:00-17:00",
+        "location": {
+          "lng": 121.363009,
+          "lat": 31.193277
+        },
+        "photo": "http://store.is.autonavi.com/showpic/b61ca9d1298e702a3d27f9dde7412e74",
+        "adname": "长宁区",
+        "address": "虹桥路2381号",
+        "tel": "021-62109210",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "shanghai-5d-sunny-nature.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "上海海洋水族馆",
+        "rating": 4.7,
+        "open_time": "全年9:00-18:00,暑期7月1日-8月31日:9:00-21:00",
+        "location": {
+          "lng": 121.501894,
+          "lat": 31.240777
+        },
+        "photo": "https://store.is.autonavi.com/showpic/c84ea7d9438f0b570000003132978372?type=pic",
+        "adname": "浦东新区",
+        "address": "陆家嘴环路1388号",
+        "tel": "021-58779988;12301",
+        "cost": "[]",
+        "indoor": true,
+        "provenance": {
+          "fixture": "shanghai-5d-sunny-nature.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "上海豫园",
+        "rating": 4.8,
+        "open_time": "周一全天关闭(法定节假日除外)；周二至周日 09:00-16:30(16:00停止入馆)",
+        "location": {
+          "lng": 121.492497,
+          "lat": 31.227714
+        },
+        "photo": "http://store.is.autonavi.com/showpic/faeb0264854cd82fbb315cb2ccacea0f",
+        "adname": "黄浦区",
+        "address": "福佑路168号",
+        "tel": "021-63260830",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "shanghai-5d-sunny-nature.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "上海迪士尼度假区",
+        "rating": 4.9,
+        "open_time": "09-11至09-13 周一至周日 08:30-21:30；09-14至09-17 周一至周日 08:30-20:30；09-18至09-20 周一至周日 08:30-21:30；09-21至09-24 周一至周日 08:30-20:30；09-25至09-26 周一至周日 08:30-21:30",
+        "location": {
+          "lng": 121.667003,
+          "lat": 31.141447
+        },
+        "photo": "http://store.is.autonavi.com/showpic/4f83bd890aba5ab4f0d859e5e25a94f7",
+        "adname": "浦东新区",
+        "address": "黄赵路310号",
+        "tel": "4001800000",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "shanghai-5d-sunny-nature.json",
+          "kind": "saved_real_amap_response"
+        }
+      }
+    ],
+    "acceptable_pois": [
+      "上海自然博物馆"
+    ],
+    "forbidden_pois": [],
+    "required_evidence": [
+      "interest_90ec80f62860ffdf"
+    ],
+    "answerable": true,
+    "annotation_status": "draft",
+    "annotation_version": "route-interest-v1",
+    "annotator": null,
+    "reviewed_at": null,
+    "change_log": [],
+    "reference_note": "Acceptable sets are draft labels, not unique optimal routes; missing knowledge is not proof of absence.",
+    "route_distance_mode": "drive",
+    "weather_forecast": [
+      {
+        "date": "2026-10-15",
+        "dayweather": "晴",
+        "nightweather": "晴",
+        "is_bad": false
+      }
+    ],
+    "weather_note": "固定晴天评测场景，非真实天气预报；两组共享"
+  },
+  {
+    "id": "interest-上海-02",
+    "split": "dev",
+    "intent_group": "上海-动物观察",
+    "query": "上海一日游，每天最多两个不同景点。想观察大熊猫与长颈鹿等活体动物。",
+    "destination": "上海",
+    "days": 1,
+    "max_per_day": 2,
+    "travel_start_date": "2026-10-15",
+    "travel_end_date": "2026-10-15",
+    "pois": [
+      {
+        "name": "上海博物馆东馆",
+        "provenance": {
+          "kind": "real_amap_exact_city_name",
+          "captured_at": "2026-10-08T09:46:50.051764+00:00"
+        },
+        "rating": 4.8,
+        "open_time": "周二 全天关闭(节假日除外),周一,周三至周日 10:00-18:00 最晚进入17:00,2026年2月15日至2026年2月23日10:00-18:00",
+        "location": {
+          "lng": 121.538745,
+          "lat": 31.219913
+        },
+        "photo": "https://store.is.autonavi.com/showpic/73e295834271cf670000004638558869?type=pic",
+        "adname": "浦东新区",
+        "address": "世纪大道1952号(上海科技馆地铁站8号口步行480米)",
+        "tel": "021-20729999",
+        "cost": null,
+        "indoor": true,
+        "indoor_source": "amap_category_inference"
+      },
+      {
+        "name": "上海自然博物馆",
+        "provenance": {
+          "kind": "real_amap_exact_city_name",
+          "captured_at": "2026-10-08T09:40:30.530364+00:00"
+        },
+        "rating": 4.8,
+        "open_time": "周一,周三至周五,周日 09:00-17:00开放 最晚进入16:00, 周二不开放, 周六 09:00-20:00开放 最晚进入19:00； 2026年9月25日 09:00-20:00开放 最晚进入19:00, 2026年10月1日-2026年10月2日 09:00-20:00开放 最晚进入19:00, 2026年10月6日 09:00-17:00开放 最晚进入16:00, 具体开放时间以官方通知为准",
+        "location": {
+          "lng": 121.462672,
+          "lat": 31.235021
+        },
+        "photo": "http://store.is.autonavi.com/showpic/239f758f8beacd1c49af5dc7677810e4",
+        "adname": "静安区",
+        "address": "北京西路510号",
+        "tel": "021-62620116;021-68622000",
+        "cost": null,
+        "indoor": true,
+        "indoor_source": "amap_category_inference"
+      },
+      {
+        "name": "上海动物园",
+        "rating": 4.8,
+        "open_time": "周一至周日 08:00-17:00",
+        "location": {
+          "lng": 121.363009,
+          "lat": 31.193277
+        },
+        "photo": "http://store.is.autonavi.com/showpic/b61ca9d1298e702a3d27f9dde7412e74",
+        "adname": "长宁区",
+        "address": "虹桥路2381号",
+        "tel": "021-62109210",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "shanghai-5d-sunny-nature.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "上海海洋水族馆",
+        "rating": 4.7,
+        "open_time": "全年9:00-18:00,暑期7月1日-8月31日:9:00-21:00",
+        "location": {
+          "lng": 121.501894,
+          "lat": 31.240777
+        },
+        "photo": "https://store.is.autonavi.com/showpic/c84ea7d9438f0b570000003132978372?type=pic",
+        "adname": "浦东新区",
+        "address": "陆家嘴环路1388号",
+        "tel": "021-58779988;12301",
+        "cost": "[]",
+        "indoor": true,
+        "provenance": {
+          "fixture": "shanghai-5d-sunny-nature.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "上海豫园",
+        "rating": 4.8,
+        "open_time": "周一全天关闭(法定节假日除外)；周二至周日 09:00-16:30(16:00停止入馆)",
+        "location": {
+          "lng": 121.492497,
+          "lat": 31.227714
+        },
+        "photo": "http://store.is.autonavi.com/showpic/faeb0264854cd82fbb315cb2ccacea0f",
+        "adname": "黄浦区",
+        "address": "福佑路168号",
+        "tel": "021-63260830",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "shanghai-5d-sunny-nature.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "上海迪士尼度假区",
+        "rating": 4.9,
+        "open_time": "09-11至09-13 周一至周日 08:30-21:30；09-14至09-17 周一至周日 08:30-20:30；09-18至09-20 周一至周日 08:30-21:30；09-21至09-24 周一至周日 08:30-20:30；09-25至09-26 周一至周日 08:30-21:30",
+        "location": {
+          "lng": 121.667003,
+          "lat": 31.141447
+        },
+        "photo": "http://store.is.autonavi.com/showpic/4f83bd890aba5ab4f0d859e5e25a94f7",
+        "adname": "浦东新区",
+        "address": "黄赵路310号",
+        "tel": "4001800000",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "shanghai-5d-sunny-nature.json",
+          "kind": "saved_real_amap_response"
+        }
+      }
+    ],
+    "acceptable_pois": [
+      "上海动物园"
+    ],
+    "forbidden_pois": [],
+    "required_evidence": [
+      "interest_15bfb1df39cfb7e5"
+    ],
+    "answerable": true,
+    "annotation_status": "draft",
+    "annotation_version": "route-interest-v1",
+    "annotator": null,
+    "reviewed_at": null,
+    "change_log": [],
+    "reference_note": "Acceptable sets are draft labels, not unique optimal routes; missing knowledge is not proof of absence.",
+    "route_distance_mode": "drive",
+    "weather_forecast": [
+      {
+        "date": "2026-10-15",
+        "dayweather": "晴",
+        "nightweather": "晴",
+        "is_bad": false
+      }
+    ],
+    "weather_note": "固定晴天评测场景，非真实天气预报；两组共享"
+  },
+  {
+    "id": "interest-上海-03",
+    "split": "dev",
+    "intent_group": "上海-动物观察",
+    "query": "上海一日游，每天最多两个不同景点。想看华南虎和大熊猫，不要把标本当成活体动物。",
+    "destination": "上海",
+    "days": 1,
+    "max_per_day": 2,
+    "travel_start_date": "2026-10-15",
+    "travel_end_date": "2026-10-15",
+    "pois": [
+      {
+        "name": "上海博物馆东馆",
+        "provenance": {
+          "kind": "real_amap_exact_city_name",
+          "captured_at": "2026-10-08T09:46:50.051764+00:00"
+        },
+        "rating": 4.8,
+        "open_time": "周二 全天关闭(节假日除外),周一,周三至周日 10:00-18:00 最晚进入17:00,2026年2月15日至2026年2月23日10:00-18:00",
+        "location": {
+          "lng": 121.538745,
+          "lat": 31.219913
+        },
+        "photo": "https://store.is.autonavi.com/showpic/73e295834271cf670000004638558869?type=pic",
+        "adname": "浦东新区",
+        "address": "世纪大道1952号(上海科技馆地铁站8号口步行480米)",
+        "tel": "021-20729999",
+        "cost": null,
+        "indoor": true,
+        "indoor_source": "amap_category_inference"
+      },
+      {
+        "name": "上海自然博物馆",
+        "provenance": {
+          "kind": "real_amap_exact_city_name",
+          "captured_at": "2026-10-08T09:40:30.530364+00:00"
+        },
+        "rating": 4.8,
+        "open_time": "周一,周三至周五,周日 09:00-17:00开放 最晚进入16:00, 周二不开放, 周六 09:00-20:00开放 最晚进入19:00； 2026年9月25日 09:00-20:00开放 最晚进入19:00, 2026年10月1日-2026年10月2日 09:00-20:00开放 最晚进入19:00, 2026年10月6日 09:00-17:00开放 最晚进入16:00, 具体开放时间以官方通知为准",
+        "location": {
+          "lng": 121.462672,
+          "lat": 31.235021
+        },
+        "photo": "http://store.is.autonavi.com/showpic/239f758f8beacd1c49af5dc7677810e4",
+        "adname": "静安区",
+        "address": "北京西路510号",
+        "tel": "021-62620116;021-68622000",
+        "cost": null,
+        "indoor": true,
+        "indoor_source": "amap_category_inference"
+      },
+      {
+        "name": "上海动物园",
+        "rating": 4.8,
+        "open_time": "周一至周日 08:00-17:00",
+        "location": {
+          "lng": 121.363009,
+          "lat": 31.193277
+        },
+        "photo": "http://store.is.autonavi.com/showpic/b61ca9d1298e702a3d27f9dde7412e74",
+        "adname": "长宁区",
+        "address": "虹桥路2381号",
+        "tel": "021-62109210",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "shanghai-5d-sunny-nature.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "上海海洋水族馆",
+        "rating": 4.7,
+        "open_time": "全年9:00-18:00,暑期7月1日-8月31日:9:00-21:00",
+        "location": {
+          "lng": 121.501894,
+          "lat": 31.240777
+        },
+        "photo": "https://store.is.autonavi.com/showpic/c84ea7d9438f0b570000003132978372?type=pic",
+        "adname": "浦东新区",
+        "address": "陆家嘴环路1388号",
+        "tel": "021-58779988;12301",
+        "cost": "[]",
+        "indoor": true,
+        "provenance": {
+          "fixture": "shanghai-5d-sunny-nature.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "上海豫园",
+        "rating": 4.8,
+        "open_time": "周一全天关闭(法定节假日除外)；周二至周日 09:00-16:30(16:00停止入馆)",
+        "location": {
+          "lng": 121.492497,
+          "lat": 31.227714
+        },
+        "photo": "http://store.is.autonavi.com/showpic/faeb0264854cd82fbb315cb2ccacea0f",
+        "adname": "黄浦区",
+        "address": "福佑路168号",
+        "tel": "021-63260830",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "shanghai-5d-sunny-nature.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "上海迪士尼度假区",
+        "rating": 4.9,
+        "open_time": "09-11至09-13 周一至周日 08:30-21:30；09-14至09-17 周一至周日 08:30-20:30；09-18至09-20 周一至周日 08:30-21:30；09-21至09-24 周一至周日 08:30-20:30；09-25至09-26 周一至周日 08:30-21:30",
+        "location": {
+          "lng": 121.667003,
+          "lat": 31.141447
+        },
+        "photo": "http://store.is.autonavi.com/showpic/4f83bd890aba5ab4f0d859e5e25a94f7",
+        "adname": "浦东新区",
+        "address": "黄赵路310号",
+        "tel": "4001800000",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "shanghai-5d-sunny-nature.json",
+          "kind": "saved_real_amap_response"
+        }
+      }
+    ],
+    "acceptable_pois": [
+      "上海动物园"
+    ],
+    "forbidden_pois": [],
+    "required_evidence": [
+      "interest_15bfb1df39cfb7e5"
+    ],
+    "answerable": true,
+    "annotation_status": "draft",
+    "annotation_version": "route-interest-v1",
+    "annotator": null,
+    "reviewed_at": null,
+    "change_log": [],
+    "reference_note": "Acceptable sets are draft labels, not unique optimal routes; missing knowledge is not proof of absence.",
+    "route_distance_mode": "drive",
+    "weather_forecast": [
+      {
+        "date": "2026-10-15",
+        "dayweather": "晴",
+        "nightweather": "晴",
+        "is_bad": false
+      }
+    ],
+    "weather_note": "固定晴天评测场景，非真实天气预报；两组共享"
+  },
+  {
+    "id": "interest-上海-04",
+    "split": "dev",
+    "intent_group": "上海-排除乐园",
+    "query": "上海一日游，每天最多两个不同景点。想学习自然演化，不去迪士尼。",
+    "destination": "上海",
+    "days": 1,
+    "max_per_day": 2,
+    "travel_start_date": "2026-10-15",
+    "travel_end_date": "2026-10-15",
+    "pois": [
+      {
+        "name": "上海博物馆东馆",
+        "provenance": {
+          "kind": "real_amap_exact_city_name",
+          "captured_at": "2026-10-08T09:46:50.051764+00:00"
+        },
+        "rating": 4.8,
+        "open_time": "周二 全天关闭(节假日除外),周一,周三至周日 10:00-18:00 最晚进入17:00,2026年2月15日至2026年2月23日10:00-18:00",
+        "location": {
+          "lng": 121.538745,
+          "lat": 31.219913
+        },
+        "photo": "https://store.is.autonavi.com/showpic/73e295834271cf670000004638558869?type=pic",
+        "adname": "浦东新区",
+        "address": "世纪大道1952号(上海科技馆地铁站8号口步行480米)",
+        "tel": "021-20729999",
+        "cost": null,
+        "indoor": true,
+        "indoor_source": "amap_category_inference"
+      },
+      {
+        "name": "上海自然博物馆",
+        "provenance": {
+          "kind": "real_amap_exact_city_name",
+          "captured_at": "2026-10-08T09:40:30.530364+00:00"
+        },
+        "rating": 4.8,
+        "open_time": "周一,周三至周五,周日 09:00-17:00开放 最晚进入16:00, 周二不开放, 周六 09:00-20:00开放 最晚进入19:00； 2026年9月25日 09:00-20:00开放 最晚进入19:00, 2026年10月1日-2026年10月2日 09:00-20:00开放 最晚进入19:00, 2026年10月6日 09:00-17:00开放 最晚进入16:00, 具体开放时间以官方通知为准",
+        "location": {
+          "lng": 121.462672,
+          "lat": 31.235021
+        },
+        "photo": "http://store.is.autonavi.com/showpic/239f758f8beacd1c49af5dc7677810e4",
+        "adname": "静安区",
+        "address": "北京西路510号",
+        "tel": "021-62620116;021-68622000",
+        "cost": null,
+        "indoor": true,
+        "indoor_source": "amap_category_inference"
+      },
+      {
+        "name": "上海动物园",
+        "rating": 4.8,
+        "open_time": "周一至周日 08:00-17:00",
+        "location": {
+          "lng": 121.363009,
+          "lat": 31.193277
+        },
+        "photo": "http://store.is.autonavi.com/showpic/b61ca9d1298e702a3d27f9dde7412e74",
+        "adname": "长宁区",
+        "address": "虹桥路2381号",
+        "tel": "021-62109210",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "shanghai-5d-sunny-nature.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "上海海洋水族馆",
+        "rating": 4.7,
+        "open_time": "全年9:00-18:00,暑期7月1日-8月31日:9:00-21:00",
+        "location": {
+          "lng": 121.501894,
+          "lat": 31.240777
+        },
+        "photo": "https://store.is.autonavi.com/showpic/c84ea7d9438f0b570000003132978372?type=pic",
+        "adname": "浦东新区",
+        "address": "陆家嘴环路1388号",
+        "tel": "021-58779988;12301",
+        "cost": "[]",
+        "indoor": true,
+        "provenance": {
+          "fixture": "shanghai-5d-sunny-nature.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "上海豫园",
+        "rating": 4.8,
+        "open_time": "周一全天关闭(法定节假日除外)；周二至周日 09:00-16:30(16:00停止入馆)",
+        "location": {
+          "lng": 121.492497,
+          "lat": 31.227714
+        },
+        "photo": "http://store.is.autonavi.com/showpic/faeb0264854cd82fbb315cb2ccacea0f",
+        "adname": "黄浦区",
+        "address": "福佑路168号",
+        "tel": "021-63260830",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "shanghai-5d-sunny-nature.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "上海迪士尼度假区",
+        "rating": 4.9,
+        "open_time": "09-11至09-13 周一至周日 08:30-21:30；09-14至09-17 周一至周日 08:30-20:30；09-18至09-20 周一至周日 08:30-21:30；09-21至09-24 周一至周日 08:30-20:30；09-25至09-26 周一至周日 08:30-21:30",
+        "location": {
+          "lng": 121.667003,
+          "lat": 31.141447
+        },
+        "photo": "http://store.is.autonavi.com/showpic/4f83bd890aba5ab4f0d859e5e25a94f7",
+        "adname": "浦东新区",
+        "address": "黄赵路310号",
+        "tel": "4001800000",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "shanghai-5d-sunny-nature.json",
+          "kind": "saved_real_amap_response"
+        }
+      }
+    ],
+    "acceptable_pois": [
+      "上海自然博物馆"
+    ],
+    "forbidden_pois": [
+      "上海迪士尼度假区"
+    ],
+    "required_evidence": [
+      "interest_90ec80f62860ffdf"
+    ],
+    "answerable": true,
+    "annotation_status": "draft",
+    "annotation_version": "route-interest-v1",
+    "annotator": null,
+    "reviewed_at": null,
+    "change_log": [],
+    "reference_note": "Acceptable sets are draft labels, not unique optimal routes; missing knowledge is not proof of absence.",
+    "route_distance_mode": "drive",
+    "weather_forecast": [
+      {
+        "date": "2026-10-15",
+        "dayweather": "晴",
+        "nightweather": "晴",
+        "is_bad": false
+      }
+    ],
+    "weather_note": "固定晴天评测场景，非真实天气预报；两组共享"
+  },
+  {
+    "id": "interest-上海-05",
+    "split": "dev",
+    "intent_group": "上海-生物组合",
+    "query": "上海一日游，每天最多两个不同景点。想观察活体动物，也想了解生命演化，尽量兼顾。",
+    "destination": "上海",
+    "days": 1,
+    "max_per_day": 2,
+    "travel_start_date": "2026-10-15",
+    "travel_end_date": "2026-10-15",
+    "pois": [
+      {
+        "name": "上海博物馆东馆",
+        "provenance": {
+          "kind": "real_amap_exact_city_name",
+          "captured_at": "2026-10-08T09:46:50.051764+00:00"
+        },
+        "rating": 4.8,
+        "open_time": "周二 全天关闭(节假日除外),周一,周三至周日 10:00-18:00 最晚进入17:00,2026年2月15日至2026年2月23日10:00-18:00",
+        "location": {
+          "lng": 121.538745,
+          "lat": 31.219913
+        },
+        "photo": "https://store.is.autonavi.com/showpic/73e295834271cf670000004638558869?type=pic",
+        "adname": "浦东新区",
+        "address": "世纪大道1952号(上海科技馆地铁站8号口步行480米)",
+        "tel": "021-20729999",
+        "cost": null,
+        "indoor": true,
+        "indoor_source": "amap_category_inference"
+      },
+      {
+        "name": "上海自然博物馆",
+        "provenance": {
+          "kind": "real_amap_exact_city_name",
+          "captured_at": "2026-10-08T09:40:30.530364+00:00"
+        },
+        "rating": 4.8,
+        "open_time": "周一,周三至周五,周日 09:00-17:00开放 最晚进入16:00, 周二不开放, 周六 09:00-20:00开放 最晚进入19:00； 2026年9月25日 09:00-20:00开放 最晚进入19:00, 2026年10月1日-2026年10月2日 09:00-20:00开放 最晚进入19:00, 2026年10月6日 09:00-17:00开放 最晚进入16:00, 具体开放时间以官方通知为准",
+        "location": {
+          "lng": 121.462672,
+          "lat": 31.235021
+        },
+        "photo": "http://store.is.autonavi.com/showpic/239f758f8beacd1c49af5dc7677810e4",
+        "adname": "静安区",
+        "address": "北京西路510号",
+        "tel": "021-62620116;021-68622000",
+        "cost": null,
+        "indoor": true,
+        "indoor_source": "amap_category_inference"
+      },
+      {
+        "name": "上海动物园",
+        "rating": 4.8,
+        "open_time": "周一至周日 08:00-17:00",
+        "location": {
+          "lng": 121.363009,
+          "lat": 31.193277
+        },
+        "photo": "http://store.is.autonavi.com/showpic/b61ca9d1298e702a3d27f9dde7412e74",
+        "adname": "长宁区",
+        "address": "虹桥路2381号",
+        "tel": "021-62109210",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "shanghai-5d-sunny-nature.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "上海海洋水族馆",
+        "rating": 4.7,
+        "open_time": "全年9:00-18:00,暑期7月1日-8月31日:9:00-21:00",
+        "location": {
+          "lng": 121.501894,
+          "lat": 31.240777
+        },
+        "photo": "https://store.is.autonavi.com/showpic/c84ea7d9438f0b570000003132978372?type=pic",
+        "adname": "浦东新区",
+        "address": "陆家嘴环路1388号",
+        "tel": "021-58779988;12301",
+        "cost": "[]",
+        "indoor": true,
+        "provenance": {
+          "fixture": "shanghai-5d-sunny-nature.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "上海豫园",
+        "rating": 4.8,
+        "open_time": "周一全天关闭(法定节假日除外)；周二至周日 09:00-16:30(16:00停止入馆)",
+        "location": {
+          "lng": 121.492497,
+          "lat": 31.227714
+        },
+        "photo": "http://store.is.autonavi.com/showpic/faeb0264854cd82fbb315cb2ccacea0f",
+        "adname": "黄浦区",
+        "address": "福佑路168号",
+        "tel": "021-63260830",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "shanghai-5d-sunny-nature.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "上海迪士尼度假区",
+        "rating": 4.9,
+        "open_time": "09-11至09-13 周一至周日 08:30-21:30；09-14至09-17 周一至周日 08:30-20:30；09-18至09-20 周一至周日 08:30-21:30；09-21至09-24 周一至周日 08:30-20:30；09-25至09-26 周一至周日 08:30-21:30",
+        "location": {
+          "lng": 121.667003,
+          "lat": 31.141447
+        },
+        "photo": "http://store.is.autonavi.com/showpic/4f83bd890aba5ab4f0d859e5e25a94f7",
+        "adname": "浦东新区",
+        "address": "黄赵路310号",
+        "tel": "4001800000",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "shanghai-5d-sunny-nature.json",
+          "kind": "saved_real_amap_response"
+        }
+      }
+    ],
+    "acceptable_pois": [
+      "上海动物园",
+      "上海自然博物馆"
+    ],
+    "forbidden_pois": [],
+    "required_evidence": [
+      "interest_90ec80f62860ffdf",
+      "interest_15bfb1df39cfb7e5"
+    ],
+    "answerable": true,
+    "annotation_status": "draft",
+    "annotation_version": "route-interest-v1",
+    "annotator": null,
+    "reviewed_at": null,
+    "change_log": [],
+    "reference_note": "Acceptable sets are draft labels, not unique optimal routes; missing knowledge is not proof of absence.",
+    "route_distance_mode": "drive",
+    "weather_forecast": [
+      {
+        "date": "2026-10-15",
+        "dayweather": "晴",
+        "nightweather": "晴",
+        "is_bad": false
+      }
+    ],
+    "weather_note": "固定晴天评测场景，非真实天气预报；两组共享"
+  },
+  {
+    "id": "interest-上海-06",
+    "split": "test",
+    "intent_group": "上海-数字体验",
+    "query": "上海一日游，每天最多两个不同景点。想看古代文明探索宫和数字馆，不要混淆馆区。",
+    "destination": "上海",
+    "days": 1,
+    "max_per_day": 2,
+    "travel_start_date": "2026-10-15",
+    "travel_end_date": "2026-10-15",
+    "pois": [
+      {
+        "name": "上海博物馆东馆",
+        "provenance": {
+          "kind": "real_amap_exact_city_name",
+          "captured_at": "2026-10-08T09:46:50.051764+00:00"
+        },
+        "rating": 4.8,
+        "open_time": "周二 全天关闭(节假日除外),周一,周三至周日 10:00-18:00 最晚进入17:00,2026年2月15日至2026年2月23日10:00-18:00",
+        "location": {
+          "lng": 121.538745,
+          "lat": 31.219913
+        },
+        "photo": "https://store.is.autonavi.com/showpic/73e295834271cf670000004638558869?type=pic",
+        "adname": "浦东新区",
+        "address": "世纪大道1952号(上海科技馆地铁站8号口步行480米)",
+        "tel": "021-20729999",
+        "cost": null,
+        "indoor": true,
+        "indoor_source": "amap_category_inference"
+      },
+      {
+        "name": "上海自然博物馆",
+        "provenance": {
+          "kind": "real_amap_exact_city_name",
+          "captured_at": "2026-10-08T09:40:30.530364+00:00"
+        },
+        "rating": 4.8,
+        "open_time": "周一,周三至周五,周日 09:00-17:00开放 最晚进入16:00, 周二不开放, 周六 09:00-20:00开放 最晚进入19:00； 2026年9月25日 09:00-20:00开放 最晚进入19:00, 2026年10月1日-2026年10月2日 09:00-20:00开放 最晚进入19:00, 2026年10月6日 09:00-17:00开放 最晚进入16:00, 具体开放时间以官方通知为准",
+        "location": {
+          "lng": 121.462672,
+          "lat": 31.235021
+        },
+        "photo": "http://store.is.autonavi.com/showpic/239f758f8beacd1c49af5dc7677810e4",
+        "adname": "静安区",
+        "address": "北京西路510号",
+        "tel": "021-62620116;021-68622000",
+        "cost": null,
+        "indoor": true,
+        "indoor_source": "amap_category_inference"
+      },
+      {
+        "name": "上海动物园",
+        "rating": 4.8,
+        "open_time": "周一至周日 08:00-17:00",
+        "location": {
+          "lng": 121.363009,
+          "lat": 31.193277
+        },
+        "photo": "http://store.is.autonavi.com/showpic/b61ca9d1298e702a3d27f9dde7412e74",
+        "adname": "长宁区",
+        "address": "虹桥路2381号",
+        "tel": "021-62109210",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "shanghai-5d-sunny-nature.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "上海海洋水族馆",
+        "rating": 4.7,
+        "open_time": "全年9:00-18:00,暑期7月1日-8月31日:9:00-21:00",
+        "location": {
+          "lng": 121.501894,
+          "lat": 31.240777
+        },
+        "photo": "https://store.is.autonavi.com/showpic/c84ea7d9438f0b570000003132978372?type=pic",
+        "adname": "浦东新区",
+        "address": "陆家嘴环路1388号",
+        "tel": "021-58779988;12301",
+        "cost": "[]",
+        "indoor": true,
+        "provenance": {
+          "fixture": "shanghai-5d-sunny-nature.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "上海豫园",
+        "rating": 4.8,
+        "open_time": "周一全天关闭(法定节假日除外)；周二至周日 09:00-16:30(16:00停止入馆)",
+        "location": {
+          "lng": 121.492497,
+          "lat": 31.227714
+        },
+        "photo": "http://store.is.autonavi.com/showpic/faeb0264854cd82fbb315cb2ccacea0f",
+        "adname": "黄浦区",
+        "address": "福佑路168号",
+        "tel": "021-63260830",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "shanghai-5d-sunny-nature.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "上海迪士尼度假区",
+        "rating": 4.9,
+        "open_time": "09-11至09-13 周一至周日 08:30-21:30；09-14至09-17 周一至周日 08:30-20:30；09-18至09-20 周一至周日 08:30-21:30；09-21至09-24 周一至周日 08:30-20:30；09-25至09-26 周一至周日 08:30-21:30",
+        "location": {
+          "lng": 121.667003,
+          "lat": 31.141447
+        },
+        "photo": "http://store.is.autonavi.com/showpic/4f83bd890aba5ab4f0d859e5e25a94f7",
+        "adname": "浦东新区",
+        "address": "黄赵路310号",
+        "tel": "4001800000",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "shanghai-5d-sunny-nature.json",
+          "kind": "saved_real_amap_response"
+        }
+      }
+    ],
+    "acceptable_pois": [
+      "上海博物馆东馆"
+    ],
+    "forbidden_pois": [],
+    "required_evidence": [
+      "shanghai_museum_special_products"
+    ],
+    "answerable": true,
+    "annotation_status": "draft",
+    "annotation_version": "route-interest-v1",
+    "annotator": null,
+    "reviewed_at": null,
+    "change_log": [],
+    "reference_note": "Acceptable sets are draft labels, not unique optimal routes; missing knowledge is not proof of absence.",
+    "route_distance_mode": "drive",
+    "weather_forecast": [
+      {
+        "date": "2026-10-15",
+        "dayweather": "晴",
+        "nightweather": "晴",
+        "is_bad": false
+      }
+    ],
+    "weather_note": "固定晴天评测场景，非真实天气预报；两组共享"
+  },
+  {
+    "id": "interest-上海-07",
+    "split": "test",
+    "intent_group": "上海-海洋科普",
+    "query": "上海一日游，每天最多两个不同景点。想看深海展区与水生生物，不去迪士尼。",
+    "destination": "上海",
+    "days": 1,
+    "max_per_day": 2,
+    "travel_start_date": "2026-10-15",
+    "travel_end_date": "2026-10-15",
+    "pois": [
+      {
+        "name": "上海博物馆东馆",
+        "provenance": {
+          "kind": "real_amap_exact_city_name",
+          "captured_at": "2026-10-08T09:46:50.051764+00:00"
+        },
+        "rating": 4.8,
+        "open_time": "周二 全天关闭(节假日除外),周一,周三至周日 10:00-18:00 最晚进入17:00,2026年2月15日至2026年2月23日10:00-18:00",
+        "location": {
+          "lng": 121.538745,
+          "lat": 31.219913
+        },
+        "photo": "https://store.is.autonavi.com/showpic/73e295834271cf670000004638558869?type=pic",
+        "adname": "浦东新区",
+        "address": "世纪大道1952号(上海科技馆地铁站8号口步行480米)",
+        "tel": "021-20729999",
+        "cost": null,
+        "indoor": true,
+        "indoor_source": "amap_category_inference"
+      },
+      {
+        "name": "上海自然博物馆",
+        "provenance": {
+          "kind": "real_amap_exact_city_name",
+          "captured_at": "2026-10-08T09:40:30.530364+00:00"
+        },
+        "rating": 4.8,
+        "open_time": "周一,周三至周五,周日 09:00-17:00开放 最晚进入16:00, 周二不开放, 周六 09:00-20:00开放 最晚进入19:00； 2026年9月25日 09:00-20:00开放 最晚进入19:00, 2026年10月1日-2026年10月2日 09:00-20:00开放 最晚进入19:00, 2026年10月6日 09:00-17:00开放 最晚进入16:00, 具体开放时间以官方通知为准",
+        "location": {
+          "lng": 121.462672,
+          "lat": 31.235021
+        },
+        "photo": "http://store.is.autonavi.com/showpic/239f758f8beacd1c49af5dc7677810e4",
+        "adname": "静安区",
+        "address": "北京西路510号",
+        "tel": "021-62620116;021-68622000",
+        "cost": null,
+        "indoor": true,
+        "indoor_source": "amap_category_inference"
+      },
+      {
+        "name": "上海动物园",
+        "rating": 4.8,
+        "open_time": "周一至周日 08:00-17:00",
+        "location": {
+          "lng": 121.363009,
+          "lat": 31.193277
+        },
+        "photo": "http://store.is.autonavi.com/showpic/b61ca9d1298e702a3d27f9dde7412e74",
+        "adname": "长宁区",
+        "address": "虹桥路2381号",
+        "tel": "021-62109210",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "shanghai-5d-sunny-nature.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "上海海洋水族馆",
+        "rating": 4.7,
+        "open_time": "全年9:00-18:00,暑期7月1日-8月31日:9:00-21:00",
+        "location": {
+          "lng": 121.501894,
+          "lat": 31.240777
+        },
+        "photo": "https://store.is.autonavi.com/showpic/c84ea7d9438f0b570000003132978372?type=pic",
+        "adname": "浦东新区",
+        "address": "陆家嘴环路1388号",
+        "tel": "021-58779988;12301",
+        "cost": "[]",
+        "indoor": true,
+        "provenance": {
+          "fixture": "shanghai-5d-sunny-nature.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "上海豫园",
+        "rating": 4.8,
+        "open_time": "周一全天关闭(法定节假日除外)；周二至周日 09:00-16:30(16:00停止入馆)",
+        "location": {
+          "lng": 121.492497,
+          "lat": 31.227714
+        },
+        "photo": "http://store.is.autonavi.com/showpic/faeb0264854cd82fbb315cb2ccacea0f",
+        "adname": "黄浦区",
+        "address": "福佑路168号",
+        "tel": "021-63260830",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "shanghai-5d-sunny-nature.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "上海迪士尼度假区",
+        "rating": 4.9,
+        "open_time": "09-11至09-13 周一至周日 08:30-21:30；09-14至09-17 周一至周日 08:30-20:30；09-18至09-20 周一至周日 08:30-21:30；09-21至09-24 周一至周日 08:30-20:30；09-25至09-26 周一至周日 08:30-21:30",
+        "location": {
+          "lng": 121.667003,
+          "lat": 31.141447
+        },
+        "photo": "http://store.is.autonavi.com/showpic/4f83bd890aba5ab4f0d859e5e25a94f7",
+        "adname": "浦东新区",
+        "address": "黄赵路310号",
+        "tel": "4001800000",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "shanghai-5d-sunny-nature.json",
+          "kind": "saved_real_amap_response"
+        }
+      }
+    ],
+    "acceptable_pois": [
+      "上海海洋水族馆"
+    ],
+    "forbidden_pois": [
+      "上海迪士尼度假区"
+    ],
+    "required_evidence": [
+      "interest_33012e0d9d6b1788"
+    ],
+    "answerable": true,
+    "annotation_status": "draft",
+    "annotation_version": "route-interest-v1",
+    "annotator": null,
+    "reviewed_at": null,
+    "change_log": [],
+    "reference_note": "Acceptable sets are draft labels, not unique optimal routes; missing knowledge is not proof of absence.",
+    "route_distance_mode": "drive",
+    "weather_forecast": [
+      {
+        "date": "2026-10-15",
+        "dayweather": "晴",
+        "nightweather": "晴",
+        "is_bad": false
+      }
+    ],
+    "weather_note": "固定晴天评测场景，非真实天气预报；两组共享"
+  },
+  {
+    "id": "interest-上海-08",
+    "split": "test",
+    "intent_group": "上海-馆区区分",
+    "query": "上海一日游，每天最多两个不同景点。想看上博东馆专项参观项目，不是人民广场馆。",
+    "destination": "上海",
+    "days": 1,
+    "max_per_day": 2,
+    "travel_start_date": "2026-10-15",
+    "travel_end_date": "2026-10-15",
+    "pois": [
+      {
+        "name": "上海博物馆东馆",
+        "provenance": {
+          "kind": "real_amap_exact_city_name",
+          "captured_at": "2026-10-08T09:46:50.051764+00:00"
+        },
+        "rating": 4.8,
+        "open_time": "周二 全天关闭(节假日除外),周一,周三至周日 10:00-18:00 最晚进入17:00,2026年2月15日至2026年2月23日10:00-18:00",
+        "location": {
+          "lng": 121.538745,
+          "lat": 31.219913
+        },
+        "photo": "https://store.is.autonavi.com/showpic/73e295834271cf670000004638558869?type=pic",
+        "adname": "浦东新区",
+        "address": "世纪大道1952号(上海科技馆地铁站8号口步行480米)",
+        "tel": "021-20729999",
+        "cost": null,
+        "indoor": true,
+        "indoor_source": "amap_category_inference"
+      },
+      {
+        "name": "上海自然博物馆",
+        "provenance": {
+          "kind": "real_amap_exact_city_name",
+          "captured_at": "2026-10-08T09:40:30.530364+00:00"
+        },
+        "rating": 4.8,
+        "open_time": "周一,周三至周五,周日 09:00-17:00开放 最晚进入16:00, 周二不开放, 周六 09:00-20:00开放 最晚进入19:00； 2026年9月25日 09:00-20:00开放 最晚进入19:00, 2026年10月1日-2026年10月2日 09:00-20:00开放 最晚进入19:00, 2026年10月6日 09:00-17:00开放 最晚进入16:00, 具体开放时间以官方通知为准",
+        "location": {
+          "lng": 121.462672,
+          "lat": 31.235021
+        },
+        "photo": "http://store.is.autonavi.com/showpic/239f758f8beacd1c49af5dc7677810e4",
+        "adname": "静安区",
+        "address": "北京西路510号",
+        "tel": "021-62620116;021-68622000",
+        "cost": null,
+        "indoor": true,
+        "indoor_source": "amap_category_inference"
+      },
+      {
+        "name": "上海动物园",
+        "rating": 4.8,
+        "open_time": "周一至周日 08:00-17:00",
+        "location": {
+          "lng": 121.363009,
+          "lat": 31.193277
+        },
+        "photo": "http://store.is.autonavi.com/showpic/b61ca9d1298e702a3d27f9dde7412e74",
+        "adname": "长宁区",
+        "address": "虹桥路2381号",
+        "tel": "021-62109210",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "shanghai-5d-sunny-nature.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "上海海洋水族馆",
+        "rating": 4.7,
+        "open_time": "全年9:00-18:00,暑期7月1日-8月31日:9:00-21:00",
+        "location": {
+          "lng": 121.501894,
+          "lat": 31.240777
+        },
+        "photo": "https://store.is.autonavi.com/showpic/c84ea7d9438f0b570000003132978372?type=pic",
+        "adname": "浦东新区",
+        "address": "陆家嘴环路1388号",
+        "tel": "021-58779988;12301",
+        "cost": "[]",
+        "indoor": true,
+        "provenance": {
+          "fixture": "shanghai-5d-sunny-nature.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "上海豫园",
+        "rating": 4.8,
+        "open_time": "周一全天关闭(法定节假日除外)；周二至周日 09:00-16:30(16:00停止入馆)",
+        "location": {
+          "lng": 121.492497,
+          "lat": 31.227714
+        },
+        "photo": "http://store.is.autonavi.com/showpic/faeb0264854cd82fbb315cb2ccacea0f",
+        "adname": "黄浦区",
+        "address": "福佑路168号",
+        "tel": "021-63260830",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "shanghai-5d-sunny-nature.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "上海迪士尼度假区",
+        "rating": 4.9,
+        "open_time": "09-11至09-13 周一至周日 08:30-21:30；09-14至09-17 周一至周日 08:30-20:30；09-18至09-20 周一至周日 08:30-21:30；09-21至09-24 周一至周日 08:30-20:30；09-25至09-26 周一至周日 08:30-21:30",
+        "location": {
+          "lng": 121.667003,
+          "lat": 31.141447
+        },
+        "photo": "http://store.is.autonavi.com/showpic/4f83bd890aba5ab4f0d859e5e25a94f7",
+        "adname": "浦东新区",
+        "address": "黄赵路310号",
+        "tel": "4001800000",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "shanghai-5d-sunny-nature.json",
+          "kind": "saved_real_amap_response"
+        }
+      }
+    ],
+    "acceptable_pois": [
+      "上海博物馆东馆"
+    ],
+    "forbidden_pois": [],
+    "required_evidence": [
+      "shanghai_museum_special_products"
+    ],
+    "answerable": true,
+    "annotation_status": "draft",
+    "annotation_version": "route-interest-v1",
+    "annotator": null,
+    "reviewed_at": null,
+    "change_log": [],
+    "reference_note": "Acceptable sets are draft labels, not unique optimal routes; missing knowledge is not proof of absence.",
+    "route_distance_mode": "drive",
+    "weather_forecast": [
+      {
+        "date": "2026-10-15",
+        "dayweather": "晴",
+        "nightweather": "晴",
+        "is_bad": false
+      }
+    ],
+    "weather_note": "固定晴天评测场景，非真实天气预报；两组共享"
+  },
+  {
+    "id": "interest-上海-09",
+    "split": "test",
+    "intent_group": "上海-未知新展",
+    "query": "上海一日游，每天最多两个不同景点。想看明天首次开幕的机器人新展，缺少资料别承诺。",
+    "destination": "上海",
+    "days": 1,
+    "max_per_day": 2,
+    "travel_start_date": "2026-10-15",
+    "travel_end_date": "2026-10-15",
+    "pois": [
+      {
+        "name": "上海博物馆东馆",
+        "provenance": {
+          "kind": "real_amap_exact_city_name",
+          "captured_at": "2026-10-08T09:46:50.051764+00:00"
+        },
+        "rating": 4.8,
+        "open_time": "周二 全天关闭(节假日除外),周一,周三至周日 10:00-18:00 最晚进入17:00,2026年2月15日至2026年2月23日10:00-18:00",
+        "location": {
+          "lng": 121.538745,
+          "lat": 31.219913
+        },
+        "photo": "https://store.is.autonavi.com/showpic/73e295834271cf670000004638558869?type=pic",
+        "adname": "浦东新区",
+        "address": "世纪大道1952号(上海科技馆地铁站8号口步行480米)",
+        "tel": "021-20729999",
+        "cost": null,
+        "indoor": true,
+        "indoor_source": "amap_category_inference"
+      },
+      {
+        "name": "上海自然博物馆",
+        "provenance": {
+          "kind": "real_amap_exact_city_name",
+          "captured_at": "2026-10-08T09:40:30.530364+00:00"
+        },
+        "rating": 4.8,
+        "open_time": "周一,周三至周五,周日 09:00-17:00开放 最晚进入16:00, 周二不开放, 周六 09:00-20:00开放 最晚进入19:00； 2026年9月25日 09:00-20:00开放 最晚进入19:00, 2026年10月1日-2026年10月2日 09:00-20:00开放 最晚进入19:00, 2026年10月6日 09:00-17:00开放 最晚进入16:00, 具体开放时间以官方通知为准",
+        "location": {
+          "lng": 121.462672,
+          "lat": 31.235021
+        },
+        "photo": "http://store.is.autonavi.com/showpic/239f758f8beacd1c49af5dc7677810e4",
+        "adname": "静安区",
+        "address": "北京西路510号",
+        "tel": "021-62620116;021-68622000",
+        "cost": null,
+        "indoor": true,
+        "indoor_source": "amap_category_inference"
+      },
+      {
+        "name": "上海动物园",
+        "rating": 4.8,
+        "open_time": "周一至周日 08:00-17:00",
+        "location": {
+          "lng": 121.363009,
+          "lat": 31.193277
+        },
+        "photo": "http://store.is.autonavi.com/showpic/b61ca9d1298e702a3d27f9dde7412e74",
+        "adname": "长宁区",
+        "address": "虹桥路2381号",
+        "tel": "021-62109210",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "shanghai-5d-sunny-nature.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "上海海洋水族馆",
+        "rating": 4.7,
+        "open_time": "全年9:00-18:00,暑期7月1日-8月31日:9:00-21:00",
+        "location": {
+          "lng": 121.501894,
+          "lat": 31.240777
+        },
+        "photo": "https://store.is.autonavi.com/showpic/c84ea7d9438f0b570000003132978372?type=pic",
+        "adname": "浦东新区",
+        "address": "陆家嘴环路1388号",
+        "tel": "021-58779988;12301",
+        "cost": "[]",
+        "indoor": true,
+        "provenance": {
+          "fixture": "shanghai-5d-sunny-nature.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "上海豫园",
+        "rating": 4.8,
+        "open_time": "周一全天关闭(法定节假日除外)；周二至周日 09:00-16:30(16:00停止入馆)",
+        "location": {
+          "lng": 121.492497,
+          "lat": 31.227714
+        },
+        "photo": "http://store.is.autonavi.com/showpic/faeb0264854cd82fbb315cb2ccacea0f",
+        "adname": "黄浦区",
+        "address": "福佑路168号",
+        "tel": "021-63260830",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "shanghai-5d-sunny-nature.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "上海迪士尼度假区",
+        "rating": 4.9,
+        "open_time": "09-11至09-13 周一至周日 08:30-21:30；09-14至09-17 周一至周日 08:30-20:30；09-18至09-20 周一至周日 08:30-21:30；09-21至09-24 周一至周日 08:30-20:30；09-25至09-26 周一至周日 08:30-21:30",
+        "location": {
+          "lng": 121.667003,
+          "lat": 31.141447
+        },
+        "photo": "http://store.is.autonavi.com/showpic/4f83bd890aba5ab4f0d859e5e25a94f7",
+        "adname": "浦东新区",
+        "address": "黄赵路310号",
+        "tel": "4001800000",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "shanghai-5d-sunny-nature.json",
+          "kind": "saved_real_amap_response"
+        }
+      }
+    ],
+    "acceptable_pois": [],
+    "forbidden_pois": [],
+    "required_evidence": [],
+    "answerable": false,
+    "annotation_status": "draft",
+    "annotation_version": "route-interest-v1",
+    "annotator": null,
+    "reviewed_at": null,
+    "change_log": [],
+    "reference_note": "Acceptable sets are draft labels, not unique optimal routes; missing knowledge is not proof of absence.",
+    "route_distance_mode": "drive",
+    "weather_forecast": [
+      {
+        "date": "2026-10-15",
+        "dayweather": "晴",
+        "nightweather": "晴",
+        "is_bad": false
+      }
+    ],
+    "weather_note": "固定晴天评测场景，非真实天气预报；两组共享"
+  },
+  {
+    "id": "interest-上海-10",
+    "split": "test",
+    "intent_group": "上海-跨城干扰",
+    "query": "上海一日游，每天最多两个不同景点。想看江苏古代文明专门展，只有上海候选时不要把南京资料套过来。",
+    "destination": "上海",
+    "days": 1,
+    "max_per_day": 2,
+    "travel_start_date": "2026-10-15",
+    "travel_end_date": "2026-10-15",
+    "pois": [
+      {
+        "name": "上海博物馆东馆",
+        "provenance": {
+          "kind": "real_amap_exact_city_name",
+          "captured_at": "2026-10-08T09:46:50.051764+00:00"
+        },
+        "rating": 4.8,
+        "open_time": "周二 全天关闭(节假日除外),周一,周三至周日 10:00-18:00 最晚进入17:00,2026年2月15日至2026年2月23日10:00-18:00",
+        "location": {
+          "lng": 121.538745,
+          "lat": 31.219913
+        },
+        "photo": "https://store.is.autonavi.com/showpic/73e295834271cf670000004638558869?type=pic",
+        "adname": "浦东新区",
+        "address": "世纪大道1952号(上海科技馆地铁站8号口步行480米)",
+        "tel": "021-20729999",
+        "cost": null,
+        "indoor": true,
+        "indoor_source": "amap_category_inference"
+      },
+      {
+        "name": "上海自然博物馆",
+        "provenance": {
+          "kind": "real_amap_exact_city_name",
+          "captured_at": "2026-10-08T09:40:30.530364+00:00"
+        },
+        "rating": 4.8,
+        "open_time": "周一,周三至周五,周日 09:00-17:00开放 最晚进入16:00, 周二不开放, 周六 09:00-20:00开放 最晚进入19:00； 2026年9月25日 09:00-20:00开放 最晚进入19:00, 2026年10月1日-2026年10月2日 09:00-20:00开放 最晚进入19:00, 2026年10月6日 09:00-17:00开放 最晚进入16:00, 具体开放时间以官方通知为准",
+        "location": {
+          "lng": 121.462672,
+          "lat": 31.235021
+        },
+        "photo": "http://store.is.autonavi.com/showpic/239f758f8beacd1c49af5dc7677810e4",
+        "adname": "静安区",
+        "address": "北京西路510号",
+        "tel": "021-62620116;021-68622000",
+        "cost": null,
+        "indoor": true,
+        "indoor_source": "amap_category_inference"
+      },
+      {
+        "name": "上海动物园",
+        "rating": 4.8,
+        "open_time": "周一至周日 08:00-17:00",
+        "location": {
+          "lng": 121.363009,
+          "lat": 31.193277
+        },
+        "photo": "http://store.is.autonavi.com/showpic/b61ca9d1298e702a3d27f9dde7412e74",
+        "adname": "长宁区",
+        "address": "虹桥路2381号",
+        "tel": "021-62109210",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "shanghai-5d-sunny-nature.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "上海海洋水族馆",
+        "rating": 4.7,
+        "open_time": "全年9:00-18:00,暑期7月1日-8月31日:9:00-21:00",
+        "location": {
+          "lng": 121.501894,
+          "lat": 31.240777
+        },
+        "photo": "https://store.is.autonavi.com/showpic/c84ea7d9438f0b570000003132978372?type=pic",
+        "adname": "浦东新区",
+        "address": "陆家嘴环路1388号",
+        "tel": "021-58779988;12301",
+        "cost": "[]",
+        "indoor": true,
+        "provenance": {
+          "fixture": "shanghai-5d-sunny-nature.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "上海豫园",
+        "rating": 4.8,
+        "open_time": "周一全天关闭(法定节假日除外)；周二至周日 09:00-16:30(16:00停止入馆)",
+        "location": {
+          "lng": 121.492497,
+          "lat": 31.227714
+        },
+        "photo": "http://store.is.autonavi.com/showpic/faeb0264854cd82fbb315cb2ccacea0f",
+        "adname": "黄浦区",
+        "address": "福佑路168号",
+        "tel": "021-63260830",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "shanghai-5d-sunny-nature.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "上海迪士尼度假区",
+        "rating": 4.9,
+        "open_time": "09-11至09-13 周一至周日 08:30-21:30；09-14至09-17 周一至周日 08:30-20:30；09-18至09-20 周一至周日 08:30-21:30；09-21至09-24 周一至周日 08:30-20:30；09-25至09-26 周一至周日 08:30-21:30",
+        "location": {
+          "lng": 121.667003,
+          "lat": 31.141447
+        },
+        "photo": "http://store.is.autonavi.com/showpic/4f83bd890aba5ab4f0d859e5e25a94f7",
+        "adname": "浦东新区",
+        "address": "黄赵路310号",
+        "tel": "4001800000",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "shanghai-5d-sunny-nature.json",
+          "kind": "saved_real_amap_response"
+        }
+      }
+    ],
+    "acceptable_pois": [],
+    "forbidden_pois": [],
+    "required_evidence": [],
+    "answerable": false,
+    "annotation_status": "draft",
+    "annotation_version": "route-interest-v1",
+    "annotator": null,
+    "reviewed_at": null,
+    "change_log": [],
+    "reference_note": "Acceptable sets are draft labels, not unique optimal routes; missing knowledge is not proof of absence.",
+    "route_distance_mode": "drive",
+    "weather_forecast": [
+      {
+        "date": "2026-10-15",
+        "dayweather": "晴",
+        "nightweather": "晴",
+        "is_bad": false
+      }
+    ],
+    "weather_note": "固定晴天评测场景，非真实天气预报；两组共享"
+  },
+  {
+    "id": "interest-三亚-01",
+    "split": "dev",
+    "intent_group": "三亚-海上运动",
+    "query": "三亚一日游，每天最多两个不同景点。想体验潜水与摩托艇，具体当天运营再核验。",
+    "destination": "三亚",
+    "days": 1,
+    "max_per_day": 2,
+    "travel_start_date": "2026-10-15",
+    "travel_end_date": "2026-10-15",
+    "pois": [
+      {
+        "name": "蜈支洲岛旅游风景区",
+        "rating": 4.8,
+        "open_time": "周一至周日 08:30-16:30；潜水体验时间以所购项目为准。",
+        "location": {
+          "lng": 109.765947,
+          "lat": 18.310381
+        },
+        "photo": "https://store.is.autonavi.com/showpic/FB987A825D3C460684E009C9487D6AB8",
+        "adname": "海棠区",
+        "address": "林旺蜈支洲岛",
+        "tel": "4001146666",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "sanya-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "天涯海角游览区",
+        "rating": 4.8,
+        "open_time": "3月至9月 周一至周日 08:00-18:30；1月至2月,10月至12月 周一至周日 08:00-18:00",
+        "location": {
+          "lng": 109.348143,
+          "lat": 18.294988
+        },
+        "photo": "http://store.is.autonavi.com/showpic/a73b1b6e8914654c9b83d5a8d0518a3b",
+        "adname": "天涯区",
+        "address": "天涯镇马岭山麓",
+        "tel": "0898-88910131;0898-88592908;0898-88592956",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "sanya-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "南山大小洞天旅游区",
+        "rating": 4.7,
+        "open_time": "周一至周日 08:30-18:30 最晚进入18:30",
+        "location": {
+          "lng": 109.158067,
+          "lat": 18.30089
+        },
+        "photo": "http://store.is.autonavi.com/showpic/5991767133d0dd752bbca2d5b59e355b",
+        "adname": "崖州区",
+        "address": "崖城",
+        "tel": "0898-88830188;0898-88830335;0898-88830137",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "sanya-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "三亚西岛海洋文化旅游区",
+        "rating": 4.8,
+        "open_time": "周一至周日 08:00-17:30,离岛末班船时间为19:00",
+        "location": {
+          "lng": 109.373711,
+          "lat": 18.237774
+        },
+        "photo": "http://store.is.autonavi.com/showpic/6453bbab078771ef2a5cf9837f0be30b",
+        "adname": "天涯区",
+        "address": "三亚湾路肖旗港码头",
+        "tel": "0898-88910888",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "sanya-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "鹿回头风景区",
+        "rating": 4.8,
+        "open_time": "1/1-12/31 08:00-22:30开放",
+        "location": {
+          "lng": 109.50131,
+          "lat": 18.225639
+        },
+        "photo": "http://store.is.autonavi.com/showpic/5e741e3870348298407cc04bf881b99b",
+        "adname": "吉阳区",
+        "address": "鹿岭路",
+        "tel": "0898-88210808;0898-88213740",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "sanya-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "三亚南山文化旅游区",
+        "rating": 4.7,
+        "open_time": "周一至周日 08:00-17:00；17:00后景区室内、寺庙景观停止开放",
+        "location": {
+          "lng": 109.208349,
+          "lat": 18.298366
+        },
+        "photo": "http://store.is.autonavi.com/showpic/4e6f68323f2bc80f42d4939a250b6258",
+        "adname": "崖州区",
+        "address": "南山村",
+        "tel": "0898-88837888;12301",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "sanya-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      }
+    ],
+    "acceptable_pois": [
+      "蜈支洲岛旅游风景区"
+    ],
+    "forbidden_pois": [],
+    "required_evidence": [
+      "wuzhizhou_activity_types"
+    ],
+    "answerable": true,
+    "annotation_status": "draft",
+    "annotation_version": "route-interest-v1",
+    "annotator": null,
+    "reviewed_at": null,
+    "change_log": [],
+    "reference_note": "Acceptable sets are draft labels, not unique optimal routes; missing knowledge is not proof of absence.",
+    "route_distance_mode": "drive",
+    "weather_forecast": [
+      {
+        "date": "2026-10-15",
+        "dayweather": "晴",
+        "nightweather": "晴",
+        "is_bad": false
+      }
+    ],
+    "weather_note": "固定晴天评测场景，非真实天气预报；两组共享"
+  },
+  {
+    "id": "interest-三亚-02",
+    "split": "dev",
+    "intent_group": "三亚-海上运动",
+    "query": "三亚一日游，每天最多两个不同景点。想体验风洞项目，不要把项目包含在门票里当作事实。",
+    "destination": "三亚",
+    "days": 1,
+    "max_per_day": 2,
+    "travel_start_date": "2026-10-15",
+    "travel_end_date": "2026-10-15",
+    "pois": [
+      {
+        "name": "蜈支洲岛旅游风景区",
+        "rating": 4.8,
+        "open_time": "周一至周日 08:30-16:30；潜水体验时间以所购项目为准。",
+        "location": {
+          "lng": 109.765947,
+          "lat": 18.310381
+        },
+        "photo": "https://store.is.autonavi.com/showpic/FB987A825D3C460684E009C9487D6AB8",
+        "adname": "海棠区",
+        "address": "林旺蜈支洲岛",
+        "tel": "4001146666",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "sanya-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "天涯海角游览区",
+        "rating": 4.8,
+        "open_time": "3月至9月 周一至周日 08:00-18:30；1月至2月,10月至12月 周一至周日 08:00-18:00",
+        "location": {
+          "lng": 109.348143,
+          "lat": 18.294988
+        },
+        "photo": "http://store.is.autonavi.com/showpic/a73b1b6e8914654c9b83d5a8d0518a3b",
+        "adname": "天涯区",
+        "address": "天涯镇马岭山麓",
+        "tel": "0898-88910131;0898-88592908;0898-88592956",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "sanya-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "南山大小洞天旅游区",
+        "rating": 4.7,
+        "open_time": "周一至周日 08:30-18:30 最晚进入18:30",
+        "location": {
+          "lng": 109.158067,
+          "lat": 18.30089
+        },
+        "photo": "http://store.is.autonavi.com/showpic/5991767133d0dd752bbca2d5b59e355b",
+        "adname": "崖州区",
+        "address": "崖城",
+        "tel": "0898-88830188;0898-88830335;0898-88830137",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "sanya-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "三亚西岛海洋文化旅游区",
+        "rating": 4.8,
+        "open_time": "周一至周日 08:00-17:30,离岛末班船时间为19:00",
+        "location": {
+          "lng": 109.373711,
+          "lat": 18.237774
+        },
+        "photo": "http://store.is.autonavi.com/showpic/6453bbab078771ef2a5cf9837f0be30b",
+        "adname": "天涯区",
+        "address": "三亚湾路肖旗港码头",
+        "tel": "0898-88910888",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "sanya-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "鹿回头风景区",
+        "rating": 4.8,
+        "open_time": "1/1-12/31 08:00-22:30开放",
+        "location": {
+          "lng": 109.50131,
+          "lat": 18.225639
+        },
+        "photo": "http://store.is.autonavi.com/showpic/5e741e3870348298407cc04bf881b99b",
+        "adname": "吉阳区",
+        "address": "鹿岭路",
+        "tel": "0898-88210808;0898-88213740",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "sanya-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "三亚南山文化旅游区",
+        "rating": 4.7,
+        "open_time": "周一至周日 08:00-17:00；17:00后景区室内、寺庙景观停止开放",
+        "location": {
+          "lng": 109.208349,
+          "lat": 18.298366
+        },
+        "photo": "http://store.is.autonavi.com/showpic/4e6f68323f2bc80f42d4939a250b6258",
+        "adname": "崖州区",
+        "address": "南山村",
+        "tel": "0898-88837888;12301",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "sanya-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      }
+    ],
+    "acceptable_pois": [
+      "蜈支洲岛旅游风景区"
+    ],
+    "forbidden_pois": [],
+    "required_evidence": [
+      "wuzhizhou_activity_types"
+    ],
+    "answerable": true,
+    "annotation_status": "draft",
+    "annotation_version": "route-interest-v1",
+    "annotator": null,
+    "reviewed_at": null,
+    "change_log": [],
+    "reference_note": "Acceptable sets are draft labels, not unique optimal routes; missing knowledge is not proof of absence.",
+    "route_distance_mode": "drive",
+    "weather_forecast": [
+      {
+        "date": "2026-10-15",
+        "dayweather": "晴",
+        "nightweather": "晴",
+        "is_bad": false
+      }
+    ],
+    "weather_note": "固定晴天评测场景，非真实天气预报；两组共享"
+  },
+  {
+    "id": "interest-三亚-03",
+    "split": "dev",
+    "intent_group": "三亚-海上运动",
+    "query": "三亚一日游，每天最多两个不同景点。喜欢潜水和环岛观光，不要把西岛与蜈支洲岛混淆。",
+    "destination": "三亚",
+    "days": 1,
+    "max_per_day": 2,
+    "travel_start_date": "2026-10-15",
+    "travel_end_date": "2026-10-15",
+    "pois": [
+      {
+        "name": "蜈支洲岛旅游风景区",
+        "rating": 4.8,
+        "open_time": "周一至周日 08:30-16:30；潜水体验时间以所购项目为准。",
+        "location": {
+          "lng": 109.765947,
+          "lat": 18.310381
+        },
+        "photo": "https://store.is.autonavi.com/showpic/FB987A825D3C460684E009C9487D6AB8",
+        "adname": "海棠区",
+        "address": "林旺蜈支洲岛",
+        "tel": "4001146666",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "sanya-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "天涯海角游览区",
+        "rating": 4.8,
+        "open_time": "3月至9月 周一至周日 08:00-18:30；1月至2月,10月至12月 周一至周日 08:00-18:00",
+        "location": {
+          "lng": 109.348143,
+          "lat": 18.294988
+        },
+        "photo": "http://store.is.autonavi.com/showpic/a73b1b6e8914654c9b83d5a8d0518a3b",
+        "adname": "天涯区",
+        "address": "天涯镇马岭山麓",
+        "tel": "0898-88910131;0898-88592908;0898-88592956",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "sanya-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "南山大小洞天旅游区",
+        "rating": 4.7,
+        "open_time": "周一至周日 08:30-18:30 最晚进入18:30",
+        "location": {
+          "lng": 109.158067,
+          "lat": 18.30089
+        },
+        "photo": "http://store.is.autonavi.com/showpic/5991767133d0dd752bbca2d5b59e355b",
+        "adname": "崖州区",
+        "address": "崖城",
+        "tel": "0898-88830188;0898-88830335;0898-88830137",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "sanya-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "三亚西岛海洋文化旅游区",
+        "rating": 4.8,
+        "open_time": "周一至周日 08:00-17:30,离岛末班船时间为19:00",
+        "location": {
+          "lng": 109.373711,
+          "lat": 18.237774
+        },
+        "photo": "http://store.is.autonavi.com/showpic/6453bbab078771ef2a5cf9837f0be30b",
+        "adname": "天涯区",
+        "address": "三亚湾路肖旗港码头",
+        "tel": "0898-88910888",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "sanya-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "鹿回头风景区",
+        "rating": 4.8,
+        "open_time": "1/1-12/31 08:00-22:30开放",
+        "location": {
+          "lng": 109.50131,
+          "lat": 18.225639
+        },
+        "photo": "http://store.is.autonavi.com/showpic/5e741e3870348298407cc04bf881b99b",
+        "adname": "吉阳区",
+        "address": "鹿岭路",
+        "tel": "0898-88210808;0898-88213740",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "sanya-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "三亚南山文化旅游区",
+        "rating": 4.7,
+        "open_time": "周一至周日 08:00-17:00；17:00后景区室内、寺庙景观停止开放",
+        "location": {
+          "lng": 109.208349,
+          "lat": 18.298366
+        },
+        "photo": "http://store.is.autonavi.com/showpic/4e6f68323f2bc80f42d4939a250b6258",
+        "adname": "崖州区",
+        "address": "南山村",
+        "tel": "0898-88837888;12301",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "sanya-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      }
+    ],
+    "acceptable_pois": [
+      "蜈支洲岛旅游风景区"
+    ],
+    "forbidden_pois": [
+      "三亚西岛海洋文化旅游区"
+    ],
+    "required_evidence": [
+      "wuzhizhou_activity_types"
+    ],
+    "answerable": true,
+    "annotation_status": "draft",
+    "annotation_version": "route-interest-v1",
+    "annotator": null,
+    "reviewed_at": null,
+    "change_log": [],
+    "reference_note": "Acceptable sets are draft labels, not unique optimal routes; missing knowledge is not proof of absence.",
+    "route_distance_mode": "drive",
+    "weather_forecast": [
+      {
+        "date": "2026-10-15",
+        "dayweather": "晴",
+        "nightweather": "晴",
+        "is_bad": false
+      }
+    ],
+    "weather_note": "固定晴天评测场景，非真实天气预报；两组共享"
+  },
+  {
+    "id": "interest-三亚-04",
+    "split": "dev",
+    "intent_group": "三亚-海上运动",
+    "query": "三亚一日游，每天最多两个不同景点。想了解蜈支洲岛海陆运动，不要南山宗教主题。",
+    "destination": "三亚",
+    "days": 1,
+    "max_per_day": 2,
+    "travel_start_date": "2026-10-15",
+    "travel_end_date": "2026-10-15",
+    "pois": [
+      {
+        "name": "蜈支洲岛旅游风景区",
+        "rating": 4.8,
+        "open_time": "周一至周日 08:30-16:30；潜水体验时间以所购项目为准。",
+        "location": {
+          "lng": 109.765947,
+          "lat": 18.310381
+        },
+        "photo": "https://store.is.autonavi.com/showpic/FB987A825D3C460684E009C9487D6AB8",
+        "adname": "海棠区",
+        "address": "林旺蜈支洲岛",
+        "tel": "4001146666",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "sanya-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "天涯海角游览区",
+        "rating": 4.8,
+        "open_time": "3月至9月 周一至周日 08:00-18:30；1月至2月,10月至12月 周一至周日 08:00-18:00",
+        "location": {
+          "lng": 109.348143,
+          "lat": 18.294988
+        },
+        "photo": "http://store.is.autonavi.com/showpic/a73b1b6e8914654c9b83d5a8d0518a3b",
+        "adname": "天涯区",
+        "address": "天涯镇马岭山麓",
+        "tel": "0898-88910131;0898-88592908;0898-88592956",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "sanya-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "南山大小洞天旅游区",
+        "rating": 4.7,
+        "open_time": "周一至周日 08:30-18:30 最晚进入18:30",
+        "location": {
+          "lng": 109.158067,
+          "lat": 18.30089
+        },
+        "photo": "http://store.is.autonavi.com/showpic/5991767133d0dd752bbca2d5b59e355b",
+        "adname": "崖州区",
+        "address": "崖城",
+        "tel": "0898-88830188;0898-88830335;0898-88830137",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "sanya-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "三亚西岛海洋文化旅游区",
+        "rating": 4.8,
+        "open_time": "周一至周日 08:00-17:30,离岛末班船时间为19:00",
+        "location": {
+          "lng": 109.373711,
+          "lat": 18.237774
+        },
+        "photo": "http://store.is.autonavi.com/showpic/6453bbab078771ef2a5cf9837f0be30b",
+        "adname": "天涯区",
+        "address": "三亚湾路肖旗港码头",
+        "tel": "0898-88910888",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "sanya-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "鹿回头风景区",
+        "rating": 4.8,
+        "open_time": "1/1-12/31 08:00-22:30开放",
+        "location": {
+          "lng": 109.50131,
+          "lat": 18.225639
+        },
+        "photo": "http://store.is.autonavi.com/showpic/5e741e3870348298407cc04bf881b99b",
+        "adname": "吉阳区",
+        "address": "鹿岭路",
+        "tel": "0898-88210808;0898-88213740",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "sanya-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "三亚南山文化旅游区",
+        "rating": 4.7,
+        "open_time": "周一至周日 08:00-17:00；17:00后景区室内、寺庙景观停止开放",
+        "location": {
+          "lng": 109.208349,
+          "lat": 18.298366
+        },
+        "photo": "http://store.is.autonavi.com/showpic/4e6f68323f2bc80f42d4939a250b6258",
+        "adname": "崖州区",
+        "address": "南山村",
+        "tel": "0898-88837888;12301",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "sanya-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      }
+    ],
+    "acceptable_pois": [
+      "蜈支洲岛旅游风景区"
+    ],
+    "forbidden_pois": [
+      "三亚南山文化旅游区"
+    ],
+    "required_evidence": [
+      "wuzhizhou_activity_types"
+    ],
+    "answerable": true,
+    "annotation_status": "draft",
+    "annotation_version": "route-interest-v1",
+    "annotator": null,
+    "reviewed_at": null,
+    "change_log": [],
+    "reference_note": "Acceptable sets are draft labels, not unique optimal routes; missing knowledge is not proof of absence.",
+    "route_distance_mode": "drive",
+    "weather_forecast": [
+      {
+        "date": "2026-10-15",
+        "dayweather": "晴",
+        "nightweather": "晴",
+        "is_bad": false
+      }
+    ],
+    "weather_note": "固定晴天评测场景，非真实天气预报；两组共享"
+  },
+  {
+    "id": "interest-三亚-05",
+    "split": "dev",
+    "intent_group": "三亚-海上运动",
+    "query": "三亚一日游，每天最多两个不同景点。想体验摩托艇并兼顾环岛观光，当天运营另外确认。",
+    "destination": "三亚",
+    "days": 1,
+    "max_per_day": 2,
+    "travel_start_date": "2026-10-15",
+    "travel_end_date": "2026-10-15",
+    "pois": [
+      {
+        "name": "蜈支洲岛旅游风景区",
+        "rating": 4.8,
+        "open_time": "周一至周日 08:30-16:30；潜水体验时间以所购项目为准。",
+        "location": {
+          "lng": 109.765947,
+          "lat": 18.310381
+        },
+        "photo": "https://store.is.autonavi.com/showpic/FB987A825D3C460684E009C9487D6AB8",
+        "adname": "海棠区",
+        "address": "林旺蜈支洲岛",
+        "tel": "4001146666",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "sanya-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "天涯海角游览区",
+        "rating": 4.8,
+        "open_time": "3月至9月 周一至周日 08:00-18:30；1月至2月,10月至12月 周一至周日 08:00-18:00",
+        "location": {
+          "lng": 109.348143,
+          "lat": 18.294988
+        },
+        "photo": "http://store.is.autonavi.com/showpic/a73b1b6e8914654c9b83d5a8d0518a3b",
+        "adname": "天涯区",
+        "address": "天涯镇马岭山麓",
+        "tel": "0898-88910131;0898-88592908;0898-88592956",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "sanya-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "南山大小洞天旅游区",
+        "rating": 4.7,
+        "open_time": "周一至周日 08:30-18:30 最晚进入18:30",
+        "location": {
+          "lng": 109.158067,
+          "lat": 18.30089
+        },
+        "photo": "http://store.is.autonavi.com/showpic/5991767133d0dd752bbca2d5b59e355b",
+        "adname": "崖州区",
+        "address": "崖城",
+        "tel": "0898-88830188;0898-88830335;0898-88830137",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "sanya-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "三亚西岛海洋文化旅游区",
+        "rating": 4.8,
+        "open_time": "周一至周日 08:00-17:30,离岛末班船时间为19:00",
+        "location": {
+          "lng": 109.373711,
+          "lat": 18.237774
+        },
+        "photo": "http://store.is.autonavi.com/showpic/6453bbab078771ef2a5cf9837f0be30b",
+        "adname": "天涯区",
+        "address": "三亚湾路肖旗港码头",
+        "tel": "0898-88910888",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "sanya-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "鹿回头风景区",
+        "rating": 4.8,
+        "open_time": "1/1-12/31 08:00-22:30开放",
+        "location": {
+          "lng": 109.50131,
+          "lat": 18.225639
+        },
+        "photo": "http://store.is.autonavi.com/showpic/5e741e3870348298407cc04bf881b99b",
+        "adname": "吉阳区",
+        "address": "鹿岭路",
+        "tel": "0898-88210808;0898-88213740",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "sanya-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "三亚南山文化旅游区",
+        "rating": 4.7,
+        "open_time": "周一至周日 08:00-17:00；17:00后景区室内、寺庙景观停止开放",
+        "location": {
+          "lng": 109.208349,
+          "lat": 18.298366
+        },
+        "photo": "http://store.is.autonavi.com/showpic/4e6f68323f2bc80f42d4939a250b6258",
+        "adname": "崖州区",
+        "address": "南山村",
+        "tel": "0898-88837888;12301",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "sanya-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      }
+    ],
+    "acceptable_pois": [
+      "蜈支洲岛旅游风景区"
+    ],
+    "forbidden_pois": [],
+    "required_evidence": [
+      "wuzhizhou_activity_types"
+    ],
+    "answerable": true,
+    "annotation_status": "draft",
+    "annotation_version": "route-interest-v1",
+    "annotator": null,
+    "reviewed_at": null,
+    "change_log": [],
+    "reference_note": "Acceptable sets are draft labels, not unique optimal routes; missing knowledge is not proof of absence.",
+    "route_distance_mode": "drive",
+    "weather_forecast": [
+      {
+        "date": "2026-10-15",
+        "dayweather": "晴",
+        "nightweather": "晴",
+        "is_bad": false
+      }
+    ],
+    "weather_note": "固定晴天评测场景，非真实天气预报；两组共享"
+  },
+  {
+    "id": "interest-三亚-06",
+    "split": "test",
+    "intent_group": "三亚-文化组合",
+    "query": "三亚一日游，每天最多两个不同景点。想比较天涯标志石与洞天摩崖石刻，两者尽量兼顾。",
+    "destination": "三亚",
+    "days": 1,
+    "max_per_day": 2,
+    "travel_start_date": "2026-10-15",
+    "travel_end_date": "2026-10-15",
+    "pois": [
+      {
+        "name": "蜈支洲岛旅游风景区",
+        "rating": 4.8,
+        "open_time": "周一至周日 08:30-16:30；潜水体验时间以所购项目为准。",
+        "location": {
+          "lng": 109.765947,
+          "lat": 18.310381
+        },
+        "photo": "https://store.is.autonavi.com/showpic/FB987A825D3C460684E009C9487D6AB8",
+        "adname": "海棠区",
+        "address": "林旺蜈支洲岛",
+        "tel": "4001146666",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "sanya-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "天涯海角游览区",
+        "rating": 4.8,
+        "open_time": "3月至9月 周一至周日 08:00-18:30；1月至2月,10月至12月 周一至周日 08:00-18:00",
+        "location": {
+          "lng": 109.348143,
+          "lat": 18.294988
+        },
+        "photo": "http://store.is.autonavi.com/showpic/a73b1b6e8914654c9b83d5a8d0518a3b",
+        "adname": "天涯区",
+        "address": "天涯镇马岭山麓",
+        "tel": "0898-88910131;0898-88592908;0898-88592956",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "sanya-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "南山大小洞天旅游区",
+        "rating": 4.7,
+        "open_time": "周一至周日 08:30-18:30 最晚进入18:30",
+        "location": {
+          "lng": 109.158067,
+          "lat": 18.30089
+        },
+        "photo": "http://store.is.autonavi.com/showpic/5991767133d0dd752bbca2d5b59e355b",
+        "adname": "崖州区",
+        "address": "崖城",
+        "tel": "0898-88830188;0898-88830335;0898-88830137",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "sanya-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "三亚西岛海洋文化旅游区",
+        "rating": 4.8,
+        "open_time": "周一至周日 08:00-17:30,离岛末班船时间为19:00",
+        "location": {
+          "lng": 109.373711,
+          "lat": 18.237774
+        },
+        "photo": "http://store.is.autonavi.com/showpic/6453bbab078771ef2a5cf9837f0be30b",
+        "adname": "天涯区",
+        "address": "三亚湾路肖旗港码头",
+        "tel": "0898-88910888",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "sanya-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "鹿回头风景区",
+        "rating": 4.8,
+        "open_time": "1/1-12/31 08:00-22:30开放",
+        "location": {
+          "lng": 109.50131,
+          "lat": 18.225639
+        },
+        "photo": "http://store.is.autonavi.com/showpic/5e741e3870348298407cc04bf881b99b",
+        "adname": "吉阳区",
+        "address": "鹿岭路",
+        "tel": "0898-88210808;0898-88213740",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "sanya-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "三亚南山文化旅游区",
+        "rating": 4.7,
+        "open_time": "周一至周日 08:00-17:00；17:00后景区室内、寺庙景观停止开放",
+        "location": {
+          "lng": 109.208349,
+          "lat": 18.298366
+        },
+        "photo": "http://store.is.autonavi.com/showpic/4e6f68323f2bc80f42d4939a250b6258",
+        "adname": "崖州区",
+        "address": "南山村",
+        "tel": "0898-88837888;12301",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "sanya-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      }
+    ],
+    "acceptable_pois": [
+      "天涯海角游览区",
+      "南山大小洞天旅游区"
+    ],
+    "forbidden_pois": [],
+    "required_evidence": [
+      "interest_493b6e346dac06d7",
+      "interest_f463160d936a96b9"
+    ],
+    "answerable": true,
+    "annotation_status": "draft",
+    "annotation_version": "route-interest-v1",
+    "annotator": null,
+    "reviewed_at": null,
+    "change_log": [],
+    "reference_note": "Acceptable sets are draft labels, not unique optimal routes; missing knowledge is not proof of absence.",
+    "route_distance_mode": "drive",
+    "weather_forecast": [
+      {
+        "date": "2026-10-15",
+        "dayweather": "晴",
+        "nightweather": "晴",
+        "is_bad": false
+      }
+    ],
+    "weather_note": "固定晴天评测场景，非真实天气预报；两组共享"
+  },
+  {
+    "id": "interest-三亚-07",
+    "split": "test",
+    "intent_group": "三亚-摄影资源",
+    "query": "三亚一日游，每天最多两个不同景点。想看洞天旅拍基地与摩崖石刻，不要海上运动。",
+    "destination": "三亚",
+    "days": 1,
+    "max_per_day": 2,
+    "travel_start_date": "2026-10-15",
+    "travel_end_date": "2026-10-15",
+    "pois": [
+      {
+        "name": "蜈支洲岛旅游风景区",
+        "rating": 4.8,
+        "open_time": "周一至周日 08:30-16:30；潜水体验时间以所购项目为准。",
+        "location": {
+          "lng": 109.765947,
+          "lat": 18.310381
+        },
+        "photo": "https://store.is.autonavi.com/showpic/FB987A825D3C460684E009C9487D6AB8",
+        "adname": "海棠区",
+        "address": "林旺蜈支洲岛",
+        "tel": "4001146666",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "sanya-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "天涯海角游览区",
+        "rating": 4.8,
+        "open_time": "3月至9月 周一至周日 08:00-18:30；1月至2月,10月至12月 周一至周日 08:00-18:00",
+        "location": {
+          "lng": 109.348143,
+          "lat": 18.294988
+        },
+        "photo": "http://store.is.autonavi.com/showpic/a73b1b6e8914654c9b83d5a8d0518a3b",
+        "adname": "天涯区",
+        "address": "天涯镇马岭山麓",
+        "tel": "0898-88910131;0898-88592908;0898-88592956",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "sanya-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "南山大小洞天旅游区",
+        "rating": 4.7,
+        "open_time": "周一至周日 08:30-18:30 最晚进入18:30",
+        "location": {
+          "lng": 109.158067,
+          "lat": 18.30089
+        },
+        "photo": "http://store.is.autonavi.com/showpic/5991767133d0dd752bbca2d5b59e355b",
+        "adname": "崖州区",
+        "address": "崖城",
+        "tel": "0898-88830188;0898-88830335;0898-88830137",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "sanya-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "三亚西岛海洋文化旅游区",
+        "rating": 4.8,
+        "open_time": "周一至周日 08:00-17:30,离岛末班船时间为19:00",
+        "location": {
+          "lng": 109.373711,
+          "lat": 18.237774
+        },
+        "photo": "http://store.is.autonavi.com/showpic/6453bbab078771ef2a5cf9837f0be30b",
+        "adname": "天涯区",
+        "address": "三亚湾路肖旗港码头",
+        "tel": "0898-88910888",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "sanya-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "鹿回头风景区",
+        "rating": 4.8,
+        "open_time": "1/1-12/31 08:00-22:30开放",
+        "location": {
+          "lng": 109.50131,
+          "lat": 18.225639
+        },
+        "photo": "http://store.is.autonavi.com/showpic/5e741e3870348298407cc04bf881b99b",
+        "adname": "吉阳区",
+        "address": "鹿岭路",
+        "tel": "0898-88210808;0898-88213740",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "sanya-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "三亚南山文化旅游区",
+        "rating": 4.7,
+        "open_time": "周一至周日 08:00-17:00；17:00后景区室内、寺庙景观停止开放",
+        "location": {
+          "lng": 109.208349,
+          "lat": 18.298366
+        },
+        "photo": "http://store.is.autonavi.com/showpic/4e6f68323f2bc80f42d4939a250b6258",
+        "adname": "崖州区",
+        "address": "南山村",
+        "tel": "0898-88837888;12301",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "sanya-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      }
+    ],
+    "acceptable_pois": [
+      "南山大小洞天旅游区"
+    ],
+    "forbidden_pois": [],
+    "required_evidence": [
+      "interest_f463160d936a96b9"
+    ],
+    "answerable": true,
+    "annotation_status": "draft",
+    "annotation_version": "route-interest-v1",
+    "annotator": null,
+    "reviewed_at": null,
+    "change_log": [],
+    "reference_note": "Acceptable sets are draft labels, not unique optimal routes; missing knowledge is not proof of absence.",
+    "route_distance_mode": "drive",
+    "weather_forecast": [
+      {
+        "date": "2026-10-15",
+        "dayweather": "晴",
+        "nightweather": "晴",
+        "is_bad": false
+      }
+    ],
+    "weather_note": "固定晴天评测场景，非真实天气预报；两组共享"
+  },
+  {
+    "id": "interest-三亚-08",
+    "split": "test",
+    "intent_group": "三亚-标志石刻",
+    "query": "三亚一日游，每天最多两个不同景点。对天涯标志石有兴趣，不去蜈支洲岛。",
+    "destination": "三亚",
+    "days": 1,
+    "max_per_day": 2,
+    "travel_start_date": "2026-10-15",
+    "travel_end_date": "2026-10-15",
+    "pois": [
+      {
+        "name": "蜈支洲岛旅游风景区",
+        "rating": 4.8,
+        "open_time": "周一至周日 08:30-16:30；潜水体验时间以所购项目为准。",
+        "location": {
+          "lng": 109.765947,
+          "lat": 18.310381
+        },
+        "photo": "https://store.is.autonavi.com/showpic/FB987A825D3C460684E009C9487D6AB8",
+        "adname": "海棠区",
+        "address": "林旺蜈支洲岛",
+        "tel": "4001146666",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "sanya-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "天涯海角游览区",
+        "rating": 4.8,
+        "open_time": "3月至9月 周一至周日 08:00-18:30；1月至2月,10月至12月 周一至周日 08:00-18:00",
+        "location": {
+          "lng": 109.348143,
+          "lat": 18.294988
+        },
+        "photo": "http://store.is.autonavi.com/showpic/a73b1b6e8914654c9b83d5a8d0518a3b",
+        "adname": "天涯区",
+        "address": "天涯镇马岭山麓",
+        "tel": "0898-88910131;0898-88592908;0898-88592956",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "sanya-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "南山大小洞天旅游区",
+        "rating": 4.7,
+        "open_time": "周一至周日 08:30-18:30 最晚进入18:30",
+        "location": {
+          "lng": 109.158067,
+          "lat": 18.30089
+        },
+        "photo": "http://store.is.autonavi.com/showpic/5991767133d0dd752bbca2d5b59e355b",
+        "adname": "崖州区",
+        "address": "崖城",
+        "tel": "0898-88830188;0898-88830335;0898-88830137",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "sanya-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "三亚西岛海洋文化旅游区",
+        "rating": 4.8,
+        "open_time": "周一至周日 08:00-17:30,离岛末班船时间为19:00",
+        "location": {
+          "lng": 109.373711,
+          "lat": 18.237774
+        },
+        "photo": "http://store.is.autonavi.com/showpic/6453bbab078771ef2a5cf9837f0be30b",
+        "adname": "天涯区",
+        "address": "三亚湾路肖旗港码头",
+        "tel": "0898-88910888",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "sanya-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "鹿回头风景区",
+        "rating": 4.8,
+        "open_time": "1/1-12/31 08:00-22:30开放",
+        "location": {
+          "lng": 109.50131,
+          "lat": 18.225639
+        },
+        "photo": "http://store.is.autonavi.com/showpic/5e741e3870348298407cc04bf881b99b",
+        "adname": "吉阳区",
+        "address": "鹿岭路",
+        "tel": "0898-88210808;0898-88213740",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "sanya-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "三亚南山文化旅游区",
+        "rating": 4.7,
+        "open_time": "周一至周日 08:00-17:00；17:00后景区室内、寺庙景观停止开放",
+        "location": {
+          "lng": 109.208349,
+          "lat": 18.298366
+        },
+        "photo": "http://store.is.autonavi.com/showpic/4e6f68323f2bc80f42d4939a250b6258",
+        "adname": "崖州区",
+        "address": "南山村",
+        "tel": "0898-88837888;12301",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "sanya-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      }
+    ],
+    "acceptable_pois": [
+      "天涯海角游览区"
+    ],
+    "forbidden_pois": [
+      "蜈支洲岛旅游风景区"
+    ],
+    "required_evidence": [
+      "interest_493b6e346dac06d7"
+    ],
+    "answerable": true,
+    "annotation_status": "draft",
+    "annotation_version": "route-interest-v1",
+    "annotator": null,
+    "reviewed_at": null,
+    "change_log": [],
+    "reference_note": "Acceptable sets are draft labels, not unique optimal routes; missing knowledge is not proof of absence.",
+    "route_distance_mode": "drive",
+    "weather_forecast": [
+      {
+        "date": "2026-10-15",
+        "dayweather": "晴",
+        "nightweather": "晴",
+        "is_bad": false
+      }
+    ],
+    "weather_note": "固定晴天评测场景，非真实天气预报；两组共享"
+  },
+  {
+    "id": "interest-三亚-09",
+    "split": "test",
+    "intent_group": "三亚-未知活动",
+    "query": "三亚一日游，每天最多两个不同景点。想参加明天新增的夜间珊瑚课程，没有证据不要说有。",
+    "destination": "三亚",
+    "days": 1,
+    "max_per_day": 2,
+    "travel_start_date": "2026-10-15",
+    "travel_end_date": "2026-10-15",
+    "pois": [
+      {
+        "name": "蜈支洲岛旅游风景区",
+        "rating": 4.8,
+        "open_time": "周一至周日 08:30-16:30；潜水体验时间以所购项目为准。",
+        "location": {
+          "lng": 109.765947,
+          "lat": 18.310381
+        },
+        "photo": "https://store.is.autonavi.com/showpic/FB987A825D3C460684E009C9487D6AB8",
+        "adname": "海棠区",
+        "address": "林旺蜈支洲岛",
+        "tel": "4001146666",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "sanya-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "天涯海角游览区",
+        "rating": 4.8,
+        "open_time": "3月至9月 周一至周日 08:00-18:30；1月至2月,10月至12月 周一至周日 08:00-18:00",
+        "location": {
+          "lng": 109.348143,
+          "lat": 18.294988
+        },
+        "photo": "http://store.is.autonavi.com/showpic/a73b1b6e8914654c9b83d5a8d0518a3b",
+        "adname": "天涯区",
+        "address": "天涯镇马岭山麓",
+        "tel": "0898-88910131;0898-88592908;0898-88592956",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "sanya-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "南山大小洞天旅游区",
+        "rating": 4.7,
+        "open_time": "周一至周日 08:30-18:30 最晚进入18:30",
+        "location": {
+          "lng": 109.158067,
+          "lat": 18.30089
+        },
+        "photo": "http://store.is.autonavi.com/showpic/5991767133d0dd752bbca2d5b59e355b",
+        "adname": "崖州区",
+        "address": "崖城",
+        "tel": "0898-88830188;0898-88830335;0898-88830137",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "sanya-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "三亚西岛海洋文化旅游区",
+        "rating": 4.8,
+        "open_time": "周一至周日 08:00-17:30,离岛末班船时间为19:00",
+        "location": {
+          "lng": 109.373711,
+          "lat": 18.237774
+        },
+        "photo": "http://store.is.autonavi.com/showpic/6453bbab078771ef2a5cf9837f0be30b",
+        "adname": "天涯区",
+        "address": "三亚湾路肖旗港码头",
+        "tel": "0898-88910888",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "sanya-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "鹿回头风景区",
+        "rating": 4.8,
+        "open_time": "1/1-12/31 08:00-22:30开放",
+        "location": {
+          "lng": 109.50131,
+          "lat": 18.225639
+        },
+        "photo": "http://store.is.autonavi.com/showpic/5e741e3870348298407cc04bf881b99b",
+        "adname": "吉阳区",
+        "address": "鹿岭路",
+        "tel": "0898-88210808;0898-88213740",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "sanya-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "三亚南山文化旅游区",
+        "rating": 4.7,
+        "open_time": "周一至周日 08:00-17:00；17:00后景区室内、寺庙景观停止开放",
+        "location": {
+          "lng": 109.208349,
+          "lat": 18.298366
+        },
+        "photo": "http://store.is.autonavi.com/showpic/4e6f68323f2bc80f42d4939a250b6258",
+        "adname": "崖州区",
+        "address": "南山村",
+        "tel": "0898-88837888;12301",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "sanya-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      }
+    ],
+    "acceptable_pois": [],
+    "forbidden_pois": [],
+    "required_evidence": [],
+    "answerable": false,
+    "annotation_status": "draft",
+    "annotation_version": "route-interest-v1",
+    "annotator": null,
+    "reviewed_at": null,
+    "change_log": [],
+    "reference_note": "Acceptable sets are draft labels, not unique optimal routes; missing knowledge is not proof of absence.",
+    "route_distance_mode": "drive",
+    "weather_forecast": [
+      {
+        "date": "2026-10-15",
+        "dayweather": "晴",
+        "nightweather": "晴",
+        "is_bad": false
+      }
+    ],
+    "weather_note": "固定晴天评测场景，非真实天气预报；两组共享"
+  },
+  {
+    "id": "interest-三亚-10",
+    "split": "test",
+    "intent_group": "三亚-未知名额",
+    "query": "三亚一日游，每天最多两个不同景点。只考虑明天肯定还有潜水名额的景点，知识快照不算证明。",
+    "destination": "三亚",
+    "days": 1,
+    "max_per_day": 2,
+    "travel_start_date": "2026-10-15",
+    "travel_end_date": "2026-10-15",
+    "pois": [
+      {
+        "name": "蜈支洲岛旅游风景区",
+        "rating": 4.8,
+        "open_time": "周一至周日 08:30-16:30；潜水体验时间以所购项目为准。",
+        "location": {
+          "lng": 109.765947,
+          "lat": 18.310381
+        },
+        "photo": "https://store.is.autonavi.com/showpic/FB987A825D3C460684E009C9487D6AB8",
+        "adname": "海棠区",
+        "address": "林旺蜈支洲岛",
+        "tel": "4001146666",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "sanya-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "天涯海角游览区",
+        "rating": 4.8,
+        "open_time": "3月至9月 周一至周日 08:00-18:30；1月至2月,10月至12月 周一至周日 08:00-18:00",
+        "location": {
+          "lng": 109.348143,
+          "lat": 18.294988
+        },
+        "photo": "http://store.is.autonavi.com/showpic/a73b1b6e8914654c9b83d5a8d0518a3b",
+        "adname": "天涯区",
+        "address": "天涯镇马岭山麓",
+        "tel": "0898-88910131;0898-88592908;0898-88592956",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "sanya-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "南山大小洞天旅游区",
+        "rating": 4.7,
+        "open_time": "周一至周日 08:30-18:30 最晚进入18:30",
+        "location": {
+          "lng": 109.158067,
+          "lat": 18.30089
+        },
+        "photo": "http://store.is.autonavi.com/showpic/5991767133d0dd752bbca2d5b59e355b",
+        "adname": "崖州区",
+        "address": "崖城",
+        "tel": "0898-88830188;0898-88830335;0898-88830137",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "sanya-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "三亚西岛海洋文化旅游区",
+        "rating": 4.8,
+        "open_time": "周一至周日 08:00-17:30,离岛末班船时间为19:00",
+        "location": {
+          "lng": 109.373711,
+          "lat": 18.237774
+        },
+        "photo": "http://store.is.autonavi.com/showpic/6453bbab078771ef2a5cf9837f0be30b",
+        "adname": "天涯区",
+        "address": "三亚湾路肖旗港码头",
+        "tel": "0898-88910888",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "sanya-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "鹿回头风景区",
+        "rating": 4.8,
+        "open_time": "1/1-12/31 08:00-22:30开放",
+        "location": {
+          "lng": 109.50131,
+          "lat": 18.225639
+        },
+        "photo": "http://store.is.autonavi.com/showpic/5e741e3870348298407cc04bf881b99b",
+        "adname": "吉阳区",
+        "address": "鹿岭路",
+        "tel": "0898-88210808;0898-88213740",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "sanya-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      },
+      {
+        "name": "三亚南山文化旅游区",
+        "rating": 4.7,
+        "open_time": "周一至周日 08:00-17:00；17:00后景区室内、寺庙景观停止开放",
+        "location": {
+          "lng": 109.208349,
+          "lat": 18.298366
+        },
+        "photo": "http://store.is.autonavi.com/showpic/4e6f68323f2bc80f42d4939a250b6258",
+        "adname": "崖州区",
+        "address": "南山村",
+        "tel": "0898-88837888;12301",
+        "cost": "[]",
+        "indoor": false,
+        "provenance": {
+          "fixture": "sanya-5d-sunny-slowpace.json",
+          "kind": "saved_real_amap_response"
+        }
+      }
+    ],
+    "acceptable_pois": [],
+    "forbidden_pois": [],
+    "required_evidence": [],
+    "answerable": false,
+    "annotation_status": "draft",
+    "annotation_version": "route-interest-v1",
+    "annotator": null,
+    "reviewed_at": null,
+    "change_log": [],
+    "reference_note": "Acceptable sets are draft labels, not unique optimal routes; missing knowledge is not proof of absence.",
+    "route_distance_mode": "drive",
+    "weather_forecast": [
+      {
+        "date": "2026-10-15",
+        "dayweather": "晴",
+        "nightweather": "晴",
+        "is_bad": false
+      }
+    ],
+    "weather_note": "固定晴天评测场景，非真实天气预报；两组共享"
+  }
+]

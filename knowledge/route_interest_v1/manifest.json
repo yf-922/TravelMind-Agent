@@ -1,0 +1,126 @@
+{
+  "version": "route-interest-v1",
+  "source_collection": [
+    {
+      "url": "https://www.shanghaidisneyresort.com/zh-cn/",
+      "entities": [
+        "上海迪士尼度假区"
+      ],
+      "city": "上海",
+      "source": "interest_25a29915abb41827",
+      "status": "verified_quote",
+      "snapshot_hash": "88d41cb37e1ec129dcf6a21493690ca11b4fcbeb6594f7bd4cbeb74aa70f5e45",
+      "collected_at": "2026-10-08T10:05:05.465508+00:00"
+    },
+    {
+      "url": "https://www.nanshan.com/nanshan/byjd.html",
+      "entities": [
+        "三亚南山文化旅游区"
+      ],
+      "city": "三亚",
+      "source": "interest_d78fbeaccfb68d62",
+      "status": "verified_quote",
+      "snapshot_hash": "478d4b68b3a0804437eabcf541d23902f1d461878cb16fa60c6b2cd2ef813637",
+      "collected_at": "2026-10-08T10:05:05.887525+00:00"
+    },
+    {
+      "url": "https://www.xuanwuhu.net/mhls/mhls1.aspx",
+      "entities": [
+        "玄武湖景区",
+        "玄武湖"
+      ],
+      "city": "南京",
+      "source": "interest_b4c5aa40346c042a",
+      "status": "verified_quote",
+      "snapshot_hash": "329414d3f74613c0a038d1b4a427caf0836b445de807e43e7596756e2ad1e587",
+      "collected_at": "2026-10-08T10:05:06.368486+00:00"
+    },
+    {
+      "url": "https://www.njztf.cn/",
+      "entities": [
+        "总统府",
+        "南京总统府"
+      ],
+      "city": "南京",
+      "source": "interest_bcd0981a9c64dc89",
+      "status": "verified_quote",
+      "snapshot_hash": "bb3dd0b5d3d1fef15caf3c8f0ceea549e8c835fe855e2d51178b9b6f7244ad5e",
+      "collected_at": "2026-10-08T10:05:07.268997+00:00"
+    },
+    {
+      "url": "https://www.snhm.org.cn/cszl/zggk.htm",
+      "entities": [
+        "上海自然博物馆"
+      ],
+      "city": "上海",
+      "source": "interest_90ec80f62860ffdf",
+      "status": "verified_quote",
+      "snapshot_hash": "f06882206ca97433d797098ee9400122c90a6e9d411fd52ee1dc88ab06c67212",
+      "collected_at": "2026-10-08T10:05:07.830813+00:00"
+    },
+    {
+      "url": "https://www.shanghaizoo.cn/",
+      "entities": [
+        "上海动物园"
+      ],
+      "city": "上海",
+      "source": "interest_15bfb1df39cfb7e5",
+      "status": "verified_quote",
+      "snapshot_hash": "4207044420e071b7ec8bb556d0eb15d6583f396e68f3ce72dcd54bc7b4dcd908",
+      "collected_at": "2026-10-08T10:05:08.282794+00:00"
+    },
+    {
+      "url": "https://www.sh-aquarium.com/",
+      "entities": [
+        "上海海洋水族馆"
+      ],
+      "city": "上海",
+      "source": "interest_33012e0d9d6b1788",
+      "status": "verified_quote",
+      "snapshot_hash": "2a6cb057f4536f48020995baa4ca0534d65d0810b6bddec135bfe6b58b6c509f",
+      "collected_at": "2026-10-08T10:05:08.770614+00:00"
+    },
+    {
+      "url": "https://www.aitianya.cn/",
+      "entities": [
+        "天涯海角游览区"
+      ],
+      "city": "三亚",
+      "source": "interest_493b6e346dac06d7",
+      "status": "verified_quote",
+      "snapshot_hash": "4a184e7d3ea81328f604d104bd8348c85d53d52f18c4d1024c0435faf882e404",
+      "collected_at": "2026-10-08T10:05:09.578855+00:00"
+    },
+    {
+      "url": "https://www.sanyapark.com/",
+      "entities": [
+        "南山大小洞天旅游区",
+        "大小洞天"
+      ],
+      "city": "三亚",
+      "source": "interest_f463160d936a96b9",
+      "status": "verified_quote",
+      "snapshot_hash": "c0a78b54f31b1b55aef6dec6bc8c83bd17c25d2d2533db3f738c1fda3d17fb51",
+      "collected_at": "2026-10-08T10:05:11.298246+00:00"
+    }
+  ],
+  "candidates_per_city": {
+    "南京": 6,
+    "上海": 6,
+    "三亚": 6
+  },
+  "evidenced_candidates_per_city": {
+    "南京": 3,
+    "上海": 5,
+    "三亚": 4
+  },
+  "fact_fingerprint": "892912aea35699bdd276994445b73276f3353b94e8c5ef69b88c783b3b6c9f67",
+  "case_fingerprint": "354d34473c3af8235ac40dbe862b30cdf73a70a05b09a09a2931b76fe4625d7b",
+  "label_status": "draft_not_human_confirmed",
+  "splits": {
+    "dev": 15,
+    "test": 15
+  },
+  "production_default_changed": false,
+  "map_fingerprint": "a6cfa7b4ff3415db5a515e9c9a69a7f08663667e6326154c2005d193aca12d1c"
+}
