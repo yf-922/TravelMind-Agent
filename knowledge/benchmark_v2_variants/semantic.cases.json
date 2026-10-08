@@ -1,0 +1,3189 @@
+[
+  {
+    "id": "v2-0-0-0",
+    "query": "南京博物院：怎么预约，需要提前准备什么？",
+    "city": "南京",
+    "type": "answerable",
+    "intent_group": "南京-intent-0",
+    "split": "dev",
+    "challenge": "exact_name",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-538be375f62b63b1f1474f42",
+        "relevance": 2,
+        "evidence_group": "1d05f7a9df128868aa5606f8"
+      }
+    ],
+    "reference_facts": [
+      "参观预约： 南京博物院官方微信小程序。 预约成功后，观众须携带本人二代身份证原件、江苏省第三代社保卡原件或港澳台居民居住证原件，并通过 人脸比对 系统核验入馆。持港澳居民来往内地通行证、台湾居民来往大陆通行证及外国人永久居留身份证或外籍护照的人士，预约成功后，参观当日凭本人有效证件原件和预约凭证到 正门东侧绿色通道服务窗口人工 核验入馆。 温馨提示： 未满14周岁（含14周岁）的未成年人不得单独预约，须由成年人代为预约亲子票并同步核验入馆，每名成年人最多携带三名未成年人。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-0-0-1",
+    "query": "我准备去南京博物院，关于预约的事想问一下：怎么预约，需要提前准备什么？",
+    "city": "南京",
+    "type": "answerable",
+    "intent_group": "南京-intent-0",
+    "split": "dev",
+    "challenge": "colloquial",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-538be375f62b63b1f1474f42",
+        "relevance": 2,
+        "evidence_group": "1d05f7a9df128868aa5606f8"
+      }
+    ],
+    "reference_facts": [
+      "参观预约： 南京博物院官方微信小程序。 预约成功后，观众须携带本人二代身份证原件、江苏省第三代社保卡原件或港澳台居民居住证原件，并通过 人脸比对 系统核验入馆。持港澳居民来往内地通行证、台湾居民来往大陆通行证及外国人永久居留身份证或外籍护照的人士，预约成功后，参观当日凭本人有效证件原件和预约凭证到 正门东侧绿色通道服务窗口人工 核验入馆。 温馨提示： 未满14周岁（含14周岁）的未成年人不得单独预约，须由成年人代为预约亲子票并同步核验入馆，每名成年人最多携带三名未成年人。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-0-1-0",
+    "query": "南京博物院：几点开放，有哪些时间限制？",
+    "city": "南京",
+    "type": "answerable",
+    "intent_group": "南京-intent-1",
+    "split": "test",
+    "challenge": "exact_name",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-25f7942a23a20dbd7f6662d6",
+        "relevance": 2,
+        "evidence_group": "a32867577752e03bdceb8b3e"
+      },
+      {
+        "chunk_id": "semantic-608f63a48cf3e658276a23e0",
+        "relevance": 2,
+        "evidence_group": "a32867577752e03bdceb8b3e"
+      }
+    ],
+    "reference_facts": [
+      " 8.通过安检前请将携带液体、笔记本电脑、平板电脑、大型电子产品、照相机、雨伞、贵重物品提前取出放入安检盒单独手检，切勿将其放置在安检机履带上。 9.请携带大件行李箱的观众请勿带入馆内，服务中心提供寄存服务。 10.酗酒者、仪容不整者、无行为能力或限制行为能力且无监护人陪伴者谢绝入馆。 11.其他有碍展品安全、影响观众参观者谢绝入馆。 12.馆内谢绝使用电动轮椅、老年代步车。 13.根据国家有关规定，除常设的基本陈列和以院藏文物为主的专题展览免费开放外，按照市场化运作举办的临时展览及展演不列入免费参观范围。 通过安检门时请服从安检人员指挥有序接受安检。请主动将携带的包裹等物品经过x射线安检机检查后方能带入展馆，如发现违禁品，请主动配合检查，并交由安检人员予以寄存。安检机检出的疑似违禁品，请开包配合检验，确认后方能带入展馆。 请寄存违禁品的观众在闭馆（下午5:00）前取回您的物品。 感谢您的配合与支持，祝参观愉快！"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-0-1-1",
+    "query": "我准备去南京博物院，关于开放的事想问一下：几点开放，有哪些时间限制？",
+    "city": "南京",
+    "type": "answerable",
+    "intent_group": "南京-intent-1",
+    "split": "test",
+    "challenge": "colloquial",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-25f7942a23a20dbd7f6662d6",
+        "relevance": 2,
+        "evidence_group": "a32867577752e03bdceb8b3e"
+      },
+      {
+        "chunk_id": "semantic-608f63a48cf3e658276a23e0",
+        "relevance": 2,
+        "evidence_group": "a32867577752e03bdceb8b3e"
+      }
+    ],
+    "reference_facts": [
+      " 8.通过安检前请将携带液体、笔记本电脑、平板电脑、大型电子产品、照相机、雨伞、贵重物品提前取出放入安检盒单独手检，切勿将其放置在安检机履带上。 9.请携带大件行李箱的观众请勿带入馆内，服务中心提供寄存服务。 10.酗酒者、仪容不整者、无行为能力或限制行为能力且无监护人陪伴者谢绝入馆。 11.其他有碍展品安全、影响观众参观者谢绝入馆。 12.馆内谢绝使用电动轮椅、老年代步车。 13.根据国家有关规定，除常设的基本陈列和以院藏文物为主的专题展览免费开放外，按照市场化运作举办的临时展览及展演不列入免费参观范围。 通过安检门时请服从安检人员指挥有序接受安检。请主动将携带的包裹等物品经过x射线安检机检查后方能带入展馆，如发现违禁品，请主动配合检查，并交由安检人员予以寄存。安检机检出的疑似违禁品，请开包配合检验，确认后方能带入展馆。 请寄存违禁品的观众在闭馆（下午5:00）前取回您的物品。 感谢您的配合与支持，祝参观愉快！"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-0-2-0",
+    "query": "南京博物院：怎样到达，入口和换乘怎么选？",
+    "city": "南京",
+    "type": "answerable",
+    "intent_group": "南京-intent-2",
+    "split": "dev",
+    "challenge": "exact_name",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-25f7942a23a20dbd7f6662d6",
+        "relevance": 2,
+        "evidence_group": "a32867577752e03bdceb8b3e"
+      },
+      {
+        "chunk_id": "semantic-608f63a48cf3e658276a23e0",
+        "relevance": 2,
+        "evidence_group": "a32867577752e03bdceb8b3e"
+      }
+    ],
+    "reference_facts": [
+      " 8.通过安检前请将携带液体、笔记本电脑、平板电脑、大型电子产品、照相机、雨伞、贵重物品提前取出放入安检盒单独手检，切勿将其放置在安检机履带上。 9.请携带大件行李箱的观众请勿带入馆内，服务中心提供寄存服务。 10.酗酒者、仪容不整者、无行为能力或限制行为能力且无监护人陪伴者谢绝入馆。 11.其他有碍展品安全、影响观众参观者谢绝入馆。 12.馆内谢绝使用电动轮椅、老年代步车。 13.根据国家有关规定，除常设的基本陈列和以院藏文物为主的专题展览免费开放外，按照市场化运作举办的临时展览及展演不列入免费参观范围。 通过安检门时请服从安检人员指挥有序接受安检。请主动将携带的包裹等物品经过x射线安检机检查后方能带入展馆，如发现违禁品，请主动配合检查，并交由安检人员予以寄存。安检机检出的疑似违禁品，请开包配合检验，确认后方能带入展馆。 请寄存违禁品的观众在闭馆（下午5:00）前取回您的物品。 感谢您的配合与支持，祝参观愉快！"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-0-2-1",
+    "query": "我准备去南京博物院，关于交通的事想问一下：怎样到达，入口和换乘怎么选？",
+    "city": "南京",
+    "type": "answerable",
+    "intent_group": "南京-intent-2",
+    "split": "dev",
+    "challenge": "colloquial",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-25f7942a23a20dbd7f6662d6",
+        "relevance": 2,
+        "evidence_group": "a32867577752e03bdceb8b3e"
+      },
+      {
+        "chunk_id": "semantic-608f63a48cf3e658276a23e0",
+        "relevance": 2,
+        "evidence_group": "a32867577752e03bdceb8b3e"
+      }
+    ],
+    "reference_facts": [
+      " 8.通过安检前请将携带液体、笔记本电脑、平板电脑、大型电子产品、照相机、雨伞、贵重物品提前取出放入安检盒单独手检，切勿将其放置在安检机履带上。 9.请携带大件行李箱的观众请勿带入馆内，服务中心提供寄存服务。 10.酗酒者、仪容不整者、无行为能力或限制行为能力且无监护人陪伴者谢绝入馆。 11.其他有碍展品安全、影响观众参观者谢绝入馆。 12.馆内谢绝使用电动轮椅、老年代步车。 13.根据国家有关规定，除常设的基本陈列和以院藏文物为主的专题展览免费开放外，按照市场化运作举办的临时展览及展演不列入免费参观范围。 通过安检门时请服从安检人员指挥有序接受安检。请主动将携带的包裹等物品经过x射线安检机检查后方能带入展馆，如发现违禁品，请主动配合检查，并交由安检人员予以寄存。安检机检出的疑似违禁品，请开包配合检验，确认后方能带入展馆。 请寄存违禁品的观众在闭馆（下午5:00）前取回您的物品。 感谢您的配合与支持，祝参观愉快！"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-0-3-0",
+    "query": "南京博物院：带孩子出行，有什么注意事项？",
+    "city": "南京",
+    "type": "answerable",
+    "intent_group": "南京-intent-3",
+    "split": "test",
+    "challenge": "exact_name",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-538be375f62b63b1f1474f42",
+        "relevance": 2,
+        "evidence_group": "1d05f7a9df128868aa5606f8"
+      }
+    ],
+    "reference_facts": [
+      "参观预约： 南京博物院官方微信小程序。 预约成功后，观众须携带本人二代身份证原件、江苏省第三代社保卡原件或港澳台居民居住证原件，并通过 人脸比对 系统核验入馆。持港澳居民来往内地通行证、台湾居民来往大陆通行证及外国人永久居留身份证或外籍护照的人士，预约成功后，参观当日凭本人有效证件原件和预约凭证到 正门东侧绿色通道服务窗口人工 核验入馆。 温馨提示： 未满14周岁（含14周岁）的未成年人不得单独预约，须由成年人代为预约亲子票并同步核验入馆，每名成年人最多携带三名未成年人。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-0-3-1",
+    "query": "不要用上海的攻略，我是问南京博物院：带孩子出行，有什么注意事项？",
+    "city": "南京",
+    "type": "answerable",
+    "intent_group": "南京-intent-3",
+    "split": "test",
+    "challenge": "cross_city",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-538be375f62b63b1f1474f42",
+        "relevance": 2,
+        "evidence_group": "1d05f7a9df128868aa5606f8"
+      }
+    ],
+    "reference_facts": [
+      "参观预约： 南京博物院官方微信小程序。 预约成功后，观众须携带本人二代身份证原件、江苏省第三代社保卡原件或港澳台居民居住证原件，并通过 人脸比对 系统核验入馆。持港澳居民来往内地通行证、台湾居民来往大陆通行证及外国人永久居留身份证或外籍护照的人士，预约成功后，参观当日凭本人有效证件原件和预约凭证到 正门东侧绿色通道服务窗口人工 核验入馆。 温馨提示： 未满14周岁（含14周岁）的未成年人不得单独预约，须由成年人代为预约亲子票并同步核验入馆，每名成年人最多携带三名未成年人。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-0-4-0",
+    "query": "南京博物院：带老人慢慢游览，有什么安排建议？",
+    "city": "南京",
+    "type": "answerable",
+    "intent_group": "南京-intent-4",
+    "split": "dev",
+    "challenge": "exact_name",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-e63d4da7c6553b544d68d771",
+        "relevance": 2,
+        "evidence_group": "d3886eb301aa0f1fa3f3dca2"
+      },
+      {
+        "chunk_id": "semantic-26df2320fec7cf08c86a2d99",
+        "relevance": 2,
+        "evidence_group": "d3886eb301aa0f1fa3f3dca2"
+      },
+      {
+        "chunk_id": "semantic-60f851427b81cd0a609dc6ac",
+        "relevance": 2,
+        "evidence_group": "d3886eb301aa0f1fa3f3dca2"
+      },
+      {
+        "chunk_id": "semantic-30009b54b769bdcb13dc7d0f",
+        "relevance": 2,
+        "evidence_group": "d3886eb301aa0f1fa3f3dca2"
+      },
+      {
+        "chunk_id": "semantic-01e022854689afeb15c350e8",
+        "relevance": 2,
+        "evidence_group": "d3886eb301aa0f1fa3f3dca2"
+      }
+    ],
+    "reference_facts": [
+      " ① 14周岁及以下 未成年人 不得单独预约 ，须由成年人代为预约亲子票并同步核验入馆，每名成年人最多携带三名未成年人。 ②持港澳居民来往内地通行证、台湾居民来往大陆通行证及外国人永久居留身份证或外籍护照的人士， 自行预约 后请于参观当日凭本人 预约证件原件和预约成功凭证 在服务中心绿色通道服务窗口办理相关手续后入馆。 4. 优待观众： ① 现役军人 持军官证、 预备役人员 持预备役人员证，其 随行直系亲属 （父母、配偶、子女）持有效证件原件，至正门东侧绿色通道服务窗口登记，由“绿色通道”安检入馆。 ②70周岁及以上老人、残障人士、退役军人、伤残军人、消防救援人员、“三属”人员（烈士遗属、因公牺牲军人遗属、病故军人遗属）以及持无偿献血荣誉证的观众可通过南京博物院官方小程序 “优待观众预约” ，填写身份信息并拍照上传相应证件，即可预约7日内任一时间段门票。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-0-4-1",
+    "query": "网上攻略里城市容易搞混，请只按南京的南京博物院回答：带老人慢慢游览，有什么安排建议？",
+    "city": "南京",
+    "type": "answerable",
+    "intent_group": "南京-intent-4",
+    "split": "dev",
+    "challenge": "city_disambiguation",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-e63d4da7c6553b544d68d771",
+        "relevance": 2,
+        "evidence_group": "d3886eb301aa0f1fa3f3dca2"
+      },
+      {
+        "chunk_id": "semantic-26df2320fec7cf08c86a2d99",
+        "relevance": 2,
+        "evidence_group": "d3886eb301aa0f1fa3f3dca2"
+      },
+      {
+        "chunk_id": "semantic-60f851427b81cd0a609dc6ac",
+        "relevance": 2,
+        "evidence_group": "d3886eb301aa0f1fa3f3dca2"
+      },
+      {
+        "chunk_id": "semantic-30009b54b769bdcb13dc7d0f",
+        "relevance": 2,
+        "evidence_group": "d3886eb301aa0f1fa3f3dca2"
+      },
+      {
+        "chunk_id": "semantic-01e022854689afeb15c350e8",
+        "relevance": 2,
+        "evidence_group": "d3886eb301aa0f1fa3f3dca2"
+      }
+    ],
+    "reference_facts": [
+      " ① 14周岁及以下 未成年人 不得单独预约 ，须由成年人代为预约亲子票并同步核验入馆，每名成年人最多携带三名未成年人。 ②持港澳居民来往内地通行证、台湾居民来往大陆通行证及外国人永久居留身份证或外籍护照的人士， 自行预约 后请于参观当日凭本人 预约证件原件和预约成功凭证 在服务中心绿色通道服务窗口办理相关手续后入馆。 4. 优待观众： ① 现役军人 持军官证、 预备役人员 持预备役人员证，其 随行直系亲属 （父母、配偶、子女）持有效证件原件，至正门东侧绿色通道服务窗口登记，由“绿色通道”安检入馆。 ②70周岁及以上老人、残障人士、退役军人、伤残军人、消防救援人员、“三属”人员（烈士遗属、因公牺牲军人遗属、病故军人遗属）以及持无偿献血荣誉证的观众可通过南京博物院官方小程序 “优待观众预约” ，填写身份信息并拍照上传相应证件，即可预约7日内任一时间段门票。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-0-5-0",
+    "query": "南京旅行：遇上下雨，游览时应注意什么？",
+    "city": "南京",
+    "type": "answerable",
+    "intent_group": "南京-intent-5",
+    "split": "test",
+    "challenge": "exact_name",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-a435d6c9553fb25048d7d848",
+        "relevance": 2,
+        "evidence_group": "f06d343bcce0a696712203b4"
+      }
+    ],
+    "reference_facts": [
+      "项目规划规则：南京雨天可以优先筛选候选池中已确认的室内活动，但不能把室内标签等同于全天开放或无需预约。博物院的预约、闭馆日与停止检票时间仍须独立校验。两个室内活动之间的室外步行路段也应纳入通勤与雨天缓冲；缺少入口坐标或路径核验时标记不确定，不用直线距离证明雨天路线可行。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-0-6-0",
+    "query": "南京博物院：购票和入场有哪些条件？",
+    "city": "南京",
+    "type": "answerable",
+    "intent_group": "南京-intent-6",
+    "split": "dev",
+    "challenge": "exact_name",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-e63d4da7c6553b544d68d771",
+        "relevance": 2,
+        "evidence_group": "d3886eb301aa0f1fa3f3dca2"
+      },
+      {
+        "chunk_id": "semantic-26df2320fec7cf08c86a2d99",
+        "relevance": 2,
+        "evidence_group": "d3886eb301aa0f1fa3f3dca2"
+      },
+      {
+        "chunk_id": "semantic-60f851427b81cd0a609dc6ac",
+        "relevance": 2,
+        "evidence_group": "d3886eb301aa0f1fa3f3dca2"
+      },
+      {
+        "chunk_id": "semantic-30009b54b769bdcb13dc7d0f",
+        "relevance": 2,
+        "evidence_group": "d3886eb301aa0f1fa3f3dca2"
+      },
+      {
+        "chunk_id": "semantic-01e022854689afeb15c350e8",
+        "relevance": 2,
+        "evidence_group": "d3886eb301aa0f1fa3f3dca2"
+      }
+    ],
+    "reference_facts": [
+      " ① 14周岁及以下 未成年人 不得单独预约 ，须由成年人代为预约亲子票并同步核验入馆，每名成年人最多携带三名未成年人。 ②持港澳居民来往内地通行证、台湾居民来往大陆通行证及外国人永久居留身份证或外籍护照的人士， 自行预约 后请于参观当日凭本人 预约证件原件和预约成功凭证 在服务中心绿色通道服务窗口办理相关手续后入馆。 4. 优待观众： ① 现役军人 持军官证、 预备役人员 持预备役人员证，其 随行直系亲属 （父母、配偶、子女）持有效证件原件，至正门东侧绿色通道服务窗口登记，由“绿色通道”安检入馆。 ②70周岁及以上老人、残障人士、退役军人、伤残军人、消防救援人员、“三属”人员（烈士遗属、因公牺牲军人遗属、病故军人遗属）以及持无偿献血荣誉证的观众可通过南京博物院官方小程序 “优待观众预约” ，填写身份信息并拍照上传相应证件，即可预约7日内任一时间段门票。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-0-7-0",
+    "query": "南京博物院：游览有哪些安全提醒？",
+    "city": "南京",
+    "type": "answerable",
+    "intent_group": "南京-intent-7",
+    "split": "test",
+    "challenge": "exact_name",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-25f7942a23a20dbd7f6662d6",
+        "relevance": 2,
+        "evidence_group": "a32867577752e03bdceb8b3e"
+      },
+      {
+        "chunk_id": "semantic-608f63a48cf3e658276a23e0",
+        "relevance": 2,
+        "evidence_group": "a32867577752e03bdceb8b3e"
+      }
+    ],
+    "reference_facts": [
+      " 8.通过安检前请将携带液体、笔记本电脑、平板电脑、大型电子产品、照相机、雨伞、贵重物品提前取出放入安检盒单独手检，切勿将其放置在安检机履带上。 9.请携带大件行李箱的观众请勿带入馆内，服务中心提供寄存服务。 10.酗酒者、仪容不整者、无行为能力或限制行为能力且无监护人陪伴者谢绝入馆。 11.其他有碍展品安全、影响观众参观者谢绝入馆。 12.馆内谢绝使用电动轮椅、老年代步车。 13.根据国家有关规定，除常设的基本陈列和以院藏文物为主的专题展览免费开放外，按照市场化运作举办的临时展览及展演不列入免费参观范围。 通过安检门时请服从安检人员指挥有序接受安检。请主动将携带的包裹等物品经过x射线安检机检查后方能带入展馆，如发现违禁品，请主动配合检查，并交由安检人员予以寄存。安检机检出的疑似违禁品，请开包配合检验，确认后方能带入展馆。 请寄存违禁品的观众在闭馆（下午5:00）前取回您的物品。 感谢您的配合与支持，祝参观愉快！"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-0-8-0",
+    "query": "南京博物院：有哪些服务设施和使用要求？",
+    "city": "南京",
+    "type": "answerable",
+    "intent_group": "南京-intent-8",
+    "split": "dev",
+    "challenge": "multi_evidence",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-a0fa2f9325d270df9e347c4d",
+        "relevance": 2,
+        "evidence_group": "adad4f0173f31cfe42f7c936"
+      },
+      {
+        "chunk_id": "semantic-35fe3558b4d8930f16918d45",
+        "relevance": 2,
+        "evidence_group": "682804f43364f40ff3018777"
+      }
+    ],
+    "reference_facts": [
+      "南京博物院设有多处餐饮点。文渊广场的公众餐厅约1000平方米，提供中西餐饮服务；小剧场旁的甜品店、特展馆的茶社和民国馆的咖啡厅等，为观众提供特色餐饮服务。所有餐饮由院统一管理，对装修风格、软硬件设备设施、食品卫生等统一把关，保证饮食质量和餐具卫生。",
+      "全市涉及高空、山区、滨水、水上游乐项目等高风险 A级旅游景区暂时关闭。各景区重点排查滨江栈道、山林步道、临水观景平台、游乐设施及排水、电力系统安全隐患，全面落实闭园管控措施。稳妥做好滞留游客疏散安置工作。各室内文博场馆、游乐场所全面开展隐患排查，为临时滞留游客提供安全休憩场地与贴心服务保障。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-0-9-0",
+    "query": "南京旅行：不想赶路，游览路线怎么安排？",
+    "city": "南京",
+    "type": "answerable",
+    "intent_group": "南京-intent-9",
+    "split": "test",
+    "challenge": "multi_evidence",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-df9e09465e91830d0f92d715",
+        "relevance": 2,
+        "evidence_group": "e4a4f130e54c0e9d761bded3"
+      },
+      {
+        "chunk_id": "semantic-a435d6c9553fb25048d7d848",
+        "relevance": 2,
+        "evidence_group": "f06d343bcce0a696712203b4"
+      }
+    ],
+    "reference_facts": [
+      "项目规划规则：南京博物院老人出行方案应区分轮椅类型、是否需要陪护以及用户实际预约资格。候选池中的设施信息不足时先询问或提示确认，不统一推断所有代步设备都可以进馆。路线按实际步行与休息安排调整，优待政策只有在用户满足官方条件且完成核验后才能采用；免预约权益不代表免安检或无限次数使用。",
+      "项目规划规则：南京雨天可以优先筛选候选池中已确认的室内活动，但不能把室内标签等同于全天开放或无需预约。博物院的预约、闭馆日与停止检票时间仍须独立校验。两个室内活动之间的室外步行路段也应纳入通勤与雨天缓冲；缺少入口坐标或路径核验时标记不确定，不用直线距离证明雨天路线可行。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-1-0-0",
+    "query": "上海旅行：怎么预约，需要提前准备什么？",
+    "city": "上海",
+    "type": "answerable",
+    "intent_group": "上海-intent-0",
+    "split": "test",
+    "challenge": "exact_name",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-ef381aa1d437a0780a569df3",
+        "relevance": 2,
+        "evidence_group": "a37b01971daefc237c535c26"
+      }
+    ],
+    "reference_facts": [
+      "第一条 凡20人及以上（含20人）团队前来参观，须提前7天（不含当天）进行电话预约。本馆团队参观实行每日限额管理，预约名额有限，约满即止，不接受无预约临时团队入馆参观。人民广场馆预约电话：021－63724550；东馆预约电话：021－20729998（请在开放时间内拨打）。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-1-0-1",
+    "query": "我准备去上海旅行，关于预约的事想问一下：怎么预约，需要提前准备什么？",
+    "city": "上海",
+    "type": "answerable",
+    "intent_group": "上海-intent-0",
+    "split": "test",
+    "challenge": "colloquial",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-ef381aa1d437a0780a569df3",
+        "relevance": 2,
+        "evidence_group": "a37b01971daefc237c535c26"
+      }
+    ],
+    "reference_facts": [
+      "第一条 凡20人及以上（含20人）团队前来参观，须提前7天（不含当天）进行电话预约。本馆团队参观实行每日限额管理，预约名额有限，约满即止，不接受无预约临时团队入馆参观。人民广场馆预约电话：021－63724550；东馆预约电话：021－20729998（请在开放时间内拨打）。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-1-1-0",
+    "query": "上海旅行：几点开放，有哪些时间限制？",
+    "city": "上海",
+    "type": "answerable",
+    "intent_group": "上海-intent-1",
+    "split": "dev",
+    "challenge": "exact_name",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-ef381aa1d437a0780a569df3",
+        "relevance": 2,
+        "evidence_group": "a37b01971daefc237c535c26"
+      }
+    ],
+    "reference_facts": [
+      "第一条 凡20人及以上（含20人）团队前来参观，须提前7天（不含当天）进行电话预约。本馆团队参观实行每日限额管理，预约名额有限，约满即止，不接受无预约临时团队入馆参观。人民广场馆预约电话：021－63724550；东馆预约电话：021－20729998（请在开放时间内拨打）。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-1-1-1",
+    "query": "我准备去上海旅行，关于开放的事想问一下：几点开放，有哪些时间限制？",
+    "city": "上海",
+    "type": "answerable",
+    "intent_group": "上海-intent-1",
+    "split": "dev",
+    "challenge": "colloquial",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-ef381aa1d437a0780a569df3",
+        "relevance": 2,
+        "evidence_group": "a37b01971daefc237c535c26"
+      }
+    ],
+    "reference_facts": [
+      "第一条 凡20人及以上（含20人）团队前来参观，须提前7天（不含当天）进行电话预约。本馆团队参观实行每日限额管理，预约名额有限，约满即止，不接受无预约临时团队入馆参观。人民广场馆预约电话：021－63724550；东馆预约电话：021－20729998（请在开放时间内拨打）。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-1-2-0",
+    "query": "上海博物馆：怎样到达，入口和换乘怎么选？",
+    "city": "上海",
+    "type": "answerable",
+    "intent_group": "上海-intent-2",
+    "split": "test",
+    "challenge": "exact_name",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-084767faa8bc02ca0f2fc9c4",
+        "relevance": 2,
+        "evidence_group": "368594add2fd008dbca14fd7"
+      }
+    ],
+    "reference_facts": [
+      "时间：2026-09-06 Sun 10:00-12:00 场馆：人民广场馆 地点：学术报告厅 主讲人：张萌 复旦大学文物与博物馆学系、科技考古研究院青年副研究员 参与年龄段：18-100 活动已结束"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-1-2-1",
+    "query": "我准备去上海博物馆，关于交通的事想问一下：怎样到达，入口和换乘怎么选？",
+    "city": "上海",
+    "type": "answerable",
+    "intent_group": "上海-intent-2",
+    "split": "test",
+    "challenge": "colloquial",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-084767faa8bc02ca0f2fc9c4",
+        "relevance": 2,
+        "evidence_group": "368594add2fd008dbca14fd7"
+      }
+    ],
+    "reference_facts": [
+      "时间：2026-09-06 Sun 10:00-12:00 场馆：人民广场馆 地点：学术报告厅 主讲人：张萌 复旦大学文物与博物馆学系、科技考古研究院青年副研究员 参与年龄段：18-100 活动已结束"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-1-3-0",
+    "query": "上海博物馆：带孩子出行，有什么注意事项？",
+    "city": "上海",
+    "type": "answerable",
+    "intent_group": "上海-intent-3",
+    "split": "dev",
+    "challenge": "exact_name",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-084767faa8bc02ca0f2fc9c4",
+        "relevance": 2,
+        "evidence_group": "368594add2fd008dbca14fd7"
+      }
+    ],
+    "reference_facts": [
+      "时间：2026-09-06 Sun 10:00-12:00 场馆：人民广场馆 地点：学术报告厅 主讲人：张萌 复旦大学文物与博物馆学系、科技考古研究院青年副研究员 参与年龄段：18-100 活动已结束"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-1-3-1",
+    "query": "不要用重庆的攻略，我是问上海博物馆：带孩子出行，有什么注意事项？",
+    "city": "上海",
+    "type": "answerable",
+    "intent_group": "上海-intent-3",
+    "split": "dev",
+    "challenge": "cross_city",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-084767faa8bc02ca0f2fc9c4",
+        "relevance": 2,
+        "evidence_group": "368594add2fd008dbca14fd7"
+      }
+    ],
+    "reference_facts": [
+      "时间：2026-09-06 Sun 10:00-12:00 场馆：人民广场馆 地点：学术报告厅 主讲人：张萌 复旦大学文物与博物馆学系、科技考古研究院青年副研究员 参与年龄段：18-100 活动已结束"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-1-4-0",
+    "query": "上海博物馆：带老人慢慢游览，有什么安排建议？",
+    "city": "上海",
+    "type": "answerable",
+    "intent_group": "上海-intent-4",
+    "split": "test",
+    "challenge": "exact_name",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-084767faa8bc02ca0f2fc9c4",
+        "relevance": 2,
+        "evidence_group": "368594add2fd008dbca14fd7"
+      }
+    ],
+    "reference_facts": [
+      "时间：2026-09-06 Sun 10:00-12:00 场馆：人民广场馆 地点：学术报告厅 主讲人：张萌 复旦大学文物与博物馆学系、科技考古研究院青年副研究员 参与年龄段：18-100 活动已结束"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-1-4-1",
+    "query": "网上攻略里城市容易搞混，请只按上海的上海博物馆回答：带老人慢慢游览，有什么安排建议？",
+    "city": "上海",
+    "type": "answerable",
+    "intent_group": "上海-intent-4",
+    "split": "test",
+    "challenge": "city_disambiguation",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-084767faa8bc02ca0f2fc9c4",
+        "relevance": 2,
+        "evidence_group": "368594add2fd008dbca14fd7"
+      }
+    ],
+    "reference_facts": [
+      "时间：2026-09-06 Sun 10:00-12:00 场馆：人民广场馆 地点：学术报告厅 主讲人：张萌 复旦大学文物与博物馆学系、科技考古研究院青年副研究员 参与年龄段：18-100 活动已结束"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-1-5-0",
+    "query": "上海博物馆：遇上下雨，游览时应注意什么？",
+    "city": "上海",
+    "type": "answerable",
+    "intent_group": "上海-intent-5",
+    "split": "dev",
+    "challenge": "exact_name",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-084767faa8bc02ca0f2fc9c4",
+        "relevance": 2,
+        "evidence_group": "368594add2fd008dbca14fd7"
+      }
+    ],
+    "reference_facts": [
+      "时间：2026-09-06 Sun 10:00-12:00 场馆：人民广场馆 地点：学术报告厅 主讲人：张萌 复旦大学文物与博物馆学系、科技考古研究院青年副研究员 参与年龄段：18-100 活动已结束"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-1-6-0",
+    "query": "上海博物馆：购票和入场有哪些条件？",
+    "city": "上海",
+    "type": "answerable",
+    "intent_group": "上海-intent-6",
+    "split": "test",
+    "challenge": "exact_name",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-084767faa8bc02ca0f2fc9c4",
+        "relevance": 2,
+        "evidence_group": "368594add2fd008dbca14fd7"
+      }
+    ],
+    "reference_facts": [
+      "时间：2026-09-06 Sun 10:00-12:00 场馆：人民广场馆 地点：学术报告厅 主讲人：张萌 复旦大学文物与博物馆学系、科技考古研究院青年副研究员 参与年龄段：18-100 活动已结束"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-1-7-0",
+    "query": "上海旅行：游览有哪些安全提醒？",
+    "city": "上海",
+    "type": "answerable",
+    "intent_group": "上海-intent-7",
+    "split": "dev",
+    "challenge": "exact_name",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-9cc67f6b1e41fc15db43b1c6",
+        "relevance": 2,
+        "evidence_group": "cc5347f4374689ae7a5ff08b"
+      }
+    ],
+    "reference_facts": [
+      "第二条 所有成功预约的团队，须按本馆要求备齐入馆材料。当日入馆必备材料包括：当日有效参观预约编号、全体参观人员携带有效身份证件原件（以备查验）、团队人员信息名单原件（加盖单位公章）、团队参观介绍信原件（加盖单位公章），材料不全、彩色复印、实到人数未满20人或不符合要求者不予入馆。进馆入口：人民广场馆统一由南门西侧预约团队通道入馆并办理购票手续；东馆统一由北门预约团队通道办理入馆手续。学生团体参观现场需签署《学生团队参观安全责任书》。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-1-8-0",
+    "query": "上海博物馆：有哪些服务设施和使用要求？",
+    "city": "上海",
+    "type": "answerable",
+    "intent_group": "上海-intent-8",
+    "split": "test",
+    "challenge": "multi_evidence",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-084767faa8bc02ca0f2fc9c4",
+        "relevance": 2,
+        "evidence_group": "368594add2fd008dbca14fd7"
+      },
+      {
+        "chunk_id": "semantic-9c36009b5abfd43c456826da",
+        "relevance": 2,
+        "evidence_group": "f773d0d0c2c1c1d93f167a56"
+      }
+    ],
+    "reference_facts": [
+      "时间：2026-09-06 Sun 10:00-12:00 场馆：人民广场馆 地点：学术报告厅 主讲人：张萌 复旦大学文物与博物馆学系、科技考古研究院青年副研究员 参与年龄段：18-100 活动已结束",
+      "时间：2026-08-15 Sat 14:00-16:00 场馆：东馆 地点：学术报告厅 主讲人：何毓灵 中国社会科学院考古研究所二级研究员、安阳工作站站长、殷墟博物馆执行副馆长 参与年龄段：18-100 活动已结束"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-1-9-0",
+    "query": "上海博物馆：不想赶路，游览路线怎么安排？",
+    "city": "上海",
+    "type": "answerable",
+    "intent_group": "上海-intent-9",
+    "split": "dev",
+    "challenge": "multi_evidence",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-084767faa8bc02ca0f2fc9c4",
+        "relevance": 2,
+        "evidence_group": "368594add2fd008dbca14fd7"
+      },
+      {
+        "chunk_id": "semantic-9c36009b5abfd43c456826da",
+        "relevance": 2,
+        "evidence_group": "f773d0d0c2c1c1d93f167a56"
+      }
+    ],
+    "reference_facts": [
+      "时间：2026-09-06 Sun 10:00-12:00 场馆：人民广场馆 地点：学术报告厅 主讲人：张萌 复旦大学文物与博物馆学系、科技考古研究院青年副研究员 参与年龄段：18-100 活动已结束",
+      "时间：2026-08-15 Sat 14:00-16:00 场馆：东馆 地点：学术报告厅 主讲人：何毓灵 中国社会科学院考古研究所二级研究员、安阳工作站站长、殷墟博物馆执行副馆长 参与年龄段：18-100 活动已结束"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-2-0-0",
+    "query": "重庆中国三峡博物馆：怎么预约，需要提前准备什么？",
+    "city": "重庆",
+    "type": "answerable",
+    "intent_group": "重庆-intent-0",
+    "split": "dev",
+    "challenge": "exact_name",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-99e29d4e7c09610410ef9e43",
+        "relevance": 2,
+        "evidence_group": "e64334112072041e6d3d5144"
+      }
+    ],
+    "reference_facts": [
+      "为了给广大观众提供更优质便捷的参观服务，重庆中国三峡博物馆主馆及下属三峡文物科技保护基地、重庆宋庆龄纪念馆、重庆白鹤梁水下博物馆，自10月1日起实行免预约进馆，观众凭有效身份证件即可有序入馆。其中，重庆宋庆龄纪念馆、重庆白鹤梁水下博物馆需购票进入。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-2-0-1",
+    "query": "我准备去重庆中国三峡博物馆，关于预约的事想问一下：怎么预约，需要提前准备什么？",
+    "city": "重庆",
+    "type": "answerable",
+    "intent_group": "重庆-intent-0",
+    "split": "dev",
+    "challenge": "colloquial",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-99e29d4e7c09610410ef9e43",
+        "relevance": 2,
+        "evidence_group": "e64334112072041e6d3d5144"
+      }
+    ],
+    "reference_facts": [
+      "为了给广大观众提供更优质便捷的参观服务，重庆中国三峡博物馆主馆及下属三峡文物科技保护基地、重庆宋庆龄纪念馆、重庆白鹤梁水下博物馆，自10月1日起实行免预约进馆，观众凭有效身份证件即可有序入馆。其中，重庆宋庆龄纪念馆、重庆白鹤梁水下博物馆需购票进入。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-2-1-0",
+    "query": "重庆中国三峡博物馆：几点开放，有哪些时间限制？",
+    "city": "重庆",
+    "type": "answerable",
+    "intent_group": "重庆-intent-1",
+    "split": "test",
+    "challenge": "exact_name",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-96a4ddd4b81bba0cee2f6961",
+        "relevance": 2,
+        "evidence_group": "068d81d8c12eb381d551cee9"
+      }
+    ],
+    "reference_facts": [
+      "重庆白鹤梁水下博物馆将持续深耕文化遗产活化利用，丰富文旅产品供给，优化游客参观体验，借助各级展会平台深化文旅交流合作、拓展客源市场，让更多游客走进长江水下40米，观赏水下碑林，与千年文明对话。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-2-1-1",
+    "query": "我准备去重庆中国三峡博物馆，关于开放的事想问一下：几点开放，有哪些时间限制？",
+    "city": "重庆",
+    "type": "answerable",
+    "intent_group": "重庆-intent-1",
+    "split": "test",
+    "challenge": "colloquial",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-96a4ddd4b81bba0cee2f6961",
+        "relevance": 2,
+        "evidence_group": "068d81d8c12eb381d551cee9"
+      }
+    ],
+    "reference_facts": [
+      "重庆白鹤梁水下博物馆将持续深耕文化遗产活化利用，丰富文旅产品供给，优化游客参观体验，借助各级展会平台深化文旅交流合作、拓展客源市场，让更多游客走进长江水下40米，观赏水下碑林，与千年文明对话。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-2-2-0",
+    "query": "重庆轨道交通：怎样到达，入口和换乘怎么选？",
+    "city": "重庆",
+    "type": "answerable",
+    "intent_group": "重庆-intent-2",
+    "split": "dev",
+    "challenge": "exact_name",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-4ad31c82bc45acbe8f751862",
+        "relevance": 2,
+        "evidence_group": "b19fc972e2d0b460cece06c4"
+      }
+    ],
+    "reference_facts": [
+      "（四）本市行政区域内 65周岁（含）以上老年人，可自行选择公共交通敬老卡、带“交通联合”标识的第三代社保卡、渝快码三种凭证之一免费乘车。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-2-2-1",
+    "query": "我准备去重庆轨道交通，关于交通的事想问一下：怎样到达，入口和换乘怎么选？",
+    "city": "重庆",
+    "type": "answerable",
+    "intent_group": "重庆-intent-2",
+    "split": "dev",
+    "challenge": "colloquial",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-4ad31c82bc45acbe8f751862",
+        "relevance": 2,
+        "evidence_group": "b19fc972e2d0b460cece06c4"
+      }
+    ],
+    "reference_facts": [
+      "（四）本市行政区域内 65周岁（含）以上老年人，可自行选择公共交通敬老卡、带“交通联合”标识的第三代社保卡、渝快码三种凭证之一免费乘车。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-2-3-0",
+    "query": "重庆中国三峡博物馆：带孩子出行，有什么注意事项？",
+    "city": "重庆",
+    "type": "answerable",
+    "intent_group": "重庆-intent-3",
+    "split": "test",
+    "challenge": "exact_name",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-96a4ddd4b81bba0cee2f6961",
+        "relevance": 2,
+        "evidence_group": "068d81d8c12eb381d551cee9"
+      }
+    ],
+    "reference_facts": [
+      "重庆白鹤梁水下博物馆将持续深耕文化遗产活化利用，丰富文旅产品供给，优化游客参观体验，借助各级展会平台深化文旅交流合作、拓展客源市场，让更多游客走进长江水下40米，观赏水下碑林，与千年文明对话。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-2-3-1",
+    "query": "不要用丽江的攻略，我是问重庆中国三峡博物馆：带孩子出行，有什么注意事项？",
+    "city": "重庆",
+    "type": "answerable",
+    "intent_group": "重庆-intent-3",
+    "split": "test",
+    "challenge": "cross_city",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-96a4ddd4b81bba0cee2f6961",
+        "relevance": 2,
+        "evidence_group": "068d81d8c12eb381d551cee9"
+      }
+    ],
+    "reference_facts": [
+      "重庆白鹤梁水下博物馆将持续深耕文化遗产活化利用，丰富文旅产品供给，优化游客参观体验，借助各级展会平台深化文旅交流合作、拓展客源市场，让更多游客走进长江水下40米，观赏水下碑林，与千年文明对话。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-2-4-0",
+    "query": "重庆中国三峡博物馆：带老人慢慢游览，有什么安排建议？",
+    "city": "重庆",
+    "type": "answerable",
+    "intent_group": "重庆-intent-4",
+    "split": "dev",
+    "challenge": "exact_name",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-96a4ddd4b81bba0cee2f6961",
+        "relevance": 2,
+        "evidence_group": "068d81d8c12eb381d551cee9"
+      }
+    ],
+    "reference_facts": [
+      "重庆白鹤梁水下博物馆将持续深耕文化遗产活化利用，丰富文旅产品供给，优化游客参观体验，借助各级展会平台深化文旅交流合作、拓展客源市场，让更多游客走进长江水下40米，观赏水下碑林，与千年文明对话。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-2-4-1",
+    "query": "网上攻略里城市容易搞混，请只按重庆的重庆中国三峡博物馆回答：带老人慢慢游览，有什么安排建议？",
+    "city": "重庆",
+    "type": "answerable",
+    "intent_group": "重庆-intent-4",
+    "split": "dev",
+    "challenge": "city_disambiguation",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-96a4ddd4b81bba0cee2f6961",
+        "relevance": 2,
+        "evidence_group": "068d81d8c12eb381d551cee9"
+      }
+    ],
+    "reference_facts": [
+      "重庆白鹤梁水下博物馆将持续深耕文化遗产活化利用，丰富文旅产品供给，优化游客参观体验，借助各级展会平台深化文旅交流合作、拓展客源市场，让更多游客走进长江水下40米，观赏水下碑林，与千年文明对话。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-2-5-0",
+    "query": "重庆中国三峡博物馆：遇上下雨，游览时应注意什么？",
+    "city": "重庆",
+    "type": "answerable",
+    "intent_group": "重庆-intent-5",
+    "split": "test",
+    "challenge": "exact_name",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-96a4ddd4b81bba0cee2f6961",
+        "relevance": 2,
+        "evidence_group": "068d81d8c12eb381d551cee9"
+      }
+    ],
+    "reference_facts": [
+      "重庆白鹤梁水下博物馆将持续深耕文化遗产活化利用，丰富文旅产品供给，优化游客参观体验，借助各级展会平台深化文旅交流合作、拓展客源市场，让更多游客走进长江水下40米，观赏水下碑林，与千年文明对话。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-2-6-0",
+    "query": "重庆旅行：购票和入场有哪些条件？",
+    "city": "重庆",
+    "type": "answerable",
+    "intent_group": "重庆-intent-6",
+    "split": "dev",
+    "challenge": "exact_name",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-600a84fc1d8d3e8836177d6e",
+        "relevance": 2,
+        "evidence_group": "10dafc04c043c0d72e222a37"
+      }
+    ],
+    "reference_facts": [
+      "未收取景区门票（特殊游览项目游船：1.万足—鹿角—万足（150元/人） 2.万足—龚滩（单程180元/人，往返260元/人）"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-2-7-0",
+    "query": "重庆中国三峡博物馆：游览有哪些安全提醒？",
+    "city": "重庆",
+    "type": "answerable",
+    "intent_group": "重庆-intent-7",
+    "split": "test",
+    "challenge": "exact_name",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-644ea10d18ba578797269dd9",
+        "relevance": 2,
+        "evidence_group": "45988026a0dbdc4cde0c4493"
+      }
+    ],
+    "reference_facts": [
+      "六、请观众朋友配合安保人员对其携带物品进行安全检查，并配合公安机关和安保人员对可疑物品的开包检查工作，为快速完成安检，请提前将随身携带的金属物品取出，经安检确认后再进场参观。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-2-8-0",
+    "query": "重庆中国三峡博物馆：有哪些服务设施和使用要求？",
+    "city": "重庆",
+    "type": "answerable",
+    "intent_group": "重庆-intent-8",
+    "split": "dev",
+    "challenge": "multi_evidence",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-96a4ddd4b81bba0cee2f6961",
+        "relevance": 2,
+        "evidence_group": "068d81d8c12eb381d551cee9"
+      },
+      {
+        "chunk_id": "semantic-600a84fc1d8d3e8836177d6e",
+        "relevance": 2,
+        "evidence_group": "10dafc04c043c0d72e222a37"
+      }
+    ],
+    "reference_facts": [
+      "重庆白鹤梁水下博物馆将持续深耕文化遗产活化利用，丰富文旅产品供给，优化游客参观体验，借助各级展会平台深化文旅交流合作、拓展客源市场，让更多游客走进长江水下40米，观赏水下碑林，与千年文明对话。",
+      "未收取景区门票（特殊游览项目游船：1.万足—鹿角—万足（150元/人） 2.万足—龚滩（单程180元/人，往返260元/人）"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-2-9-0",
+    "query": "重庆中国三峡博物馆：不想赶路，游览路线怎么安排？",
+    "city": "重庆",
+    "type": "answerable",
+    "intent_group": "重庆-intent-9",
+    "split": "test",
+    "challenge": "multi_evidence",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-96a4ddd4b81bba0cee2f6961",
+        "relevance": 2,
+        "evidence_group": "068d81d8c12eb381d551cee9"
+      },
+      {
+        "chunk_id": "semantic-600a84fc1d8d3e8836177d6e",
+        "relevance": 2,
+        "evidence_group": "10dafc04c043c0d72e222a37"
+      }
+    ],
+    "reference_facts": [
+      "重庆白鹤梁水下博物馆将持续深耕文化遗产活化利用，丰富文旅产品供给，优化游客参观体验，借助各级展会平台深化文旅交流合作、拓展客源市场，让更多游客走进长江水下40米，观赏水下碑林，与千年文明对话。",
+      "未收取景区门票（特殊游览项目游船：1.万足—鹿角—万足（150元/人） 2.万足—龚滩（单程180元/人，往返260元/人）"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-3-0-0",
+    "query": "丽江旅行：怎么预约，需要提前准备什么？",
+    "city": "丽江",
+    "type": "answerable",
+    "intent_group": "丽江-intent-0",
+    "split": "test",
+    "challenge": "exact_name",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-ac3b5c94f62e772a2de842aa",
+        "relevance": 2,
+        "evidence_group": "221b11dc9cedf580806d4718"
+      }
+    ],
+    "reference_facts": [
+      "项目规划规则：丽江某个景点缺少开放、预约或通勤证据时，应区分关键事实缺失与可选信息缺失。关键事实影响当天可行性时，给出待确认或已核验候选替代，并重新检查完整路线；不是清空所有行程，也不是继续声称该景点可用。替换后必须更新实际路线和检查结果，历史草案只供追踪，不得当成最终有效计划。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-3-0-1",
+    "query": "我准备去丽江旅行，关于预约的事想问一下：怎么预约，需要提前准备什么？",
+    "city": "丽江",
+    "type": "answerable",
+    "intent_group": "丽江-intent-0",
+    "split": "test",
+    "challenge": "colloquial",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-ac3b5c94f62e772a2de842aa",
+        "relevance": 2,
+        "evidence_group": "221b11dc9cedf580806d4718"
+      }
+    ],
+    "reference_facts": [
+      "项目规划规则：丽江某个景点缺少开放、预约或通勤证据时，应区分关键事实缺失与可选信息缺失。关键事实影响当天可行性时，给出待确认或已核验候选替代，并重新检查完整路线；不是清空所有行程，也不是继续声称该景点可用。替换后必须更新实际路线和检查结果，历史草案只供追踪，不得当成最终有效计划。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-3-1-0",
+    "query": "丽江旅行：几点开放，有哪些时间限制？",
+    "city": "丽江",
+    "type": "answerable",
+    "intent_group": "丽江-intent-1",
+    "split": "dev",
+    "challenge": "exact_name",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-877ae91ae6aeb9645367e0b1",
+        "relevance": 2,
+        "evidence_group": "136ff0049e5282003f7fb598"
+      }
+    ],
+    "reference_facts": [
+      "项目规划规则：丽江检索结果中的大研、束河、白沙应按具体 POI ID、地址和行政区域消歧，不能因为都含“古镇”就视为同一地点，也不能把另一古镇的开放或交通信息附在当前景点上。生成路线时必须引用候选池中选定的 ID；用户说“那个古镇”而上下文有多个候选时，应先澄清而不是随机选择。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-3-1-1",
+    "query": "我准备去丽江旅行，关于开放的事想问一下：几点开放，有哪些时间限制？",
+    "city": "丽江",
+    "type": "answerable",
+    "intent_group": "丽江-intent-1",
+    "split": "dev",
+    "challenge": "colloquial",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-877ae91ae6aeb9645367e0b1",
+        "relevance": 2,
+        "evidence_group": "136ff0049e5282003f7fb598"
+      }
+    ],
+    "reference_facts": [
+      "项目规划规则：丽江检索结果中的大研、束河、白沙应按具体 POI ID、地址和行政区域消歧，不能因为都含“古镇”就视为同一地点，也不能把另一古镇的开放或交通信息附在当前景点上。生成路线时必须引用候选池中选定的 ID；用户说“那个古镇”而上下文有多个候选时，应先澄清而不是随机选择。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-3-2-0",
+    "query": "丽江旅行：怎样到达，入口和换乘怎么选？",
+    "city": "丽江",
+    "type": "answerable",
+    "intent_group": "丽江-intent-2",
+    "split": "test",
+    "challenge": "exact_name",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-877ae91ae6aeb9645367e0b1",
+        "relevance": 2,
+        "evidence_group": "136ff0049e5282003f7fb598"
+      }
+    ],
+    "reference_facts": [
+      "项目规划规则：丽江检索结果中的大研、束河、白沙应按具体 POI ID、地址和行政区域消歧，不能因为都含“古镇”就视为同一地点，也不能把另一古镇的开放或交通信息附在当前景点上。生成路线时必须引用候选池中选定的 ID；用户说“那个古镇”而上下文有多个候选时，应先澄清而不是随机选择。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-3-2-1",
+    "query": "我准备去丽江旅行，关于交通的事想问一下：怎样到达，入口和换乘怎么选？",
+    "city": "丽江",
+    "type": "answerable",
+    "intent_group": "丽江-intent-2",
+    "split": "test",
+    "challenge": "colloquial",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-877ae91ae6aeb9645367e0b1",
+        "relevance": 2,
+        "evidence_group": "136ff0049e5282003f7fb598"
+      }
+    ],
+    "reference_facts": [
+      "项目规划规则：丽江检索结果中的大研、束河、白沙应按具体 POI ID、地址和行政区域消歧，不能因为都含“古镇”就视为同一地点，也不能把另一古镇的开放或交通信息附在当前景点上。生成路线时必须引用候选池中选定的 ID；用户说“那个古镇”而上下文有多个候选时，应先澄清而不是随机选择。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-3-3-0",
+    "query": "丽江旅行：带孩子出行，有什么注意事项？",
+    "city": "丽江",
+    "type": "answerable",
+    "intent_group": "丽江-intent-3",
+    "split": "dev",
+    "challenge": "exact_name",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-700a885b791a82d7b5bc06fa",
+        "relevance": 2,
+        "evidence_group": "3db5d478fe0953ea29e42837"
+      }
+    ],
+    "reference_facts": [
+      "项目规划规则：丽江亲子路线应询问孩子年龄、睡眠习惯以及用户是否接受晚间活动，避免将晚场演出排在次日早出发前而不给休息。游玩节奏以活动总时长、连续步行与休息间隔核验，不仅看每天景点数。用户明确不安排夜游时，不能因为夜景评价较高就强行加入；晚间场次与票价需实际证据确认。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-3-3-1",
+    "query": "不要用三亚的攻略，我是问丽江旅行：带孩子出行，有什么注意事项？",
+    "city": "丽江",
+    "type": "answerable",
+    "intent_group": "丽江-intent-3",
+    "split": "dev",
+    "challenge": "cross_city",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-700a885b791a82d7b5bc06fa",
+        "relevance": 2,
+        "evidence_group": "3db5d478fe0953ea29e42837"
+      }
+    ],
+    "reference_facts": [
+      "项目规划规则：丽江亲子路线应询问孩子年龄、睡眠习惯以及用户是否接受晚间活动，避免将晚场演出排在次日早出发前而不给休息。游玩节奏以活动总时长、连续步行与休息间隔核验，不仅看每天景点数。用户明确不安排夜游时，不能因为夜景评价较高就强行加入；晚间场次与票价需实际证据确认。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-3-4-0",
+    "query": "丽江旅行：带老人慢慢游览，有什么安排建议？",
+    "city": "丽江",
+    "type": "answerable",
+    "intent_group": "丽江-intent-4",
+    "split": "test",
+    "challenge": "exact_name",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-8b845a40fc272321977ec9e3",
+        "relevance": 2,
+        "evidence_group": "b87e817b872381e172290269"
+      }
+    ],
+    "reference_facts": [
+      "项目规划规则：丽江古城的景点坐标、步行入口与车辆上下客点需要分开核验。驾车路径到达附近不等于汽车可以进入每个古城院落；不能把 POI 中心点直接作为无障碍入口。带行李或同行老人时，应给下车后步行与集合留时间。缺少入口证据时明确待确认，按实际步行路径计算，不用直线距离替代。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-3-4-1",
+    "query": "网上攻略里城市容易搞混，请只按丽江的丽江旅行回答：带老人慢慢游览，有什么安排建议？",
+    "city": "丽江",
+    "type": "answerable",
+    "intent_group": "丽江-intent-4",
+    "split": "test",
+    "challenge": "city_disambiguation",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-8b845a40fc272321977ec9e3",
+        "relevance": 2,
+        "evidence_group": "b87e817b872381e172290269"
+      }
+    ],
+    "reference_facts": [
+      "项目规划规则：丽江古城的景点坐标、步行入口与车辆上下客点需要分开核验。驾车路径到达附近不等于汽车可以进入每个古城院落；不能把 POI 中心点直接作为无障碍入口。带行李或同行老人时，应给下车后步行与集合留时间。缺少入口证据时明确待确认，按实际步行路径计算，不用直线距离替代。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-3-5-0",
+    "query": "丽江旅行：遇上下雨，游览时应注意什么？",
+    "city": "丽江",
+    "type": "answerable",
+    "intent_group": "丽江-intent-5",
+    "split": "dev",
+    "challenge": "exact_name",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-d3dd52ecb68edd8e0de08323",
+        "relevance": 2,
+        "evidence_group": "7b798ca6c3bf9cd6d1cfac1e"
+      }
+    ],
+    "reference_facts": [
+      "项目规划规则：丽江雨天路线应减少未经核验的长距离户外步行，增加候选池中已确认开放的室内活动和休息时段。对湿滑路面可做一般安全提醒，但不能声称某条道路已封闭或积水，除非有适用日期的实时证据。雨天备选仍需核对预约与开放时间，替换景点后重新检查通勤和餐饮，不只修改文字备注。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-3-6-0",
+    "query": "丽江旅行：购票和入场有哪些条件？",
+    "city": "丽江",
+    "type": "answerable",
+    "intent_group": "丽江-intent-6",
+    "split": "test",
+    "challenge": "exact_name",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-8d0c80fb4547f4b7f2b480c2",
+        "relevance": 2,
+        "evidence_group": "cf54d5898c40d69054e4a040"
+      }
+    ],
+    "reference_facts": [
+      "项目规划规则：丽江虎跳峡行程应明确用户希望观景还是长距离徒步，再核验所选入口、活动路线、开放条件与通勤。不能把景区门票信息当成所有徒步路线的安全证明。老人、亲子或不愿走台阶的用户，应优先寻找符合需求的具体活动；信息不足时提示确认，不凭宣传图片推断全程平坦或完全无障碍。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-3-7-0",
+    "query": "丽江旅行：游览有哪些安全提醒？",
+    "city": "丽江",
+    "type": "answerable",
+    "intent_group": "丽江-intent-7",
+    "split": "dev",
+    "challenge": "exact_name",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-878407d908d2decb0791f998",
+        "relevance": 2,
+        "evidence_group": "d7273926ee3c0a48bf96b4f1"
+      }
+    ],
+    "reference_facts": [
+      "据了解，为持续擦亮文明旅游底色，守护好黑龙潭公园的山水生态与古建筑风貌，黑龙潭公园常态化开展文明旅游引导工作。景区在湖边步道、古建筑群、草坪景观、网红打卡点等重点区域，设置了清晰规范的文明旅游提示标识，引导游客爱护生态植被、守护文物建筑、安全文明观景，让文明出游成为丽江假日旅游的新风尚。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-3-8-0",
+    "query": "丽江旅行：有哪些服务设施和使用要求？",
+    "city": "丽江",
+    "type": "answerable",
+    "intent_group": "丽江-intent-8",
+    "split": "test",
+    "challenge": "multi_evidence",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-eea2340c767aff82879dba5c",
+        "relevance": 2,
+        "evidence_group": "c9ce18fdf21c5ebaec17f9a0"
+      },
+      {
+        "chunk_id": "semantic-04ea527c51b119754b825059",
+        "relevance": 2,
+        "evidence_group": "d69082ec5f87fcc4951fcea0"
+      }
+    ],
+    "reference_facts": [
+      "记者看到，景区游客虽然很多，但园内游览秩序井然，未出现拥挤喧闹、随意破坏等不文明现象，游客自觉遵守景区管理规定，打卡拍照排队礼让，观赏景观时爱护草木植被，不翻越防护设施、不触碰古建筑及文物，游园时轻声慢行、文明礼让，共同守护景区雅致静谧的游览环境。",
+      "深入开展文旅志愿服务“红马甲”行动，为入滇游客提供文明劝导、旅游问询、便民帮扶、路线指引等志愿服务，为老年人、儿童、残障人士等特殊群体游客提供贴心帮助、暖心服务，主动劝导不文明行为，自觉当好“有一种叫云南的生活”代言人，共同营造文明云南良好氛围。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-3-9-0",
+    "query": "丽江旅行：不想赶路，游览路线怎么安排？",
+    "city": "丽江",
+    "type": "answerable",
+    "intent_group": "丽江-intent-9",
+    "split": "dev",
+    "challenge": "multi_evidence",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-04ea527c51b119754b825059",
+        "relevance": 2,
+        "evidence_group": "d69082ec5f87fcc4951fcea0"
+      },
+      {
+        "chunk_id": "semantic-877ae91ae6aeb9645367e0b1",
+        "relevance": 2,
+        "evidence_group": "136ff0049e5282003f7fb598"
+      }
+    ],
+    "reference_facts": [
+      "深入开展文旅志愿服务“红马甲”行动，为入滇游客提供文明劝导、旅游问询、便民帮扶、路线指引等志愿服务，为老年人、儿童、残障人士等特殊群体游客提供贴心帮助、暖心服务，主动劝导不文明行为，自觉当好“有一种叫云南的生活”代言人，共同营造文明云南良好氛围。",
+      "项目规划规则：丽江检索结果中的大研、束河、白沙应按具体 POI ID、地址和行政区域消歧，不能因为都含“古镇”就视为同一地点，也不能把另一古镇的开放或交通信息附在当前景点上。生成路线时必须引用候选池中选定的 ID；用户说“那个古镇”而上下文有多个候选时，应先澄清而不是随机选择。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-4-0-0",
+    "query": "蜈支洲岛：怎么预约，需要提前准备什么？",
+    "city": "三亚",
+    "type": "answerable",
+    "intent_group": "三亚-intent-0",
+    "split": "dev",
+    "challenge": "exact_name",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-82139e45734f001b2fec6684",
+        "relevance": 2,
+        "evidence_group": "56351423e4137d9d15aa0503"
+      }
+    ],
+    "reference_facts": [
+      "2、残障人士（除行动不便的）登岛需有至少1名监护人或同行人员陪同。有视觉障碍携带导盲犬的游客，需至少提前一天、持有效证件预约上岛（预约电话:400-114-6666）。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-4-0-1",
+    "query": "我准备去蜈支洲岛，关于预约的事想问一下：怎么预约，需要提前准备什么？",
+    "city": "三亚",
+    "type": "answerable",
+    "intent_group": "三亚-intent-0",
+    "split": "dev",
+    "challenge": "colloquial",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-82139e45734f001b2fec6684",
+        "relevance": 2,
+        "evidence_group": "56351423e4137d9d15aa0503"
+      }
+    ],
+    "reference_facts": [
+      "2、残障人士（除行动不便的）登岛需有至少1名监护人或同行人员陪同。有视觉障碍携带导盲犬的游客，需至少提前一天、持有效证件预约上岛（预约电话:400-114-6666）。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-4-1-0",
+    "query": "蜈支洲岛：几点开放，有哪些时间限制？",
+    "city": "三亚",
+    "type": "answerable",
+    "intent_group": "三亚-intent-1",
+    "split": "test",
+    "challenge": "exact_name",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-fd4761b3f3d655c45afa3ddb",
+        "relevance": 2,
+        "evidence_group": "37db59681a79b0e11a4bc442"
+      }
+    ],
+    "reference_facts": [
+      "海棠游是蜈支洲岛旅游区新开发的一款游览国家海岸海棠湾的海上观光产品，既游海棠湾又游蜈支洲，绕岛一圈，站在海南观南海，在南海上观海南，领悟蜈支洲爱情岛的浪漫。带你领略斥资千亿打造出酒店建筑群落以及国家海岸海棠湾的旖旎风光。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-4-1-1",
+    "query": "我准备去蜈支洲岛，关于开放的事想问一下：几点开放，有哪些时间限制？",
+    "city": "三亚",
+    "type": "answerable",
+    "intent_group": "三亚-intent-1",
+    "split": "test",
+    "challenge": "colloquial",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-fd4761b3f3d655c45afa3ddb",
+        "relevance": 2,
+        "evidence_group": "37db59681a79b0e11a4bc442"
+      }
+    ],
+    "reference_facts": [
+      "海棠游是蜈支洲岛旅游区新开发的一款游览国家海岸海棠湾的海上观光产品，既游海棠湾又游蜈支洲，绕岛一圈，站在海南观南海，在南海上观海南，领悟蜈支洲爱情岛的浪漫。带你领略斥资千亿打造出酒店建筑群落以及国家海岸海棠湾的旖旎风光。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-4-2-0",
+    "query": "蜈支洲岛：怎样到达，入口和换乘怎么选？",
+    "city": "三亚",
+    "type": "answerable",
+    "intent_group": "三亚-intent-2",
+    "split": "dev",
+    "challenge": "exact_name",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-fd4761b3f3d655c45afa3ddb",
+        "relevance": 2,
+        "evidence_group": "37db59681a79b0e11a4bc442"
+      }
+    ],
+    "reference_facts": [
+      "海棠游是蜈支洲岛旅游区新开发的一款游览国家海岸海棠湾的海上观光产品，既游海棠湾又游蜈支洲，绕岛一圈，站在海南观南海，在南海上观海南，领悟蜈支洲爱情岛的浪漫。带你领略斥资千亿打造出酒店建筑群落以及国家海岸海棠湾的旖旎风光。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-4-2-1",
+    "query": "我准备去蜈支洲岛，关于交通的事想问一下：怎样到达，入口和换乘怎么选？",
+    "city": "三亚",
+    "type": "answerable",
+    "intent_group": "三亚-intent-2",
+    "split": "dev",
+    "challenge": "colloquial",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-fd4761b3f3d655c45afa3ddb",
+        "relevance": 2,
+        "evidence_group": "37db59681a79b0e11a4bc442"
+      }
+    ],
+    "reference_facts": [
+      "海棠游是蜈支洲岛旅游区新开发的一款游览国家海岸海棠湾的海上观光产品，既游海棠湾又游蜈支洲，绕岛一圈，站在海南观南海，在南海上观海南，领悟蜈支洲爱情岛的浪漫。带你领略斥资千亿打造出酒店建筑群落以及国家海岸海棠湾的旖旎风光。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-4-3-0",
+    "query": "三亚旅行：带孩子出行，有什么注意事项？",
+    "city": "三亚",
+    "type": "answerable",
+    "intent_group": "三亚-intent-3",
+    "split": "test",
+    "challenge": "exact_name",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-07f17773e92d8f747d8de0c6",
+        "relevance": 2,
+        "evidence_group": "5999a4124471f1f33345d46b"
+      }
+    ],
+    "reference_facts": [
+      "项目规划规则：三亚亲子行程必须分别核验登岛、车辆乘坐、驾驶以及各海上娱乐项目的年龄与健康要求，不能从“孩子可以上岛”推出“孩子可以参加所有项目”。同一页面中的驾驶与乘车条件可能不同，出现冲突时不得挑选较宽松条款直接放行，应核实具体产品。餐饮、补水、等船与休息也要占用时间预算。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-4-3-1",
+    "query": "不要用景德镇的攻略，我是问三亚旅行：带孩子出行，有什么注意事项？",
+    "city": "三亚",
+    "type": "answerable",
+    "intent_group": "三亚-intent-3",
+    "split": "test",
+    "challenge": "cross_city",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-07f17773e92d8f747d8de0c6",
+        "relevance": 2,
+        "evidence_group": "5999a4124471f1f33345d46b"
+      }
+    ],
+    "reference_facts": [
+      "项目规划规则：三亚亲子行程必须分别核验登岛、车辆乘坐、驾驶以及各海上娱乐项目的年龄与健康要求，不能从“孩子可以上岛”推出“孩子可以参加所有项目”。同一页面中的驾驶与乘车条件可能不同，出现冲突时不得挑选较宽松条款直接放行，应核实具体产品。餐饮、补水、等船与休息也要占用时间预算。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-4-4-0",
+    "query": "蜈支洲岛：带老人慢慢游览，有什么安排建议？",
+    "city": "三亚",
+    "type": "answerable",
+    "intent_group": "三亚-intent-4",
+    "split": "dev",
+    "challenge": "exact_name",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-04ec94ef1185493802b56df9",
+        "relevance": 2,
+        "evidence_group": "18c1374ce21c9ad055f62bd4"
+      }
+    ],
+    "reference_facts": [
+      "1、 本景区游客运输工具为客船，为保证游客安全， 七十岁以上的老人、已怀孕的妇女、行动或智力有障碍者、酗酒或精神状态不佳者、其他不适合登岛者(如： 患有高血压、心脏病等基础疾病或半年内做过大型手术的 )谢绝登船上岛。由此给您带来不便，敬请谅解。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-4-4-1",
+    "query": "网上攻略里城市容易搞混，请只按三亚的蜈支洲岛回答：带老人慢慢游览，有什么安排建议？",
+    "city": "三亚",
+    "type": "answerable",
+    "intent_group": "三亚-intent-4",
+    "split": "dev",
+    "challenge": "city_disambiguation",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-04ec94ef1185493802b56df9",
+        "relevance": 2,
+        "evidence_group": "18c1374ce21c9ad055f62bd4"
+      }
+    ],
+    "reference_facts": [
+      "1、 本景区游客运输工具为客船，为保证游客安全， 七十岁以上的老人、已怀孕的妇女、行动或智力有障碍者、酗酒或精神状态不佳者、其他不适合登岛者(如： 患有高血压、心脏病等基础疾病或半年内做过大型手术的 )谢绝登船上岛。由此给您带来不便，敬请谅解。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-4-5-0",
+    "query": "蜈支洲岛：遇上下雨，游览时应注意什么？",
+    "city": "三亚",
+    "type": "answerable",
+    "intent_group": "三亚-intent-5",
+    "split": "test",
+    "challenge": "exact_name",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-fd4761b3f3d655c45afa3ddb",
+        "relevance": 2,
+        "evidence_group": "37db59681a79b0e11a4bc442"
+      }
+    ],
+    "reference_facts": [
+      "海棠游是蜈支洲岛旅游区新开发的一款游览国家海岸海棠湾的海上观光产品，既游海棠湾又游蜈支洲，绕岛一圈，站在海南观南海，在南海上观海南，领悟蜈支洲爱情岛的浪漫。带你领略斥资千亿打造出酒店建筑群落以及国家海岸海棠湾的旖旎风光。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-4-6-0",
+    "query": "蜈支洲岛：购票和入场有哪些条件？",
+    "city": "三亚",
+    "type": "answerable",
+    "intent_group": "三亚-intent-6",
+    "split": "dev",
+    "challenge": "exact_name",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-fd4761b3f3d655c45afa3ddb",
+        "relevance": 2,
+        "evidence_group": "37db59681a79b0e11a4bc442"
+      }
+    ],
+    "reference_facts": [
+      "海棠游是蜈支洲岛旅游区新开发的一款游览国家海岸海棠湾的海上观光产品，既游海棠湾又游蜈支洲，绕岛一圈，站在海南观南海，在南海上观海南，领悟蜈支洲爱情岛的浪漫。带你领略斥资千亿打造出酒店建筑群落以及国家海岸海棠湾的旖旎风光。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-4-7-0",
+    "query": "蜈支洲岛：游览有哪些安全提醒？",
+    "city": "三亚",
+    "type": "answerable",
+    "intent_group": "三亚-intent-7",
+    "split": "test",
+    "challenge": "exact_name",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-04ec94ef1185493802b56df9",
+        "relevance": 2,
+        "evidence_group": "18c1374ce21c9ad055f62bd4"
+      }
+    ],
+    "reference_facts": [
+      "1、 本景区游客运输工具为客船，为保证游客安全， 七十岁以上的老人、已怀孕的妇女、行动或智力有障碍者、酗酒或精神状态不佳者、其他不适合登岛者(如： 患有高血压、心脏病等基础疾病或半年内做过大型手术的 )谢绝登船上岛。由此给您带来不便，敬请谅解。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-4-8-0",
+    "query": "蜈支洲岛：有哪些服务设施和使用要求？",
+    "city": "三亚",
+    "type": "answerable",
+    "intent_group": "三亚-intent-8",
+    "split": "dev",
+    "challenge": "multi_evidence",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-fd4761b3f3d655c45afa3ddb",
+        "relevance": 2,
+        "evidence_group": "37db59681a79b0e11a4bc442"
+      },
+      {
+        "chunk_id": "semantic-04ec94ef1185493802b56df9",
+        "relevance": 2,
+        "evidence_group": "18c1374ce21c9ad055f62bd4"
+      }
+    ],
+    "reference_facts": [
+      "海棠游是蜈支洲岛旅游区新开发的一款游览国家海岸海棠湾的海上观光产品，既游海棠湾又游蜈支洲，绕岛一圈，站在海南观南海，在南海上观海南，领悟蜈支洲爱情岛的浪漫。带你领略斥资千亿打造出酒店建筑群落以及国家海岸海棠湾的旖旎风光。",
+      "1、 本景区游客运输工具为客船，为保证游客安全， 七十岁以上的老人、已怀孕的妇女、行动或智力有障碍者、酗酒或精神状态不佳者、其他不适合登岛者(如： 患有高血压、心脏病等基础疾病或半年内做过大型手术的 )谢绝登船上岛。由此给您带来不便，敬请谅解。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-4-9-0",
+    "query": "蜈支洲岛：不想赶路，游览路线怎么安排？",
+    "city": "三亚",
+    "type": "answerable",
+    "intent_group": "三亚-intent-9",
+    "split": "test",
+    "challenge": "multi_evidence",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-f4bb7b1178f527bdad2c10db",
+        "relevance": 2,
+        "evidence_group": "dbe69ebfe2e0158a5e5610f0"
+      },
+      {
+        "chunk_id": "semantic-fd4761b3f3d655c45afa3ddb",
+        "relevance": 2,
+        "evidence_group": "37db59681a79b0e11a4bc442"
+      }
+    ],
+    "reference_facts": [
+      "5、出于安全考量，部分环岛路线禁止步行，仅允许乘坐电瓶车游览观光（禁止步行路段，请关注景区官网、门船票信息以及景区导览图）。",
+      "海棠游是蜈支洲岛旅游区新开发的一款游览国家海岸海棠湾的海上观光产品，既游海棠湾又游蜈支洲，绕岛一圈，站在海南观南海，在南海上观海南，领悟蜈支洲爱情岛的浪漫。带你领略斥资千亿打造出酒店建筑群落以及国家海岸海棠湾的旖旎风光。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-5-0-0",
+    "query": "景德镇旅行：怎么预约，需要提前准备什么？",
+    "city": "景德镇",
+    "type": "answerable",
+    "intent_group": "景德镇-intent-0",
+    "split": "test",
+    "challenge": "exact_name",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-a4536c05dd27b16fe7b06961",
+        "relevance": 2,
+        "evidence_group": "3a61d101c25b5dc9a4ac4f62"
+      }
+    ],
+    "reference_facts": [
+      "珠山区在陶溪川、三宝等重点片区全面推行商家预约通行机制，布设可移动预约车牌提示系统，实现预约车辆精准识别、有序放行；创新推行RFID无感射频标签智能化管理模式，推进片区非机动车实名建档、无感识别、精准管控；新增八处高位监控摄像头，启用无人机空中巡查，构建“地面视频+空中巡防”立体化巡查体系。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-5-0-1",
+    "query": "我准备去景德镇旅行，关于预约的事想问一下：怎么预约，需要提前准备什么？",
+    "city": "景德镇",
+    "type": "answerable",
+    "intent_group": "景德镇-intent-0",
+    "split": "test",
+    "challenge": "colloquial",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-a4536c05dd27b16fe7b06961",
+        "relevance": 2,
+        "evidence_group": "3a61d101c25b5dc9a4ac4f62"
+      }
+    ],
+    "reference_facts": [
+      "珠山区在陶溪川、三宝等重点片区全面推行商家预约通行机制，布设可移动预约车牌提示系统，实现预约车辆精准识别、有序放行；创新推行RFID无感射频标签智能化管理模式，推进片区非机动车实名建档、无感识别、精准管控；新增八处高位监控摄像头，启用无人机空中巡查，构建“地面视频+空中巡防”立体化巡查体系。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-5-1-0",
+    "query": "景德镇旅行：几点开放，有哪些时间限制？",
+    "city": "景德镇",
+    "type": "answerable",
+    "intent_group": "景德镇-intent-1",
+    "split": "dev",
+    "challenge": "exact_name",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-a4536c05dd27b16fe7b06961",
+        "relevance": 2,
+        "evidence_group": "3a61d101c25b5dc9a4ac4f62"
+      }
+    ],
+    "reference_facts": [
+      "珠山区在陶溪川、三宝等重点片区全面推行商家预约通行机制，布设可移动预约车牌提示系统，实现预约车辆精准识别、有序放行；创新推行RFID无感射频标签智能化管理模式，推进片区非机动车实名建档、无感识别、精准管控；新增八处高位监控摄像头，启用无人机空中巡查，构建“地面视频+空中巡防”立体化巡查体系。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-5-1-1",
+    "query": "我准备去景德镇旅行，关于开放的事想问一下：几点开放，有哪些时间限制？",
+    "city": "景德镇",
+    "type": "answerable",
+    "intent_group": "景德镇-intent-1",
+    "split": "dev",
+    "challenge": "colloquial",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-a4536c05dd27b16fe7b06961",
+        "relevance": 2,
+        "evidence_group": "3a61d101c25b5dc9a4ac4f62"
+      }
+    ],
+    "reference_facts": [
+      "珠山区在陶溪川、三宝等重点片区全面推行商家预约通行机制，布设可移动预约车牌提示系统，实现预约车辆精准识别、有序放行；创新推行RFID无感射频标签智能化管理模式，推进片区非机动车实名建档、无感识别、精准管控；新增八处高位监控摄像头，启用无人机空中巡查，构建“地面视频+空中巡防”立体化巡查体系。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-5-2-0",
+    "query": "景德镇旅行：怎样到达，入口和换乘怎么选？",
+    "city": "景德镇",
+    "type": "answerable",
+    "intent_group": "景德镇-intent-2",
+    "split": "test",
+    "challenge": "exact_name",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-b69c16851654d4bc43564923",
+        "relevance": 2,
+        "evidence_group": "a0374a3d5b8be689c5e3da5a"
+      }
+    ],
+    "reference_facts": [
+      "此次景德镇北站15条客运线路的开通，是助力瓷都文旅融合发展、践行“爱景德镇”文明理念的重要行动。未来，景德镇市交通运输部门将持续优化交通接驳服务，不断提升客运线路运营效率，以更完善的交通网络、更优质的出行服务，助力全市城乡联动发展，让广大市民和游客畅行瓷都、畅游美景。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-5-2-1",
+    "query": "我准备去景德镇旅行，关于交通的事想问一下：怎样到达，入口和换乘怎么选？",
+    "city": "景德镇",
+    "type": "answerable",
+    "intent_group": "景德镇-intent-2",
+    "split": "test",
+    "challenge": "colloquial",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-b69c16851654d4bc43564923",
+        "relevance": 2,
+        "evidence_group": "a0374a3d5b8be689c5e3da5a"
+      }
+    ],
+    "reference_facts": [
+      "此次景德镇北站15条客运线路的开通，是助力瓷都文旅融合发展、践行“爱景德镇”文明理念的重要行动。未来，景德镇市交通运输部门将持续优化交通接驳服务，不断提升客运线路运营效率，以更完善的交通网络、更优质的出行服务，助力全市城乡联动发展，让广大市民和游客畅行瓷都、畅游美景。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-5-3-0",
+    "query": "景德镇旅行：带孩子出行，有什么注意事项？",
+    "city": "景德镇",
+    "type": "answerable",
+    "intent_group": "景德镇-intent-3",
+    "split": "dev",
+    "challenge": "exact_name",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-a4536c05dd27b16fe7b06961",
+        "relevance": 2,
+        "evidence_group": "3a61d101c25b5dc9a4ac4f62"
+      }
+    ],
+    "reference_facts": [
+      "珠山区在陶溪川、三宝等重点片区全面推行商家预约通行机制，布设可移动预约车牌提示系统，实现预约车辆精准识别、有序放行；创新推行RFID无感射频标签智能化管理模式，推进片区非机动车实名建档、无感识别、精准管控；新增八处高位监控摄像头，启用无人机空中巡查，构建“地面视频+空中巡防”立体化巡查体系。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-5-3-1",
+    "query": "不要用南京的攻略，我是问景德镇旅行：带孩子出行，有什么注意事项？",
+    "city": "景德镇",
+    "type": "answerable",
+    "intent_group": "景德镇-intent-3",
+    "split": "dev",
+    "challenge": "cross_city",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-a4536c05dd27b16fe7b06961",
+        "relevance": 2,
+        "evidence_group": "3a61d101c25b5dc9a4ac4f62"
+      }
+    ],
+    "reference_facts": [
+      "珠山区在陶溪川、三宝等重点片区全面推行商家预约通行机制，布设可移动预约车牌提示系统，实现预约车辆精准识别、有序放行；创新推行RFID无感射频标签智能化管理模式，推进片区非机动车实名建档、无感识别、精准管控；新增八处高位监控摄像头，启用无人机空中巡查，构建“地面视频+空中巡防”立体化巡查体系。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-5-4-0",
+    "query": "景德镇旅行：带老人慢慢游览，有什么安排建议？",
+    "city": "景德镇",
+    "type": "answerable",
+    "intent_group": "景德镇-intent-4",
+    "split": "test",
+    "challenge": "exact_name",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-4884c457e1c12f563b7aba0c",
+        "relevance": 2,
+        "evidence_group": "bac7c5affe50194c07b2060f"
+      }
+    ],
+    "reference_facts": [
+      "项目规划规则：景德镇行程包含瑶里与市区活动时，应先核验实际跨区域交通耗时，再决定是否同日组合，不能仅按景点名称数量平均分配。用户希望慢游或带老人时优先减少往返与换乘，为返程等待和休息留余量。候选池没有可靠交通证据时提供分日建议并说明不确定性，不编造末班车时间来证明可行。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-5-4-1",
+    "query": "网上攻略里城市容易搞混，请只按景德镇的景德镇旅行回答：带老人慢慢游览，有什么安排建议？",
+    "city": "景德镇",
+    "type": "answerable",
+    "intent_group": "景德镇-intent-4",
+    "split": "test",
+    "challenge": "city_disambiguation",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-4884c457e1c12f563b7aba0c",
+        "relevance": 2,
+        "evidence_group": "bac7c5affe50194c07b2060f"
+      }
+    ],
+    "reference_facts": [
+      "项目规划规则：景德镇行程包含瑶里与市区活动时，应先核验实际跨区域交通耗时，再决定是否同日组合，不能仅按景点名称数量平均分配。用户希望慢游或带老人时优先减少往返与换乘，为返程等待和休息留余量。候选池没有可靠交通证据时提供分日建议并说明不确定性，不编造末班车时间来证明可行。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-5-5-0",
+    "query": "景德镇旅行：遇上下雨，游览时应注意什么？",
+    "city": "景德镇",
+    "type": "answerable",
+    "intent_group": "景德镇-intent-5",
+    "split": "dev",
+    "challenge": "exact_name",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-a4536c05dd27b16fe7b06961",
+        "relevance": 2,
+        "evidence_group": "3a61d101c25b5dc9a4ac4f62"
+      }
+    ],
+    "reference_facts": [
+      "珠山区在陶溪川、三宝等重点片区全面推行商家预约通行机制，布设可移动预约车牌提示系统，实现预约车辆精准识别、有序放行；创新推行RFID无感射频标签智能化管理模式，推进片区非机动车实名建档、无感识别、精准管控；新增八处高位监控摄像头，启用无人机空中巡查，构建“地面视频+空中巡防”立体化巡查体系。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-5-6-0",
+    "query": "景德镇旅行：购票和入场有哪些条件？",
+    "city": "景德镇",
+    "type": "answerable",
+    "intent_group": "景德镇-intent-6",
+    "split": "test",
+    "challenge": "exact_name",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-a4536c05dd27b16fe7b06961",
+        "relevance": 2,
+        "evidence_group": "3a61d101c25b5dc9a4ac4f62"
+      }
+    ],
+    "reference_facts": [
+      "珠山区在陶溪川、三宝等重点片区全面推行商家预约通行机制，布设可移动预约车牌提示系统，实现预约车辆精准识别、有序放行；创新推行RFID无感射频标签智能化管理模式，推进片区非机动车实名建档、无感识别、精准管控；新增八处高位监控摄像头，启用无人机空中巡查，构建“地面视频+空中巡防”立体化巡查体系。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-5-7-0",
+    "query": "景德镇旅行：游览有哪些安全提醒？",
+    "city": "景德镇",
+    "type": "answerable",
+    "intent_group": "景德镇-intent-7",
+    "split": "dev",
+    "challenge": "exact_name",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-a4536c05dd27b16fe7b06961",
+        "relevance": 2,
+        "evidence_group": "3a61d101c25b5dc9a4ac4f62"
+      }
+    ],
+    "reference_facts": [
+      "珠山区在陶溪川、三宝等重点片区全面推行商家预约通行机制，布设可移动预约车牌提示系统，实现预约车辆精准识别、有序放行；创新推行RFID无感射频标签智能化管理模式，推进片区非机动车实名建档、无感识别、精准管控；新增八处高位监控摄像头，启用无人机空中巡查，构建“地面视频+空中巡防”立体化巡查体系。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-5-8-0",
+    "query": "景德镇旅行：有哪些服务设施和使用要求？",
+    "city": "景德镇",
+    "type": "answerable",
+    "intent_group": "景德镇-intent-8",
+    "split": "test",
+    "challenge": "multi_evidence",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-f13ce4221c2e98a3fe302094",
+        "relevance": 2,
+        "evidence_group": "5f9a06885e3216e9fae78a2c"
+      },
+      {
+        "chunk_id": "semantic-a4536c05dd27b16fe7b06961",
+        "relevance": 2,
+        "evidence_group": "3a61d101c25b5dc9a4ac4f62"
+      }
+    ],
+    "reference_facts": [
+      "市城管局联合多部门启动了陶溪川一期核心片区和东城区骑行友好环境改造，重塑机非慢行系统，取消路边非机动车停放点，保障非机动车道全程贯通；推进新厂路3.5公里骑行友好改造及珠山大道、景德大道等路段标线施划，逐步构建人车分流的出行环境。雕塑瓷厂南门出入口增设物理隔离设施，落实人行道与非机动车道分流管控。",
+      "珠山区在陶溪川、三宝等重点片区全面推行商家预约通行机制，布设可移动预约车牌提示系统，实现预约车辆精准识别、有序放行；创新推行RFID无感射频标签智能化管理模式，推进片区非机动车实名建档、无感识别、精准管控；新增八处高位监控摄像头，启用无人机空中巡查，构建“地面视频+空中巡防”立体化巡查体系。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-5-9-0",
+    "query": "景德镇旅行：不想赶路，游览路线怎么安排？",
+    "city": "景德镇",
+    "type": "answerable",
+    "intent_group": "景德镇-intent-9",
+    "split": "dev",
+    "challenge": "multi_evidence",
+    "relevant_chunks": [
+      {
+        "chunk_id": "semantic-bff5fa0ff891cbafe0e37801",
+        "relevance": 2,
+        "evidence_group": "84ebcb1d9323d81d76938737"
+      },
+      {
+        "chunk_id": "semantic-0ca0c3a0e5d85812154b3064",
+        "relevance": 2,
+        "evidence_group": "af2f4b4d0fb563234e223094"
+      }
+    ],
+    "reference_facts": [
+      "在硬件升级的同时，智慧化手段为交通疏导提供了精准支撑。市公安局交管支队主动向高德、百度等手机导航App企业推送管控信息，引导车辆合理规划路线；在景德大道沿线布设广播喇叭，引导游客至三宝雕塑停车场换乘，倡导“P+R”绿色出行模式。",
+      "项目规划规则：景德镇北站发布的多条客运线路可能共享西客站、中国陶瓷博物馆等停靠点，但终点不同。检索召回相似线路时应同时核对方向、起点、终点和站点顺序，不能把两条线路拼成不存在的直达车。未知票价、班次与运营变化必须单独确认；路线规划输出应保留所依据线路的来源，方便人工核查。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "drafted_by": "template_evidence_proposal",
+    "change_log": [
+      "Proposed evidence may not answer query; human must revise query, labels and facts.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-in_corpus_missing-0",
+    "query": "南京今天剩余预约名额是多少？",
+    "type": "in_corpus_missing",
+    "intent_group": "in_corpus_missing-0",
+    "split": "dev",
+    "relevant_chunks": [],
+    "reference_facts": [],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "change_log": [
+      "Human must verify absence from corpus and classify boundary.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-out_of_corpus-0",
+    "query": "杭州西湖明天游船时刻？",
+    "type": "out_of_corpus",
+    "intent_group": "out_of_corpus-0",
+    "split": "dev",
+    "relevant_chunks": [],
+    "reference_facts": [],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "change_log": [
+      "Human must verify absence from corpus and classify boundary.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-in_corpus_missing-1",
+    "query": "上海明天实时降雨概率是多少？",
+    "type": "in_corpus_missing",
+    "intent_group": "in_corpus_missing-1",
+    "split": "dev",
+    "relevant_chunks": [],
+    "reference_facts": [],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "change_log": [
+      "Human must verify absence from corpus and classify boundary.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-out_of_corpus-1",
+    "query": "北京故宫入场要求？",
+    "type": "out_of_corpus",
+    "intent_group": "out_of_corpus-1",
+    "split": "dev",
+    "relevant_chunks": [],
+    "reference_facts": [],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "change_log": [
+      "Human must verify absence from corpus and classify boundary.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-in_corpus_missing-2",
+    "query": "重庆现在排队分钟数是多少？",
+    "type": "in_corpus_missing",
+    "intent_group": "in_corpus_missing-2",
+    "split": "dev",
+    "relevant_chunks": [],
+    "reference_facts": [],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "change_log": [
+      "Human must verify absence from corpus and classify boundary.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-out_of_corpus-2",
+    "query": "成都博物馆怎么预约？",
+    "type": "out_of_corpus",
+    "intent_group": "out_of_corpus-2",
+    "split": "dev",
+    "relevant_chunks": [],
+    "reference_facts": [],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "change_log": [
+      "Human must verify absence from corpus and classify boundary.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-in_corpus_missing-3",
+    "query": "丽江当前停车空位是多少？",
+    "type": "in_corpus_missing",
+    "intent_group": "in_corpus_missing-3",
+    "split": "dev",
+    "relevant_chunks": [],
+    "reference_facts": [],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "change_log": [
+      "Human must verify absence from corpus and classify boundary.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-out_of_corpus-3",
+    "query": "南京如何办理签证延期？",
+    "type": "out_of_corpus",
+    "intent_group": "out_of_corpus-3",
+    "split": "dev",
+    "relevant_chunks": [],
+    "reference_facts": [],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "change_log": [
+      "Human must verify absence from corpus and classify boundary.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-in_corpus_missing-4",
+    "query": "三亚今日临时闭馆通知是多少？",
+    "type": "in_corpus_missing",
+    "intent_group": "in_corpus_missing-4",
+    "split": "dev",
+    "relevant_chunks": [],
+    "reference_facts": [],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "change_log": [
+      "Human must verify absence from corpus and classify boundary.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-out_of_corpus-4",
+    "query": "上海工作居住证政策？",
+    "type": "out_of_corpus",
+    "intent_group": "out_of_corpus-4",
+    "split": "dev",
+    "relevant_chunks": [],
+    "reference_facts": [],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "change_log": [
+      "Human must verify absence from corpus and classify boundary.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-in_corpus_missing-5",
+    "query": "景德镇今天剩余预约名额是多少？",
+    "type": "in_corpus_missing",
+    "intent_group": "in_corpus_missing-5",
+    "split": "dev",
+    "relevant_chunks": [],
+    "reference_facts": [],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "change_log": [
+      "Human must verify absence from corpus and classify boundary.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-out_of_corpus-5",
+    "query": "重庆房贷利率是多少？",
+    "type": "out_of_corpus",
+    "intent_group": "out_of_corpus-5",
+    "split": "dev",
+    "relevant_chunks": [],
+    "reference_facts": [],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "change_log": [
+      "Human must verify absence from corpus and classify boundary.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-in_corpus_missing-6",
+    "query": "南京明天实时降雨概率是多少？",
+    "type": "in_corpus_missing",
+    "intent_group": "in_corpus_missing-6",
+    "split": "dev",
+    "relevant_chunks": [],
+    "reference_facts": [],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "change_log": [
+      "Human must verify absence from corpus and classify boundary.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-out_of_corpus-6",
+    "query": "昆明酒店当前库存？",
+    "type": "out_of_corpus",
+    "intent_group": "out_of_corpus-6",
+    "split": "dev",
+    "relevant_chunks": [],
+    "reference_facts": [],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "change_log": [
+      "Human must verify absence from corpus and classify boundary.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-in_corpus_missing-7",
+    "query": "上海现在排队分钟数是多少？",
+    "type": "in_corpus_missing",
+    "intent_group": "in_corpus_missing-7",
+    "split": "dev",
+    "relevant_chunks": [],
+    "reference_facts": [],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "change_log": [
+      "Human must verify absence from corpus and classify boundary.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-out_of_corpus-7",
+    "query": "三亚潜水资格证考试报名？",
+    "type": "out_of_corpus",
+    "intent_group": "out_of_corpus-7",
+    "split": "test",
+    "relevant_chunks": [],
+    "reference_facts": [],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "change_log": [
+      "Human must verify absence from corpus and classify boundary.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-in_corpus_missing-8",
+    "query": "重庆当前停车空位是多少？",
+    "type": "in_corpus_missing",
+    "intent_group": "in_corpus_missing-8",
+    "split": "test",
+    "relevant_chunks": [],
+    "reference_facts": [],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "change_log": [
+      "Human must verify absence from corpus and classify boundary.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-out_of_corpus-8",
+    "query": "景德镇陶瓷出口报关？",
+    "type": "out_of_corpus",
+    "intent_group": "out_of_corpus-8",
+    "split": "test",
+    "relevant_chunks": [],
+    "reference_facts": [],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "change_log": [
+      "Human must verify absence from corpus and classify boundary.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-in_corpus_missing-9",
+    "query": "丽江今日临时闭馆通知是多少？",
+    "type": "in_corpus_missing",
+    "intent_group": "in_corpus_missing-9",
+    "split": "test",
+    "relevant_chunks": [],
+    "reference_facts": [],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "change_log": [
+      "Human must verify absence from corpus and classify boundary.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-out_of_corpus-9",
+    "query": "西安兵马俑公交路线？",
+    "type": "out_of_corpus",
+    "intent_group": "out_of_corpus-9",
+    "split": "test",
+    "relevant_chunks": [],
+    "reference_facts": [],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "change_log": [
+      "Human must verify absence from corpus and classify boundary.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-in_corpus_missing-10",
+    "query": "三亚今天剩余预约名额是多少？",
+    "type": "in_corpus_missing",
+    "intent_group": "in_corpus_missing-10",
+    "split": "test",
+    "relevant_chunks": [],
+    "reference_facts": [],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "change_log": [
+      "Human must verify absence from corpus and classify boundary.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-out_of_corpus-10",
+    "query": "苏州博物馆预约？",
+    "type": "out_of_corpus",
+    "intent_group": "out_of_corpus-10",
+    "split": "test",
+    "relevant_chunks": [],
+    "reference_facts": [],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "change_log": [
+      "Human must verify absence from corpus and classify boundary.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-in_corpus_missing-11",
+    "query": "景德镇明天实时降雨概率是多少？",
+    "type": "in_corpus_missing",
+    "intent_group": "in_corpus_missing-11",
+    "split": "test",
+    "relevant_chunks": [],
+    "reference_facts": [],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "change_log": [
+      "Human must verify absence from corpus and classify boundary.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-out_of_corpus-11",
+    "query": "青岛海边实时风浪？",
+    "type": "out_of_corpus",
+    "intent_group": "out_of_corpus-11",
+    "split": "test",
+    "relevant_chunks": [],
+    "reference_facts": [],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "change_log": [
+      "Human must verify absence from corpus and classify boundary.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-in_corpus_missing-12",
+    "query": "南京现在排队分钟数是多少？",
+    "type": "in_corpus_missing",
+    "intent_group": "in_corpus_missing-12",
+    "split": "test",
+    "relevant_chunks": [],
+    "reference_facts": [],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "change_log": [
+      "Human must verify absence from corpus and classify boundary.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-out_of_corpus-12",
+    "query": "昆明机场转机行李规则？",
+    "type": "out_of_corpus",
+    "intent_group": "out_of_corpus-12",
+    "split": "test",
+    "relevant_chunks": [],
+    "reference_facts": [],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "change_log": [
+      "Human must verify absence from corpus and classify boundary.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-in_corpus_missing-13",
+    "query": "上海当前停车空位是多少？",
+    "type": "in_corpus_missing",
+    "intent_group": "in_corpus_missing-13",
+    "split": "test",
+    "relevant_chunks": [],
+    "reference_facts": [],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "change_log": [
+      "Human must verify absence from corpus and classify boundary.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-out_of_corpus-13",
+    "query": "MySQL事务隔离原理？",
+    "type": "out_of_corpus",
+    "intent_group": "out_of_corpus-13",
+    "split": "test",
+    "relevant_chunks": [],
+    "reference_facts": [],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "change_log": [
+      "Human must verify absence from corpus and classify boundary.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-in_corpus_missing-14",
+    "query": "重庆今日临时闭馆通知是多少？",
+    "type": "in_corpus_missing",
+    "intent_group": "in_corpus_missing-14",
+    "split": "test",
+    "relevant_chunks": [],
+    "reference_facts": [],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "change_log": [
+      "Human must verify absence from corpus and classify boundary.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  },
+  {
+    "id": "v2-out_of_corpus-14",
+    "query": "如何修改Redis过期策略？",
+    "type": "out_of_corpus",
+    "intent_group": "out_of_corpus-14",
+    "split": "test",
+    "relevant_chunks": [],
+    "reference_facts": [],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "reviewed_at": null,
+    "annotation_version": "v2-draft",
+    "change_log": [
+      "Human must verify absence from corpus and classify boundary.",
+      "Chunk variant remapped; relevance requires human reconfirmation."
+    ]
+  }
+]

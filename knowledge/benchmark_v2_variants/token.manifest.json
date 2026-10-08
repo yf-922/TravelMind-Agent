@@ -1,0 +1,18 @@
+{
+  "fingerprint": "c41d3bd7ecb319cb8f29930f29f09c173dc80a78d4bac8f1ad3c7fc011a3399f",
+  "embedding": {
+    "model": "BAAI/bge-small-zh-v1.5",
+    "revision": "7999e1d3359715c523056ef9478215996d62a620",
+    "distance": "cosine",
+    "normalize": true,
+    "query_prefix": "为这个句子生成表示以用于检索相关文章：",
+    "max_tokens": 512
+  },
+  "strategy": "token",
+  "soft_chars": 420,
+  "max_tokens": 512,
+  "overlap": 0,
+  "chunks": 126,
+  "input_paragraphs": 122,
+  "source_fingerprint": "34ab000eff4bd5ef7f0c9f27bcfaed25d056a0a0f71bb7443170a3b071a01b86"
+}
