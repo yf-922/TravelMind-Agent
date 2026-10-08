@@ -1,0 +1,103 @@
+{
+  "status": "blocked_before_paid_calls",
+  "configuration": {
+    "model": "grok-4.6",
+    "url": "https://www.micuapi.ai/v1",
+    "k": 3,
+    "retriever": "hybrid",
+    "embedding": {
+      "model": "BAAI/bge-small-zh-v1.5",
+      "revision": "7999e1d3359715c523056ef9478215996d62a620",
+      "distance": "cosine",
+      "normalize": true,
+      "query_prefix": "为这个句子生成表示以用于检索相关文章：",
+      "max_tokens": 512
+    },
+    "lexical": {
+      "name": "jieba",
+      "version": "0.42.1",
+      "cut_all": false,
+      "dictionary_sha256": "7197c3211ddd98962b036cdf40324d1ea2bfaa12bd028e68faa70111a88e12a8",
+      "bm25_version": "0.2.2",
+      "non_word_tokens_removed": true
+    },
+    "max_review_rounds": 3,
+    "max_time_check_rounds": 3,
+    "max_output_tokens": 2048,
+    "temperature": 0.3,
+    "reasoning_effort": "low",
+    "sdk_max_retries": 0,
+    "responses_api": "0",
+    "upstream": "fixed_verified_candidates_weather_and_drive_replay"
+  },
+  "cases": "354d34473c3af8235ac40dbe862b30cdf73a70a05b09a09a2931b76fe4625d7b",
+  "facts": "892912aea35699bdd276994445b73276f3353b94e8c5ef69b88c783b3b6c9f67",
+  "maps": "a6cfa7b4ff3415db5a515e9c9a69a7f08663667e6326154c2005d193aca12d1c",
+  "implementation": "8cb73d47ad6b8e6a6764d6d1a24b9c4ddadc243d44286b40d6aeafd2bcff874e",
+  "preflight": {
+    "requests": 5,
+    "initial_plans": 10,
+    "model_call_limit": 540,
+    "CNY_limit": 10,
+    "cost_estimate": null,
+    "billing_status": "unverified"
+  },
+  "results": [],
+  "calls": [],
+  "label_status": "exploratory_only",
+  "production_default_changed": false,
+  "summary": {
+    "without_knowledge": {
+      "planned_trials": 5,
+      "attempted_trials": 0,
+      "completed_trials": 0,
+      "availability_attempted": null,
+      "execution_coverage": 0.0,
+      "interest_precision_including_failures": null,
+      "interest_precision_success_only": null,
+      "hard_constraint_pass_rate": null,
+      "exclusion_violation_rate": null,
+      "mean_rework_completed": null,
+      "mean_elapsed_ms_completed": null,
+      "failure_rate_attempted": null,
+      "retrieval_failure_rate": null,
+      "actual_usage_measured_trials": 0,
+      "actual_tokens_known_usage_only": {
+        "input_tokens": 0,
+        "output_tokens": 0
+      },
+      "unknown_interest_scoring": "manual refusal/evidence check required; excluded from numeric interest scoring"
+    },
+    "with_knowledge": {
+      "planned_trials": 5,
+      "attempted_trials": 0,
+      "completed_trials": 0,
+      "availability_attempted": null,
+      "execution_coverage": 0.0,
+      "interest_precision_including_failures": null,
+      "interest_precision_success_only": null,
+      "hard_constraint_pass_rate": null,
+      "exclusion_violation_rate": null,
+      "mean_rework_completed": null,
+      "mean_elapsed_ms_completed": null,
+      "failure_rate_attempted": null,
+      "retrieval_failure_rate": null,
+      "actual_usage_measured_trials": 0,
+      "actual_tokens_known_usage_only": {
+        "input_tokens": 0,
+        "output_tokens": 0
+      },
+      "unknown_interest_scoring": "manual refusal/evidence check required; excluded from numeric interest scoring"
+    }
+  },
+  "paired_diagnostics": {
+    "paired_answerable_trials": 0,
+    "intent_groups": 0,
+    "group_mean_precision_delta": null,
+    "bootstrap_95_percent_interval": null,
+    "improvements": [],
+    "regressions": [],
+    "no_numeric_improvement": []
+  },
+  "stop_reason": "ValueError: verified account-specific CNY billing rates required; multiplier unknown"
+}

@@ -1,0 +1,321 @@
+{
+  "status": "retrieval_diagnostics_only_not_final_route_evidence",
+  "configuration": {
+    "model": "grok-4.6",
+    "url": "https://www.micuapi.ai/v1",
+    "k": 3,
+    "retriever": "hybrid",
+    "embedding": {
+      "model": "BAAI/bge-small-zh-v1.5",
+      "revision": "7999e1d3359715c523056ef9478215996d62a620",
+      "distance": "cosine",
+      "normalize": true,
+      "query_prefix": "为这个句子生成表示以用于检索相关文章：",
+      "max_tokens": 512
+    },
+    "lexical": {
+      "name": "jieba",
+      "version": "0.42.1",
+      "cut_all": false,
+      "dictionary_sha256": "7197c3211ddd98962b036cdf40324d1ea2bfaa12bd028e68faa70111a88e12a8",
+      "bm25_version": "0.2.2",
+      "non_word_tokens_removed": true
+    },
+    "max_review_rounds": 3,
+    "max_time_check_rounds": 3,
+    "max_output_tokens": 2048,
+    "temperature": 0.3,
+    "reasoning_effort": "low",
+    "sdk_max_retries": 0,
+    "responses_api": "0",
+    "upstream": "fixed_verified_candidates_weather_and_drive_replay"
+  },
+  "cases": "354d34473c3af8235ac40dbe862b30cdf73a70a05b09a09a2931b76fe4625d7b",
+  "facts": "892912aea35699bdd276994445b73276f3353b94e8c5ef69b88c783b3b6c9f67",
+  "maps": "a6cfa7b4ff3415db5a515e9c9a69a7f08663667e6326154c2005d193aca12d1c",
+  "implementation": "8cb73d47ad6b8e6a6764d6d1a24b9c4ddadc243d44286b40d6aeafd2bcff874e",
+  "preflight": {
+    "requests": 15,
+    "initial_plans": 30,
+    "model_call_limit": 540,
+    "CNY_limit": 10,
+    "cost_estimate": null,
+    "billing_status": "unverified"
+  },
+  "results": [],
+  "calls": [],
+  "label_status": "exploratory_only",
+  "production_default_changed": false,
+  "summary": {
+    "without_knowledge": {
+      "planned_trials": 15,
+      "attempted_trials": 0,
+      "completed_trials": 0,
+      "availability_attempted": null,
+      "execution_coverage": 0.0,
+      "interest_precision_including_failures": null,
+      "interest_precision_success_only": null,
+      "hard_constraint_pass_rate": null,
+      "exclusion_violation_rate": null,
+      "mean_rework_completed": null,
+      "mean_elapsed_ms_completed": null,
+      "failure_rate_attempted": null,
+      "retrieval_failure_rate": null,
+      "actual_usage_measured_trials": 0,
+      "actual_tokens_known_usage_only": {
+        "input_tokens": 0,
+        "output_tokens": 0
+      },
+      "unknown_interest_scoring": "manual refusal/evidence check required; excluded from numeric interest scoring"
+    },
+    "with_knowledge": {
+      "planned_trials": 15,
+      "attempted_trials": 0,
+      "completed_trials": 0,
+      "availability_attempted": null,
+      "execution_coverage": 0.0,
+      "interest_precision_including_failures": null,
+      "interest_precision_success_only": null,
+      "hard_constraint_pass_rate": null,
+      "exclusion_violation_rate": null,
+      "mean_rework_completed": null,
+      "mean_elapsed_ms_completed": null,
+      "failure_rate_attempted": null,
+      "retrieval_failure_rate": null,
+      "actual_usage_measured_trials": 0,
+      "actual_tokens_known_usage_only": {
+        "input_tokens": 0,
+        "output_tokens": 0
+      },
+      "unknown_interest_scoring": "manual refusal/evidence check required; excluded from numeric interest scoring"
+    }
+  },
+  "paired_diagnostics": {
+    "paired_answerable_trials": 0,
+    "intent_groups": 0,
+    "group_mean_precision_delta": null,
+    "bootstrap_95_percent_interval": null,
+    "improvements": [],
+    "regressions": [],
+    "no_numeric_improvement": []
+  },
+  "retrieval_diagnostics": [
+    {
+      "case_id": "interest-南京-01",
+      "sources": [
+        "nanjing_museum_history",
+        "interest_b4c5aa40346c042a",
+        "interest_bcd0981a9c64dc89"
+      ],
+      "candidate_entities": [
+        "南京博物院",
+        "南京总统府",
+        "总统府",
+        "玄武湖",
+        "玄武湖景区"
+      ]
+    },
+    {
+      "case_id": "interest-上海-01",
+      "sources": [
+        "interest_90ec80f62860ffdf",
+        "shanghai_museum_special_products",
+        "interest_25a29915abb41827"
+      ],
+      "candidate_entities": [
+        "上海博物馆东馆",
+        "上海自然博物馆",
+        "上海迪士尼度假区"
+      ]
+    },
+    {
+      "case_id": "interest-三亚-01",
+      "sources": [
+        "wuzhizhou_activity_types",
+        "interest_493b6e346dac06d7",
+        "interest_f463160d936a96b9"
+      ],
+      "candidate_entities": [
+        "南山大小洞天旅游区",
+        "大小洞天",
+        "天涯海角游览区",
+        "蜈支洲岛",
+        "蜈支洲岛旅游区",
+        "蜈支洲岛旅游风景区"
+      ]
+    },
+    {
+      "case_id": "interest-南京-02",
+      "sources": [
+        "interest_bcd0981a9c64dc89",
+        "nanjing_museum_history",
+        "interest_b4c5aa40346c042a"
+      ],
+      "candidate_entities": [
+        "南京博物院",
+        "南京总统府",
+        "总统府",
+        "玄武湖",
+        "玄武湖景区"
+      ]
+    },
+    {
+      "case_id": "interest-上海-02",
+      "sources": [
+        "interest_90ec80f62860ffdf",
+        "interest_15bfb1df39cfb7e5",
+        "shanghai_museum_special_products"
+      ],
+      "candidate_entities": [
+        "上海动物园",
+        "上海博物馆东馆",
+        "上海自然博物馆"
+      ]
+    },
+    {
+      "case_id": "interest-三亚-02",
+      "sources": [
+        "wuzhizhou_activity_types",
+        "interest_493b6e346dac06d7",
+        "interest_d78fbeaccfb68d62"
+      ],
+      "candidate_entities": [
+        "三亚南山文化旅游区",
+        "天涯海角游览区",
+        "蜈支洲岛",
+        "蜈支洲岛旅游区",
+        "蜈支洲岛旅游风景区"
+      ]
+    },
+    {
+      "case_id": "interest-南京-03",
+      "sources": [
+        "interest_bcd0981a9c64dc89",
+        "interest_b4c5aa40346c042a",
+        "nanjing_museum_history"
+      ],
+      "candidate_entities": [
+        "南京博物院",
+        "南京总统府",
+        "总统府",
+        "玄武湖",
+        "玄武湖景区"
+      ]
+    },
+    {
+      "case_id": "interest-上海-03",
+      "sources": [
+        "interest_90ec80f62860ffdf",
+        "interest_15bfb1df39cfb7e5",
+        "shanghai_museum_special_products"
+      ],
+      "candidate_entities": [
+        "上海动物园",
+        "上海博物馆东馆",
+        "上海自然博物馆"
+      ]
+    },
+    {
+      "case_id": "interest-三亚-03",
+      "sources": [
+        "wuzhizhou_activity_types",
+        "interest_493b6e346dac06d7",
+        "interest_d78fbeaccfb68d62"
+      ],
+      "candidate_entities": [
+        "三亚南山文化旅游区",
+        "天涯海角游览区",
+        "蜈支洲岛",
+        "蜈支洲岛旅游区",
+        "蜈支洲岛旅游风景区"
+      ]
+    },
+    {
+      "case_id": "interest-南京-04",
+      "sources": [
+        "nanjing_museum_history",
+        "interest_b4c5aa40346c042a",
+        "interest_bcd0981a9c64dc89"
+      ],
+      "candidate_entities": [
+        "南京博物院",
+        "南京总统府",
+        "总统府",
+        "玄武湖",
+        "玄武湖景区"
+      ]
+    },
+    {
+      "case_id": "interest-上海-04",
+      "sources": [
+        "interest_90ec80f62860ffdf",
+        "interest_25a29915abb41827",
+        "interest_15bfb1df39cfb7e5"
+      ],
+      "candidate_entities": [
+        "上海动物园",
+        "上海自然博物馆",
+        "上海迪士尼度假区"
+      ]
+    },
+    {
+      "case_id": "interest-三亚-04",
+      "sources": [
+        "wuzhizhou_activity_types",
+        "interest_493b6e346dac06d7",
+        "interest_d78fbeaccfb68d62"
+      ],
+      "candidate_entities": [
+        "三亚南山文化旅游区",
+        "天涯海角游览区",
+        "蜈支洲岛",
+        "蜈支洲岛旅游区",
+        "蜈支洲岛旅游风景区"
+      ]
+    },
+    {
+      "case_id": "interest-南京-05",
+      "sources": [
+        "nanjing_museum_history",
+        "interest_b4c5aa40346c042a",
+        "interest_bcd0981a9c64dc89"
+      ],
+      "candidate_entities": [
+        "南京博物院",
+        "南京总统府",
+        "总统府",
+        "玄武湖",
+        "玄武湖景区"
+      ]
+    },
+    {
+      "case_id": "interest-上海-05",
+      "sources": [
+        "interest_90ec80f62860ffdf",
+        "interest_25a29915abb41827",
+        "interest_15bfb1df39cfb7e5"
+      ],
+      "candidate_entities": [
+        "上海动物园",
+        "上海自然博物馆",
+        "上海迪士尼度假区"
+      ]
+    },
+    {
+      "case_id": "interest-三亚-05",
+      "sources": [
+        "wuzhizhou_activity_types",
+        "interest_493b6e346dac06d7",
+        "interest_f463160d936a96b9"
+      ],
+      "candidate_entities": [
+        "南山大小洞天旅游区",
+        "大小洞天",
+        "天涯海角游览区",
+        "蜈支洲岛",
+        "蜈支洲岛旅游区",
+        "蜈支洲岛旅游风景区"
+      ]
+    }
+  ]
+}
