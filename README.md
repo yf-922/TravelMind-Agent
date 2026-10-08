@@ -23,6 +23,16 @@
 
 ## 项目能力
 
+### 独立旅游知识检索评测（未切换生产默认）
+
+`knowledge/benchmark_v1` 保存公开官方页面快照、稳定 chunk ID、URL、城市、主题、采集日期、内容哈希、证据组和采集失败记录。
+当前只有 38 个有效快照 chunk（上海、景德镇），未达到六城 120–180 chunk 目标；106 条问题为程序起草且全部 `pending_review`，不称人工 gold。
+新评测入口 `scripts/sweep_rag_v2.py` 对比关键词、固定 jieba 分词的 BM25、真实 Chroma 向量、BM25+向量标准 RRF、关键词+向量标准 RRF以及旧取整 RRF。
+索引位于独立 `data/travel_knowledge_benchmark_v1`，按语料指纹命名 collection，生产语料、索引、默认 Top-3 保持不变。
+显式向量/融合失败会报告错误，不能用关键词降级冒充融合；开发扫 k=1/2/3/5/8/10 和 c=20/60/100。
+仅待审核开发草稿执行烟测，冻结测试未执行；详细边界与命令见 [检索评测报告](docs/rag_retrieval_v2_smoke.md)。
+安装独立依赖：`python -m pip install -r requirements-rag-eval.txt`；生成端及 Judge 尚未运行，预算预估见报告。
+
 ### 有界候选池 ReAct
 
 主链路在需求分析、查询改写和天气查询完成后，先通过 `attraction_search`

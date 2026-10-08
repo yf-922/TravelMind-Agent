@@ -1,0 +1,2276 @@
+[
+  {
+    "id": "draft-000-0",
+    "query": "上海 参观预约，具体要求是什么",
+    "type": "draft_answerable",
+    "intent_group": "6f221e0746636e64df3f63b8",
+    "split": "dev",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-0e9595fa1114a72a98c962b9",
+        "relevance": 2,
+        "evidence_group": "6f221e0746636e64df3f63b8"
+      }
+    ],
+    "reference_facts": [
+      "\"世界树之巅：美洲古代文明大展\"期间（2026.7.9-2027.11.14）上海博物馆人民广场馆将不再展出其他展览，所有观众均需购票参观。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-000-1",
+    "query": "上海 参观预约，出行前应该注意什么",
+    "type": "draft_answerable",
+    "intent_group": "6f221e0746636e64df3f63b8",
+    "split": "dev",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-0e9595fa1114a72a98c962b9",
+        "relevance": 2,
+        "evidence_group": "6f221e0746636e64df3f63b8"
+      }
+    ],
+    "reference_facts": [
+      "\"世界树之巅：美洲古代文明大展\"期间（2026.7.9-2027.11.14）上海博物馆人民广场馆将不再展出其他展览，所有观众均需购票参观。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-001-2",
+    "query": "景德镇 瓷都迎客“路路通”，景德镇全方位护航国庆假期交通畅行！，具体要求是什么",
+    "type": "draft_answerable",
+    "intent_group": "3a61d101c25b5dc9a4ac4f62",
+    "split": "dev",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-11377143c56f7a517ba09994",
+        "relevance": 2,
+        "evidence_group": "3a61d101c25b5dc9a4ac4f62"
+      }
+    ],
+    "reference_facts": [
+      "珠山区在陶溪川、三宝等重点片区全面推行商家预约通行机制，布设可移动预约车牌提示系统，实现预约车辆精准识别、有序放行；创新推行RFID无感射频标签智能化管理模式，推进片区非机动车实名建档、无感识别、精准管控；新增八处高位监控摄像头，启用无人机空中巡查，构建“地面视频+空中巡防”立体化巡查体系。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-001-3",
+    "query": "景德镇 瓷都迎客“路路通”，景德镇全方位护航国庆假期交通畅行！，出行前应该注意什么",
+    "type": "draft_answerable",
+    "intent_group": "3a61d101c25b5dc9a4ac4f62",
+    "split": "dev",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-11377143c56f7a517ba09994",
+        "relevance": 2,
+        "evidence_group": "3a61d101c25b5dc9a4ac4f62"
+      }
+    ],
+    "reference_facts": [
+      "珠山区在陶溪川、三宝等重点片区全面推行商家预约通行机制，布设可移动预约车牌提示系统，实现预约车辆精准识别、有序放行；创新推行RFID无感射频标签智能化管理模式，推进片区非机动车实名建档、无感识别、精准管控；新增八处高位监控摄像头，启用无人机空中巡查，构建“地面视频+空中巡防”立体化巡查体系。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-002-4",
+    "query": "景德镇 景德镇北站15条客运线路全新开通！直达乐平、瑶里景区等地！，具体要求是什么",
+    "type": "draft_answerable",
+    "intent_group": "a0374a3d5b8be689c5e3da5a",
+    "split": "dev",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-12f4c6a57d4c198f0ff5b1d4",
+        "relevance": 2,
+        "evidence_group": "a0374a3d5b8be689c5e3da5a"
+      }
+    ],
+    "reference_facts": [
+      "此次景德镇北站15条客运线路的开通，是助力瓷都文旅融合发展、践行“爱景德镇”文明理念的重要行动。未来，景德镇市交通运输部门将持续优化交通接驳服务，不断提升客运线路运营效率，以更完善的交通网络、更优质的出行服务，助力全市城乡联动发展，让广大市民和游客畅行瓷都、畅游美景。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-002-5",
+    "query": "景德镇 景德镇北站15条客运线路全新开通！直达乐平、瑶里景区等地！，出行前应该注意什么",
+    "type": "draft_answerable",
+    "intent_group": "a0374a3d5b8be689c5e3da5a",
+    "split": "dev",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-12f4c6a57d4c198f0ff5b1d4",
+        "relevance": 2,
+        "evidence_group": "a0374a3d5b8be689c5e3da5a"
+      }
+    ],
+    "reference_facts": [
+      "此次景德镇北站15条客运线路的开通，是助力瓷都文旅融合发展、践行“爱景德镇”文明理念的重要行动。未来，景德镇市交通运输部门将持续优化交通接驳服务，不断提升客运线路运营效率，以更完善的交通网络、更优质的出行服务，助力全市城乡联动发展，让广大市民和游客畅行瓷都、畅游美景。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-003-6",
+    "query": "上海 参观预约，具体要求是什么",
+    "type": "draft_answerable",
+    "intent_group": "7d805afb3901509434a3a27f",
+    "split": "test",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-1bc56b5a9f2eef0a9567e415",
+        "relevance": 2,
+        "evidence_group": "7d805afb3901509434a3a27f"
+      }
+    ],
+    "reference_facts": [
+      "当馆内参观人数超过最大日承载量或瞬时承载量时，两馆将启动限流措施，敬请谅解。如遇入场观众较多，请排队耐心等候。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-003-7",
+    "query": "上海 参观预约，出行前应该注意什么",
+    "type": "draft_answerable",
+    "intent_group": "7d805afb3901509434a3a27f",
+    "split": "test",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-1bc56b5a9f2eef0a9567e415",
+        "relevance": 2,
+        "evidence_group": "7d805afb3901509434a3a27f"
+      }
+    ],
+    "reference_facts": [
+      "当馆内参观人数超过最大日承载量或瞬时承载量时，两馆将启动限流措施，敬请谅解。如遇入场观众较多，请排队耐心等候。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-004-8",
+    "query": "上海 团队预约，具体要求是什么",
+    "type": "draft_answerable",
+    "intent_group": "a37b01971daefc237c535c26",
+    "split": "test",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-2d293e2c6c5d5bd32e6d3035",
+        "relevance": 2,
+        "evidence_group": "a37b01971daefc237c535c26"
+      }
+    ],
+    "reference_facts": [
+      "第一条 凡20人及以上（含20人）团队前来参观，须提前7天（不含当天）进行电话预约。本馆团队参观实行每日限额管理，预约名额有限，约满即止，不接受无预约临时团队入馆参观。人民广场馆预约电话：021－63724550；东馆预约电话：021－20729998（请在开放时间内拨打）。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-004-9",
+    "query": "上海 团队预约，出行前应该注意什么",
+    "type": "draft_answerable",
+    "intent_group": "a37b01971daefc237c535c26",
+    "split": "test",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-2d293e2c6c5d5bd32e6d3035",
+        "relevance": 2,
+        "evidence_group": "a37b01971daefc237c535c26"
+      }
+    ],
+    "reference_facts": [
+      "第一条 凡20人及以上（含20人）团队前来参观，须提前7天（不含当天）进行电话预约。本馆团队参观实行每日限额管理，预约名额有限，约满即止，不接受无预约临时团队入馆参观。人民广场馆预约电话：021－63724550；东馆预约电话：021－20729998（请在开放时间内拨打）。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-005-10",
+    "query": "景德镇 瓷都迎客“路路通”，景德镇全方位护航国庆假期交通畅行！，具体要求是什么",
+    "type": "draft_answerable",
+    "intent_group": "e3b6a06fc5924f8cbc2962f2",
+    "split": "test",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-31e3891043ccb5720a38855f",
+        "relevance": 2,
+        "evidence_group": "e3b6a06fc5924f8cbc2962f2"
+      }
+    ],
+    "reference_facts": [
+      "在票制与配套服务上，我市推出国庆假期期间10元通票全天不限次畅坐，适用于城市公交及三条专线，凭票还可解锁陶博城免费礼品、陶溪川门票8折等福利；创新推出酒店直通专线，以景德镇北站为起点，动态串联核心酒店集群及民宿片区，运营时间10:30至23:30，试运行票价3元/人次，车内设行李放置区、配备软包座椅及语音讲解，驾驶员提供行李搬运协助。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-005-11",
+    "query": "景德镇 瓷都迎客“路路通”，景德镇全方位护航国庆假期交通畅行！，出行前应该注意什么",
+    "type": "draft_answerable",
+    "intent_group": "e3b6a06fc5924f8cbc2962f2",
+    "split": "test",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-31e3891043ccb5720a38855f",
+        "relevance": 2,
+        "evidence_group": "e3b6a06fc5924f8cbc2962f2"
+      }
+    ],
+    "reference_facts": [
+      "在票制与配套服务上，我市推出国庆假期期间10元通票全天不限次畅坐，适用于城市公交及三条专线，凭票还可解锁陶博城免费礼品、陶溪川门票8折等福利；创新推出酒店直通专线，以景德镇北站为起点，动态串联核心酒店集群及民宿片区，运营时间10:30至23:30，试运行票价3元/人次，车内设行李放置区、配备软包座椅及语音讲解，驾驶员提供行李搬运协助。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-006-12",
+    "query": "景德镇 景德镇北站15条客运线路全新开通！直达乐平、瑶里景区等地！，具体要求是什么",
+    "type": "draft_answerable",
+    "intent_group": "f38270fefe101e1f6c54e65d",
+    "split": "dev",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-3c5ff557758e51226bed8323",
+        "relevance": 2,
+        "evidence_group": "f38270fefe101e1f6c54e65d"
+      }
+    ],
+    "reference_facts": [
+      "西客站 —中国 陶瓷博物馆 — 地王大厦 — 陶溪川大剧院 — 景德镇 北站北广场 — 党校（技工学院） — 洪岩仙境"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-006-13",
+    "query": "景德镇 景德镇北站15条客运线路全新开通！直达乐平、瑶里景区等地！，出行前应该注意什么",
+    "type": "draft_answerable",
+    "intent_group": "f38270fefe101e1f6c54e65d",
+    "split": "dev",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-3c5ff557758e51226bed8323",
+        "relevance": 2,
+        "evidence_group": "f38270fefe101e1f6c54e65d"
+      }
+    ],
+    "reference_facts": [
+      "西客站 —中国 陶瓷博物馆 — 地王大厦 — 陶溪川大剧院 — 景德镇 北站北广场 — 党校（技工学院） — 洪岩仙境"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-007-14",
+    "query": "上海 参观预约，具体要求是什么",
+    "type": "draft_answerable",
+    "intent_group": "0e3201d82b32511fb4f26c78",
+    "split": "test",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-474005a336ad39ebeb6a3e0c",
+        "relevance": 2,
+        "evidence_group": "0e3201d82b32511fb4f26c78"
+      }
+    ],
+    "reference_facts": [
+      "2024年9月15日起，上海博物馆东馆试行散客免预约入馆。观众可持有效身份证件原件，从B1层东门通过安检后刷证入馆。观众停车请从杨高南路或丁香路进入\"上海花木时光里\"地下车库（收费标准请以商场公告为准）"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-007-15",
+    "query": "上海 参观预约，出行前应该注意什么",
+    "type": "draft_answerable",
+    "intent_group": "0e3201d82b32511fb4f26c78",
+    "split": "test",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-474005a336ad39ebeb6a3e0c",
+        "relevance": 2,
+        "evidence_group": "0e3201d82b32511fb4f26c78"
+      }
+    ],
+    "reference_facts": [
+      "2024年9月15日起，上海博物馆东馆试行散客免预约入馆。观众可持有效身份证件原件，从B1层东门通过安检后刷证入馆。观众停车请从杨高南路或丁香路进入\"上海花木时光里\"地下车库（收费标准请以商场公告为准）"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-008-16",
+    "query": "上海 团队预约，具体要求是什么",
+    "type": "draft_answerable",
+    "intent_group": "cc5347f4374689ae7a5ff08b",
+    "split": "test",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-4b213fe0f7be6f08901c8b02",
+        "relevance": 2,
+        "evidence_group": "cc5347f4374689ae7a5ff08b"
+      }
+    ],
+    "reference_facts": [
+      "第二条 所有成功预约的团队，须按本馆要求备齐入馆材料。当日入馆必备材料包括：当日有效参观预约编号、全体参观人员携带有效身份证件原件（以备查验）、团队人员信息名单原件（加盖单位公章）、团队参观介绍信原件（加盖单位公章），材料不全、彩色复印、实到人数未满20人或不符合要求者不予入馆。进馆入口：人民广场馆统一由南门西侧预约团队通道入馆并办理购票手续；东馆统一由北门预约团队通道办理入馆手续。学生团体参观现场需签署《学生团队参观安全责任书》。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-008-17",
+    "query": "上海 团队预约，出行前应该注意什么",
+    "type": "draft_answerable",
+    "intent_group": "cc5347f4374689ae7a5ff08b",
+    "split": "test",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-4b213fe0f7be6f08901c8b02",
+        "relevance": 2,
+        "evidence_group": "cc5347f4374689ae7a5ff08b"
+      }
+    ],
+    "reference_facts": [
+      "第二条 所有成功预约的团队，须按本馆要求备齐入馆材料。当日入馆必备材料包括：当日有效参观预约编号、全体参观人员携带有效身份证件原件（以备查验）、团队人员信息名单原件（加盖单位公章）、团队参观介绍信原件（加盖单位公章），材料不全、彩色复印、实到人数未满20人或不符合要求者不予入馆。进馆入口：人民广场馆统一由南门西侧预约团队通道入馆并办理购票手续；东馆统一由北门预约团队通道办理入馆手续。学生团体参观现场需签署《学生团队参观安全责任书》。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-009-18",
+    "query": "上海 参观预约，具体要求是什么",
+    "type": "draft_answerable",
+    "intent_group": "a5eacffff4d45cedd73d37ca",
+    "split": "test",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-586481818d23f6f0bd517dc4",
+        "relevance": 2,
+        "evidence_group": "a5eacffff4d45cedd73d37ca"
+      }
+    ],
+    "reference_facts": [
+      "相关具体事宜将另行通告，敬请留意上海博物馆网站、官方微信、官方微博等平台的最新动态信息。您还可通过我馆官方平台随时获取丰富的线上服务内容。咨询电话：(021)60226699。（服务时间：09:00--17:00）"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-009-19",
+    "query": "上海 参观预约，出行前应该注意什么",
+    "type": "draft_answerable",
+    "intent_group": "a5eacffff4d45cedd73d37ca",
+    "split": "test",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-586481818d23f6f0bd517dc4",
+        "relevance": 2,
+        "evidence_group": "a5eacffff4d45cedd73d37ca"
+      }
+    ],
+    "reference_facts": [
+      "相关具体事宜将另行通告，敬请留意上海博物馆网站、官方微信、官方微博等平台的最新动态信息。您还可通过我馆官方平台随时获取丰富的线上服务内容。咨询电话：(021)60226699。（服务时间：09:00--17:00）"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-010-20",
+    "query": "上海 文创商店 上海博物馆人民广场店 上海博物馆东馆店 浦东机场T1航站楼专卖店，具体要求是什么",
+    "type": "draft_answerable",
+    "intent_group": "bcfc0e45e1211451f0e85cb6",
+    "split": "dev",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-5cb166b56e724d92dbb126f5",
+        "relevance": 2,
+        "evidence_group": "bcfc0e45e1211451f0e85cb6"
+      }
+    ],
+    "reference_facts": [
+      "上海博物馆文化创意有限公司 联系电话：021-63723023 时间：周一 - 周五 9:00 - 17:00 电邮：shmuseum@smccl.cn"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-010-21",
+    "query": "上海 文创商店 上海博物馆人民广场店 上海博物馆东馆店 浦东机场T1航站楼专卖店，出行前应该注意什么",
+    "type": "draft_answerable",
+    "intent_group": "bcfc0e45e1211451f0e85cb6",
+    "split": "dev",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-5cb166b56e724d92dbb126f5",
+        "relevance": 2,
+        "evidence_group": "bcfc0e45e1211451f0e85cb6"
+      }
+    ],
+    "reference_facts": [
+      "上海博物馆文化创意有限公司 联系电话：021-63723023 时间：周一 - 周五 9:00 - 17:00 电邮：shmuseum@smccl.cn"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-011-22",
+    "query": "上海 文创商店 上海博物馆人民广场店 上海博物馆东馆店 浦东机场T1航站楼专卖店，具体要求是什么",
+    "type": "draft_answerable",
+    "intent_group": "7d0a5cc1bcbbdeec2aad95be",
+    "split": "dev",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-5fb8bd29d0f5f06859925b1f",
+        "relevance": 2,
+        "evidence_group": "7d0a5cc1bcbbdeec2aad95be"
+      }
+    ],
+    "reference_facts": [
+      "上海博物馆文化创意有限公司专营中国古代文物的复仿制品、文创产品和文物图录、艺术书刊。拥有上博人民广场店、东馆店和浦东机场、东方明珠专卖店等。承接礼品设计开发、文物修复、字画装裱等特色服务。是上博陈列开放的延伸。坚持传统、艺术、时尚的产品设计理念，愿经典、精致的文创产品，走近你、我生活。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-011-23",
+    "query": "上海 文创商店 上海博物馆人民广场店 上海博物馆东馆店 浦东机场T1航站楼专卖店，出行前应该注意什么",
+    "type": "draft_answerable",
+    "intent_group": "7d0a5cc1bcbbdeec2aad95be",
+    "split": "dev",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-5fb8bd29d0f5f06859925b1f",
+        "relevance": 2,
+        "evidence_group": "7d0a5cc1bcbbdeec2aad95be"
+      }
+    ],
+    "reference_facts": [
+      "上海博物馆文化创意有限公司专营中国古代文物的复仿制品、文创产品和文物图录、艺术书刊。拥有上博人民广场店、东馆店和浦东机场、东方明珠专卖店等。承接礼品设计开发、文物修复、字画装裱等特色服务。是上博陈列开放的延伸。坚持传统、艺术、时尚的产品设计理念，愿经典、精致的文创产品，走近你、我生活。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-012-24",
+    "query": "景德镇 瓷都迎客“路路通”，景德镇全方位护航国庆假期交通畅行！，具体要求是什么",
+    "type": "draft_answerable",
+    "intent_group": "5f9a06885e3216e9fae78a2c",
+    "split": "dev",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-6068b4d12c6ffd0f452f0042",
+        "relevance": 2,
+        "evidence_group": "5f9a06885e3216e9fae78a2c"
+      }
+    ],
+    "reference_facts": [
+      "市城管局联合多部门启动了陶溪川一期核心片区和东城区骑行友好环境改造，重塑机非慢行系统，取消路边非机动车停放点，保障非机动车道全程贯通；推进新厂路3.5公里骑行友好改造及珠山大道、景德大道等路段标线施划，逐步构建人车分流的出行环境。雕塑瓷厂南门出入口增设物理隔离设施，落实人行道与非机动车道分流管控。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-012-25",
+    "query": "景德镇 瓷都迎客“路路通”，景德镇全方位护航国庆假期交通畅行！，出行前应该注意什么",
+    "type": "draft_answerable",
+    "intent_group": "5f9a06885e3216e9fae78a2c",
+    "split": "dev",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-6068b4d12c6ffd0f452f0042",
+        "relevance": 2,
+        "evidence_group": "5f9a06885e3216e9fae78a2c"
+      }
+    ],
+    "reference_facts": [
+      "市城管局联合多部门启动了陶溪川一期核心片区和东城区骑行友好环境改造，重塑机非慢行系统，取消路边非机动车停放点，保障非机动车道全程贯通；推进新厂路3.5公里骑行友好改造及珠山大道、景德大道等路段标线施划，逐步构建人车分流的出行环境。雕塑瓷厂南门出入口增设物理隔离设施，落实人行道与非机动车道分流管控。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-013-26",
+    "query": "上海 上海博物馆，具体要求是什么",
+    "type": "draft_answerable",
+    "intent_group": "76a1166ea2c744d069cd94b6",
+    "split": "dev",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-61da6e52f804bc9a0773485f",
+        "relevance": 2,
+        "evidence_group": "76a1166ea2c744d069cd94b6"
+      }
+    ],
+    "reference_facts": [
+      "自2026年9月1日起，上海博物馆官方网站域名地址变更为： www.shanghaimuseum.cn ，原网址www.shanghaimuseum.net将于2027年1月1日起停用，本次域名变更给您带来的不便，敬请谅解。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-013-27",
+    "query": "上海 上海博物馆，出行前应该注意什么",
+    "type": "draft_answerable",
+    "intent_group": "76a1166ea2c744d069cd94b6",
+    "split": "dev",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-61da6e52f804bc9a0773485f",
+        "relevance": 2,
+        "evidence_group": "76a1166ea2c744d069cd94b6"
+      }
+    ],
+    "reference_facts": [
+      "自2026年9月1日起，上海博物馆官方网站域名地址变更为： www.shanghaimuseum.cn ，原网址www.shanghaimuseum.net将于2027年1月1日起停用，本次域名变更给您带来的不便，敬请谅解。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-014-28",
+    "query": "景德镇 景德镇北站15条客运线路全新开通！直达乐平、瑶里景区等地！，具体要求是什么",
+    "type": "draft_answerable",
+    "intent_group": "d097140c46a0a74c5f519840",
+    "split": "dev",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-660002d78d271051efe48d0f",
+        "relevance": 2,
+        "evidence_group": "d097140c46a0a74c5f519840"
+      }
+    ],
+    "reference_facts": [
+      "为进一步优化景德镇北站综合交通接驳体系，打造铁路客运+旅游集散一体化综合交通枢纽，给广大旅客提供一站式便捷出行服务，在市交通运输局的统筹调度下， 景德镇长运有限公司于4月30日正式进驻景德镇北站北广场，全新开通15条客运线路，全面覆盖昌江区各乡镇、乐平市城区、浮梁县东区及瑶里、洪岩仙境、婺源篁岭旅游景区， 进一步织密城乡一体化交通路网，切实打通市民和游客出行“最后一公里”。具体详情如下："
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-014-29",
+    "query": "景德镇 景德镇北站15条客运线路全新开通！直达乐平、瑶里景区等地！，出行前应该注意什么",
+    "type": "draft_answerable",
+    "intent_group": "d097140c46a0a74c5f519840",
+    "split": "dev",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-660002d78d271051efe48d0f",
+        "relevance": 2,
+        "evidence_group": "d097140c46a0a74c5f519840"
+      }
+    ],
+    "reference_facts": [
+      "为进一步优化景德镇北站综合交通接驳体系，打造铁路客运+旅游集散一体化综合交通枢纽，给广大旅客提供一站式便捷出行服务，在市交通运输局的统筹调度下， 景德镇长运有限公司于4月30日正式进驻景德镇北站北广场，全新开通15条客运线路，全面覆盖昌江区各乡镇、乐平市城区、浮梁县东区及瑶里、洪岩仙境、婺源篁岭旅游景区， 进一步织密城乡一体化交通路网，切实打通市民和游客出行“最后一公里”。具体详情如下："
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-015-30",
+    "query": "上海 参观预约，具体要求是什么",
+    "type": "draft_answerable",
+    "intent_group": "014e7d2cc56a0ce23a8274ca",
+    "split": "dev",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-669e507ed24e25de44e4bb10",
+        "relevance": 2,
+        "evidence_group": "014e7d2cc56a0ce23a8274ca"
+      }
+    ],
+    "reference_facts": [
+      "为了避免展厅拥挤，提供良好的互动体验，古代文明探索宫、数字馆仍需提前预约：请通过上海博物馆微信公众号\"GO上博一参观预约\"栏点击进入\"上海博物馆参观预约\"小程序，在东馆预约界面，选择\"专项预约\"进行预约。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-015-31",
+    "query": "上海 参观预约，出行前应该注意什么",
+    "type": "draft_answerable",
+    "intent_group": "014e7d2cc56a0ce23a8274ca",
+    "split": "dev",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-669e507ed24e25de44e4bb10",
+        "relevance": 2,
+        "evidence_group": "014e7d2cc56a0ce23a8274ca"
+      }
+    ],
+    "reference_facts": [
+      "为了避免展厅拥挤，提供良好的互动体验，古代文明探索宫、数字馆仍需提前预约：请通过上海博物馆微信公众号\"GO上博一参观预约\"栏点击进入\"上海博物馆参观预约\"小程序，在东馆预约界面，选择\"专项预约\"进行预约。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-016-32",
+    "query": "景德镇 瓷都迎客“路路通”，景德镇全方位护航国庆假期交通畅行！，具体要求是什么",
+    "type": "draft_answerable",
+    "intent_group": "84ebcb1d9323d81d76938737",
+    "split": "dev",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-66a2a82012c92af9d8e2aca1",
+        "relevance": 2,
+        "evidence_group": "84ebcb1d9323d81d76938737"
+      }
+    ],
+    "reference_facts": [
+      "在硬件升级的同时，智慧化手段为交通疏导提供了精准支撑。市公安局交管支队主动向高德、百度等手机导航App企业推送管控信息，引导车辆合理规划路线；在景德大道沿线布设广播喇叭，引导游客至三宝雕塑停车场换乘，倡导“P+R”绿色出行模式。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-016-33",
+    "query": "景德镇 瓷都迎客“路路通”，景德镇全方位护航国庆假期交通畅行！，出行前应该注意什么",
+    "type": "draft_answerable",
+    "intent_group": "84ebcb1d9323d81d76938737",
+    "split": "dev",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-66a2a82012c92af9d8e2aca1",
+        "relevance": 2,
+        "evidence_group": "84ebcb1d9323d81d76938737"
+      }
+    ],
+    "reference_facts": [
+      "在硬件升级的同时，智慧化手段为交通疏导提供了精准支撑。市公安局交管支队主动向高德、百度等手机导航App企业推送管控信息，引导车辆合理规划路线；在景德大道沿线布设广播喇叭，引导游客至三宝雕塑停车场换乘，倡导“P+R”绿色出行模式。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-017-34",
+    "query": "景德镇 瓷都迎客“路路通”，景德镇全方位护航国庆假期交通畅行！，具体要求是什么",
+    "type": "draft_answerable",
+    "intent_group": "979f3dc61a69ba712568b63f",
+    "split": "test",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-69f24f0650fdceb54692d183",
+        "relevance": 2,
+        "evidence_group": "979f3dc61a69ba712568b63f"
+      }
+    ],
+    "reference_facts": [
+      "此外，市公安局交管支队昌江大队针对景德镇中国陶瓷博物馆周边车流特点，将原西门网约车停车场改为公交站台，紫晶支线三岔口停车场改为网约车、出租车停车场，实行紫晶支线北向南单行，保障公交和网约车、出租车高效周转和游客有序上下车。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-017-35",
+    "query": "景德镇 瓷都迎客“路路通”，景德镇全方位护航国庆假期交通畅行！，出行前应该注意什么",
+    "type": "draft_answerable",
+    "intent_group": "979f3dc61a69ba712568b63f",
+    "split": "test",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-69f24f0650fdceb54692d183",
+        "relevance": 2,
+        "evidence_group": "979f3dc61a69ba712568b63f"
+      }
+    ],
+    "reference_facts": [
+      "此外，市公安局交管支队昌江大队针对景德镇中国陶瓷博物馆周边车流特点，将原西门网约车停车场改为公交站台，紫晶支线三岔口停车场改为网约车、出租车停车场，实行紫晶支线北向南单行，保障公交和网约车、出租车高效周转和游客有序上下车。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-018-36",
+    "query": "景德镇 瓷都迎客“路路通”，景德镇全方位护航国庆假期交通畅行！，具体要求是什么",
+    "type": "draft_answerable",
+    "intent_group": "bd437adbbc5e50c05695261b",
+    "split": "test",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-6c483cdc321502507c770e5b",
+        "relevance": 2,
+        "evidence_group": "bd437adbbc5e50c05695261b"
+      }
+    ],
+    "reference_facts": [
+      "为应对国庆大客流，我市将公交优先战略贯穿假期保障始终，通过运力升级与文旅融合，让游客实现“出站即上车、凭票畅全城”。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-018-37",
+    "query": "景德镇 瓷都迎客“路路通”，景德镇全方位护航国庆假期交通畅行！，出行前应该注意什么",
+    "type": "draft_answerable",
+    "intent_group": "bd437adbbc5e50c05695261b",
+    "split": "test",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-6c483cdc321502507c770e5b",
+        "relevance": 2,
+        "evidence_group": "bd437adbbc5e50c05695261b"
+      }
+    ],
+    "reference_facts": [
+      "为应对国庆大客流，我市将公交优先战略贯穿假期保障始终，通过运力升级与文旅融合，让游客实现“出站即上车、凭票畅全城”。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-019-38",
+    "query": "景德镇 瓷都迎客“路路通”，景德镇全方位护航国庆假期交通畅行！，具体要求是什么",
+    "type": "draft_answerable",
+    "intent_group": "4b86397b957cbbfc2b29b6ea",
+    "split": "dev",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-72f2c0141cd11f4ef32c6179",
+        "relevance": 2,
+        "evidence_group": "4b86397b957cbbfc2b29b6ea"
+      }
+    ],
+    "reference_facts": [
+      "2026年国庆假期，我市通过从硬件设施到软件服务的全面提升，让游客在千年瓷都享受“15分钟直达景区、半小时逛遍全城”的便捷出行体验，以高效畅行的交通环境护航全市文旅市场高质量发展。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-019-39",
+    "query": "景德镇 瓷都迎客“路路通”，景德镇全方位护航国庆假期交通畅行！，出行前应该注意什么",
+    "type": "draft_answerable",
+    "intent_group": "4b86397b957cbbfc2b29b6ea",
+    "split": "dev",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-72f2c0141cd11f4ef32c6179",
+        "relevance": 2,
+        "evidence_group": "4b86397b957cbbfc2b29b6ea"
+      }
+    ],
+    "reference_facts": [
+      "2026年国庆假期，我市通过从硬件设施到软件服务的全面提升，让游客在千年瓷都享受“15分钟直达景区、半小时逛遍全城”的便捷出行体验，以高效畅行的交通环境护航全市文旅市场高质量发展。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-020-40",
+    "query": "景德镇 瓷都迎客“路路通”，景德镇全方位护航国庆假期交通畅行！，具体要求是什么",
+    "type": "draft_answerable",
+    "intent_group": "5436c21ad83a00b77c71d3e1",
+    "split": "test",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-75ebded6aa4400b4ee543dd1",
+        "relevance": 2,
+        "evidence_group": "5436c21ad83a00b77c71d3e1"
+      }
+    ],
+    "reference_facts": [
+      "在三宝景区外围及内部，该区设置18个管控点位，明确七家单位值守职责，构建入口核验、沿线管控、应急保障三层防控闭环；假期机动车经602所大桥分双通道组织，持通行证车辆经绿色通道通行，无通行证车辆引导至换乘中心停车换乘。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-020-41",
+    "query": "景德镇 瓷都迎客“路路通”，景德镇全方位护航国庆假期交通畅行！，出行前应该注意什么",
+    "type": "draft_answerable",
+    "intent_group": "5436c21ad83a00b77c71d3e1",
+    "split": "test",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-75ebded6aa4400b4ee543dd1",
+        "relevance": 2,
+        "evidence_group": "5436c21ad83a00b77c71d3e1"
+      }
+    ],
+    "reference_facts": [
+      "在三宝景区外围及内部，该区设置18个管控点位，明确七家单位值守职责，构建入口核验、沿线管控、应急保障三层防控闭环；假期机动车经602所大桥分双通道组织，持通行证车辆经绿色通道通行，无通行证车辆引导至换乘中心停车换乘。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-021-42",
+    "query": "上海 团队预约，具体要求是什么",
+    "type": "draft_answerable",
+    "intent_group": "8967bdb43ef16f3c1e01fb69",
+    "split": "dev",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-7a7b097ababb26e77c6e9f77",
+        "relevance": 2,
+        "evidence_group": "8967bdb43ef16f3c1e01fb69"
+      }
+    ],
+    "reference_facts": [
+      "第三条 本馆统一提供标准化模板供各单位使用，参观所需《团队人员信息名单》、《单位参观介绍信》可自行下载打印。请严格按照模板规范填报，填写完整并加盖单位公章后方可有效。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-021-43",
+    "query": "上海 团队预约，出行前应该注意什么",
+    "type": "draft_answerable",
+    "intent_group": "8967bdb43ef16f3c1e01fb69",
+    "split": "dev",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-7a7b097ababb26e77c6e9f77",
+        "relevance": 2,
+        "evidence_group": "8967bdb43ef16f3c1e01fb69"
+      }
+    ],
+    "reference_facts": [
+      "第三条 本馆统一提供标准化模板供各单位使用，参观所需《团队人员信息名单》、《单位参观介绍信》可自行下载打印。请严格按照模板规范填报，填写完整并加盖单位公章后方可有效。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-022-44",
+    "query": "上海 团队预约，具体要求是什么",
+    "type": "draft_answerable",
+    "intent_group": "771c27738970091c0c8df446",
+    "split": "test",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-7adf54d781d94b4b9ae1c95e",
+        "relevance": 2,
+        "evidence_group": "771c27738970091c0c8df446"
+      }
+    ],
+    "reference_facts": [
+      "第四条 团队入馆参观期间，须自觉遵守上海博物馆各项参观管理规定，服从现场工作人员管理，文明有序参观，维护展厅公共秩序与文物安全。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-022-45",
+    "query": "上海 团队预约，出行前应该注意什么",
+    "type": "draft_answerable",
+    "intent_group": "771c27738970091c0c8df446",
+    "split": "test",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-7adf54d781d94b4b9ae1c95e",
+        "relevance": 2,
+        "evidence_group": "771c27738970091c0c8df446"
+      }
+    ],
+    "reference_facts": [
+      "第四条 团队入馆参观期间，须自觉遵守上海博物馆各项参观管理规定，服从现场工作人员管理，文明有序参观，维护展厅公共秩序与文物安全。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-023-46",
+    "query": "景德镇 景德镇北站15条客运线路全新开通！直达乐平、瑶里景区等地！，具体要求是什么",
+    "type": "draft_answerable",
+    "intent_group": "78a4e25922ab99a32a696bad",
+    "split": "test",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-8463db805cf244b5d5bd6434",
+        "relevance": 2,
+        "evidence_group": "78a4e25922ab99a32a696bad"
+      }
+    ],
+    "reference_facts": [
+      "景德镇 北站北广场 — 西客站 —中国 陶瓷博物馆 — 昌南里 — 陶青台 — 月亮湖风景区 — 八一小学"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-023-47",
+    "query": "景德镇 景德镇北站15条客运线路全新开通！直达乐平、瑶里景区等地！，出行前应该注意什么",
+    "type": "draft_answerable",
+    "intent_group": "78a4e25922ab99a32a696bad",
+    "split": "test",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-8463db805cf244b5d5bd6434",
+        "relevance": 2,
+        "evidence_group": "78a4e25922ab99a32a696bad"
+      }
+    ],
+    "reference_facts": [
+      "景德镇 北站北广场 — 西客站 —中国 陶瓷博物馆 — 昌南里 — 陶青台 — 月亮湖风景区 — 八一小学"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-024-48",
+    "query": "景德镇 瓷都迎客“路路通”，景德镇全方位护航国庆假期交通畅行！，具体要求是什么",
+    "type": "draft_answerable",
+    "intent_group": "a488996498ab3c526ce64398",
+    "split": "dev",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-8e66cfac207c49e86bf3c4b6",
+        "relevance": 2,
+        "evidence_group": "a488996498ab3c526ce64398"
+      }
+    ],
+    "reference_facts": [
+      "昌江区则聚焦博物馆片区这一核心文旅节点，提前部署、精准施策。针对片区流动摊贩占道经营、非机动车乱停放等乱象，加密重点时段巡查频次，实现违规经营动态清零；在紫晶支路、新平路、珠山大道新装陶瓷博物馆停车场道路指引牌7块，完成陶瓷博物馆东停车场系统升级改造，增设剩余车位实时显示电子屏，同时坚持柔性引导，现场宣讲相关规定，增强文明意识。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-024-49",
+    "query": "景德镇 瓷都迎客“路路通”，景德镇全方位护航国庆假期交通畅行！，出行前应该注意什么",
+    "type": "draft_answerable",
+    "intent_group": "a488996498ab3c526ce64398",
+    "split": "dev",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-8e66cfac207c49e86bf3c4b6",
+        "relevance": 2,
+        "evidence_group": "a488996498ab3c526ce64398"
+      }
+    ],
+    "reference_facts": [
+      "昌江区则聚焦博物馆片区这一核心文旅节点，提前部署、精准施策。针对片区流动摊贩占道经营、非机动车乱停放等乱象，加密重点时段巡查频次，实现违规经营动态清零；在紫晶支路、新平路、珠山大道新装陶瓷博物馆停车场道路指引牌7块，完成陶瓷博物馆东停车场系统升级改造，增设剩余车位实时显示电子屏，同时坚持柔性引导，现场宣讲相关规定，增强文明意识。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-025-50",
+    "query": "景德镇 瓷都迎客“路路通”，景德镇全方位护航国庆假期交通畅行！，具体要求是什么",
+    "type": "draft_answerable",
+    "intent_group": "7290b45e65bac583c64913c5",
+    "split": "test",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-94e938a8400232708c5b7c3c",
+        "relevance": 2,
+        "evidence_group": "7290b45e65bac583c64913c5"
+      }
+    ],
+    "reference_facts": [
+      "为落实市委、市政府关于交通畅行与文旅高质量发展的部署，市交通安全畅行专班坚持“公交优先、分流管控、精细治理”总体思路，统筹城管、交管、公交等多部门协同联动，全力保障假期道路交通安全、有序、畅通。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-025-51",
+    "query": "景德镇 瓷都迎客“路路通”，景德镇全方位护航国庆假期交通畅行！，出行前应该注意什么",
+    "type": "draft_answerable",
+    "intent_group": "7290b45e65bac583c64913c5",
+    "split": "test",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-94e938a8400232708c5b7c3c",
+        "relevance": 2,
+        "evidence_group": "7290b45e65bac583c64913c5"
+      }
+    ],
+    "reference_facts": [
+      "为落实市委、市政府关于交通畅行与文旅高质量发展的部署，市交通安全畅行专班坚持“公交优先、分流管控、精细治理”总体思路，统筹城管、交管、公交等多部门协同联动，全力保障假期道路交通安全、有序、畅通。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-026-52",
+    "query": "景德镇 瓷都迎客“路路通”，景德镇全方位护航国庆假期交通畅行！，具体要求是什么",
+    "type": "draft_answerable",
+    "intent_group": "f0a0c4402743539ac2b802c2",
+    "split": "test",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-a4813699be20761a971fa7bc",
+        "relevance": 2,
+        "evidence_group": "f0a0c4402743539ac2b802c2"
+      }
+    ],
+    "reference_facts": [
+      "我市在陶溪川、市发展中心、景德镇北站等地段周边及珠山大道等路段安装新型交通护栏约8000米；完成陶溪川三处交叉口铣刨及沥青摊铺2305㎡，施划标线约2045㎡；同步在珠山大道、景德大道、景北大桥等重要路段开展非机动车道施划。御窑厂、陶溪川、陶瓷博物馆、陶阳新村、雕塑瓷厂等周边非机动车停车位标线施划已完成4249.81㎡。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-026-53",
+    "query": "景德镇 瓷都迎客“路路通”，景德镇全方位护航国庆假期交通畅行！，出行前应该注意什么",
+    "type": "draft_answerable",
+    "intent_group": "f0a0c4402743539ac2b802c2",
+    "split": "test",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-a4813699be20761a971fa7bc",
+        "relevance": 2,
+        "evidence_group": "f0a0c4402743539ac2b802c2"
+      }
+    ],
+    "reference_facts": [
+      "我市在陶溪川、市发展中心、景德镇北站等地段周边及珠山大道等路段安装新型交通护栏约8000米；完成陶溪川三处交叉口铣刨及沥青摊铺2305㎡，施划标线约2045㎡；同步在珠山大道、景德大道、景北大桥等重要路段开展非机动车道施划。御窑厂、陶溪川、陶瓷博物馆、陶阳新村、雕塑瓷厂等周边非机动车停车位标线施划已完成4249.81㎡。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-027-54",
+    "query": "景德镇 瓷都迎客“路路通”，景德镇全方位护航国庆假期交通畅行！，具体要求是什么",
+    "type": "draft_answerable",
+    "intent_group": "77b301dc158358861d5a7ce0",
+    "split": "dev",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-abafcd3479ef93ec9bf86610",
+        "relevance": 2,
+        "evidence_group": "77b301dc158358861d5a7ce0"
+      }
+    ],
+    "reference_facts": [
+      "“景德镇的交通组织很有序，坐公交就能轻松逛遍各个景点，完全没有想象中的拥堵。”来自江苏的游客张女士如是说。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-027-55",
+    "query": "景德镇 瓷都迎客“路路通”，景德镇全方位护航国庆假期交通畅行！，出行前应该注意什么",
+    "type": "draft_answerable",
+    "intent_group": "77b301dc158358861d5a7ce0",
+    "split": "dev",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-abafcd3479ef93ec9bf86610",
+        "relevance": 2,
+        "evidence_group": "77b301dc158358861d5a7ce0"
+      }
+    ],
+    "reference_facts": [
+      "“景德镇的交通组织很有序，坐公交就能轻松逛遍各个景点，完全没有想象中的拥堵。”来自江苏的游客张女士如是说。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-028-56",
+    "query": "上海 参观预约，具体要求是什么",
+    "type": "draft_answerable",
+    "intent_group": "9439564cc90e54ff34a6d3ce",
+    "split": "dev",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-b4cf6edff2ccf440d7d8d429",
+        "relevance": 2,
+        "evidence_group": "9439564cc90e54ff34a6d3ce"
+      }
+    ],
+    "reference_facts": [
+      "上海博物馆东馆每日开放时间为10:00-18:00（17:00后停止入场），周二闭馆（国定节假日除外）。咨询电话：(021)60226699。（服务时间：10:00--18:00）"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-028-57",
+    "query": "上海 参观预约，出行前应该注意什么",
+    "type": "draft_answerable",
+    "intent_group": "9439564cc90e54ff34a6d3ce",
+    "split": "dev",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-b4cf6edff2ccf440d7d8d429",
+        "relevance": 2,
+        "evidence_group": "9439564cc90e54ff34a6d3ce"
+      }
+    ],
+    "reference_facts": [
+      "上海博物馆东馆每日开放时间为10:00-18:00（17:00后停止入场），周二闭馆（国定节假日除外）。咨询电话：(021)60226699。（服务时间：10:00--18:00）"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-029-58",
+    "query": "上海 团队预约，具体要求是什么",
+    "type": "draft_answerable",
+    "intent_group": "2a3eb3376bc08ef75da1cd5a",
+    "split": "test",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-b715d7caf71bc43286ab9814",
+        "relevance": 2,
+        "evidence_group": "2a3eb3376bc08ef75da1cd5a"
+      }
+    ],
+    "reference_facts": [
+      "第五条 凡未按规定提前预约、材料不齐、信息不实、未加盖公章或拒不服从现场管理的团队，本馆有权拒绝办理入馆手续、取消本次参观资格。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-029-59",
+    "query": "上海 团队预约，出行前应该注意什么",
+    "type": "draft_answerable",
+    "intent_group": "2a3eb3376bc08ef75da1cd5a",
+    "split": "test",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-b715d7caf71bc43286ab9814",
+        "relevance": 2,
+        "evidence_group": "2a3eb3376bc08ef75da1cd5a"
+      }
+    ],
+    "reference_facts": [
+      "第五条 凡未按规定提前预约、材料不齐、信息不实、未加盖公章或拒不服从现场管理的团队，本馆有权拒绝办理入馆手续、取消本次参观资格。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-030-60",
+    "query": "景德镇 瓷都迎客“路路通”，景德镇全方位护航国庆假期交通畅行！，具体要求是什么",
+    "type": "draft_answerable",
+    "intent_group": "ecfa6978553a62166df61b19",
+    "split": "dev",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-c52c53fd2b75197e58a45194",
+        "relevance": 2,
+        "evidence_group": "ecfa6978553a62166df61b19"
+      }
+    ],
+    "reference_facts": [
+      "据昌江区城管局市容办工作人员介绍，昌江区城管局坚决落实市交通畅行工作专班要求，提前周密部署，在景德镇中国陶瓷博物馆、古窑民俗博览区及周边增派人手，延时工作，靠前服务，其他地段同步不放松，截至10月5日，该局城区中队共规范劝导摆放非机动车399辆，引导帮助游客解决各类问题245人次，规范劝离流动摊贩120余处。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-030-61",
+    "query": "景德镇 瓷都迎客“路路通”，景德镇全方位护航国庆假期交通畅行！，出行前应该注意什么",
+    "type": "draft_answerable",
+    "intent_group": "ecfa6978553a62166df61b19",
+    "split": "dev",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-c52c53fd2b75197e58a45194",
+        "relevance": 2,
+        "evidence_group": "ecfa6978553a62166df61b19"
+      }
+    ],
+    "reference_facts": [
+      "据昌江区城管局市容办工作人员介绍，昌江区城管局坚决落实市交通畅行工作专班要求，提前周密部署，在景德镇中国陶瓷博物馆、古窑民俗博览区及周边增派人手，延时工作，靠前服务，其他地段同步不放松，截至10月5日，该局城区中队共规范劝导摆放非机动车399辆，引导帮助游客解决各类问题245人次，规范劝离流动摊贩120余处。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-031-62",
+    "query": "景德镇 瓷都迎客“路路通”，景德镇全方位护航国庆假期交通畅行！，具体要求是什么",
+    "type": "draft_answerable",
+    "intent_group": "c4a780980fcf8b996e038f39",
+    "split": "dev",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-c684bf11016fce66669cec34",
+        "relevance": 2,
+        "evidence_group": "c4a780980fcf8b996e038f39"
+      }
+    ],
+    "reference_facts": [
+      "国庆假期期间，全市公交最短发车间隔仅5分钟，支持App实时查询，真正让公共交通成为市民游客出行的首选。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-031-63",
+    "query": "景德镇 瓷都迎客“路路通”，景德镇全方位护航国庆假期交通畅行！，出行前应该注意什么",
+    "type": "draft_answerable",
+    "intent_group": "c4a780980fcf8b996e038f39",
+    "split": "dev",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-c684bf11016fce66669cec34",
+        "relevance": 2,
+        "evidence_group": "c4a780980fcf8b996e038f39"
+      }
+    ],
+    "reference_facts": [
+      "国庆假期期间，全市公交最短发车间隔仅5分钟，支持App实时查询，真正让公共交通成为市民游客出行的首选。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-032-64",
+    "query": "景德镇 景德镇北站15条客运线路全新开通！直达乐平、瑶里景区等地！，具体要求是什么",
+    "type": "draft_answerable",
+    "intent_group": "872d166e424f3780a199298e",
+    "split": "test",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-c6d1c9cb22f654d44cea9e5a",
+        "relevance": 2,
+        "evidence_group": "872d166e424f3780a199298e"
+      }
+    ],
+    "reference_facts": [
+      "景德镇 北站北广场 — 西客站 —中国 陶瓷博物馆 — 昌南里 — 陶青台 — 月亮湖风景区 — 平家棚"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-032-65",
+    "query": "景德镇 景德镇北站15条客运线路全新开通！直达乐平、瑶里景区等地！，出行前应该注意什么",
+    "type": "draft_answerable",
+    "intent_group": "872d166e424f3780a199298e",
+    "split": "test",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-c6d1c9cb22f654d44cea9e5a",
+        "relevance": 2,
+        "evidence_group": "872d166e424f3780a199298e"
+      }
+    ],
+    "reference_facts": [
+      "景德镇 北站北广场 — 西客站 —中国 陶瓷博物馆 — 昌南里 — 陶青台 — 月亮湖风景区 — 平家棚"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-033-66",
+    "query": "上海 文创商店 上海博物馆人民广场店 上海博物馆东馆店 浦东机场T1航站楼专卖店，具体要求是什么",
+    "type": "draft_answerable",
+    "intent_group": "6087a7a754a3d08dc14d3162",
+    "split": "test",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-cf40fcb03d1a81783fb430ca",
+        "relevance": 2,
+        "evidence_group": "6087a7a754a3d08dc14d3162"
+      }
+    ],
+    "reference_facts": [
+      "上海博物馆人民广场店 地址：上海市黄浦区人民大道201号上海博物馆南门 营业时间：9:30 - 17:00（周一闭馆暂停营业） 电话：021-63723500*139（书店） 021-63723500*290（工艺品店）"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-033-67",
+    "query": "上海 文创商店 上海博物馆人民广场店 上海博物馆东馆店 浦东机场T1航站楼专卖店，出行前应该注意什么",
+    "type": "draft_answerable",
+    "intent_group": "6087a7a754a3d08dc14d3162",
+    "split": "test",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-cf40fcb03d1a81783fb430ca",
+        "relevance": 2,
+        "evidence_group": "6087a7a754a3d08dc14d3162"
+      }
+    ],
+    "reference_facts": [
+      "上海博物馆人民广场店 地址：上海市黄浦区人民大道201号上海博物馆南门 营业时间：9:30 - 17:00（周一闭馆暂停营业） 电话：021-63723500*139（书店） 021-63723500*290（工艺品店）"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-034-68",
+    "query": "上海 文创商店 上海博物馆人民广场店 上海博物馆东馆店 浦东机场T1航站楼专卖店，具体要求是什么",
+    "type": "draft_answerable",
+    "intent_group": "f8e7c6cc7f9f77f54c51b375",
+    "split": "test",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-d34dc2ecacee7e7688c8d6ec",
+        "relevance": 2,
+        "evidence_group": "f8e7c6cc7f9f77f54c51b375"
+      }
+    ],
+    "reference_facts": [
+      "上海博物馆东馆店 地址：上海市浦东新区世纪大道1952号 营业时间：10：00 - 18:00（周二闭馆暂停营业）"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-034-69",
+    "query": "上海 文创商店 上海博物馆人民广场店 上海博物馆东馆店 浦东机场T1航站楼专卖店，出行前应该注意什么",
+    "type": "draft_answerable",
+    "intent_group": "f8e7c6cc7f9f77f54c51b375",
+    "split": "test",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-d34dc2ecacee7e7688c8d6ec",
+        "relevance": 2,
+        "evidence_group": "f8e7c6cc7f9f77f54c51b375"
+      }
+    ],
+    "reference_facts": [
+      "上海博物馆东馆店 地址：上海市浦东新区世纪大道1952号 营业时间：10：00 - 18:00（周二闭馆暂停营业）"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-035-70",
+    "query": "景德镇 瓷都迎客“路路通”，景德镇全方位护航国庆假期交通畅行！，具体要求是什么",
+    "type": "draft_answerable",
+    "intent_group": "90fc9363ce552a4ed9b3ae2c",
+    "split": "test",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-dd4872689bc8d8e27e96c361",
+        "relevance": 2,
+        "evidence_group": "90fc9363ce552a4ed9b3ae2c"
+      }
+    ],
+    "reference_facts": [
+      "景德镇公交公司全面升级景德镇北站公交站点，实现无缝接驳。该公司开通三条旅游专线：“窑火红”文旅主干线投入30辆微公交车，日均120趟，串联三宝、陶溪川、陶阳里、陶瓷博物馆等核心节点；“夜珠山”循环线投入3辆微公交和2辆观光巴士，服务18:00至22:30夜间时段；三宝景区直通线投入10辆公交车，打通景区与中心城区快速通道。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-035-71",
+    "query": "景德镇 瓷都迎客“路路通”，景德镇全方位护航国庆假期交通畅行！，出行前应该注意什么",
+    "type": "draft_answerable",
+    "intent_group": "90fc9363ce552a4ed9b3ae2c",
+    "split": "test",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-dd4872689bc8d8e27e96c361",
+        "relevance": 2,
+        "evidence_group": "90fc9363ce552a4ed9b3ae2c"
+      }
+    ],
+    "reference_facts": [
+      "景德镇公交公司全面升级景德镇北站公交站点，实现无缝接驳。该公司开通三条旅游专线：“窑火红”文旅主干线投入30辆微公交车，日均120趟，串联三宝、陶溪川、陶阳里、陶瓷博物馆等核心节点；“夜珠山”循环线投入3辆微公交和2辆观光巴士，服务18:00至22:30夜间时段；三宝景区直通线投入10辆公交车，打通景区与中心城区快速通道。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-036-72",
+    "query": "景德镇 景德镇北站15条客运线路全新开通！直达乐平、瑶里景区等地！，具体要求是什么",
+    "type": "draft_answerable",
+    "intent_group": "3c6b1dc64ea393c1c96c4c14",
+    "split": "test",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-e22d0151115f0923c00d2985",
+        "relevance": 2,
+        "evidence_group": "3c6b1dc64ea393c1c96c4c14"
+      }
+    ],
+    "reference_facts": [
+      "旅客从景德镇北站北广场出站后，直行约50米，上楼梯左拐即可抵达专属候客点。站区内全程设置清晰指引标识，旅客在出站通道内及出站后沿导向标识可快速找到乘车区域，候车换乘省心顺畅。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-036-73",
+    "query": "景德镇 景德镇北站15条客运线路全新开通！直达乐平、瑶里景区等地！，出行前应该注意什么",
+    "type": "draft_answerable",
+    "intent_group": "3c6b1dc64ea393c1c96c4c14",
+    "split": "test",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-e22d0151115f0923c00d2985",
+        "relevance": 2,
+        "evidence_group": "3c6b1dc64ea393c1c96c4c14"
+      }
+    ],
+    "reference_facts": [
+      "旅客从景德镇北站北广场出站后，直行约50米，上楼梯左拐即可抵达专属候客点。站区内全程设置清晰指引标识，旅客在出站通道内及出站后沿导向标识可快速找到乘车区域，候车换乘省心顺畅。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-037-74",
+    "query": "景德镇 瓷都迎客“路路通”，景德镇全方位护航国庆假期交通畅行！，具体要求是什么",
+    "type": "draft_answerable",
+    "intent_group": "218d130919c6e37088858b61",
+    "split": "dev",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-f9fafbc8a9638ca7e4b09c54",
+        "relevance": 2,
+        "evidence_group": "218d130919c6e37088858b61"
+      }
+    ],
+    "reference_facts": [
+      "陶溪川园区加密出入口、主通道巡逻频次，清理占道违停电动车，协助交警严查逆行、横穿等行为，各岗亭全员值守动态分流。陶阳里景区安保人员定岗巡查，劝导游客规范停放电动车，协助管理违规车辆，高峰时段引导分区停放。雕塑瓷厂安保人员定点值守，引导行人、非机动车各行其道，及时清理挪移违规车辆。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-037-75",
+    "query": "景德镇 瓷都迎客“路路通”，景德镇全方位护航国庆假期交通畅行！，出行前应该注意什么",
+    "type": "draft_answerable",
+    "intent_group": "218d130919c6e37088858b61",
+    "split": "dev",
+    "relevant_chunks": [
+      {
+        "chunk_id": "official-f9fafbc8a9638ca7e4b09c54",
+        "relevance": 2,
+        "evidence_group": "218d130919c6e37088858b61"
+      }
+    ],
+    "reference_facts": [
+      "陶溪川园区加密出入口、主通道巡逻频次，清理占道违停电动车，协助交警严查逆行、横穿等行为，各岗亭全员值守动态分流。陶阳里景区安保人员定岗巡查，劝导游客规范停放电动车，协助管理违规车辆，高峰时段引导分区停放。雕塑瓷厂安保人员定点值守，引导行人、非机动车各行其道，及时清理挪移违规车辆。"
+    ],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "drafted_by": "deterministic_template",
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Initial machine draft; human review required"
+    ]
+  },
+  {
+    "id": "draft-in_corpus_missing-0",
+    "query": "上海博物馆今天剩余预约名额是什么？",
+    "type": "in_corpus_missing",
+    "intent_group": "in_corpus_missing-0",
+    "split": "dev",
+    "relevant_chunks": [],
+    "reference_facts": [],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Machine draft, pending human review"
+    ]
+  },
+  {
+    "id": "draft-out_of_corpus-0",
+    "query": "Kubernetes 网络策略如何配置？",
+    "type": "out_of_corpus",
+    "intent_group": "out_of_corpus-0",
+    "split": "dev",
+    "relevant_chunks": [],
+    "reference_facts": [],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Machine draft, pending human review"
+    ]
+  },
+  {
+    "id": "draft-in_corpus_missing-1",
+    "query": "南京博物院明天停车位库存是什么？",
+    "type": "in_corpus_missing",
+    "intent_group": "in_corpus_missing-1",
+    "split": "test",
+    "relevant_chunks": [],
+    "reference_facts": [],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Machine draft, pending human review"
+    ]
+  },
+  {
+    "id": "draft-out_of_corpus-1",
+    "query": "Python GIL 的实现？",
+    "type": "out_of_corpus",
+    "intent_group": "out_of_corpus-1",
+    "split": "test",
+    "relevant_chunks": [],
+    "reference_facts": [],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Machine draft, pending human review"
+    ]
+  },
+  {
+    "id": "draft-in_corpus_missing-2",
+    "query": "重庆轻轨现在实时延误是什么？",
+    "type": "in_corpus_missing",
+    "intent_group": "in_corpus_missing-2",
+    "split": "dev",
+    "relevant_chunks": [],
+    "reference_facts": [],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Machine draft, pending human review"
+    ]
+  },
+  {
+    "id": "draft-out_of_corpus-2",
+    "query": "MySQL 事务隔离级别？",
+    "type": "out_of_corpus",
+    "intent_group": "out_of_corpus-2",
+    "split": "dev",
+    "relevant_chunks": [],
+    "reference_facts": [],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Machine draft, pending human review"
+    ]
+  },
+  {
+    "id": "draft-in_corpus_missing-3",
+    "query": "丽江玉龙雪山今天索道余票是什么？",
+    "type": "in_corpus_missing",
+    "intent_group": "in_corpus_missing-3",
+    "split": "test",
+    "relevant_chunks": [],
+    "reference_facts": [],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Machine draft, pending human review"
+    ]
+  },
+  {
+    "id": "draft-out_of_corpus-3",
+    "query": "Redis 主从复制原理？",
+    "type": "out_of_corpus",
+    "intent_group": "out_of_corpus-3",
+    "split": "test",
+    "relevant_chunks": [],
+    "reference_facts": [],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Machine draft, pending human review"
+    ]
+  },
+  {
+    "id": "draft-in_corpus_missing-4",
+    "query": "三亚明天逐小时降雨概率是什么？",
+    "type": "in_corpus_missing",
+    "intent_group": "in_corpus_missing-4",
+    "split": "dev",
+    "relevant_chunks": [],
+    "reference_facts": [],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Machine draft, pending human review"
+    ]
+  },
+  {
+    "id": "draft-out_of_corpus-4",
+    "query": "Go goroutine 调度机制？",
+    "type": "out_of_corpus",
+    "intent_group": "out_of_corpus-4",
+    "split": "dev",
+    "relevant_chunks": [],
+    "reference_facts": [],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Machine draft, pending human review"
+    ]
+  },
+  {
+    "id": "draft-in_corpus_missing-5",
+    "query": "景德镇今天陶溪川集市实时摊位是什么？",
+    "type": "in_corpus_missing",
+    "intent_group": "in_corpus_missing-5",
+    "split": "test",
+    "relevant_chunks": [],
+    "reference_facts": [],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Machine draft, pending human review"
+    ]
+  },
+  {
+    "id": "draft-out_of_corpus-5",
+    "query": "Java 虚拟机垃圾回收？",
+    "type": "out_of_corpus",
+    "intent_group": "out_of_corpus-5",
+    "split": "test",
+    "relevant_chunks": [],
+    "reference_facts": [],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Machine draft, pending human review"
+    ]
+  },
+  {
+    "id": "draft-in_corpus_missing-6",
+    "query": "上海博物馆今日轮椅库存是什么？",
+    "type": "in_corpus_missing",
+    "intent_group": "in_corpus_missing-6",
+    "split": "dev",
+    "relevant_chunks": [],
+    "reference_facts": [],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Machine draft, pending human review"
+    ]
+  },
+  {
+    "id": "draft-out_of_corpus-6",
+    "query": "股票明天一定涨吗？",
+    "type": "out_of_corpus",
+    "intent_group": "out_of_corpus-6",
+    "split": "dev",
+    "relevant_chunks": [],
+    "reference_facts": [],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Machine draft, pending human review"
+    ]
+  },
+  {
+    "id": "draft-in_corpus_missing-7",
+    "query": "南京总统府现在排队人数是什么？",
+    "type": "in_corpus_missing",
+    "intent_group": "in_corpus_missing-7",
+    "split": "test",
+    "relevant_chunks": [],
+    "reference_facts": [],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Machine draft, pending human review"
+    ]
+  },
+  {
+    "id": "draft-out_of_corpus-7",
+    "query": "期货保证金计算？",
+    "type": "out_of_corpus",
+    "intent_group": "out_of_corpus-7",
+    "split": "test",
+    "relevant_chunks": [],
+    "reference_facts": [],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Machine draft, pending human review"
+    ]
+  },
+  {
+    "id": "draft-in_corpus_missing-8",
+    "query": "重庆洪崖洞今天临时封闭入口是什么？",
+    "type": "in_corpus_missing",
+    "intent_group": "in_corpus_missing-8",
+    "split": "dev",
+    "relevant_chunks": [],
+    "reference_facts": [],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Machine draft, pending human review"
+    ]
+  },
+  {
+    "id": "draft-out_of_corpus-8",
+    "query": "蛋白质结构预测算法？",
+    "type": "out_of_corpus",
+    "intent_group": "out_of_corpus-8",
+    "split": "dev",
+    "relevant_chunks": [],
+    "reference_facts": [],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Machine draft, pending human review"
+    ]
+  },
+  {
+    "id": "draft-in_corpus_missing-9",
+    "query": "丽江古城今日酒店空房是什么？",
+    "type": "in_corpus_missing",
+    "intent_group": "in_corpus_missing-9",
+    "split": "test",
+    "relevant_chunks": [],
+    "reference_facts": [],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Machine draft, pending human review"
+    ]
+  },
+  {
+    "id": "draft-out_of_corpus-9",
+    "query": "如何证明黎曼猜想？",
+    "type": "out_of_corpus",
+    "intent_group": "out_of_corpus-9",
+    "split": "test",
+    "relevant_chunks": [],
+    "reference_facts": [],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Machine draft, pending human review"
+    ]
+  },
+  {
+    "id": "draft-in_corpus_missing-10",
+    "query": "三亚蜈支洲岛当前船票库存是什么？",
+    "type": "in_corpus_missing",
+    "intent_group": "in_corpus_missing-10",
+    "split": "dev",
+    "relevant_chunks": [],
+    "reference_facts": [],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Machine draft, pending human review"
+    ]
+  },
+  {
+    "id": "draft-out_of_corpus-10",
+    "query": "GPU CUDA 内存布局？",
+    "type": "out_of_corpus",
+    "intent_group": "out_of_corpus-10",
+    "split": "dev",
+    "relevant_chunks": [],
+    "reference_facts": [],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Machine draft, pending human review"
+    ]
+  },
+  {
+    "id": "draft-in_corpus_missing-11",
+    "query": "景德镇御窑博物馆今晚临时闭馆是什么？",
+    "type": "in_corpus_missing",
+    "intent_group": "in_corpus_missing-11",
+    "split": "test",
+    "relevant_chunks": [],
+    "reference_facts": [],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Machine draft, pending human review"
+    ]
+  },
+  {
+    "id": "draft-out_of_corpus-11",
+    "query": "TLS 握手流程？",
+    "type": "out_of_corpus",
+    "intent_group": "out_of_corpus-11",
+    "split": "test",
+    "relevant_chunks": [],
+    "reference_facts": [],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Machine draft, pending human review"
+    ]
+  },
+  {
+    "id": "draft-in_corpus_missing-12",
+    "query": "上海博物馆今天优惠票价是什么？",
+    "type": "in_corpus_missing",
+    "intent_group": "in_corpus_missing-12",
+    "split": "dev",
+    "relevant_chunks": [],
+    "reference_facts": [],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Machine draft, pending human review"
+    ]
+  },
+  {
+    "id": "draft-out_of_corpus-12",
+    "query": "操作系统页表结构？",
+    "type": "out_of_corpus",
+    "intent_group": "out_of_corpus-12",
+    "split": "dev",
+    "relevant_chunks": [],
+    "reference_facts": [],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Machine draft, pending human review"
+    ]
+  },
+  {
+    "id": "draft-in_corpus_missing-13",
+    "query": "南京市区当前出租车报价是什么？",
+    "type": "in_corpus_missing",
+    "intent_group": "in_corpus_missing-13",
+    "split": "test",
+    "relevant_chunks": [],
+    "reference_facts": [],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Machine draft, pending human review"
+    ]
+  },
+  {
+    "id": "draft-out_of_corpus-13",
+    "query": "编译器寄存器分配？",
+    "type": "out_of_corpus",
+    "intent_group": "out_of_corpus-13",
+    "split": "test",
+    "relevant_chunks": [],
+    "reference_facts": [],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Machine draft, pending human review"
+    ]
+  },
+  {
+    "id": "draft-in_corpus_missing-14",
+    "query": "重庆景区今天实时拥挤度是什么？",
+    "type": "in_corpus_missing",
+    "intent_group": "in_corpus_missing-14",
+    "split": "dev",
+    "relevant_chunks": [],
+    "reference_facts": [],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Machine draft, pending human review"
+    ]
+  },
+  {
+    "id": "draft-out_of_corpus-14",
+    "query": "数字电路触发器原理？",
+    "type": "out_of_corpus",
+    "intent_group": "out_of_corpus-14",
+    "split": "dev",
+    "relevant_chunks": [],
+    "reference_facts": [],
+    "annotation_status": "pending_review",
+    "annotator": null,
+    "annotation_version": "draft-v1",
+    "change_log": [
+      "Machine draft, pending human review"
+    ]
+  }
+]
