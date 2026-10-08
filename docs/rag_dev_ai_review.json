@@ -1,0 +1,2450 @@
+{
+  "schema_version": 1,
+  "status": "ai_review_proposal_pending_human",
+  "scope": "dev_only",
+  "reviewer": "Codex AI; also participated in project implementation; not independent human annotation",
+  "review_date": "2026-10-08",
+  "corpus_fingerprint": "5bf231483310c9c74108c2a0d31491e69f8e24c13942aa8960103d82e7356d1f",
+  "dev_annotations_fingerprint": "2c5342beb8757e9d6fe22d36fec3cf83b997eddda20002283d40e53c32a35823",
+  "original_assets_modified": false,
+  "importable_as_gold": false,
+  "retrieval_rankings_consulted": false,
+  "annotation_counts_proposed": {
+    "answerable": 16,
+    "in_corpus_missing": 27,
+    "needs_clarification": 10,
+    "out_of_corpus": 7
+  },
+  "source_checks": [
+    {
+      "url": "https://www.njmuseum.com/api/visit/notes",
+      "checked_at": "2026-10-08T07:49:42.284636+00:00",
+      "http_status": 200,
+      "observations": [
+        "页面仍包含每日18:00放票与提前7日预约条款",
+        "页面仍包含电动轮椅、老年代步车禁用提示",
+        "页面优待段落的免预约权益与总则的均须实名预约存在需要解释的措辞，不据此保证免预约"
+      ]
+    },
+    {
+      "url": "https://www.njmuseum.com/api/service/shop",
+      "checked_at": "2026-10-08T07:49:42.284636+00:00",
+      "http_status": 200,
+      "observations": [
+        "文渊广场公众餐厅及其他餐饮位置描述仍存在",
+        "未验证实时营业、菜单、价格或空位"
+      ]
+    },
+    {
+      "url": "https://reservation.shanghaimuseum.net/",
+      "checked_at": "2026-10-08T07:49:42.284636+00:00",
+      "http_status": 200,
+      "observations": [
+        "东馆10:00–18:00、17:00停止入场、周二闭馆且国定节假日例外仍存在",
+        "页面区分人民广场馆与东馆，不能推广为整个上海或所有场馆的开放时间",
+        "页面有未满12周岁成年人全程陪同条款，但当前选用语料中未收录该事实"
+      ]
+    },
+    {
+      "url": "https://wlj.nanjing.gov.cn/whyw/202608/t20260810_5891397.html",
+      "checked_at": "2026-10-08T07:49:42.284636+00:00",
+      "http_status": 403,
+      "observations": [
+        "无法实时核验；仅能审核保存的快照",
+        "URL指向2026年8月通知，快照涉及临时台风管控，不能当作2026年10月当前闭园事实"
+      ]
+    }
+  ],
+  "source_check_limit": "Only Nanjing/Shanghai listed URLs checked live; all other cities audited against saved text, not live-certified.",
+  "cases": [
+    {
+      "id": "v2-0-0-0",
+      "query": "南京博物院：怎么预约，需要提前准备什么？",
+      "intent_group": "南京-intent-0",
+      "original_type": "answerable",
+      "original_labels": [
+        {
+          "chunk_id": "dynamic-4099b51516468dbb6050861d",
+          "relevance": 2,
+          "evidence_group": "1d05f7a9df128868aa5606f8"
+        }
+      ],
+      "proposal": {
+        "case_ids": [
+          "v2-0-0-0",
+          "v2-0-0-1"
+        ],
+        "decision": "retain_query_expand_evidence",
+        "proposed_type": "answerable",
+        "reason": "原证据支持预约渠道与证件，却遗漏语料已有的放票时间、提前天数与按预约时段入馆要求；原事实直接复制整段，混入条件性亲子规定。",
+        "proposed_labels": [
+          {
+            "chunk_id": "dynamic-4099b51516468dbb6050861d",
+            "relevance": 2
+          },
+          {
+            "chunk_id": "dynamic-f265f66794dff2b0a63d70c4",
+            "relevance": 2
+          },
+          {
+            "chunk_id": "dynamic-8a3f90ee608ded9d145c31e8",
+            "relevance": 1
+          },
+          {
+            "chunk_id": "dynamic-d25ccbd0daeba9c9f3c48e5b",
+            "relevance": 1
+          }
+        ],
+        "required_fact_groups": [
+          {
+            "fact": "通过南京博物院官方微信小程序实名预约；快照写明每日18:00放票，可提前7日且不包括当日。",
+            "evidence_ids": [
+              "dynamic-f265f66794dff2b0a63d70c4"
+            ]
+          },
+          {
+            "fact": "按预约日期与时段入馆，准备与预约一致的有效证件原件；特殊证件持有人按页面要求人工核验。",
+            "evidence_ids": [
+              "dynamic-4099b51516468dbb6050861d",
+              "dynamic-f265f66794dff2b0a63d70c4"
+            ]
+          }
+        ],
+        "human_checks": [
+          "是否将提前预约窗口与证件设为必答事实；儿童等条件性条款不应要求所有答案照抄",
+          "按出行日期确认规则仍适用，不保证抢票成功"
+        ]
+      },
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null
+    },
+    {
+      "id": "v2-0-0-1",
+      "query": "我准备去南京博物院，关于预约的事想问一下：怎么预约，需要提前准备什么？",
+      "intent_group": "南京-intent-0",
+      "original_type": "answerable",
+      "original_labels": [
+        {
+          "chunk_id": "dynamic-4099b51516468dbb6050861d",
+          "relevance": 2,
+          "evidence_group": "1d05f7a9df128868aa5606f8"
+        }
+      ],
+      "proposal": {
+        "case_ids": [
+          "v2-0-0-0",
+          "v2-0-0-1"
+        ],
+        "decision": "retain_query_expand_evidence",
+        "proposed_type": "answerable",
+        "reason": "原证据支持预约渠道与证件，却遗漏语料已有的放票时间、提前天数与按预约时段入馆要求；原事实直接复制整段，混入条件性亲子规定。",
+        "proposed_labels": [
+          {
+            "chunk_id": "dynamic-4099b51516468dbb6050861d",
+            "relevance": 2
+          },
+          {
+            "chunk_id": "dynamic-f265f66794dff2b0a63d70c4",
+            "relevance": 2
+          },
+          {
+            "chunk_id": "dynamic-8a3f90ee608ded9d145c31e8",
+            "relevance": 1
+          },
+          {
+            "chunk_id": "dynamic-d25ccbd0daeba9c9f3c48e5b",
+            "relevance": 1
+          }
+        ],
+        "required_fact_groups": [
+          {
+            "fact": "通过南京博物院官方微信小程序实名预约；快照写明每日18:00放票，可提前7日且不包括当日。",
+            "evidence_ids": [
+              "dynamic-f265f66794dff2b0a63d70c4"
+            ]
+          },
+          {
+            "fact": "按预约日期与时段入馆，准备与预约一致的有效证件原件；特殊证件持有人按页面要求人工核验。",
+            "evidence_ids": [
+              "dynamic-4099b51516468dbb6050861d",
+              "dynamic-f265f66794dff2b0a63d70c4"
+            ]
+          }
+        ],
+        "human_checks": [
+          "是否将提前预约窗口与证件设为必答事实；儿童等条件性条款不应要求所有答案照抄",
+          "按出行日期确认规则仍适用，不保证抢票成功"
+        ]
+      },
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null
+    },
+    {
+      "id": "v2-0-2-0",
+      "query": "南京博物院：怎样到达，入口和换乘怎么选？",
+      "intent_group": "南京-intent-2",
+      "original_type": "answerable",
+      "original_labels": [
+        {
+          "chunk_id": "dynamic-0fc5403a875b2874a939c600",
+          "relevance": 2,
+          "evidence_group": "a32867577752e03bdceb8b3e"
+        }
+      ],
+      "proposal": {
+        "case_ids": [
+          "v2-0-2-0",
+          "v2-0-2-1"
+        ],
+        "decision": "retain_query_mark_missing_facts",
+        "proposed_type": "in_corpus_missing",
+        "reason": "安检、行李和禁带物品不是到达路线。当前南京语料没有支持地铁出口、公交换乘和从出发点到入口路径的必要事实；个别特殊证件的绿色通道不能当普通游客交通答案。",
+        "rejected_labels": [
+          {
+            "chunk_id": "dynamic-0fc5403a875b2874a939c600",
+            "relevance": 0
+          }
+        ],
+        "proposed_labels": [],
+        "missing_facts": [
+          "出发位置或交通方式需要澄清",
+          "普通游客适用的入口、地铁或公交换乘证据",
+          "从交通下客点到入口的真实路径"
+        ],
+        "expected_behavior": "说明现有材料不足并询问出发点，可定向调用地图工具；不能用安检须知编造交通路线。",
+        "human_checks": [
+          "确认保持原题并重新分类；若另补交通语料，必须生成新语料版本再重新标注，不能沿用本次无答案结论"
+        ]
+      },
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null
+    },
+    {
+      "id": "v2-0-2-1",
+      "query": "我准备去南京博物院，关于交通的事想问一下：怎样到达，入口和换乘怎么选？",
+      "intent_group": "南京-intent-2",
+      "original_type": "answerable",
+      "original_labels": [
+        {
+          "chunk_id": "dynamic-0fc5403a875b2874a939c600",
+          "relevance": 2,
+          "evidence_group": "a32867577752e03bdceb8b3e"
+        }
+      ],
+      "proposal": {
+        "case_ids": [
+          "v2-0-2-0",
+          "v2-0-2-1"
+        ],
+        "decision": "retain_query_mark_missing_facts",
+        "proposed_type": "in_corpus_missing",
+        "reason": "安检、行李和禁带物品不是到达路线。当前南京语料没有支持地铁出口、公交换乘和从出发点到入口路径的必要事实；个别特殊证件的绿色通道不能当普通游客交通答案。",
+        "rejected_labels": [
+          {
+            "chunk_id": "dynamic-0fc5403a875b2874a939c600",
+            "relevance": 0
+          }
+        ],
+        "proposed_labels": [],
+        "missing_facts": [
+          "出发位置或交通方式需要澄清",
+          "普通游客适用的入口、地铁或公交换乘证据",
+          "从交通下客点到入口的真实路径"
+        ],
+        "expected_behavior": "说明现有材料不足并询问出发点，可定向调用地图工具；不能用安检须知编造交通路线。",
+        "human_checks": [
+          "确认保持原题并重新分类；若另补交通语料，必须生成新语料版本再重新标注，不能沿用本次无答案结论"
+        ]
+      },
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null
+    },
+    {
+      "id": "v2-0-4-0",
+      "query": "南京博物院：带老人慢慢游览，有什么安排建议？",
+      "intent_group": "南京-intent-4",
+      "original_type": "answerable",
+      "original_labels": [
+        {
+          "chunk_id": "dynamic-da84c7d313c702b96e45af04",
+          "relevance": 2,
+          "evidence_group": "d3886eb301aa0f1fa3f3dca2"
+        }
+      ],
+      "proposal": {
+        "case_ids": [
+          "v2-0-4-0",
+          "v2-0-4-1"
+        ],
+        "decision": "retain_query_add_advice_and_constraints",
+        "proposed_type": "answerable",
+        "answer_scope": "一般低强度安排建议；不支持具体逐展厅路线、无障碍入口或精确休息点承诺",
+        "reason": "优待政策只能支持特定年龄与身份条件，不能单独回答慢游安排。项目明确标为建议的老人出行规则直接支持控制步行与休息；设备禁用和陪护条款提供边界。",
+        "proposed_labels": [
+          {
+            "chunk_id": "rule-e4a4f130e54c0e9d761bded3",
+            "relevance": 2
+          },
+          {
+            "chunk_id": "dynamic-da84c7d313c702b96e45af04",
+            "relevance": 2
+          },
+          {
+            "chunk_id": "dynamic-fae699ff413a4719e41d3d65",
+            "relevance": 2
+          },
+          {
+            "chunk_id": "dynamic-0fc5403a875b2874a939c600",
+            "relevance": 2
+          },
+          {
+            "chunk_id": "dynamic-38acf508b169ee6ddb5dad0f",
+            "relevance": 1
+          }
+        ],
+        "required_fact_groups": [
+          {
+            "fact": "询问步行能力与陪护需求，降低连续活动强度、安排休息；这是规划建议，不是官方保证。",
+            "evidence_ids": [
+              "rule-e4a4f130e54c0e9d761bded3"
+            ]
+          },
+          {
+            "fact": "设备类型不能一概放行；快照明确谢绝电动轮椅、老年代步车。",
+            "evidence_ids": [
+              "dynamic-0fc5403a875b2874a939c600"
+            ]
+          },
+          {
+            "fact": "70岁及以上老人等优待条件和行动不便者陪护条件要按具体资格确认；不承诺免预约或免安检。",
+            "evidence_ids": [
+              "dynamic-da84c7d313c702b96e45af04",
+              "dynamic-fae699ff413a4719e41d3d65"
+            ]
+          }
+        ],
+        "human_checks": [
+          "是否接受项目建议作为此题答案的一部分；若只评官方事实，应改记部分可回答",
+          "官方预约总则与免预约权益措辞需要进一步确认，不自行消解冲突"
+        ]
+      },
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null
+    },
+    {
+      "id": "v2-0-4-1",
+      "query": "网上攻略里城市容易搞混，请只按南京的南京博物院回答：带老人慢慢游览，有什么安排建议？",
+      "intent_group": "南京-intent-4",
+      "original_type": "answerable",
+      "original_labels": [
+        {
+          "chunk_id": "dynamic-da84c7d313c702b96e45af04",
+          "relevance": 2,
+          "evidence_group": "d3886eb301aa0f1fa3f3dca2"
+        }
+      ],
+      "proposal": {
+        "case_ids": [
+          "v2-0-4-0",
+          "v2-0-4-1"
+        ],
+        "decision": "retain_query_add_advice_and_constraints",
+        "proposed_type": "answerable",
+        "answer_scope": "一般低强度安排建议；不支持具体逐展厅路线、无障碍入口或精确休息点承诺",
+        "reason": "优待政策只能支持特定年龄与身份条件，不能单独回答慢游安排。项目明确标为建议的老人出行规则直接支持控制步行与休息；设备禁用和陪护条款提供边界。",
+        "proposed_labels": [
+          {
+            "chunk_id": "rule-e4a4f130e54c0e9d761bded3",
+            "relevance": 2
+          },
+          {
+            "chunk_id": "dynamic-da84c7d313c702b96e45af04",
+            "relevance": 2
+          },
+          {
+            "chunk_id": "dynamic-fae699ff413a4719e41d3d65",
+            "relevance": 2
+          },
+          {
+            "chunk_id": "dynamic-0fc5403a875b2874a939c600",
+            "relevance": 2
+          },
+          {
+            "chunk_id": "dynamic-38acf508b169ee6ddb5dad0f",
+            "relevance": 1
+          }
+        ],
+        "required_fact_groups": [
+          {
+            "fact": "询问步行能力与陪护需求，降低连续活动强度、安排休息；这是规划建议，不是官方保证。",
+            "evidence_ids": [
+              "rule-e4a4f130e54c0e9d761bded3"
+            ]
+          },
+          {
+            "fact": "设备类型不能一概放行；快照明确谢绝电动轮椅、老年代步车。",
+            "evidence_ids": [
+              "dynamic-0fc5403a875b2874a939c600"
+            ]
+          },
+          {
+            "fact": "70岁及以上老人等优待条件和行动不便者陪护条件要按具体资格确认；不承诺免预约或免安检。",
+            "evidence_ids": [
+              "dynamic-da84c7d313c702b96e45af04",
+              "dynamic-fae699ff413a4719e41d3d65"
+            ]
+          }
+        ],
+        "human_checks": [
+          "是否接受项目建议作为此题答案的一部分；若只评官方事实，应改记部分可回答",
+          "官方预约总则与免预约权益措辞需要进一步确认，不自行消解冲突"
+        ]
+      },
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null
+    },
+    {
+      "id": "v2-0-6-0",
+      "query": "南京博物院：购票和入场有哪些条件？",
+      "intent_group": "南京-intent-6",
+      "original_type": "answerable",
+      "original_labels": [
+        {
+          "chunk_id": "dynamic-da84c7d313c702b96e45af04",
+          "relevance": 2,
+          "evidence_group": "d3886eb301aa0f1fa3f3dca2"
+        }
+      ],
+      "proposal": {
+        "case_ids": [
+          "v2-0-6-0"
+        ],
+        "decision": "retain_query_expand_evidence",
+        "proposed_type": "answerable",
+        "reason": "原证据主要讲亲子和优待对象，遗漏普通游客实名预约、时段、证件、常设陈列免费与市场化临展例外；不能从优待条款推出所有人免费或无需预约。",
+        "proposed_labels": [
+          {
+            "chunk_id": "dynamic-f265f66794dff2b0a63d70c4",
+            "relevance": 2
+          },
+          {
+            "chunk_id": "dynamic-4099b51516468dbb6050861d",
+            "relevance": 2
+          },
+          {
+            "chunk_id": "dynamic-8a3f90ee608ded9d145c31e8",
+            "relevance": 2
+          },
+          {
+            "chunk_id": "dynamic-0fc5403a875b2874a939c600",
+            "relevance": 2
+          },
+          {
+            "chunk_id": "dynamic-da84c7d313c702b96e45af04",
+            "relevance": 1
+          },
+          {
+            "chunk_id": "dynamic-fae699ff413a4719e41d3d65",
+            "relevance": 1
+          },
+          {
+            "chunk_id": "dynamic-d25ccbd0daeba9c9f3c48e5b",
+            "relevance": 2
+          }
+        ],
+        "required_fact_groups": [
+          {
+            "fact": "常设基本陈列和以院藏文物为主的专题展免费，市场化临时展览及展演不在免费范围；不编造具体临展价格。",
+            "evidence_ids": [
+              "dynamic-8a3f90ee608ded9d145c31e8",
+              "dynamic-0fc5403a875b2874a939c600"
+            ]
+          },
+          {
+            "fact": "实名预约，按时段、持相符有效证件原件核验并安检入馆。",
+            "evidence_ids": [
+              "dynamic-f265f66794dff2b0a63d70c4",
+              "dynamic-4099b51516468dbb6050861d",
+              "dynamic-d25ccbd0daeba9c9f3c48e5b"
+            ]
+          }
+        ],
+        "human_checks": [
+          "同一事实的多个片段为替代证据，不应要求检索器必须全部召回；事实组与证据组需最终整理"
+        ]
+      },
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null
+    },
+    {
+      "id": "v2-0-8-0",
+      "query": "南京博物院：有哪些服务设施和使用要求？",
+      "intent_group": "南京-intent-8",
+      "original_type": "answerable",
+      "original_labels": [
+        {
+          "chunk_id": "dynamic-38acf508b169ee6ddb5dad0f",
+          "relevance": 2,
+          "evidence_group": "adad4f0173f31cfe42f7c936"
+        },
+        {
+          "chunk_id": "official-54da8e0f874e62514e24db8d",
+          "relevance": 2,
+          "evidence_group": "682804f43364f40ff3018777"
+        }
+      ],
+      "proposal": {
+        "case_ids": [
+          "v2-0-8-0"
+        ],
+        "decision": "retain_query_remove_unrelated_add_service_rules",
+        "proposed_type": "answerable",
+        "answer_scope": "列举已收录的餐饮、寄存及使用限制；不是完整设施目录",
+        "reason": "历史台风管控不是南京博物院设施证据，且不能当成当前闭园事实。餐饮、行李寄存及禁用设备规则可以支持有限的设施回答。",
+        "rejected_labels": [
+          {
+            "chunk_id": "official-54da8e0f874e62514e24db8d",
+            "relevance": 0
+          }
+        ],
+        "proposed_labels": [
+          {
+            "chunk_id": "dynamic-38acf508b169ee6ddb5dad0f",
+            "relevance": 2
+          },
+          {
+            "chunk_id": "dynamic-8a3f90ee608ded9d145c31e8",
+            "relevance": 2
+          },
+          {
+            "chunk_id": "dynamic-0fc5403a875b2874a939c600",
+            "relevance": 2
+          }
+        ],
+        "required_fact_groups": [
+          {
+            "fact": "文渊广场公众餐厅，以及小剧场旁甜品店、特展馆茶社、民国馆咖啡厅等餐饮位置；不保证实时营业。",
+            "evidence_ids": [
+              "dynamic-38acf508b169ee6ddb5dad0f"
+            ]
+          },
+          {
+            "fact": "大件行李需入馆前寄存，须知写明正门右侧寄存处；寄存物品应在闭馆前取回，不保证费用与柜位。",
+            "evidence_ids": [
+              "dynamic-8a3f90ee608ded9d145c31e8",
+              "dynamic-0fc5403a875b2874a939c600"
+            ]
+          },
+          {
+            "fact": "展厅和指定区域禁止饮食，电动轮椅及老年代步车禁用等使用限制按页面说明。",
+            "evidence_ids": [
+              "dynamic-8a3f90ee608ded9d145c31e8",
+              "dynamic-0fc5403a875b2874a939c600"
+            ]
+          }
+        ],
+        "human_checks": [
+          "广义设施问题是否按列举已收录设施评估，还是需要先收窄范围；不能假设语料是完整设施清单"
+        ]
+      },
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null
+    },
+    {
+      "id": "v2-1-1-0",
+      "query": "上海旅行：几点开放，有哪些时间限制？",
+      "intent_group": "上海-intent-1",
+      "original_type": "answerable",
+      "original_labels": [
+        {
+          "chunk_id": "official-2d293e2c6c5d5bd32e6d3035",
+          "relevance": 2,
+          "evidence_group": "a37b01971daefc237c535c26"
+        }
+      ],
+      "proposal": {
+        "case_ids": [
+          "v2-1-1-0",
+          "v2-1-1-1"
+        ],
+        "decision": "needs_clarification_not_silent_rewrite",
+        "proposed_type": null,
+        "reason": "上海旅行不是具体场馆，没有统一开放时间。原团队电话预约的提前7天条款也不是每日开放时间。语料有上海博物馆东馆开放时间，但用户未指定东馆，不能直接套用。",
+        "rejected_labels": [
+          {
+            "chunk_id": "official-2d293e2c6c5d5bd32e6d3035",
+            "relevance": 0
+          }
+        ],
+        "proposed_labels": [],
+        "expected_behavior": "询问具体景点及场馆；确认是上海博物馆东馆后才能回答其时间。",
+        "optional_new_query_after_human_confirmation": "上海博物馆东馆几点开放、几点停止入场，周二和节假日有什么限制？",
+        "conditional_labels": [
+          {
+            "chunk_id": "official-b4cf6edff2ccf440d7d8d429",
+            "relevance": 2
+          }
+        ],
+        "conditional_reference_facts": [
+          "东馆常规10:00–18:00，17:00后停止入场，周二闭馆，国定节假日除外；以出行日期公告为准。"
+        ],
+        "human_checks": [
+          "保留原题作为澄清案例，还是另建明确东馆的问题；现有三类标注不含澄清类，不能硬塞成范围外",
+          "若改题需记录版本与改题原因，原题保留，不能默默替换以提升得分"
+        ]
+      },
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null
+    },
+    {
+      "id": "v2-1-1-1",
+      "query": "我准备去上海旅行，关于开放的事想问一下：几点开放，有哪些时间限制？",
+      "intent_group": "上海-intent-1",
+      "original_type": "answerable",
+      "original_labels": [
+        {
+          "chunk_id": "official-2d293e2c6c5d5bd32e6d3035",
+          "relevance": 2,
+          "evidence_group": "a37b01971daefc237c535c26"
+        }
+      ],
+      "proposal": {
+        "case_ids": [
+          "v2-1-1-0",
+          "v2-1-1-1"
+        ],
+        "decision": "needs_clarification_not_silent_rewrite",
+        "proposed_type": null,
+        "reason": "上海旅行不是具体场馆，没有统一开放时间。原团队电话预约的提前7天条款也不是每日开放时间。语料有上海博物馆东馆开放时间，但用户未指定东馆，不能直接套用。",
+        "rejected_labels": [
+          {
+            "chunk_id": "official-2d293e2c6c5d5bd32e6d3035",
+            "relevance": 0
+          }
+        ],
+        "proposed_labels": [],
+        "expected_behavior": "询问具体景点及场馆；确认是上海博物馆东馆后才能回答其时间。",
+        "optional_new_query_after_human_confirmation": "上海博物馆东馆几点开放、几点停止入场，周二和节假日有什么限制？",
+        "conditional_labels": [
+          {
+            "chunk_id": "official-b4cf6edff2ccf440d7d8d429",
+            "relevance": 2
+          }
+        ],
+        "conditional_reference_facts": [
+          "东馆常规10:00–18:00，17:00后停止入场，周二闭馆，国定节假日除外；以出行日期公告为准。"
+        ],
+        "human_checks": [
+          "保留原题作为澄清案例，还是另建明确东馆的问题；现有三类标注不含澄清类，不能硬塞成范围外",
+          "若改题需记录版本与改题原因，原题保留，不能默默替换以提升得分"
+        ]
+      },
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null
+    },
+    {
+      "id": "v2-1-3-0",
+      "query": "上海博物馆：带孩子出行，有什么注意事项？",
+      "intent_group": "上海-intent-3",
+      "original_type": "answerable",
+      "original_labels": [
+        {
+          "chunk_id": "official-02acea8fddc610facef0d2ae",
+          "relevance": 2,
+          "evidence_group": "368594add2fd008dbca14fd7"
+        }
+      ],
+      "proposal": {
+        "decision": "partial_answer_missing_child_facts",
+        "proposed_type": "in_corpus_missing",
+        "reason": "已结束且年龄18–100的讲座不是亲子证据。现有专项预约可支持部分建议，但未收录成年人陪同要求；不能把成年人活动推荐给儿童。",
+        "proposed_labels": [
+          {
+            "chunk_id": "official-669e507ed24e25de44e4bb10",
+            "relevance": 2
+          }
+        ],
+        "proposed_reference_facts": [
+          "探索宫、数字馆仍需专项预约，不能从散客免预约推导所有项目免预约。"
+        ],
+        "missing_facts": [
+          "未成年人年龄与陪同条件；实时页面有该条款但旧语料未收录",
+          "用户想去哪个馆、孩子年龄"
+        ],
+        "human_checks": [
+          "确认部分回答是否归缺关键事实；新抓到的陪同政策需新语料版本，不能越过证据注入答案。"
+        ]
+      },
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null
+    },
+    {
+      "id": "v2-1-3-1",
+      "query": "不要用重庆的攻略，我是问上海博物馆：带孩子出行，有什么注意事项？",
+      "intent_group": "上海-intent-3",
+      "original_type": "answerable",
+      "original_labels": [
+        {
+          "chunk_id": "official-02acea8fddc610facef0d2ae",
+          "relevance": 2,
+          "evidence_group": "368594add2fd008dbca14fd7"
+        }
+      ],
+      "proposal": {
+        "decision": "partial_answer_missing_child_facts",
+        "proposed_type": "in_corpus_missing",
+        "reason": "已结束且年龄18–100的讲座不是亲子证据。现有专项预约可支持部分建议，但未收录成年人陪同要求；不能把成年人活动推荐给儿童。",
+        "proposed_labels": [
+          {
+            "chunk_id": "official-669e507ed24e25de44e4bb10",
+            "relevance": 2
+          }
+        ],
+        "proposed_reference_facts": [
+          "探索宫、数字馆仍需专项预约，不能从散客免预约推导所有项目免预约。"
+        ],
+        "missing_facts": [
+          "未成年人年龄与陪同条件；实时页面有该条款但旧语料未收录",
+          "用户想去哪个馆、孩子年龄"
+        ],
+        "human_checks": [
+          "确认部分回答是否归缺关键事实；新抓到的陪同政策需新语料版本，不能越过证据注入答案。"
+        ]
+      },
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null
+    },
+    {
+      "id": "v2-1-5-0",
+      "query": "上海博物馆：遇上下雨，游览时应注意什么？",
+      "intent_group": "上海-intent-5",
+      "original_type": "answerable",
+      "original_labels": [
+        {
+          "chunk_id": "official-02acea8fddc610facef0d2ae",
+          "relevance": 2,
+          "evidence_group": "368594add2fd008dbca14fd7"
+        }
+      ],
+      "proposal": {
+        "decision": "missing_weather_visit_evidence",
+        "proposed_type": "in_corpus_missing",
+        "reason": "已结束讲座不支持雨天安排；语料未收录雨天入口、室外排队与场馆之间路线证据。",
+        "proposed_labels": [],
+        "proposed_reference_facts": [],
+        "missing_facts": [
+          "具体场馆及适用的雨天通勤/入场建议"
+        ],
+        "human_checks": [
+          "通用带伞常识不是语料召回正确性的证明；不改写为讲座时间题。"
+        ]
+      },
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null
+    },
+    {
+      "id": "v2-1-7-0",
+      "query": "上海旅行：游览有哪些安全提醒？",
+      "intent_group": "上海-intent-7",
+      "original_type": "answerable",
+      "original_labels": [
+        {
+          "chunk_id": "official-4b213fe0f7be6f08901c8b02",
+          "relevance": 2,
+          "evidence_group": "cc5347f4374689ae7a5ff08b"
+        }
+      ],
+      "proposal": {
+        "decision": "partial_scope_clarification",
+        "proposed_type": null,
+        "reason": "城市安全问题较宽。学生团队安全责任书与馆内管理只能回答特定团队参观，不能代表上海所有旅行安全提醒。",
+        "proposed_labels": [
+          {
+            "chunk_id": "official-7adf54d781d94b4b9ae1c95e",
+            "relevance": 1
+          },
+          {
+            "chunk_id": "official-4b213fe0f7be6f08901c8b02",
+            "relevance": 1
+          }
+        ],
+        "proposed_reference_facts": [],
+        "missing_facts": [
+          "用户活动、区域及是否团队出行"
+        ],
+        "human_checks": [
+          "建议先澄清场景，或给有限的馆内注意事项并说明范围；不以同城作为直接相关依据。"
+        ]
+      },
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null
+    },
+    {
+      "id": "v2-1-9-0",
+      "query": "上海博物馆：不想赶路，游览路线怎么安排？",
+      "intent_group": "上海-intent-9",
+      "original_type": "answerable",
+      "original_labels": [
+        {
+          "chunk_id": "official-02acea8fddc610facef0d2ae",
+          "relevance": 2,
+          "evidence_group": "368594add2fd008dbca14fd7"
+        },
+        {
+          "chunk_id": "official-0b7f8f592476404fb5377e84",
+          "relevance": 2,
+          "evidence_group": "f773d0d0c2c1c1d93f167a56"
+        }
+      ],
+      "proposal": {
+        "decision": "missing_slow_route_evidence",
+        "proposed_type": "in_corpus_missing",
+        "reason": "两个已结束讲座不构成慢游路线。两个馆商店地址和时间仅为背景，不支持馆内展厅顺序、步行与休息安排。",
+        "proposed_labels": [
+          {
+            "chunk_id": "official-cf40fcb03d1a81783fb430ca",
+            "relevance": 1
+          },
+          {
+            "chunk_id": "official-d34dc2ecacee7e7688c8d6ec",
+            "relevance": 1
+          }
+        ],
+        "proposed_reference_facts": [],
+        "missing_facts": [
+          "选定场馆、兴趣与体力",
+          "空间动线、活动时长及可用休息点"
+        ],
+        "human_checks": [
+          "不把只去一个馆的常识当作已验证完整路线。"
+        ]
+      },
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null
+    },
+    {
+      "id": "v2-2-0-0",
+      "query": "重庆中国三峡博物馆：怎么预约，需要提前准备什么？",
+      "intent_group": "重庆-intent-0",
+      "original_type": "answerable",
+      "original_labels": [
+        {
+          "chunk_id": "official-767f411d328e970f41694ce4",
+          "relevance": 2,
+          "evidence_group": "e64334112072041e6d3d5144"
+        }
+      ],
+      "proposal": {
+        "decision": "retain_evidence_verify_date",
+        "proposed_type": "answerable",
+        "reason": "公告直接说明免预约及有效身份证件；但截取块只有10月1日，缺年份，不能未经核实作为当前政策。",
+        "proposed_labels": [
+          {
+            "chunk_id": "official-767f411d328e970f41694ce4",
+            "relevance": 2
+          },
+          {
+            "chunk_id": "official-4d5df54dac4cabe5c29ad43d",
+            "relevance": 1
+          },
+          {
+            "chunk_id": "official-c7b5512dd21c863b8facace4",
+            "relevance": 1
+          }
+        ],
+        "proposed_reference_facts": [
+          "按所收录公告，自10月1日起主馆等免预约、凭有效身份证件入馆；宋庆龄纪念馆与白鹤梁另需购票。"
+        ],
+        "missing_facts": [
+          "公告发布日期/年份及出行日期的持续有效性"
+        ],
+        "human_checks": [
+          "仅按公告快照可回答；在来源确认前不可称当前政策已人工核验。"
+        ]
+      },
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null
+    },
+    {
+      "id": "v2-2-0-1",
+      "query": "我准备去重庆中国三峡博物馆，关于预约的事想问一下：怎么预约，需要提前准备什么？",
+      "intent_group": "重庆-intent-0",
+      "original_type": "answerable",
+      "original_labels": [
+        {
+          "chunk_id": "official-767f411d328e970f41694ce4",
+          "relevance": 2,
+          "evidence_group": "e64334112072041e6d3d5144"
+        }
+      ],
+      "proposal": {
+        "decision": "retain_evidence_verify_date",
+        "proposed_type": "answerable",
+        "reason": "公告直接说明免预约及有效身份证件；但截取块只有10月1日，缺年份，不能未经核实作为当前政策。",
+        "proposed_labels": [
+          {
+            "chunk_id": "official-767f411d328e970f41694ce4",
+            "relevance": 2
+          },
+          {
+            "chunk_id": "official-4d5df54dac4cabe5c29ad43d",
+            "relevance": 1
+          },
+          {
+            "chunk_id": "official-c7b5512dd21c863b8facace4",
+            "relevance": 1
+          }
+        ],
+        "proposed_reference_facts": [
+          "按所收录公告，自10月1日起主馆等免预约、凭有效身份证件入馆；宋庆龄纪念馆与白鹤梁另需购票。"
+        ],
+        "missing_facts": [
+          "公告发布日期/年份及出行日期的持续有效性"
+        ],
+        "human_checks": [
+          "仅按公告快照可回答；在来源确认前不可称当前政策已人工核验。"
+        ]
+      },
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null
+    },
+    {
+      "id": "v2-2-2-0",
+      "query": "重庆轨道交通：怎样到达，入口和换乘怎么选？",
+      "intent_group": "重庆-intent-2",
+      "original_type": "answerable",
+      "original_labels": [
+        {
+          "chunk_id": "official-329487081d2f117d309ce43c",
+          "relevance": 2,
+          "evidence_group": "b19fc972e2d0b460cece06c4"
+        }
+      ],
+      "proposal": {
+        "decision": "needs_origin_destination",
+        "proposed_type": null,
+        "reason": "轨道交通不是具体目的地；老人免票条件不是入口或路线。换乘优惠证据也只是票务，不是站点换乘路径。",
+        "proposed_labels": [
+          {
+            "chunk_id": "official-6b3c46538db4d0332175a7f2",
+            "relevance": 1
+          },
+          {
+            "chunk_id": "official-6ee731d3007d50638a80d046",
+            "relevance": 1
+          }
+        ],
+        "proposed_reference_facts": [],
+        "missing_facts": [
+          "起点、终点、出行时间及实际换乘路径"
+        ],
+        "human_checks": [
+          "保留为澄清题，不能改问免费乘车来迎合原证据。"
+        ]
+      },
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null
+    },
+    {
+      "id": "v2-2-2-1",
+      "query": "我准备去重庆轨道交通，关于交通的事想问一下：怎样到达，入口和换乘怎么选？",
+      "intent_group": "重庆-intent-2",
+      "original_type": "answerable",
+      "original_labels": [
+        {
+          "chunk_id": "official-329487081d2f117d309ce43c",
+          "relevance": 2,
+          "evidence_group": "b19fc972e2d0b460cece06c4"
+        }
+      ],
+      "proposal": {
+        "decision": "needs_origin_destination",
+        "proposed_type": null,
+        "reason": "轨道交通不是具体目的地；老人免票条件不是入口或路线。换乘优惠证据也只是票务，不是站点换乘路径。",
+        "proposed_labels": [
+          {
+            "chunk_id": "official-6b3c46538db4d0332175a7f2",
+            "relevance": 1
+          },
+          {
+            "chunk_id": "official-6ee731d3007d50638a80d046",
+            "relevance": 1
+          }
+        ],
+        "proposed_reference_facts": [],
+        "missing_facts": [
+          "起点、终点、出行时间及实际换乘路径"
+        ],
+        "human_checks": [
+          "保留为澄清题，不能改问免费乘车来迎合原证据。"
+        ]
+      },
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null
+    },
+    {
+      "id": "v2-2-4-0",
+      "query": "重庆中国三峡博物馆：带老人慢慢游览，有什么安排建议？",
+      "intent_group": "重庆-intent-4",
+      "original_type": "answerable",
+      "original_labels": [
+        {
+          "chunk_id": "official-2358c570609a92bf2a323569",
+          "relevance": 2,
+          "evidence_group": "068d81d8c12eb381d551cee9"
+        }
+      ],
+      "proposal": {
+        "decision": "missing_elderly_itinerary_evidence",
+        "proposed_type": "in_corpus_missing",
+        "reason": "白鹤梁的展会宣传不回答三峡博物馆老人慢游，属于跨场馆错误。错峰提醒仅有一般帮助，没有休息、无障碍与参观节奏证据。",
+        "proposed_labels": [
+          {
+            "chunk_id": "official-c770e07985dd891cfba4cc5a",
+            "relevance": 1
+          }
+        ],
+        "proposed_reference_facts": [],
+        "missing_facts": [
+          "主馆老人服务、休息安排和动线证据"
+        ],
+        "human_checks": [
+          "不将白鹤梁水下40米宣传推成适合老人活动。"
+        ]
+      },
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null
+    },
+    {
+      "id": "v2-2-4-1",
+      "query": "网上攻略里城市容易搞混，请只按重庆的重庆中国三峡博物馆回答：带老人慢慢游览，有什么安排建议？",
+      "intent_group": "重庆-intent-4",
+      "original_type": "answerable",
+      "original_labels": [
+        {
+          "chunk_id": "official-2358c570609a92bf2a323569",
+          "relevance": 2,
+          "evidence_group": "068d81d8c12eb381d551cee9"
+        }
+      ],
+      "proposal": {
+        "decision": "missing_elderly_itinerary_evidence",
+        "proposed_type": "in_corpus_missing",
+        "reason": "白鹤梁的展会宣传不回答三峡博物馆老人慢游，属于跨场馆错误。错峰提醒仅有一般帮助，没有休息、无障碍与参观节奏证据。",
+        "proposed_labels": [
+          {
+            "chunk_id": "official-c770e07985dd891cfba4cc5a",
+            "relevance": 1
+          }
+        ],
+        "proposed_reference_facts": [],
+        "missing_facts": [
+          "主馆老人服务、休息安排和动线证据"
+        ],
+        "human_checks": [
+          "不将白鹤梁水下40米宣传推成适合老人活动。"
+        ]
+      },
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null
+    },
+    {
+      "id": "v2-2-6-0",
+      "query": "重庆旅行：购票和入场有哪些条件？",
+      "intent_group": "重庆-intent-6",
+      "original_type": "answerable",
+      "original_labels": [
+        {
+          "chunk_id": "official-2b511fc7ce83f3b73dbd271f",
+          "relevance": 2,
+          "evidence_group": "10dafc04c043c0d72e222a37"
+        }
+      ],
+      "proposal": {
+        "decision": "needs_attraction_clarification",
+        "proposed_type": null,
+        "reason": "重庆旅行没有统一购票条件；万足游船价格不能推广到整个重庆，原片段也缺明确景区名称。",
+        "proposed_labels": [],
+        "proposed_reference_facts": [],
+        "missing_facts": [
+          "具体景点/产品与日期"
+        ],
+        "human_checks": [
+          "保留模糊请求，询问用户；若明确三峡博物馆可另引用免预约公告但不静默改题。"
+        ]
+      },
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null
+    },
+    {
+      "id": "v2-2-8-0",
+      "query": "重庆中国三峡博物馆：有哪些服务设施和使用要求？",
+      "intent_group": "重庆-intent-8",
+      "original_type": "answerable",
+      "original_labels": [
+        {
+          "chunk_id": "official-2358c570609a92bf2a323569",
+          "relevance": 2,
+          "evidence_group": "068d81d8c12eb381d551cee9"
+        },
+        {
+          "chunk_id": "official-2b511fc7ce83f3b73dbd271f",
+          "relevance": 2,
+          "evidence_group": "10dafc04c043c0d72e222a37"
+        }
+      ],
+      "proposal": {
+        "decision": "missing_facility_inventory",
+        "proposed_type": "in_corpus_missing",
+        "reason": "白鹤梁宣传与其他景区游船票价都不是三峡博物馆主馆设施。讲解品牌新闻证明有过服务项目，不能保证现场排班、预约或设施。",
+        "proposed_labels": [
+          {
+            "chunk_id": "official-5d0f28392686255917628f33",
+            "relevance": 1
+          },
+          {
+            "chunk_id": "official-c7b5512dd21c863b8facace4",
+            "relevance": 1
+          }
+        ],
+        "proposed_reference_facts": [],
+        "missing_facts": [
+          "主馆具体设施及使用条件"
+        ],
+        "human_checks": [
+          "旧新闻不能替代现行服务指南。"
+        ]
+      },
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null
+    },
+    {
+      "id": "v2-3-1-0",
+      "query": "丽江旅行：几点开放，有哪些时间限制？",
+      "intent_group": "丽江-intent-1",
+      "original_type": "answerable",
+      "original_labels": [
+        {
+          "chunk_id": "rule-136ff0049e5282003f7fb598",
+          "relevance": 2,
+          "evidence_group": "136ff0049e5282003f7fb598"
+        }
+      ],
+      "proposal": {
+        "decision": "needs_attraction_clarification",
+        "proposed_type": null,
+        "reason": "整个丽江没有统一开放时间；古镇消歧规则不是任何景点营业证据。",
+        "proposed_labels": [],
+        "proposed_reference_facts": [],
+        "missing_facts": [
+          "具体景点、日期及适用开放公告"
+        ],
+        "human_checks": [
+          "保留为澄清题，不凭项目规则编造时间。"
+        ]
+      },
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null
+    },
+    {
+      "id": "v2-3-1-1",
+      "query": "我准备去丽江旅行，关于开放的事想问一下：几点开放，有哪些时间限制？",
+      "intent_group": "丽江-intent-1",
+      "original_type": "answerable",
+      "original_labels": [
+        {
+          "chunk_id": "rule-136ff0049e5282003f7fb598",
+          "relevance": 2,
+          "evidence_group": "136ff0049e5282003f7fb598"
+        }
+      ],
+      "proposal": {
+        "decision": "needs_attraction_clarification",
+        "proposed_type": null,
+        "reason": "整个丽江没有统一开放时间；古镇消歧规则不是任何景点营业证据。",
+        "proposed_labels": [],
+        "proposed_reference_facts": [],
+        "missing_facts": [
+          "具体景点、日期及适用开放公告"
+        ],
+        "human_checks": [
+          "保留为澄清题，不凭项目规则编造时间。"
+        ]
+      },
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null
+    },
+    {
+      "id": "v2-3-3-0",
+      "query": "丽江旅行：带孩子出行，有什么注意事项？",
+      "intent_group": "丽江-intent-3",
+      "original_type": "answerable",
+      "original_labels": [
+        {
+          "chunk_id": "rule-3db5d478fe0953ea29e42837",
+          "relevance": 2,
+          "evidence_group": "3db5d478fe0953ea29e42837"
+        }
+      ],
+      "proposal": {
+        "decision": "retain_advice_not_official_fact",
+        "proposed_type": "answerable",
+        "reason": "亲子项目规则直接支持一般准备建议，可补高海拔边界；不是官方产品年龄/价格/场次政策。",
+        "proposed_labels": [
+          {
+            "chunk_id": "rule-3db5d478fe0953ea29e42837",
+            "relevance": 2
+          },
+          {
+            "chunk_id": "rule-3226d610b924a2d0fcc855a9",
+            "relevance": 2
+          },
+          {
+            "chunk_id": "rule-cf54d5898c40d69054e4a040",
+            "relevance": 1
+          }
+        ],
+        "proposed_reference_facts": [
+          "先问年龄、睡眠习惯与夜游接受度，活动与休息按时长安排。",
+          "涉及高海拔或徒步时核验具体活动、强度，不能做健康适宜性保证。"
+        ],
+        "missing_facts": [],
+        "human_checks": [
+          "确认允许检索规划建议；若评官方事实应另列建议子集。"
+        ]
+      },
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null
+    },
+    {
+      "id": "v2-3-3-1",
+      "query": "不要用三亚的攻略，我是问丽江旅行：带孩子出行，有什么注意事项？",
+      "intent_group": "丽江-intent-3",
+      "original_type": "answerable",
+      "original_labels": [
+        {
+          "chunk_id": "rule-3db5d478fe0953ea29e42837",
+          "relevance": 2,
+          "evidence_group": "3db5d478fe0953ea29e42837"
+        }
+      ],
+      "proposal": {
+        "decision": "retain_advice_not_official_fact",
+        "proposed_type": "answerable",
+        "reason": "亲子项目规则直接支持一般准备建议，可补高海拔边界；不是官方产品年龄/价格/场次政策。",
+        "proposed_labels": [
+          {
+            "chunk_id": "rule-3db5d478fe0953ea29e42837",
+            "relevance": 2
+          },
+          {
+            "chunk_id": "rule-3226d610b924a2d0fcc855a9",
+            "relevance": 2
+          },
+          {
+            "chunk_id": "rule-cf54d5898c40d69054e4a040",
+            "relevance": 1
+          }
+        ],
+        "proposed_reference_facts": [
+          "先问年龄、睡眠习惯与夜游接受度，活动与休息按时长安排。",
+          "涉及高海拔或徒步时核验具体活动、强度，不能做健康适宜性保证。"
+        ],
+        "missing_facts": [],
+        "human_checks": [
+          "确认允许检索规划建议；若评官方事实应另列建议子集。"
+        ]
+      },
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null
+    },
+    {
+      "id": "v2-3-5-0",
+      "query": "丽江旅行：遇上下雨，游览时应注意什么？",
+      "intent_group": "丽江-intent-5",
+      "original_type": "answerable",
+      "original_labels": [
+        {
+          "chunk_id": "rule-7b798ca6c3bf9cd6d1cfac1e",
+          "relevance": 2,
+          "evidence_group": "7b798ca6c3bf9cd6d1cfac1e"
+        }
+      ],
+      "proposal": {
+        "decision": "retain_advice_not_weather_report",
+        "proposed_type": "answerable",
+        "reason": "雨天项目规则直接支持减少未核验户外步行与检查室内备选，不支持实时封路或天气预测。",
+        "proposed_labels": [
+          {
+            "chunk_id": "rule-7b798ca6c3bf9cd6d1cfac1e",
+            "relevance": 2
+          }
+        ],
+        "proposed_reference_facts": [
+          "减少长距离户外步行，核验室内备选开放预约，替换后重新检查通勤和餐饮。",
+          "不能无证据声称某道路封闭、积水。"
+        ],
+        "missing_facts": [],
+        "human_checks": [
+          "一般建议可回答；不得算作实时天气事实召回。"
+        ]
+      },
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null
+    },
+    {
+      "id": "v2-3-7-0",
+      "query": "丽江旅行：游览有哪些安全提醒？",
+      "intent_group": "丽江-intent-7",
+      "original_type": "answerable",
+      "original_labels": [
+        {
+          "chunk_id": "official-36e065e97655478e9f766aad",
+          "relevance": 2,
+          "evidence_group": "d7273926ee3c0a48bf96b4f1"
+        }
+      ],
+      "proposal": {
+        "decision": "expand_general_safety_evidence",
+        "proposed_type": "answerable",
+        "reason": "黑龙潭文明引导可支持局部提醒；法律/诚信提示与项目健康边界可补一般安全，但不证明所有路线可行。",
+        "proposed_labels": [
+          {
+            "chunk_id": "official-36e065e97655478e9f766aad",
+            "relevance": 1
+          },
+          {
+            "chunk_id": "official-c15ddf695e45fe7f0ee24b34",
+            "relevance": 2
+          },
+          {
+            "chunk_id": "official-188c735906d517a436e8309f",
+            "relevance": 2
+          },
+          {
+            "chunk_id": "official-b76f6784919b7d8dfd7ca0c2",
+            "relevance": 2
+          },
+          {
+            "chunk_id": "rule-3226d610b924a2d0fcc855a9",
+            "relevance": 2
+          }
+        ],
+        "proposed_reference_facts": [
+          "遵守景区标识、不翻越防护设施、不损坏文物。",
+          "核验经营资质与合同，不接受未核验商家背书。",
+          "高海拔不适或健康疑虑应降低强度并咨询专业人员。"
+        ],
+        "missing_facts": [],
+        "human_checks": [
+          "区分游客引述、官方倡议、项目建议；不把报道中的秩序良好当安全保证。"
+        ]
+      },
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null
+    },
+    {
+      "id": "v2-3-9-0",
+      "query": "丽江旅行：不想赶路，游览路线怎么安排？",
+      "intent_group": "丽江-intent-9",
+      "original_type": "answerable",
+      "original_labels": [
+        {
+          "chunk_id": "official-0160537ebb4723b82416e479",
+          "relevance": 2,
+          "evidence_group": "d69082ec5f87fcc4951fcea0"
+        },
+        {
+          "chunk_id": "rule-136ff0049e5282003f7fb598",
+          "relevance": 2,
+          "evidence_group": "136ff0049e5282003f7fb598"
+        }
+      ],
+      "proposal": {
+        "decision": "partial_advice_missing_concrete_route",
+        "proposed_type": "in_corpus_missing",
+        "reason": "志愿服务新闻不是慢游路线；古镇消歧为背景。行程规则可以给一般低强度原则，但缺用户目的地与真实道路耗时，不能完整生成路线。",
+        "proposed_labels": [
+          {
+            "chunk_id": "rule-dda80a7d810890313d2ac760",
+            "relevance": 2
+          },
+          {
+            "chunk_id": "rule-d30a0be675fd716e92bf5781",
+            "relevance": 2
+          },
+          {
+            "chunk_id": "rule-136ff0049e5282003f7fb598",
+            "relevance": 1
+          }
+        ],
+        "proposed_reference_facts": [
+          "雪山、古城活动按预约时段、通勤和休息排程，不机械均分。",
+          "泸沽湖是否当天往返应先核验实际车程并考虑用户接受度。"
+        ],
+        "missing_facts": [
+          "用户景点偏好、天数、住宿点与实际路径时长"
+        ],
+        "human_checks": [
+          "一般原则与可执行路线分别评分；缺事实不是完全拒绝所有建议。"
+        ]
+      },
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null
+    },
+    {
+      "id": "v2-4-0-0",
+      "query": "蜈支洲岛：怎么预约，需要提前准备什么？",
+      "intent_group": "三亚-intent-0",
+      "original_type": "answerable",
+      "original_labels": [
+        {
+          "chunk_id": "official-77c9c4ac4ec6ced8b38a8d58",
+          "relevance": 2,
+          "evidence_group": "56351423e4137d9d15aa0503"
+        }
+      ],
+      "proposal": {
+        "decision": "partial_special_access_not_general_booking",
+        "proposed_type": "in_corpus_missing",
+        "reason": "导盲犬提前预约条款只适用于特定游客，不能作为普通游客预约流程。可回答健康、证件等部分准备要求，但没有一般订票渠道与流程。",
+        "proposed_labels": [
+          {
+            "chunk_id": "official-77c9c4ac4ec6ced8b38a8d58",
+            "relevance": 1
+          },
+          {
+            "chunk_id": "official-e1fb0c8926e90bfbea4dd4ed",
+            "relevance": 1
+          },
+          {
+            "chunk_id": "official-256c23b3c4673568216366c0",
+            "relevance": 2
+          },
+          {
+            "chunk_id": "official-68def0ce425834d494b9e6a6",
+            "relevance": 2
+          },
+          {
+            "chunk_id": "official-4f49784704a20817c5fe1567",
+            "relevance": 1
+          }
+        ],
+        "proposed_reference_facts": [
+          "先核对登岛适宜条件；有导盲犬/特殊辅助需求时按特定条款向景区预约咨询。"
+        ],
+        "missing_facts": [
+          "普通游客购票预约方式、证件流程及日期可用性"
+        ],
+        "human_checks": [
+          "除用户明确特殊身份外，不把特定预约要求扩展给所有人。"
+        ]
+      },
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null
+    },
+    {
+      "id": "v2-4-0-1",
+      "query": "我准备去蜈支洲岛，关于预约的事想问一下：怎么预约，需要提前准备什么？",
+      "intent_group": "三亚-intent-0",
+      "original_type": "answerable",
+      "original_labels": [
+        {
+          "chunk_id": "official-77c9c4ac4ec6ced8b38a8d58",
+          "relevance": 2,
+          "evidence_group": "56351423e4137d9d15aa0503"
+        }
+      ],
+      "proposal": {
+        "decision": "partial_special_access_not_general_booking",
+        "proposed_type": "in_corpus_missing",
+        "reason": "导盲犬提前预约条款只适用于特定游客，不能作为普通游客预约流程。可回答健康、证件等部分准备要求，但没有一般订票渠道与流程。",
+        "proposed_labels": [
+          {
+            "chunk_id": "official-77c9c4ac4ec6ced8b38a8d58",
+            "relevance": 1
+          },
+          {
+            "chunk_id": "official-e1fb0c8926e90bfbea4dd4ed",
+            "relevance": 1
+          },
+          {
+            "chunk_id": "official-256c23b3c4673568216366c0",
+            "relevance": 2
+          },
+          {
+            "chunk_id": "official-68def0ce425834d494b9e6a6",
+            "relevance": 2
+          },
+          {
+            "chunk_id": "official-4f49784704a20817c5fe1567",
+            "relevance": 1
+          }
+        ],
+        "proposed_reference_facts": [
+          "先核对登岛适宜条件；有导盲犬/特殊辅助需求时按特定条款向景区预约咨询。"
+        ],
+        "missing_facts": [
+          "普通游客购票预约方式、证件流程及日期可用性"
+        ],
+        "human_checks": [
+          "除用户明确特殊身份外，不把特定预约要求扩展给所有人。"
+        ]
+      },
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null
+    },
+    {
+      "id": "v2-4-2-0",
+      "query": "蜈支洲岛：怎样到达，入口和换乘怎么选？",
+      "intent_group": "三亚-intent-2",
+      "original_type": "answerable",
+      "original_labels": [
+        {
+          "chunk_id": "official-12a0f229407630085b6e2925",
+          "relevance": 2,
+          "evidence_group": "37db59681a79b0e11a4bc442"
+        }
+      ],
+      "proposal": {
+        "decision": "missing_arrival_route",
+        "proposed_type": "in_corpus_missing",
+        "reason": "海棠游是海上观光产品宣传，不说明从用户所在地到码头的入口与换乘。岛内禁步行条款有背景意义，不是到岛路线。",
+        "proposed_labels": [
+          {
+            "chunk_id": "official-c0011ab490889151ec199a74",
+            "relevance": 1
+          }
+        ],
+        "proposed_reference_facts": [],
+        "missing_facts": [
+          "出发点、码头入口、接驳路线与实际时间"
+        ],
+        "human_checks": [
+          "不能把绕岛游产品当作上岛交通。"
+        ]
+      },
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null
+    },
+    {
+      "id": "v2-4-2-1",
+      "query": "我准备去蜈支洲岛，关于交通的事想问一下：怎样到达，入口和换乘怎么选？",
+      "intent_group": "三亚-intent-2",
+      "original_type": "answerable",
+      "original_labels": [
+        {
+          "chunk_id": "official-12a0f229407630085b6e2925",
+          "relevance": 2,
+          "evidence_group": "37db59681a79b0e11a4bc442"
+        }
+      ],
+      "proposal": {
+        "decision": "missing_arrival_route",
+        "proposed_type": "in_corpus_missing",
+        "reason": "海棠游是海上观光产品宣传，不说明从用户所在地到码头的入口与换乘。岛内禁步行条款有背景意义，不是到岛路线。",
+        "proposed_labels": [
+          {
+            "chunk_id": "official-c0011ab490889151ec199a74",
+            "relevance": 1
+          }
+        ],
+        "proposed_reference_facts": [],
+        "missing_facts": [
+          "出发点、码头入口、接驳路线与实际时间"
+        ],
+        "human_checks": [
+          "不能把绕岛游产品当作上岛交通。"
+        ]
+      },
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null
+    },
+    {
+      "id": "v2-4-4-0",
+      "query": "蜈支洲岛：带老人慢慢游览，有什么安排建议？",
+      "intent_group": "三亚-intent-4",
+      "original_type": "answerable",
+      "original_labels": [
+        {
+          "chunk_id": "official-256c23b3c4673568216366c0",
+          "relevance": 2,
+          "evidence_group": "18c1374ce21c9ad055f62bd4"
+        }
+      ],
+      "proposal": {
+        "decision": "retain_restrictions_add_slow_visit_advice",
+        "proposed_type": "answerable",
+        "reason": "年龄与行动辅助限制是安排前提；补一般老人行程建议和禁行路段，不能只减少步行来绕过登岛限制。",
+        "proposed_labels": [
+          {
+            "chunk_id": "official-256c23b3c4673568216366c0",
+            "relevance": 2
+          },
+          {
+            "chunk_id": "official-68def0ce425834d494b9e6a6",
+            "relevance": 2
+          },
+          {
+            "chunk_id": "official-9d42a6bfe31c798293a52aa3",
+            "relevance": 2
+          },
+          {
+            "chunk_id": "official-c0011ab490889151ec199a74",
+            "relevance": 2
+          },
+          {
+            "chunk_id": "rule-398047112c20a1708d064675",
+            "relevance": 2
+          },
+          {
+            "chunk_id": "rule-22e52d91496e4efd273acebf",
+            "relevance": 2
+          }
+        ],
+        "proposed_reference_facts": [
+          "快照限制七十岁以上及若干健康/行动条件游客登岛，需先核实用户条件。",
+          "部分环岛路线禁止步行，只能按许可方式乘电瓶车；不适宜登岛时选择其他活动。"
+        ],
+        "missing_facts": [
+          "具体年龄边界与现场适用性须核实；不推断70岁整必然允许"
+        ],
+        "human_checks": [
+          "替代证据不要重复计成多个必需事实；项目建议和官方限制分开。"
+        ]
+      },
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null
+    },
+    {
+      "id": "v2-4-4-1",
+      "query": "网上攻略里城市容易搞混，请只按三亚的蜈支洲岛回答：带老人慢慢游览，有什么安排建议？",
+      "intent_group": "三亚-intent-4",
+      "original_type": "answerable",
+      "original_labels": [
+        {
+          "chunk_id": "official-256c23b3c4673568216366c0",
+          "relevance": 2,
+          "evidence_group": "18c1374ce21c9ad055f62bd4"
+        }
+      ],
+      "proposal": {
+        "decision": "retain_restrictions_add_slow_visit_advice",
+        "proposed_type": "answerable",
+        "reason": "年龄与行动辅助限制是安排前提；补一般老人行程建议和禁行路段，不能只减少步行来绕过登岛限制。",
+        "proposed_labels": [
+          {
+            "chunk_id": "official-256c23b3c4673568216366c0",
+            "relevance": 2
+          },
+          {
+            "chunk_id": "official-68def0ce425834d494b9e6a6",
+            "relevance": 2
+          },
+          {
+            "chunk_id": "official-9d42a6bfe31c798293a52aa3",
+            "relevance": 2
+          },
+          {
+            "chunk_id": "official-c0011ab490889151ec199a74",
+            "relevance": 2
+          },
+          {
+            "chunk_id": "rule-398047112c20a1708d064675",
+            "relevance": 2
+          },
+          {
+            "chunk_id": "rule-22e52d91496e4efd273acebf",
+            "relevance": 2
+          }
+        ],
+        "proposed_reference_facts": [
+          "快照限制七十岁以上及若干健康/行动条件游客登岛，需先核实用户条件。",
+          "部分环岛路线禁止步行，只能按许可方式乘电瓶车；不适宜登岛时选择其他活动。"
+        ],
+        "missing_facts": [
+          "具体年龄边界与现场适用性须核实；不推断70岁整必然允许"
+        ],
+        "human_checks": [
+          "替代证据不要重复计成多个必需事实；项目建议和官方限制分开。"
+        ]
+      },
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null
+    },
+    {
+      "id": "v2-4-6-0",
+      "query": "蜈支洲岛：购票和入场有哪些条件？",
+      "intent_group": "三亚-intent-6",
+      "original_type": "answerable",
+      "original_labels": [
+        {
+          "chunk_id": "official-12a0f229407630085b6e2925",
+          "relevance": 2,
+          "evidence_group": "37db59681a79b0e11a4bc442"
+        }
+      ],
+      "proposal": {
+        "decision": "partial_entry_rules_missing_general_ticket",
+        "proposed_type": "in_corpus_missing",
+        "reason": "海棠游宣传不回答购票；有登岛限制、特殊人群免票与产品特定权益，但缺普通游客票种、价格/包含范围和购买流程。",
+        "proposed_labels": [
+          {
+            "chunk_id": "official-256c23b3c4673568216366c0",
+            "relevance": 2
+          },
+          {
+            "chunk_id": "official-68def0ce425834d494b9e6a6",
+            "relevance": 2
+          },
+          {
+            "chunk_id": "official-34fccea1053a43bcd8ee8aae",
+            "relevance": 2
+          },
+          {
+            "chunk_id": "official-973fe07cf88fc14c0c7225a0",
+            "relevance": 2
+          },
+          {
+            "chunk_id": "official-a411bfeffd13c23b70c8249a",
+            "relevance": 1
+          }
+        ],
+        "proposed_reference_facts": [
+          "先核验登岛限制；特殊免票须符合身份并持有效证件，不等于所有娱乐项目免费。"
+        ],
+        "missing_facts": [
+          "普通游客门船票产品及购票流程"
+        ],
+        "human_checks": [
+          "不得从某个私人定制产品的退票和快捷权益推到所有票。"
+        ]
+      },
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null
+    },
+    {
+      "id": "v2-4-8-0",
+      "query": "蜈支洲岛：有哪些服务设施和使用要求？",
+      "intent_group": "三亚-intent-8",
+      "original_type": "answerable",
+      "original_labels": [
+        {
+          "chunk_id": "official-12a0f229407630085b6e2925",
+          "relevance": 2,
+          "evidence_group": "37db59681a79b0e11a4bc442"
+        },
+        {
+          "chunk_id": "official-256c23b3c4673568216366c0",
+          "relevance": 2,
+          "evidence_group": "18c1374ce21c9ad055f62bd4"
+        }
+      ],
+      "proposal": {
+        "decision": "expand_facilities_mark_product_uncertainty",
+        "proposed_type": "answerable",
+        "reason": "活动宣传只提供资源概况；补真实禁步行与登岛要求。乘车/驾驶规则部分措辞冲突、产品范围缺失，要单列待核验。",
+        "proposed_labels": [
+          {
+            "chunk_id": "official-f07cc310268788e401660f6b",
+            "relevance": 2
+          },
+          {
+            "chunk_id": "official-c0011ab490889151ec199a74",
+            "relevance": 2
+          },
+          {
+            "chunk_id": "official-256c23b3c4673568216366c0",
+            "relevance": 2
+          },
+          {
+            "chunk_id": "official-68def0ce425834d494b9e6a6",
+            "relevance": 2
+          },
+          {
+            "chunk_id": "rule-5999a4124471f1f33345d46b",
+            "relevance": 2
+          },
+          {
+            "chunk_id": "official-2b767a6f9c454680e28e9efd",
+            "relevance": 1
+          },
+          {
+            "chunk_id": "official-64c6d2f2c8abeddf8037fdb8",
+            "relevance": 1
+          }
+        ],
+        "proposed_reference_facts": [
+          "有环岛观光、餐饮及海陆娱乐资源，但各活动不默认含在门船票中。",
+          "部分环岛路段不允许步行；登岛、驾驶、乘坐及具体娱乐活动分别核验。"
+        ],
+        "missing_facts": [
+          "票种绑定的权益、活动实时可用性",
+          "15周岁以上与未成年人不得驾驶的措辞须明确具体产品和资格"
+        ],
+        "human_checks": [
+          "只允许资源概况和限制回答，不保证所有设施可用。"
+        ]
+      },
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null
+    },
+    {
+      "id": "v2-5-1-0",
+      "query": "景德镇旅行：几点开放，有哪些时间限制？",
+      "intent_group": "景德镇-intent-1",
+      "original_type": "answerable",
+      "original_labels": [
+        {
+          "chunk_id": "official-11377143c56f7a517ba09994",
+          "relevance": 2,
+          "evidence_group": "3a61d101c25b5dc9a4ac4f62"
+        }
+      ],
+      "proposal": {
+        "decision": "needs_attraction_clarification",
+        "proposed_type": null,
+        "reason": "整个景德镇没有统一开放时间，商家车辆通行新闻不支持游客景点营业时间。",
+        "proposed_labels": [],
+        "proposed_reference_facts": [],
+        "missing_facts": [
+          "具体场馆及日期"
+        ],
+        "human_checks": [
+          "保留为澄清案例；不从夜间公交18:00–22:30推导景区时间。"
+        ]
+      },
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null
+    },
+    {
+      "id": "v2-5-1-1",
+      "query": "我准备去景德镇旅行，关于开放的事想问一下：几点开放，有哪些时间限制？",
+      "intent_group": "景德镇-intent-1",
+      "original_type": "answerable",
+      "original_labels": [
+        {
+          "chunk_id": "official-11377143c56f7a517ba09994",
+          "relevance": 2,
+          "evidence_group": "3a61d101c25b5dc9a4ac4f62"
+        }
+      ],
+      "proposal": {
+        "decision": "needs_attraction_clarification",
+        "proposed_type": null,
+        "reason": "整个景德镇没有统一开放时间，商家车辆通行新闻不支持游客景点营业时间。",
+        "proposed_labels": [],
+        "proposed_reference_facts": [],
+        "missing_facts": [
+          "具体场馆及日期"
+        ],
+        "human_checks": [
+          "保留为澄清案例；不从夜间公交18:00–22:30推导景区时间。"
+        ]
+      },
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null
+    },
+    {
+      "id": "v2-5-3-0",
+      "query": "景德镇旅行：带孩子出行，有什么注意事项？",
+      "intent_group": "景德镇-intent-3",
+      "original_type": "answerable",
+      "original_labels": [
+        {
+          "chunk_id": "official-11377143c56f7a517ba09994",
+          "relevance": 2,
+          "evidence_group": "3a61d101c25b5dc9a4ac4f62"
+        }
+      ],
+      "proposal": {
+        "decision": "partial_advice_missing_child_specific_rules",
+        "proposed_type": "in_corpus_missing",
+        "reason": "商家预约车辆新闻不回答亲子事项；陶瓷活动规则可给一般偏好建议，但缺儿童年龄、安全限制与活动时长证据。",
+        "proposed_labels": [
+          {
+            "chunk_id": "rule-f09336272cbb431bb58e496d",
+            "relevance": 2
+          },
+          {
+            "chunk_id": "official-f9fafbc8a9638ca7e4b09c54",
+            "relevance": 1
+          }
+        ],
+        "proposed_reference_facts": [
+          "参观、陶瓷体验和购物要分开核验；不将付费手作强行设为必选。"
+        ],
+        "missing_facts": [
+          "孩子年龄、具体项目准入与安全条件"
+        ],
+        "human_checks": [
+          "项目规则不代替商家实际儿童参与政策。"
+        ]
+      },
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null
+    },
+    {
+      "id": "v2-5-3-1",
+      "query": "不要用南京的攻略，我是问景德镇旅行：带孩子出行，有什么注意事项？",
+      "intent_group": "景德镇-intent-3",
+      "original_type": "answerable",
+      "original_labels": [
+        {
+          "chunk_id": "official-11377143c56f7a517ba09994",
+          "relevance": 2,
+          "evidence_group": "3a61d101c25b5dc9a4ac4f62"
+        }
+      ],
+      "proposal": {
+        "decision": "partial_advice_missing_child_specific_rules",
+        "proposed_type": "in_corpus_missing",
+        "reason": "商家预约车辆新闻不回答亲子事项；陶瓷活动规则可给一般偏好建议，但缺儿童年龄、安全限制与活动时长证据。",
+        "proposed_labels": [
+          {
+            "chunk_id": "rule-f09336272cbb431bb58e496d",
+            "relevance": 2
+          },
+          {
+            "chunk_id": "official-f9fafbc8a9638ca7e4b09c54",
+            "relevance": 1
+          }
+        ],
+        "proposed_reference_facts": [
+          "参观、陶瓷体验和购物要分开核验；不将付费手作强行设为必选。"
+        ],
+        "missing_facts": [
+          "孩子年龄、具体项目准入与安全条件"
+        ],
+        "human_checks": [
+          "项目规则不代替商家实际儿童参与政策。"
+        ]
+      },
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null
+    },
+    {
+      "id": "v2-5-5-0",
+      "query": "景德镇旅行：遇上下雨，游览时应注意什么？",
+      "intent_group": "景德镇-intent-5",
+      "original_type": "answerable",
+      "original_labels": [
+        {
+          "chunk_id": "official-11377143c56f7a517ba09994",
+          "relevance": 2,
+          "evidence_group": "3a61d101c25b5dc9a4ac4f62"
+        }
+      ],
+      "proposal": {
+        "decision": "missing_rain_specific_evidence",
+        "proposed_type": "in_corpus_missing",
+        "reason": "车辆通行管控、北站接驳等没有雨天条件，不能证明雨天活动和路径安全。",
+        "proposed_labels": [],
+        "proposed_reference_facts": [],
+        "missing_facts": [
+          "适用雨天的活动、入口和路线证据"
+        ],
+        "human_checks": [
+          "不能借用丽江雨天规则充当景德镇事实；可给一般建议但不计为此城证据召回成功。"
+        ]
+      },
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null
+    },
+    {
+      "id": "v2-5-7-0",
+      "query": "景德镇旅行：游览有哪些安全提醒？",
+      "intent_group": "景德镇-intent-7",
+      "original_type": "answerable",
+      "original_labels": [
+        {
+          "chunk_id": "official-11377143c56f7a517ba09994",
+          "relevance": 2,
+          "evidence_group": "3a61d101c25b5dc9a4ac4f62"
+        }
+      ],
+      "proposal": {
+        "decision": "replace_vehicle_admin_with_visitor_safety",
+        "proposed_type": "answerable",
+        "reason": "商家车辆管理对普通游客间接相关。人车分流、各行其道与换乘公告更适合支持有限交通安全提醒。",
+        "proposed_labels": [
+          {
+            "chunk_id": "official-11377143c56f7a517ba09994",
+            "relevance": 1
+          },
+          {
+            "chunk_id": "official-f9fafbc8a9638ca7e4b09c54",
+            "relevance": 2
+          },
+          {
+            "chunk_id": "official-6068b4d12c6ffd0f452f0042",
+            "relevance": 2
+          },
+          {
+            "chunk_id": "official-75ebded6aa4400b4ee543dd1",
+            "relevance": 2
+          }
+        ],
+        "proposed_reference_facts": [
+          "遵守人行/非机动车分流与现场引导，不逆行横穿。",
+          "所收录假期管控情境下，三宝无通行证机动车按引导停车换乘。"
+        ],
+        "missing_facts": [
+          "国庆交通公告不一定适用于未来普通日期"
+        ],
+        "human_checks": [
+          "限定公告日期；不把基础设施建设描述当游客通行许可。"
+        ]
+      },
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null
+    },
+    {
+      "id": "v2-5-9-0",
+      "query": "景德镇旅行：不想赶路，游览路线怎么安排？",
+      "intent_group": "景德镇-intent-9",
+      "original_type": "answerable",
+      "original_labels": [
+        {
+          "chunk_id": "official-66a2a82012c92af9d8e2aca1",
+          "relevance": 2,
+          "evidence_group": "84ebcb1d9323d81d76938737"
+        },
+        {
+          "chunk_id": "rule-af2f4b4d0fb563234e223094",
+          "relevance": 2,
+          "evidence_group": "af2f4b4d0fb563234e223094"
+        }
+      ],
+      "proposal": {
+        "decision": "partial_principles_missing_route_inputs",
+        "proposed_type": "in_corpus_missing",
+        "reason": "三宝停车换乘和线路消歧不是完整慢游路线。减少跨区域往返的项目建议直接相关，但需景点、天数、住宿及实际耗时才能具体排程。",
+        "proposed_labels": [
+          {
+            "chunk_id": "rule-bac7c5affe50194c07b2060f",
+            "relevance": 2
+          },
+          {
+            "chunk_id": "rule-af2f4b4d0fb563234e223094",
+            "relevance": 1
+          },
+          {
+            "chunk_id": "official-66a2a82012c92af9d8e2aca1",
+            "relevance": 1
+          },
+          {
+            "chunk_id": "official-dd4872689bc8d8e27e96c361",
+            "relevance": 1
+          }
+        ],
+        "proposed_reference_facts": [
+          "市区和瑶里组合先核验道路耗时，慢游减少往返与换乘，可分日安排。"
+        ],
+        "missing_facts": [
+          "用户兴趣、天数、住宿、实际路程与班次"
+        ],
+        "human_checks": [
+          "公交新闻里的轻松畅游表述不是慢游可行性证据。"
+        ]
+      },
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null
+    },
+    {
+      "id": "v2-in_corpus_missing-0",
+      "query": "南京今天剩余预约名额是多少？",
+      "intent_group": "in_corpus_missing-0",
+      "original_type": "in_corpus_missing",
+      "original_labels": [],
+      "proposal": {
+        "decision": "retain_negative_clarify_query",
+        "proposed_type": "in_corpus_missing",
+        "proposed_labels": [],
+        "reason": "现有语料无实时名额、天气、排队、停车或临时运营数据。城市已覆盖不代表动态事实已知。",
+        "expected_behavior": "询问具体场馆或区域及绝对日期；可转实时工具，但失败时不能编造数字。",
+        "human_checks": [
+          "“明天实时降雨概率”应表述为预报概率；“今日临时闭馆通知是多少”需明确场馆并改为有无适用公告。原题须保留，修改留痕。"
+        ]
+      },
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null
+    },
+    {
+      "id": "v2-out_of_corpus-0",
+      "query": "杭州西湖明天游船时刻？",
+      "intent_group": "out_of_corpus-0",
+      "original_type": "out_of_corpus",
+      "original_labels": [],
+      "proposal": {
+        "decision": "retain_out_of_scope",
+        "proposed_type": "out_of_corpus",
+        "proposed_labels": [],
+        "reason": "请求城市或业务主题不在本旅行语料范围内；同城签证、居住政策和房贷不能借旅游证据回答。",
+        "expected_behavior": "说明当前语料不覆盖此请求，可引导到适用来源，不借用相邻城市政策。",
+        "human_checks": [
+          "确认超出的是本语料范围，不代表整个旅行应用永远不能查询此城市。"
+        ]
+      },
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null
+    },
+    {
+      "id": "v2-in_corpus_missing-1",
+      "query": "上海明天实时降雨概率是多少？",
+      "intent_group": "in_corpus_missing-1",
+      "original_type": "in_corpus_missing",
+      "original_labels": [],
+      "proposal": {
+        "decision": "retain_negative_clarify_query",
+        "proposed_type": "in_corpus_missing",
+        "proposed_labels": [],
+        "reason": "现有语料无实时名额、天气、排队、停车或临时运营数据。城市已覆盖不代表动态事实已知。",
+        "expected_behavior": "询问具体场馆或区域及绝对日期；可转实时工具，但失败时不能编造数字。",
+        "human_checks": [
+          "“明天实时降雨概率”应表述为预报概率；“今日临时闭馆通知是多少”需明确场馆并改为有无适用公告。原题须保留，修改留痕。"
+        ]
+      },
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null
+    },
+    {
+      "id": "v2-out_of_corpus-1",
+      "query": "北京故宫入场要求？",
+      "intent_group": "out_of_corpus-1",
+      "original_type": "out_of_corpus",
+      "original_labels": [],
+      "proposal": {
+        "decision": "retain_out_of_scope",
+        "proposed_type": "out_of_corpus",
+        "proposed_labels": [],
+        "reason": "请求城市或业务主题不在本旅行语料范围内；同城签证、居住政策和房贷不能借旅游证据回答。",
+        "expected_behavior": "说明当前语料不覆盖此请求，可引导到适用来源，不借用相邻城市政策。",
+        "human_checks": [
+          "确认超出的是本语料范围，不代表整个旅行应用永远不能查询此城市。"
+        ]
+      },
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null
+    },
+    {
+      "id": "v2-in_corpus_missing-2",
+      "query": "重庆现在排队分钟数是多少？",
+      "intent_group": "in_corpus_missing-2",
+      "original_type": "in_corpus_missing",
+      "original_labels": [],
+      "proposal": {
+        "decision": "retain_negative_clarify_query",
+        "proposed_type": "in_corpus_missing",
+        "proposed_labels": [],
+        "reason": "现有语料无实时名额、天气、排队、停车或临时运营数据。城市已覆盖不代表动态事实已知。",
+        "expected_behavior": "询问具体场馆或区域及绝对日期；可转实时工具，但失败时不能编造数字。",
+        "human_checks": [
+          "“明天实时降雨概率”应表述为预报概率；“今日临时闭馆通知是多少”需明确场馆并改为有无适用公告。原题须保留，修改留痕。"
+        ]
+      },
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null
+    },
+    {
+      "id": "v2-out_of_corpus-2",
+      "query": "成都博物馆怎么预约？",
+      "intent_group": "out_of_corpus-2",
+      "original_type": "out_of_corpus",
+      "original_labels": [],
+      "proposal": {
+        "decision": "retain_out_of_scope",
+        "proposed_type": "out_of_corpus",
+        "proposed_labels": [],
+        "reason": "请求城市或业务主题不在本旅行语料范围内；同城签证、居住政策和房贷不能借旅游证据回答。",
+        "expected_behavior": "说明当前语料不覆盖此请求，可引导到适用来源，不借用相邻城市政策。",
+        "human_checks": [
+          "确认超出的是本语料范围，不代表整个旅行应用永远不能查询此城市。"
+        ]
+      },
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null
+    },
+    {
+      "id": "v2-in_corpus_missing-3",
+      "query": "丽江当前停车空位是多少？",
+      "intent_group": "in_corpus_missing-3",
+      "original_type": "in_corpus_missing",
+      "original_labels": [],
+      "proposal": {
+        "decision": "retain_negative_clarify_query",
+        "proposed_type": "in_corpus_missing",
+        "proposed_labels": [],
+        "reason": "现有语料无实时名额、天气、排队、停车或临时运营数据。城市已覆盖不代表动态事实已知。",
+        "expected_behavior": "询问具体场馆或区域及绝对日期；可转实时工具，但失败时不能编造数字。",
+        "human_checks": [
+          "“明天实时降雨概率”应表述为预报概率；“今日临时闭馆通知是多少”需明确场馆并改为有无适用公告。原题须保留，修改留痕。"
+        ]
+      },
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null
+    },
+    {
+      "id": "v2-out_of_corpus-3",
+      "query": "南京如何办理签证延期？",
+      "intent_group": "out_of_corpus-3",
+      "original_type": "out_of_corpus",
+      "original_labels": [],
+      "proposal": {
+        "decision": "retain_out_of_scope",
+        "proposed_type": "out_of_corpus",
+        "proposed_labels": [],
+        "reason": "请求城市或业务主题不在本旅行语料范围内；同城签证、居住政策和房贷不能借旅游证据回答。",
+        "expected_behavior": "说明当前语料不覆盖此请求，可引导到适用来源，不借用相邻城市政策。",
+        "human_checks": [
+          "确认超出的是本语料范围，不代表整个旅行应用永远不能查询此城市。"
+        ]
+      },
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null
+    },
+    {
+      "id": "v2-in_corpus_missing-4",
+      "query": "三亚今日临时闭馆通知是多少？",
+      "intent_group": "in_corpus_missing-4",
+      "original_type": "in_corpus_missing",
+      "original_labels": [],
+      "proposal": {
+        "decision": "retain_negative_clarify_query",
+        "proposed_type": "in_corpus_missing",
+        "proposed_labels": [],
+        "reason": "现有语料无实时名额、天气、排队、停车或临时运营数据。城市已覆盖不代表动态事实已知。",
+        "expected_behavior": "询问具体场馆或区域及绝对日期；可转实时工具，但失败时不能编造数字。",
+        "human_checks": [
+          "“明天实时降雨概率”应表述为预报概率；“今日临时闭馆通知是多少”需明确场馆并改为有无适用公告。原题须保留，修改留痕。"
+        ]
+      },
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null
+    },
+    {
+      "id": "v2-out_of_corpus-4",
+      "query": "上海工作居住证政策？",
+      "intent_group": "out_of_corpus-4",
+      "original_type": "out_of_corpus",
+      "original_labels": [],
+      "proposal": {
+        "decision": "retain_out_of_scope",
+        "proposed_type": "out_of_corpus",
+        "proposed_labels": [],
+        "reason": "请求城市或业务主题不在本旅行语料范围内；同城签证、居住政策和房贷不能借旅游证据回答。",
+        "expected_behavior": "说明当前语料不覆盖此请求，可引导到适用来源，不借用相邻城市政策。",
+        "human_checks": [
+          "确认超出的是本语料范围，不代表整个旅行应用永远不能查询此城市。"
+        ]
+      },
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null
+    },
+    {
+      "id": "v2-in_corpus_missing-5",
+      "query": "景德镇今天剩余预约名额是多少？",
+      "intent_group": "in_corpus_missing-5",
+      "original_type": "in_corpus_missing",
+      "original_labels": [],
+      "proposal": {
+        "decision": "retain_negative_clarify_query",
+        "proposed_type": "in_corpus_missing",
+        "proposed_labels": [],
+        "reason": "现有语料无实时名额、天气、排队、停车或临时运营数据。城市已覆盖不代表动态事实已知。",
+        "expected_behavior": "询问具体场馆或区域及绝对日期；可转实时工具，但失败时不能编造数字。",
+        "human_checks": [
+          "“明天实时降雨概率”应表述为预报概率；“今日临时闭馆通知是多少”需明确场馆并改为有无适用公告。原题须保留，修改留痕。"
+        ]
+      },
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null
+    },
+    {
+      "id": "v2-out_of_corpus-5",
+      "query": "重庆房贷利率是多少？",
+      "intent_group": "out_of_corpus-5",
+      "original_type": "out_of_corpus",
+      "original_labels": [],
+      "proposal": {
+        "decision": "retain_out_of_scope",
+        "proposed_type": "out_of_corpus",
+        "proposed_labels": [],
+        "reason": "请求城市或业务主题不在本旅行语料范围内；同城签证、居住政策和房贷不能借旅游证据回答。",
+        "expected_behavior": "说明当前语料不覆盖此请求，可引导到适用来源，不借用相邻城市政策。",
+        "human_checks": [
+          "确认超出的是本语料范围，不代表整个旅行应用永远不能查询此城市。"
+        ]
+      },
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null
+    },
+    {
+      "id": "v2-in_corpus_missing-6",
+      "query": "南京明天实时降雨概率是多少？",
+      "intent_group": "in_corpus_missing-6",
+      "original_type": "in_corpus_missing",
+      "original_labels": [],
+      "proposal": {
+        "decision": "retain_negative_clarify_query",
+        "proposed_type": "in_corpus_missing",
+        "proposed_labels": [],
+        "reason": "现有语料无实时名额、天气、排队、停车或临时运营数据。城市已覆盖不代表动态事实已知。",
+        "expected_behavior": "询问具体场馆或区域及绝对日期；可转实时工具，但失败时不能编造数字。",
+        "human_checks": [
+          "“明天实时降雨概率”应表述为预报概率；“今日临时闭馆通知是多少”需明确场馆并改为有无适用公告。原题须保留，修改留痕。"
+        ]
+      },
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null
+    },
+    {
+      "id": "v2-out_of_corpus-6",
+      "query": "昆明酒店当前库存？",
+      "intent_group": "out_of_corpus-6",
+      "original_type": "out_of_corpus",
+      "original_labels": [],
+      "proposal": {
+        "decision": "retain_out_of_scope",
+        "proposed_type": "out_of_corpus",
+        "proposed_labels": [],
+        "reason": "请求城市或业务主题不在本旅行语料范围内；同城签证、居住政策和房贷不能借旅游证据回答。",
+        "expected_behavior": "说明当前语料不覆盖此请求，可引导到适用来源，不借用相邻城市政策。",
+        "human_checks": [
+          "确认超出的是本语料范围，不代表整个旅行应用永远不能查询此城市。"
+        ]
+      },
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null
+    },
+    {
+      "id": "v2-in_corpus_missing-7",
+      "query": "上海现在排队分钟数是多少？",
+      "intent_group": "in_corpus_missing-7",
+      "original_type": "in_corpus_missing",
+      "original_labels": [],
+      "proposal": {
+        "decision": "retain_negative_clarify_query",
+        "proposed_type": "in_corpus_missing",
+        "proposed_labels": [],
+        "reason": "现有语料无实时名额、天气、排队、停车或临时运营数据。城市已覆盖不代表动态事实已知。",
+        "expected_behavior": "询问具体场馆或区域及绝对日期；可转实时工具，但失败时不能编造数字。",
+        "human_checks": [
+          "“明天实时降雨概率”应表述为预报概率；“今日临时闭馆通知是多少”需明确场馆并改为有无适用公告。原题须保留，修改留痕。"
+        ]
+      },
+      "annotation_status": "pending_review",
+      "annotator": null,
+      "reviewed_at": null
+    }
+  ],
+  "corpus_flags": [
+    {
+      "chunk_ids": [
+        "official-3936c80d16f524beb2fcfaac",
+        "official-a83ab2e05672d83883a92b08"
+      ],
+      "action": "exclude_in_next_corpus_version",
+      "reason": "招聘考试与体检通知，不是游客知识；体检集合地址不能当开放时间或旅游交通证据。"
+    },
+    {
+      "chunk_ids": [
+        "official-bf895fba5624c5841110e060"
+      ],
+      "action": "exclude_in_next_corpus_version",
+      "reason": "仅网页版权备案页脚，没有有效旅游事实。"
+    },
+    {
+      "chunk_ids": [
+        "official-02acea8fddc610facef0d2ae",
+        "official-0b7f8f592476404fb5377e84",
+        "official-e6b36256dae91c54ea36fb7d"
+      ],
+      "action": "historical_only_no_current_activity_claim",
+      "reason": "标注活动已结束，不能当亲子活动、当前营业时间或慢游路线证据。"
+    },
+    {
+      "chunk_ids": [
+        "official-2358c570609a92bf2a323569",
+        "official-362feb3c5e225906c2cefc9f",
+        "official-b4f16ab2d510110cb14d2065",
+        "official-d066bc20e5fa8a93905b1a89"
+      ],
+      "action": "downgrade_or_exclude_promotional_news",
+      "reason": "白鹤梁参展宣传不是三峡博物馆主馆服务指南；只有营销概况的块不应用来凑有效事实数量。"
+    },
+    {
+      "chunk_ids": [
+        "official-64c6d2f2c8abeddf8037fdb8"
+      ],
+      "action": "flag_policy_conflict",
+      "reason": "同段15周岁以上驾驶与未成年人不得驾驶，需核实实际产品、版本和解释；不能采用较宽松条款放行。"
+    },
+    {
+      "chunk_ids": [
+        "official-11377143c56f7a517ba09994"
+      ],
+      "action": "retain_only_matching_scope_or_exclude",
+      "reason": "商家车辆预约和监管部署不是游客预约；不可用作亲子、雨天或开放时间直接证据。"
+    }
+  ]
+}
