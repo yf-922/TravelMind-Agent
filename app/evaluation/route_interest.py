@@ -240,6 +240,13 @@ def run_final_route(case, model, lookup, factory, route_replay):
         }.items(): stack.enter_context(patch.object(nodes, name, replacement))
         state = TravelPlanState(**{k: v for k, v in case.items() if k in TravelPlanState.model_fields},
                                 max_review_rounds=3, max_time_check_rounds=3)
+        state.weather_forecast = [{
+            **w,
+            'day_weather': w.get('day_weather', w.get('dayweather', '未知')),
+            'night_weather': w.get('night_weather', w.get('nightweather', '未知')),
+            'day_temp': w.get('day_temp', w.get('daytemp', '未知')),
+            'night_temp': w.get('night_temp', w.get('nighttemp', '未知')),
+        } for w in state.weather_forecast]
         output = build_final_route_graph(model, recorded_lookup, tips_done).invoke(state, {'recursion_limit': 60})
         # Production still discards late optional output, but experiments must
         # settle its bill before leaving replay patches or starting another arm.

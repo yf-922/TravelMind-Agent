@@ -87,6 +87,8 @@ def main():
     p.add_argument('--freeze', type=Path)
     p.add_argument('--write-freeze', action='store_true')
     p.add_argument('--execute', action='store_true')
+    p.add_argument('--allow-unpriced', action='store_true',
+                   help='Run only the five-request dev pilot without billing rates; cost remains unpriced')
     p.add_argument('--out', type=Path, default=ROOT/'data/route_interest/pilot.json')
     p.add_argument('--ledger', type=Path, default=ROOT/'data/route_interest/budget_ledger.json')
     a = p.parse_args(); load_local_env()
@@ -183,8 +185,10 @@ def main():
         }
         report['status'] = 'retrieval_diagnostics_only_not_final_route_evidence'; save(); return
     if not a.execute: print(json.dumps(report['preflight'])); return
+    if a.allow_unpriced and (a.split != 'dev' or a.limit != 5 or a.repetitions != 1):
+        p.error('--allow-unpriced is restricted to dev limit=5 repetitions=1')
     try:
-        billing = verify_billing(a.billing, a.model, url)
+        billing = None if a.allow_unpriced else verify_billing(a.billing, a.model, url)
         # Gateway must expose functioning key-wide usage monitoring before spending.
         def monitor():
             import httpx
@@ -198,17 +202,25 @@ def main():
     except Exception as exc:
         report['status'] = 'blocked_before_paid_calls'; report['stop_reason'] = type(exc).__name__+': '+str(exc)[:240]
         save(); print(report['status']); return
-    input_price = billing['input_per_million']*billing['account_multiplier']
-    output_price = billing['output_per_million']*billing['account_multiplier']
-    report['preflight'].update(billing_status='verified', billing=billing,
+    if a.allow_unpriced:
+        input_price = output_price = 0.0
+        report['preflight'].update(billing_status='unpriced_pilot', billing=None,
+                                   cost_estimate=None,
+                                   unpriced_reason='account billing rates intentionally omitted by user; actual usage is recorded')
+    else:
+        input_price = billing['input_per_million']*billing['account_multiplier']
+        output_price = billing['output_per_million']*billing['account_multiplier']
+        report['preflight'].update(billing_status='verified', billing=billing,
                               cost_estimate={'worst_output_CNY': 540*2048*output_price/1e6,
                                              'input': 'UTF-8 byte reservation per actual prompt', 'ceiling_CNY': 10})
+    if a.allow_unpriced:
+        report['budget_policy'] = 'unpriced_dev_pilot_only; no cost conclusion'
     budget = CallBudget(540, 10, input_price, output_price, 2048)
     ledger = {'initial_plans': 0, 'budget': budget.snapshot(), 'in_flight': False, 'trials': {},
-              'billing_fingerprint': fingerprint(billing)}
+              'billing_fingerprint': fingerprint(billing) if billing else 'unpriced-pilot'}
     if a.ledger.exists():
         ledger = json.loads(a.ledger.read_text(encoding='utf-8'))
-        if ledger['billing_fingerprint'] != fingerprint(billing) or ledger['in_flight']:
+        if ledger['billing_fingerprint'] != (fingerprint(billing) if billing else 'unpriced-pilot') or ledger['in_flight']:
             raise RuntimeError('ledger billing changed or unresolved paid call; reconcile before continuing')
         old = ledger['budget']
         budget.calls = old['attempted_calls']; budget.committed_cost = old['committed_cost']
@@ -241,7 +253,7 @@ def main():
                 try:
                     used = monitor()-initial_quota
                     margin = (sum(len(t.encode('utf-8')) for _, t in messages)+256)*input_price/1e6 + 2048*output_price/1e6
-                    if used/billing['quota_units_per_CNY'] + margin > 10: raise RuntimeError('key-wide budget headroom exhausted')
+                    if billing and used/billing['quota_units_per_CNY'] + margin > 10: raise RuntimeError('key-wide budget headroom exhausted')
                 except Exception:
                     halted.append('pre-call monitor failure'); raise
                 reservation = budget.reserve(messages)
@@ -256,7 +268,7 @@ def main():
                     entry.update(status='completed', usage=usage, elapsed_ms=(time.perf_counter()-started)*1000)
                     if budget.unknown_usage_calls: raise RuntimeError('missing usage; further calls prohibited')
                     after = monitor()-initial_quota
-                    if after/billing['quota_units_per_CNY'] > 10: raise RuntimeError('key-wide cost limit exceeded')
+                    if billing and after/billing['quota_units_per_CNY'] > 10: raise RuntimeError('key-wide cost limit exceeded')
                     if response.get('parsing_error'): raise ValueError('structured output parse failure')
                     return response['parsed']
                 except Exception as exc:
