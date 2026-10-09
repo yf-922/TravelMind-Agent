@@ -59,6 +59,8 @@ python scripts/review_route_interest.py import --file data/route_interest/review
 
 先准备运行时 `data/route_interest/billing.json`：绑定模型、URL、API Key 的 SHA256 指纹（不是密钥本身）、24 小时内的 `verified_at` 和可核查 `evidence`；填写 `currency=CNY`、`input_per_million`、`output_per_million`、`account_multiplier`、`quota_units_per_CNY`。价格必须来自账户实际计费规则，不能猜倍率或把美元当人民币。
 
+字段模板见 [route_interest_billing.example.json](route_interest_billing.example.json)。其中 `null` 表示尚未核验，模板不能直接执行付费实验。输入/输出价格单位均为人民币/百万 Token；账户倍率与价格分开记录，若账户展示的是最终折后价，应明确记录该口径并避免再次乘折扣。`quota_units_per_CNY` 是用量接口计量单位到人民币的换算，不是 Token 数量。`evidence` 应填写账户价格页或已核验截图的引用，不填密钥；`key_fingerprint` 由本机现有 Key 计算 SHA256。确认这些信息后再填写最近 24 小时内带时区的 `verified_at`。
+
 ```powershell
 python scripts/compare_route_interest.py --execute --limit 5 --billing data/route_interest/billing.json --out data/route_interest/pilot_paid.json
 ```

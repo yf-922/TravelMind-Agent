@@ -1,0 +1,12 @@
+{
+  "model": "grok-4.6",
+  "url": "https://www.micuapi.ai/v1",
+  "currency": "CNY",
+  "input_per_million": null,
+  "output_per_million": null,
+  "account_multiplier": null,
+  "quota_units_per_CNY": null,
+  "verified_at": null,
+  "evidence": null,
+  "key_fingerprint": null
+}
