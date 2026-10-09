@@ -143,7 +143,17 @@ def main():
             try:
                 rows = lookup(case['destination'], case['pois'], case['query'])
                 row['sources'] = [r['source'] for r in rows]
-                row['candidate_entities'] = sorted({n for r in rows for n in r['entities']})
+                pool_names = {p['name'] for p in case['pois']}
+                # Facts may carry aliases (for example, a scenic area's short
+                # name). Score only canonical names present in this request's
+                # candidate pool; aliases must not inflate retrieval quality.
+                row['candidate_entities'] = sorted({n for r in rows for n in r['entities'] if n in pool_names})
+                expected_pois = set(case['acceptable_pois'])
+                selected_pois = set(row['candidate_entities'])
+                row['candidate_precision'] = len(selected_pois & expected_pois) / len(selected_pois) if selected_pois else 0.0
+                row['candidate_recall'] = len(selected_pois & expected_pois) / len(expected_pois) if expected_pois else None
+                row['candidate_false_positive'] = sorted(selected_pois - expected_pois)
+                row['candidate_missed'] = sorted(expected_pois - selected_pois)
             except Exception as exc: row['error'] = type(exc).__name__+': '+str(exc)[:240]
             report['retrieval_diagnostics'].append(row)
         by_id = {c['id']: c for c in selected}
@@ -157,6 +167,16 @@ def main():
                 sum(bool(set(r.get('candidate_entities', [])) & set(by_id[r['case_id']]['acceptable_pois'])) for r in answerable) / len(answerable)
                 if answerable else None
             ),
+            'answerable_candidate_precision_mean': (
+                sum(r.get('candidate_precision', 0.0) for r in answerable) / len(answerable)
+                if answerable else None
+            ),
+            'answerable_candidate_recall_mean': (
+                sum(r.get('candidate_recall', 0.0) for r in answerable) / len(answerable)
+                if answerable else None
+            ),
+            'answerable_missed_cases': [r['case_id'] for r in answerable if r.get('candidate_missed')],
+            'answerable_false_positive_cases': [r['case_id'] for r in answerable if r.get('candidate_false_positive')],
             'unanswerable_cases': len(negatives),
             'unanswerable_nonempty_rate': sum(bool(r.get('candidate_entities')) for r in negatives) / len(negatives) if negatives else None,
             'errors': sum(bool(r.get('error')) for r in report['retrieval_diagnostics']),

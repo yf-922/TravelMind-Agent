@@ -102,6 +102,23 @@ def test_interest_lookup_uses_curated_topic_for_short_official_facts():
     assert rows[0]['text']
 
 
+def test_retrieval_diagnostic_scores_only_canonical_candidate_names(tmp_path):
+    import subprocess, sys
+    out = tmp_path / 'diagnostic.json'
+    subprocess.run(
+        [sys.executable, 'scripts/compare_route_interest.py', '--split', 'dev',
+         '--retrieval-only', '--limit', '15', '--k', '3', '--retriever', 'keyword',
+         '--out', str(out)], check=True, capture_output=True, text=True,
+    )
+    report = json.loads(out.read_text(encoding='utf-8'))
+    rows = report['retrieval_diagnostics']
+    assert all(set(row['candidate_entities']) <= {
+        p['name'] for case in json.loads((ASSETS / 'cases.json').read_text(encoding='utf-8'))
+        if case['id'] == row['case_id'] for p in case['pois']
+    } for row in rows)
+    assert report['retrieval_summary']['answerable_candidate_recall_mean'] is not None
+
+
 @pytest.mark.parametrize('duplicate_day', [1, 2])
 def test_joint_planner_removes_lunch_split_and_cross_day_duplicate(monkeypatch, duplicate_day):
     monkeypatch.setattr(nodes, 'build_structured_llm', lambda *a, **kw: object())
