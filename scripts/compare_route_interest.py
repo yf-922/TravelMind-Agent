@@ -73,6 +73,26 @@ def verify_billing(path, model, url):
     return b
 
 
+def read_gateway_usage(url, key):
+    """Retry only read-only monitoring, never a paid model request."""
+    import httpx
+    for attempt in range(3):
+        try:
+            response = httpx.get(url.removesuffix('/v1')+'/api/usage/token/',
+                                headers={'Authorization': 'Bearer '+key}, timeout=15)
+            response.raise_for_status()
+            payload = response.json()
+            value = payload.get('data', {}).get('total_used')
+            if type(value) is not int or value < 0:
+                raise ValueError('budget monitor missing usage')
+            return value
+        except (httpx.TransportError, httpx.HTTPStatusError) as exc:
+            retryable = isinstance(exc, httpx.TransportError) or exc.response.status_code in (429, 502, 503, 504)
+            if not retryable or attempt == 2:
+                raise
+            time.sleep(5 * (attempt + 1))
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--assets', type=Path, default=ROOT/'knowledge/route_interest_v1')
@@ -193,11 +213,7 @@ def main():
         def monitor():
             import httpx
             if url != 'https://www.micuapi.ai/v1': raise ValueError('provider billing monitor not implemented for this endpoint')
-            response = httpx.get(url.removesuffix('/v1')+'/api/usage/token/', headers={'Authorization': 'Bearer '+os.environ['GROK_API_KEY']}, timeout=15)
-            response.raise_for_status()
-            value = response.json().get('data', {}).get('total_used')
-            if type(value) is not int: raise ValueError('budget monitor missing usage')
-            return value
+            return read_gateway_usage(url, os.environ['GROK_API_KEY'])
         initial_quota = monitor()
     except Exception as exc:
         report['status'] = 'blocked_before_paid_calls'; report['stop_reason'] = type(exc).__name__+': '+str(exc)[:240]

@@ -225,6 +225,22 @@ def test_unknown_billing_blocks_before_calls(tmp_path):
     with pytest.raises(ValueError): verify_billing(path, 'grok-4.6', 'url')
 
 
+def test_monitor_retries_rate_limit_but_not_auth_or_invalid_usage(monkeypatch):
+    import httpx
+    from scripts import compare_route_interest as runner
+    sleeps = []
+    monkeypatch.setattr(runner.time, 'sleep', sleeps.append)
+    statuses = iter([429, 200])
+    def get(url, **kw):
+        return httpx.Response(next(statuses), json={'data': {'total_used': 5}}, request=httpx.Request('GET', url))
+    monkeypatch.setattr(httpx, 'get', get)
+    assert runner.read_gateway_usage('https://example.org/v1', 'fake') == 5
+    assert sleeps == [5]
+    statuses = iter([401])
+    with pytest.raises(httpx.HTTPStatusError): runner.read_gateway_usage('https://example.org/v1', 'fake')
+    assert sleeps == [5]
+
+
 @pytest.mark.parametrize('unpriced', [False, True])
 def test_paid_entry_pairs_trials_and_records_usage_without_external_calls(tmp_path, monkeypatch, unpriced):
     import sys
