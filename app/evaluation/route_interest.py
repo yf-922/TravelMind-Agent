@@ -143,11 +143,23 @@ def grade_final(state, case):
     scored = state.model_copy(update={'route': final_route})
     code = grade_code(scored, case)
     hard_flags = nodes._route_risk_flags(scored)
+    # Routing signals such as long road legs and user edits require review,
+    # but do not by themselves prove a violation. Enforce explicit production
+    # constraints that the legacy code graders do not all cover.
+    violations = sorted(set(hard_flags) & {
+        'duplicate_poi', 'unknown_poi', 'route_structure', 'habit_constraint',
+        'opening_time_conflict', 'weather_outdoor_conflict', 'walking_constraint',
+        'modification_time_unfulfilled', 'indoor_constraint',
+        'meal_unknown_restaurant', 'meal_duplicate_restaurant', 'meal_time_structure',
+        'meal_opening_conflict', 'meal_overlap', 'meal_budget_conflict', 'meal_preference_conflict',
+    })
+    forbidden = sorted(unique & set(case['forbidden_pois']))
     return {'selected_pois': names,
             'interest_recall': len(unique & expected) / len(expected) if expected else None,
             'interest_precision': len(unique & expected) / len(unique) if expected and unique else (0 if expected else None),
-            'forbidden_selected': sorted(unique & set(case['forbidden_pois'])),
-            'hard_constraint_pass': bool(names) and code['objective_pass'] and len(names) == len(unique),
+            'forbidden_selected': forbidden,
+            'hard_constraint_violations': violations,
+            'hard_constraint_pass': bool(names) and code['objective_pass'] and len(names) == len(unique) and not violations and not forbidden,
             'hard_constraint_verification_complete': bool(names) and not hard_flags,
             'hard_flags': hard_flags, 'code_graders': code,
             'rework_count': max(0, state.review_round - 1),

@@ -171,6 +171,26 @@ def test_scoring_ignores_notes_and_old_draft_route():
     metrics = grade_final(state, case)
     assert metrics['selected_pois'] == ['C'] and metrics['interest_precision'] == 0
     assert metrics['forbidden_selected'] == ['C']
+    assert not metrics['hard_constraint_pass']
+
+
+def test_final_scoring_enforces_indoor_requirement_beyond_legacy_graders():
+    case, state = case_and_state(['A'])
+    state.query = '只去室内景点'
+    state.pois[0]['indoor'] = False
+    metrics = grade_final(state, case)
+    assert metrics['code_graders']['objective_pass']
+    assert 'indoor_constraint' in metrics['hard_constraint_violations']
+    assert not metrics['hard_constraint_pass']
+
+
+def test_review_signal_alone_does_not_fail_final_hard_constraints():
+    case, state = case_and_state(['A'])
+    state.modification_notes = '选择A'
+    metrics = grade_final(state, case)
+    assert 'user_modification' in metrics['hard_flags']
+    assert not metrics['hard_constraint_violations']
+    assert metrics['hard_constraint_pass']
 
 
 def test_precision_recall_dedup_and_empty_final_are_not_success():
