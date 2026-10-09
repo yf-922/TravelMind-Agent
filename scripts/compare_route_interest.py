@@ -249,7 +249,6 @@ def main():
                 ledger['in_flight'] = True; save_ledger()
                 report['calls'].append(entry); report['budget'] = budget.snapshot(); save()
                 started = time.perf_counter()
-                trial = f"{case['id']}/{arm}/{repetition}"
                 try:
                     response = structured.invoke(messages)
                     usage = response['raw'].usage_metadata
@@ -279,6 +278,7 @@ def main():
             arms = ['without_knowledge', 'with_knowledge']
             if (index+repetition)%2: arms.reverse()
             for arm in arms:
+                trial = f"{case['id']}/{arm}/{repetition}"
                 execution_key = fingerprint({'case_input': {k: v for k, v in case.items() if k in TravelPlanState.model_fields},
                     'arm': arm, 'repetition': repetition, 'facts': [{k: v for k, v in f.items() if k not in ('review_status', 'annotator', 'reviewed_at', 'change_log')} for f in facts],
                     'config': config, 'maps': fingerprint(maps), 'implementation': report['implementation']})

@@ -205,6 +205,45 @@ def test_unknown_billing_blocks_before_calls(tmp_path):
     with pytest.raises(ValueError): verify_billing(path, 'grok-4.6', 'url')
 
 
+def test_paid_entry_pairs_trials_and_records_usage_without_external_calls(tmp_path, monkeypatch):
+    import sys
+    import httpx
+    from types import SimpleNamespace
+    from scripts import compare_route_interest as runner
+    from app.llm import grok
+    monkeypatch.setenv('GROK_BASE_URL', 'https://www.micuapi.ai/v1')
+    monkeypatch.setenv('GROK_API_KEY', 'offline-test-key')
+    monkeypatch.setattr(runner, 'load_local_env', lambda: None)
+    monkeypatch.setattr(runner, 'verify_billing', lambda *a: {
+        'input_per_million': 1, 'output_per_million': 1,
+        'account_multiplier': 1, 'quota_units_per_CNY': 1000000,
+    })
+    def monitor(url, **kwargs):
+        assert url.endswith('/api/usage/token/')
+        return httpx.Response(200, json={'data': {'total_used': 0}}, request=httpx.Request('GET', url))
+    monkeypatch.setattr(httpx, 'get', monitor)
+    class Client:
+        def with_structured_output(self, *a, **kw): return self
+        def invoke(self, messages):
+            return {'raw': SimpleNamespace(usage_metadata={'input_tokens': 10, 'output_tokens': 5}),
+                    'parsed': 'offline-result', 'parsing_error': None}
+    monkeypatch.setattr(grok, 'build_chat_grok', lambda **kw: Client())
+    def route(case, model, lookup, factory, replay):
+        assert factory(TravelRoute, task_type='joint_planner').invoke([('human', 'test')]) == 'offline-result'
+        return TravelPlanState(query=case['query']), {'retrieval': {'failed': False}}
+    monkeypatch.setattr(runner, 'run_final_route', route)
+    out = tmp_path / 'report.json'
+    monkeypatch.setattr(sys, 'argv', ['compare', '--execute', '--limit', '1', '--out', str(out), '--ledger', str(tmp_path / 'ledger.json')])
+    runner.main()
+    report = json.loads(out.read_text(encoding='utf-8'))
+    assert report['status'] == 'exploratory_complete'
+    assert len(report['calls']) == len(report['results']) == 2
+    assert {c['trial'] for c in report['calls']} == {
+        f"{report['results'][0]['case_id']}/{arm}/0" for arm in ('with_knowledge', 'without_knowledge')}
+    assert all(r['actual_model_calls'] == 1 and r['actual_usage_complete'] for r in report['results'])
+    assert all(r['actual_usage'] == {'input_tokens': 10, 'output_tokens': 5} for r in report['results'])
+
+
 def test_paid_ledger_rejects_concurrent_process_and_releases_after_error(tmp_path):
     ledger = tmp_path/'ledger.json'
     with pytest.raises(ValueError):
