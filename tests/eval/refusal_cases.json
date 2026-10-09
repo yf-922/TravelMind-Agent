@@ -1,0 +1,6 @@
+[
+  {"id":"empty_pool","category":"insufficient_candidates","query":"南京一日游，请安排真实景点","pois":[],"route":[{"day":1,"spots":[]}],"expected_flag":"route_structure"},
+  {"id":"indoor_conflict","category":"unsatisfiable_fixed_pool","query":"南京一日游，只安排室内景点","pois":[{"name":"户外公园","indoor":false,"open_time":"09:00-18:00"}],"route":[{"day":1,"spots":[{"name":"户外公园","period":"morning","start_time":"10:00","end_time":"11:00"}]}],"expected_flag":"indoor_constraint"},
+  {"id":"opening_conflict","category":"unsatisfiable_fixed_window","query":"南京一日游，只游览指定展馆","modification_notes":"改为10:00到11:00游玩","pois":[{"name":"指定展馆","indoor":true,"open_time":"17:00-18:00"}],"route":[{"day":1,"spots":[{"name":"指定展馆","period":"morning","start_time":"10:00","end_time":"11:00"}]}],"expected_flag":"opening_time_conflict"},
+  {"id":"unverified_walk","category":"unverifiable_not_unsatisfiable","query":"南京一日游，步行每段不超过1公里","max_walking_km":1,"pois":[{"name":"展馆A","indoor":true,"open_time":"09:00-18:00"},{"name":"展馆B","indoor":true,"open_time":"09:00-18:00"}],"route":[{"day":1,"spots":[{"name":"展馆A","period":"morning","start_time":"10:00","end_time":"11:00"},{"name":"展馆B","period":"afternoon","start_time":"14:00","end_time":"15:00"}]}],"expected_flag":"walking_constraint"}
+]
