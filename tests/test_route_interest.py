@@ -286,6 +286,13 @@ def test_paid_entry_pairs_trials_and_records_usage_without_external_calls(tmp_pa
         assert report['preflight']['cost_estimate'] is None
     assert all(r['actual_model_calls'] == 1 and r['actual_usage_complete'] for r in report['results'])
     assert all(r['actual_usage'] == {'input_tokens': 10, 'output_tokens': 5} for r in report['results'])
+    # Changes to read-only metering must not replay successful paid trials.
+    monkeypatch.setattr(sys, 'argv', [*argv[:], '--out', str(tmp_path/'resumed.json')])
+    monkeypatch.setattr(runner, 'run_final_route', lambda *a, **kw: pytest.fail('completed trial replayed'))
+    runner.main()
+    resumed = json.loads((tmp_path/'resumed.json').read_text(encoding='utf-8'))
+    assert not resumed['calls']
+    assert all(r['reused_paid_trial'] for r in resumed['results'])
 
 
 def test_paid_ledger_rejects_concurrent_process_and_releases_after_error(tmp_path):
@@ -296,6 +303,32 @@ def test_paid_ledger_rejects_concurrent_process_and_releases_after_error(tmp_pat
                 with exclusive_ledger(ledger): pass
             raise ValueError('simulated failure')
     with exclusive_ledger(ledger): pass
+
+
+def test_legacy_import_rejects_changed_inputs_before_migration(monkeypatch):
+    from scripts import compare_route_interest as runner
+    monkeypatch.setattr(runner.subprocess, 'run', lambda *a, **kw: type('Result', (), {'stdout': b'changed code'})())
+    ledger = {'trials': {}}
+    with pytest.raises(ValueError, match='behavior changed'):
+        runner.import_legacy_trials(ledger, {}, 'fake', [], [], {}, {})
+    assert ledger['trials'] == {}
+
+
+def test_interrupted_call_is_audited_not_assumed_zero_or_replayed(tmp_path):
+    from scripts.reconcile_route_interest_interruption import reconcile
+    ledger = tmp_path/'ledger.json'
+    report = tmp_path/'report.json'
+    ledger.write_text(json.dumps({'in_flight': True, 'budget': {'unknown_usage_calls': 0}, 'trials': {}}))
+    report.write_text(json.dumps({'calls': [{'status': 'in_flight', 'usage': None}]}))
+    reconcile(ledger, report)
+    value = json.loads(ledger.read_text())
+    assert not value['in_flight']
+    assert value['budget']['unknown_usage_calls'] == 1
+    assert value['interruption_audits'][0]['replayed'] is False
+    assert not value['trials']
+    assert json.loads(report.read_text())['status'] == 'interrupted'
+    with pytest.raises(ValueError, match='no matching'):
+        reconcile(ledger, report)
 
 
 def test_wrong_city_or_entity_evidence_is_rejected():

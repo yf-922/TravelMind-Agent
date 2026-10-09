@@ -8,6 +8,7 @@ import os
 from pathlib import Path
 import sys
 import time
+import subprocess
 from datetime import datetime, timezone
 from threading import RLock
 from contextlib import contextmanager
@@ -37,12 +38,63 @@ def exclusive_ledger(path):
         lock_path.unlink()
 
 
+BEHAVIOR_FILES = ['app/planning/nodes.py', 'app/planning/schemas.py', 'app/planning/helpers.py',
+                  'app/planning/enrichment.py', 'app/evaluation/route_interest.py',
+                  'app/evaluation/rag_retrieval.py', 'app/planning/graph.py',
+                  'app/llm/grok.py', 'app/llm/factory.py']
+
+
 def implementation_fingerprint():
-    files = ['app/planning/nodes.py', 'app/planning/schemas.py', 'app/planning/helpers.py',
-             'app/planning/enrichment.py', 'app/evaluation/route_interest.py',
-             'app/evaluation/rag_retrieval.py', 'scripts/compare_route_interest.py',
-             'app/planning/graph.py', 'app/llm/grok.py', 'app/llm/factory.py']
-    return fingerprint({p: hashlib.sha256((ROOT/p).read_bytes()).hexdigest() for p in files})
+    # This fingerprint describes route behavior only.  The evaluator, usage
+    # monitor and ledger recovery code are deliberately excluded: changing a
+    # read-only monitor must not invalidate already completed model trials.
+    return fingerprint({p: hashlib.sha256((ROOT/p).read_bytes()).hexdigest() for p in BEHAVIOR_FILES})
+
+
+def trial_key(case, arm, repetition, facts, config, maps, implementation):
+    return fingerprint({'case_input': {k: v for k, v in case.items() if k in TravelPlanState.model_fields},
+                        'arm': arm, 'repetition': repetition,
+                        'facts': [{k: v for k, v in f.items() if k not in ('review_status', 'annotator', 'reviewed_at', 'change_log')} for f in facts],
+                        'config': config, 'maps': fingerprint(maps), 'implementation': implementation})
+
+
+def import_legacy_trials(ledger, previous, revision, cases, facts, maps, config):
+    """Verify historic behavior and inputs before migrating an old ledger key."""
+    def digest(path):
+        content = subprocess.run(['git', 'show', f'{revision}:{path}'], cwd=ROOT,
+                                 check=True, capture_output=True).stdout
+        if path in BEHAVIOR_FILES:
+            current = (ROOT/path).read_bytes()
+            if current.replace(b'\r\n', b'\n') != content.replace(b'\r\n', b'\n'):
+                raise ValueError('legacy route behavior changed; cannot reuse')
+            # Old reports hashed Windows working-tree bytes, possibly with
+            # mixed line endings; verify semantic equality before reusing them.
+            return hashlib.sha256(current).hexdigest()
+        return hashlib.sha256(content).hexdigest()
+    hashes = {path: digest(path) for path in BEHAVIOR_FILES}
+    if fingerprint(hashes) != implementation_fingerprint():
+        raise ValueError('legacy route behavior changed; cannot reuse')
+    old_hashes = {**hashes, 'scripts/compare_route_interest.py': digest('scripts/compare_route_interest.py')}
+    if previous.get('implementation') != fingerprint(old_hashes):
+        script = subprocess.run(['git', 'show', f'{revision}:scripts/compare_route_interest.py'],
+                                cwd=ROOT, check=True, capture_output=True).stdout
+        old_hashes['scripts/compare_route_interest.py'] = hashlib.sha256(script.replace(b'\n', b'\r\n')).hexdigest()
+        if previous.get('implementation') != fingerprint(old_hashes):
+            raise ValueError('legacy implementation does not match supplied revision')
+    expected = {'configuration': config, 'cases': fingerprint(cases), 'facts': fingerprint(facts), 'maps': fingerprint(maps)}
+    if any(previous.get(key) != value for key, value in expected.items()):
+        raise ValueError('legacy experiment inputs/configuration changed; cannot reuse')
+    by_id = {case['id']: case for case in cases}
+    for row in previous['results']:
+        case = by_id[row['case_id']]
+        old_key = trial_key(case, row['arm'], row['repetition'], facts, config, maps, previous['implementation'])
+        stored = ledger.get('trials', {}).get(old_key)
+        if stored is None or stored != {k: v for k, v in row.items() if k != 'reused_paid_trial'}:
+            raise ValueError('legacy report does not match durable ledger')
+        key = trial_key(case, row['arm'], row['repetition'], facts, config, maps, implementation_fingerprint())
+        ledger['trials'][key] = stored
+    ledger.setdefault('migrations', []).append({'revision': revision, 'previous_implementation': previous['implementation'],
+                                               'implementation': implementation_fingerprint(), 'rows': len(previous['results'])})
 
 
 def binding(cases, facts, maps, config):
@@ -111,6 +163,8 @@ def main():
                    help='Run only the five-request dev pilot without billing rates; cost remains unpriced')
     p.add_argument('--out', type=Path, default=ROOT/'data/route_interest/pilot.json')
     p.add_argument('--ledger', type=Path, default=ROOT/'data/route_interest/budget_ledger.json')
+    p.add_argument('--reuse-report', type=Path, help='Verified historical report to migrate without new model calls')
+    p.add_argument('--reuse-revision', help='Git revision matching the historical report implementation')
     a = p.parse_args(); load_local_env()
     if a.execute and a.out.exists():
         previous = json.loads(a.out.read_text(encoding='utf-8'))
@@ -151,8 +205,21 @@ def main():
               'results': [], 'calls': [], 'label_status': 'exploratory_only' if a.split == 'dev' else 'human_frozen',
               'production_default_changed': False}
     def save():
+        if a.allow_unpriced and 'budget' in report:
+            report['budget'].update(committed_cost=None, measured_cost_known_usage_only=None,
+                                    cost_status='unpriced')
+        report['trial_statuses'] = [
+            {'case_id': c['id'], 'arm': arm, 'repetition': rep,
+             'status': next(('failed' if r.get('error') else 'completed' for r in report['results']
+                             if r['case_id'] == c['id'] and r['arm'] == arm and r['repetition'] == rep), 'unexecuted')}
+            for rep in range(a.repetitions) for c in selected for arm in ('without_knowledge', 'with_knowledge')]
         report['summary'] = {arm: summarize([r for r in report['results'] if r['arm'] == arm], expected//2)
                              for arm in ('without_knowledge', 'with_knowledge')}
+        for arm, summary in report['summary'].items():
+            rows = [r for r in report['results'] if r['arm'] == arm]
+            summary.update(failed_trials=summary['attempted_trials']-summary['completed_trials'],
+                           unexecuted_trials=summary['planned_trials']-summary['attempted_trials'],
+                           reused_trials=sum(bool(r.get('reused_paid_trial')) for r in rows))
         report['paired_diagnostics'] = paired_diagnostics(report['results'], cases)
         a.out.parent.mkdir(parents=True, exist_ok=True)
         a.out.write_text(json.dumps(report, ensure_ascii=False, indent=2)+'\n', encoding='utf-8')
@@ -236,12 +303,19 @@ def main():
               'billing_fingerprint': fingerprint(billing) if billing else 'unpriced-pilot'}
     if a.ledger.exists():
         ledger = json.loads(a.ledger.read_text(encoding='utf-8'))
-        if ledger['billing_fingerprint'] != (fingerprint(billing) if billing else 'unpriced-pilot') or ledger['in_flight']:
-            raise RuntimeError('ledger billing changed or unresolved paid call; reconcile before continuing')
+        if ledger['billing_fingerprint'] != (fingerprint(billing) if billing else 'unpriced-pilot'):
+            raise RuntimeError('ledger billing changed; reconcile before continuing')
+        if ledger.get('in_flight'):
+            # A process can be terminated after the provider call but before
+            # its usage metadata is written.  Never replay that paid trial.
+            # The caller must explicitly reconcile the durable ledger first.
+            raise RuntimeError('ledger has an unresolved in-flight call; reconcile before continuing')
         old = ledger['budget']
         budget.calls = old['attempted_calls']; budget.committed_cost = old['committed_cost']
         budget.measured_cost = old['measured_cost_known_usage_only']; budget.unknown_usage_calls = old['unknown_usage_calls']
-        if budget.unknown_usage_calls: raise RuntimeError('previous call usage unknown; budget monitoring unresolved')
+        reconciled_unknown = sum(x.get('unknown_usage_calls', 0) for x in ledger.get('interruption_audits', []))
+        if budget.unknown_usage_calls and not (a.allow_unpriced and reconciled_unknown == budget.unknown_usage_calls):
+            raise RuntimeError('previous call usage unknown; budget monitoring unresolved')
     lock = RLock()
     halted = []
     def save_ledger():
@@ -250,6 +324,13 @@ def main():
         temporary = a.ledger.with_suffix('.tmp')
         temporary.write_text(json.dumps(ledger, indent=2)+'\n', encoding='utf-8')
         temporary.replace(a.ledger)
+    if a.reuse_report:
+        if not a.reuse_revision: p.error('--reuse-report requires --reuse-revision')
+        import_legacy_trials(ledger, json.loads(a.reuse_report.read_text(encoding='utf-8')),
+                             a.reuse_revision, cases, facts, maps, config)
+        save_ledger()
+    report['interruption_audits'] = ledger.get('interruption_audits', [])
+    prior_unknown_usage = budget.unknown_usage_calls
     from app.llm.grok import build_chat_grok, use_grok_responses_api
     # Factory preserves production schema, Responses transport and temperature.
     # All node attempts and helper retries must pass the same durable budget.
@@ -282,7 +363,7 @@ def main():
                     usage = response['raw'].usage_metadata
                     budget.reconcile(reservation, usage)
                     entry.update(status='completed', usage=usage, elapsed_ms=(time.perf_counter()-started)*1000)
-                    if budget.unknown_usage_calls: raise RuntimeError('missing usage; further calls prohibited')
+                    if budget.unknown_usage_calls > prior_unknown_usage: raise RuntimeError('missing usage; further calls prohibited')
                     after = monitor()-initial_quota
                     if billing and after/billing['quota_units_per_CNY'] > 10: raise RuntimeError('key-wide cost limit exceeded')
                     if response.get('parsing_error'): raise ValueError('structured output parse failure')
@@ -307,11 +388,9 @@ def main():
             if (index+repetition)%2: arms.reverse()
             for arm in arms:
                 trial = f"{case['id']}/{arm}/{repetition}"
-                execution_key = fingerprint({'case_input': {k: v for k, v in case.items() if k in TravelPlanState.model_fields},
-                    'arm': arm, 'repetition': repetition, 'facts': [{k: v for k, v in f.items() if k not in ('review_status', 'annotator', 'reviewed_at', 'change_log')} for f in facts],
-                    'config': config, 'maps': fingerprint(maps), 'implementation': report['implementation']})
-                if execution_key in ledger.get('trials', {}):
-                    cached = ledger['trials'][execution_key]
+                execution_key = trial_key(case, arm, repetition, facts, config, maps, report['implementation'])
+                cached = ledger.get('trials', {}).get(execution_key)
+                if cached is not None:
                     row = {**cached, 'reused_paid_trial': True}
                     if cached.get('final_state'):
                         row['metrics'] = grade_final(TravelPlanState(**cached['final_state']), case)
@@ -344,10 +423,12 @@ def main():
                 row['elapsed_ms'] = (time.perf_counter()-started)*1000
                 ledger.setdefault('trials', {})[execution_key] = row; save_ledger()
                 report['results'].append(row); save()
-                if row.get('error') or budget.unknown_usage_calls or halted:
+                if row.get('error') or budget.unknown_usage_calls > prior_unknown_usage or halted:
                     report['status'] = 'stopped_on_failure'; save(); return
-    report['status'] = 'exploratory_complete' if a.split == 'dev' else 'frozen_test_complete'; save()
-    if a.split == 'dev' and a.limit == 5 and a.repetitions == 1:
+    all_succeeded = len(report['results']) == expected and all(not row.get('error') for row in report['results'])
+    report['status'] = ('exploratory_complete' if all_succeeded else 'exploratory_complete_with_failures') if a.split == 'dev' else 'frozen_test_complete'
+    save()
+    if a.split == 'dev' and a.limit == 5 and a.repetitions == 1 and all_succeeded and not budget.unknown_usage_calls:
         ledger['verified_pilot_config'] = fingerprint(config); save_ledger()
 
 

@@ -30,6 +30,7 @@ itineraries.db
 awesomefrontend/途见·新建行程页（离线版）.html
 awesomefrontend/sky-bg.png
 data/app.db
+/data/
 data/semantic_memory/
 data/travel_knowledge/
 data/multi_agent_memory.db
