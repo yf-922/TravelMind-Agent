@@ -20,7 +20,8 @@ def test_finalize_exposes_degraded_services_to_the_client(monkeypatch):
 
     assert plan["degraded_services"] == ["time_check", "meal_search", "spot_tips"]
     assert plan["service_status"]["meal_recommend"] == "ok"
-    assert len(plan["route_issues"]) == 3
+    assert len(plan["route_issues"]) == 4
+    assert any("无法生成满足" in issue for issue in plan["route_issues"])
     assert any("官方渠道复核" in issue for issue in plan["route_issues"])
 
 

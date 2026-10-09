@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+import json
 from typing import Any, TypeVar
 
 from pydantic import BaseModel
@@ -91,4 +92,31 @@ def build_structured_grok(
     """Create a Grok client bound to a strict Pydantic schema."""
     llm = build_chat_grok(model=model, temperature=temperature)
     method = "json_schema" if use_grok_responses_api() else "function_calling"
-    return llm.with_structured_output(schema, method=method, strict=True)
+    from langchain_core.runnables import RunnableLambda
+    structured = llm.with_structured_output(schema, method=method, strict=True, include_raw=True)
+    return structured | RunnableLambda(lambda response: parse_structured_response(response, schema))
+
+
+def parse_structured_response(response, schema):
+    """Recover valid JSON already present in the response; never invent fields."""
+    if response.get("parsed") is not None:
+        return schema.model_validate(response["parsed"])
+    raw = response.get("raw")
+    candidates = [call.get("args") for call in (getattr(raw, "tool_calls", None) or [])
+                  if call.get("name") == schema.__name__]
+    content = getattr(raw, "content", None)
+    if isinstance(content, str) and content.strip():
+        text = content.strip()
+        if text.startswith("```") and text.endswith("```"):
+            text = text.split("\n", 1)[1].rsplit("```", 1)[0].strip()
+        candidates.append(text)
+    for candidate in candidates:
+        try:
+            value = json.loads(candidate) if isinstance(candidate, str) else candidate
+            return schema.model_validate(value)
+        except (ValueError, TypeError):
+            continue
+    error = response.get("parsing_error")
+    raise ValueError(f"结构化输出无法解析为 {schema.__name__}；finish_reason="
+                     f"{(getattr(raw, 'response_metadata', {}) or {}).get('finish_reason', 'unknown')}；"
+                     f"parser_error={type(error).__name__ if error else 'missing_schema_output'}")

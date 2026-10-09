@@ -149,7 +149,7 @@ def grade_final(state, case):
     violations = sorted(set(hard_flags) & {
         'duplicate_poi', 'unknown_poi', 'route_structure', 'habit_constraint',
         'opening_time_conflict', 'weather_outdoor_conflict', 'walking_constraint',
-        'modification_time_unfulfilled', 'indoor_constraint',
+        'modification_time_unfulfilled', 'indoor_constraint', 'commute_time_conflict',
         'meal_unknown_restaurant', 'meal_duplicate_restaurant', 'meal_time_structure',
         'meal_opening_conflict', 'meal_overlap', 'meal_budget_conflict', 'meal_preference_conflict',
     })

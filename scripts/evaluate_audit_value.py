@@ -20,7 +20,7 @@ from app.evaluation.route_interest import route_key
 
 HARD = {'duplicate_poi', 'unknown_poi', 'route_structure', 'habit_constraint',
         'opening_time_conflict', 'weather_outdoor_conflict', 'walking_constraint',
-        'modification_time_unfulfilled', 'indoor_constraint'}
+        'modification_time_unfulfilled', 'indoor_constraint', 'commute_time_conflict'}
 
 
 def assets():
@@ -202,8 +202,10 @@ def main():
                     response = structured.invoke(messages)
                     entry.update(status='completed', usage=response['raw'].usage_metadata)
                     if not entry['usage']: raise RuntimeError('actual usage missing')
-                    if response.get('parsing_error') or response.get('parsed') is None: raise ValueError('invalid structured result')
-                    return response['parsed']
+                    entry['finish_reason'] = (response['raw'].response_metadata or {}).get('finish_reason')
+                    entry['parser_error_type'] = type(response['parsing_error']).__name__ if response.get('parsing_error') else None
+                    from app.llm.grok import parse_structured_response
+                    return parse_structured_response(response, schema)
                 except Exception as exc:
                     entry.update(status='failed', error=type(exc).__name__+': '+str(exc)[:200]); raise
                 finally:

@@ -12,7 +12,12 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from app.planning.nodes import route_risk_gate_node  # noqa: E402
+from app.planning.nodes import route_risk_gate_node as current_risk_gate  # noqa: E402
+
+
+def route_risk_gate_node(state):
+    """Historical replay policy, excluding newly added semantic review."""
+    return current_risk_gate(state, semantic_review=False)
 from tests.eval.harness import build_state_from_fixture, load_fixtures  # noqa: E402
 
 

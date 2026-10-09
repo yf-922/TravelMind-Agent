@@ -426,12 +426,12 @@ def _time_window_contains(opening: str, start: int, end: int) -> bool:
 
 def explicit_modification_time_violation(state: TravelPlanState) -> bool:
     """Check supported explicit visit-time edits, not arbitrary natural language."""
-    notes = state.modification_notes or ""
+    notes = state.modification_notes or (state.query if "必须" in (state.query or "") else "")
     if state.days != 1:
         return False
     if not any(word in notes for word in ("坚持", "必须", "改为")):
         return False
-    window = re.search(r"(\d{1,2}:\d{2})\s*(?:至|到|[-~])\s*(\d{1,2}:\d{2})\s*(?:游览|参观)", notes)
+    window = re.search(r"(\d{1,2}:\d{2})\s*(?:至|到|[-~])\s*(\d{1,2}:\d{2})\s*(?:游览|参观|游玩)", notes)
     start_only = re.search(r"(?:游览改为|开始时间改为)\s*(\d{1,2}:\d{2})\s*(?:开始)?", notes)
     if not window and not start_only:
         return False
@@ -652,11 +652,25 @@ def _route_risk_flags(state: TravelPlanState) -> list[str]:
     if requires_indoor_only(state):
         if any(poi_by_name.get(name, {}).get("indoor") is not True for name in names):
             flags.append("indoor_constraint")
+    # A non-overlapping itinerary can still leave too little time to travel.
+    for day in route:
+        for previous, current in zip(day.get("spots") or [], (day.get("spots") or [])[1:]):
+            leg = next((item for item in state.route_distance_legs
+                        if item.get("day") == day.get("day")
+                        and item.get("from") == previous.get("name")
+                        and item.get("to") == current.get("name")), None)
+            if leg and leg.get("duration_min") is not None:
+                try:
+                    gap = _clock_minutes(current.get("start_time")) - _clock_minutes(previous.get("end_time"))
+                    if gap < float(leg["duration_min"]):
+                        flags.append("commute_time_conflict")
+                except (ValueError, TypeError):
+                    flags.append("route_structure")
     flags.extend(_main_meal_risk_flags(state))
     return flags
 
 
-def route_risk_gate_node(state: TravelPlanState) -> dict[str, Any]:
+def route_risk_gate_node(state: TravelPlanState, *, semantic_review: bool = True) -> dict[str, Any]:
     """Escalate only drafts with deterministic evidence of risk."""
     flags = _route_risk_flags(state)
     review_prefixes = (
@@ -665,6 +679,7 @@ def route_risk_gate_node(state: TravelPlanState) -> dict[str, Any]:
         "habit_constraint", "user_modification",
         "modification_time_unfulfilled",
         "indoor_constraint",
+        "commute_time_conflict",
         "meal_unknown_restaurant", "meal_duplicate_restaurant", "meal_time_structure",
         "meal_opening_conflict", "meal_overlap", "meal_budget_conflict",
         "meal_preference_conflict",
@@ -673,6 +688,9 @@ def route_risk_gate_node(state: TravelPlanState) -> dict[str, Any]:
         flag == prefix or flag.startswith(prefix + ":")
         for flag in flags for prefix in review_prefixes
     )
+    if semantic_review and (state.attraction_preference or state.habit_preference or re.search(r"喜欢|希望|不想|不要|避免|排除|偏好", state.query or "")):
+        flags.append("preference_review")
+        review_required = True
     time_required = bool({"opening_time_conflict", "meal_opening_conflict", "meal_time_structure", "meal_overlap"} & set(flags))
     if review_required:
         time_required = True
@@ -721,7 +739,6 @@ def make_joint_planner_node(model_name: str | None, *, knowledge_lookup=None, ll
     llm = llm if llm is not None else build_structured_llm(
         TravelRoute, model=model_name, temperature=0.3, task_type="joint_planner"
     )
-
     def planner(state: TravelPlanState) -> dict[str, Any]:
         rag_sources = []
         try:
@@ -765,9 +782,18 @@ def make_joint_planner_node(model_name: str | None, *, knowledge_lookup=None, ll
             "请同时输出景点 days 和餐馆 meal_slots。meal_slots 的餐馆名必须逐字来自餐馆候选池，"
             "每个 meal_slots 必须有 day 对应关系（通过顺序从 start_time 判断），并确保时间不与景点重叠。"
         )
-        result: TravelRoute = (invoke_fn or invoke_structured)(
-            llm, [("system", JOINT_PLANNER_SYSTEM), ("human", prompt)]
-        )
+        try:
+            result: TravelRoute = (invoke_fn or invoke_structured)(
+                llm, [("system", JOINT_PLANNER_SYSTEM), ("human", prompt)]
+            )
+        except ValueError as exc:
+            # Never release the previous draft after a failed repair.
+            logger.warning("[joint_planner] invalid structured output (%s)", type(exc).__name__)
+            return {"route": [], "meal_slots": [], "selection_reasons": [], "rag_sources": [],
+                    "approved": False, "review_round": state.max_review_rounds + 1,
+                    "time_check_round": state.max_time_check_rounds, "time_check_done": True,
+                    "reviewer_issues": ["规划模型返回格式无效，本次未生成可用路线，请重新提交请求。"],
+                    "history": state.history + ["[joint_planner] 结构化输出解析失败，停止本次规划"]}
         route = [day.model_dump() for day in result.days]
         replacements = canonicalize_route_spot_names(route, state.pois)
         # A lunch break is not a second attraction visit. Keep the first slot;
@@ -1069,7 +1095,14 @@ def make_reviewer_node(model_name: str | None):
             f"请评审并给出结论。⚠️ 开放时间和闭馆日由 time_check 专项 Agent 单独核查，"
             f"你不要评审开放时间相关问题。"
         )
-        result: RouteReview = invoke_structured(llm, [("system", REVIEWER_SYSTEM), ("human", prompt)])
+        try:
+            result: RouteReview = invoke_structured(llm, [("system", REVIEWER_SYSTEM), ("human", prompt)])
+        except ValueError as exc:
+            logger.warning("[reviewer] invalid structured output (%s)", type(exc).__name__)
+            return {"approved": False, "review_round": state.max_review_rounds + 1,
+                    "time_check_round": state.max_time_check_rounds,
+                    "reviewer_issues": ["审核模型返回格式无效，当前路线未获审核通过，请重新规划。"],
+                    "history": state.history + ["[reviewer] 结构化输出解析失败，停止审核回环"]}
         approved = result.approved and not bad_unknown
         verdict  = "✅通过" if approved else "❌打回"
 
@@ -1710,6 +1743,27 @@ def enrich_plan_ticket_budget(plan: dict[str, Any]) -> dict[str, Any]:
 
 def _finalize_impl(state: TravelPlanState) -> dict[str, Any]:
     """组装 final_plan，并优先使用高德道路距离生成交通建议。"""
+    final_flags = _route_risk_flags(state)
+    hard_failures = [flag for flag in final_flags if flag not in {
+        "opening_time_unknown", "user_modification", "long_road_leg", "preference_review",
+    }]
+    # Recheck against original requirements; a later audit cannot erase them.
+    if hard_failures or not state.approved:
+        explanations = {
+            "route_structure": "缺少有效景点或行程结构不完整",
+            "indoor_constraint": "候选景点不能满足仅室内要求",
+            "opening_time_conflict": "游玩时段与景点开放时间冲突",
+            "modification_time_unfulfilled": "路线未满足用户指定的游玩时段",
+            "walking_constraint": "步行距离超限或尚未核验",
+            "commute_time_conflict": "景点间预留的通勤时间不足",
+        }
+        reason = "；".join(explanations.get(flag, flag) for flag in dict.fromkeys(hard_failures)) or "审核未通过"
+        state = state.model_copy(update={
+            "approved": False, "route_risk_flags": final_flags,
+            "reviewer_issues": list(state.reviewer_issues or []) + [
+                "当前无法生成满足全部要求的路线：" + reason + "。请调整约束或补充候选后重新规划。"
+            ],
+        })
     spot_info    = {s["name"]: s for s in state.pois}
     meals_by_day = {m["day"]: m for m in state.meals}
     api_key: str | None = None

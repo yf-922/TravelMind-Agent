@@ -12,7 +12,12 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from app.planning.nodes import route_risk_gate_node  # noqa: E402
+from app.planning.nodes import route_risk_gate_node as current_risk_gate  # noqa: E402
+
+
+def route_risk_gate_node(state):
+    """Historical replay only; old latency figures do not describe new policy."""
+    return current_risk_gate(state, semantic_review=False)
 from tests.eval.graders.code_graders import grade_code  # noqa: E402
 from tests.eval.harness import build_state_from_fixture, load_fixtures  # noqa: E402
 from tests.eval.run_fault_recovery_ablation import build_scenarios  # noqa: E402
