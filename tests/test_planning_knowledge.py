@@ -108,7 +108,7 @@ def test_index_reuses_unchanged_corpus_and_invalidates_changed_content(monkeypat
     collection = Collection()
     documents = [{"source": "museum", "text": "展陈内容"}]
     monkeypatch.setattr(knowledge, "_collection", lambda: collection)
-    monkeypatch.setattr(knowledge, "load_documents", lambda: documents)
+    monkeypatch.setattr(knowledge, "load_documents", lambda **kwargs: documents)
     assert knowledge.build_index() == 1
     assert collection.ids == {"museum-0"}
     initial = collection.metadata["corpus_fingerprint"]
@@ -119,3 +119,20 @@ def test_index_reuses_unchanged_corpus_and_invalidates_changed_content(monkeypat
     monkeypatch.setattr(knowledge, "_CHUNK_SIZE", 300)
     knowledge.build_index()
     assert collection.writes == 3
+
+
+def test_production_planning_lookup_includes_versioned_interest_facts(monkeypatch):
+    monkeypatch.setenv("TRAVEL_INTEREST_KNOWLEDGE_ENABLED", "1")
+    monkeypatch.setenv("TRAVEL_KNOWLEDGE_ENABLED", "0")
+    rows = knowledge.search_planning_knowledge(
+        "上海", [{"name": "上海自然博物馆"}], "想了解生命演化的科学展示", limit=3, mode="keyword"
+    )
+    assert rows
+    assert rows[0]["source"].startswith("interest_")
+    assert rows[0]["entities"] == ["上海自然博物馆"]
+    assert rows[0]["url"].startswith("https://")
+
+
+def test_interest_corpus_is_not_enabled_by_default(monkeypatch):
+    monkeypatch.delenv("TRAVEL_INTEREST_KNOWLEDGE_ENABLED", raising=False)
+    assert not any(d['source'].startswith('interest_') for d in knowledge._runtime_documents())

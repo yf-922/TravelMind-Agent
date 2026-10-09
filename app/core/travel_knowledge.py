@@ -99,6 +99,12 @@ def load_documents(*, include_interest: bool = False) -> list[dict[str, Any]]:
     return documents
 
 
+def _runtime_documents() -> list[dict[str, Any]]:
+    """Opt in to experimental facts without changing production defaults."""
+    enabled = os.getenv("TRAVEL_INTEREST_KNOWLEDGE_ENABLED", "0").strip().lower() in {"1", "true", "yes"}
+    return load_documents(include_interest=True) if enabled else load_documents()
+
+
 def build_index(rebuild: bool = False) -> int:
     """Load, split, embed, and persist all project travel documents in Chroma."""
     collection = _collection()
@@ -110,9 +116,10 @@ def build_index(rebuild: bool = False) -> int:
         existing_ids = collection.get(include=[]).get("ids") or []
         if existing_ids:
             collection.delete(ids=existing_ids)
-    documents = load_documents()
+    documents = _runtime_documents()
     fingerprint = hashlib.sha256(json.dumps({
         "documents": documents, "chunker": "paragraph-v1",
+        "index_text_version": "interest-topic-v1",
         "size": _CHUNK_SIZE, "overlap": _CHUNK_OVERLAP,
     }, ensure_ascii=False, sort_keys=True).encode()).hexdigest()
     if not rebuild and collection.count() > 0 and (collection.metadata or {}).get("corpus_fingerprint") == fingerprint:
@@ -125,8 +132,11 @@ def build_index(rebuild: bool = False) -> int:
         for index, chunk in enumerate(_split_text(document["text"])):
             chunk_id = f"{document['source']}-{index}"
             ids.append(chunk_id)
-            texts.append(chunk)
-            metadatas.append({"source": document["source"], "chunk_id": chunk_id})
+            topic = str(document.get("topic") or "").strip() if document["source"].startswith("interest_") else ""
+            # Embed the curated topic as searchable context while retaining
+            # the source passage itself in the returned document.
+            texts.append(f"{chunk}\n主题：{topic}" if topic else chunk)
+            metadatas.append({"source": document["source"], "chunk_id": chunk_id, "topic": topic})
     if ids:
         collection.upsert(ids=ids, documents=texts, metadatas=metadatas)
     obsolete = set(collection.get(include=[]).get("ids") or []) - set(ids)
@@ -137,15 +147,17 @@ def build_index(rebuild: bool = False) -> int:
     return len(ids)
 
 
-def _all_chunks() -> list[dict[str, str]]:
+def _all_chunks(*, include_interest: bool | None = None) -> list[dict[str, str]]:
     """Return the deterministic local chunk inventory used by lexical recall."""
     chunks: list[dict[str, str]] = []
-    for document in load_documents():
+    documents = _runtime_documents() if include_interest is None else load_documents(include_interest=include_interest)
+    for document in documents:
         for index, chunk in enumerate(_split_text(document["text"])):
             chunks.append({
                 "source": document["source"],
                 "chunk_id": f"{document['source']}-{index}",
                 "text": chunk,
+                "topic": str(document.get("topic") or "") if document["source"].startswith("interest_") else "",
             })
     return chunks
 
@@ -157,7 +169,7 @@ def _keyword_candidates(query: str, candidate_limit: int = 10, allowed_sources=N
     for chunk in _all_chunks():
         if allowed_sources is not None and chunk["source"] not in allowed_sources:
             continue
-        score = _keyword_score(query, chunk["text"])
+        score = _keyword_score(query, chunk["text"] + " " + chunk.get("topic", ""))
         if score < minimum_score:
             continue
         rows.append({**chunk, "keyword_score": score})
@@ -314,7 +326,7 @@ def search_planning_knowledge(destination: str, pois: list[dict[str, Any]], quer
     city = (destination or "").strip().removesuffix("市")
     names = {str(p.get("name") or "").strip() for p in pois}
     eligible = {
-        d["source"]: d for d in load_documents()
+        d["source"]: d for d in _runtime_documents()
         if d.get("city") == city and names.intersection(d.get("entities", []))
         and d.get("knowledge_type") == "stable_planning_fact"
     }

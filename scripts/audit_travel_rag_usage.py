@@ -13,7 +13,7 @@ from app.evaluation.rag_protocol import fingerprint
 
 
 def main():
-    docs = travel_knowledge.load_documents()
+    docs = travel_knowledge._runtime_documents()
     chunks = travel_knowledge._all_chunks()
     corpus = json.loads((ROOT / 'knowledge/benchmark_v2_curated/chunks.json').read_text(encoding='utf-8'))
     factory = inspect.getsource(graph._planner_for_graph)
@@ -31,8 +31,11 @@ def main():
         'external_calls': 0, 'embedding_calls': 0,
         'method': 'Read factory/node source; inventory runtime Markdown and planning facts; keyword-only probes without human relevance labels.',
         'default_planner': 'make_joint_planner_node' if 'return make_joint_planner_node(model_name)' in factory else 'unknown',
-        'joint_planner_calls_rag': 'search_planning_knowledge(' in joint,
-        'legacy_planner_calls_rag': 'search_travel_knowledge(' in legacy,
+        # The production joint Planner selects the default function through
+        # ``knowledge_lookup or search_planning_knowledge`` rather than a
+        # direct call expression; inspect the symbol reference as well.
+        'joint_planner_calls_rag': 'search_planning_knowledge' in joint,
+        'legacy_planner_calls_rag': 'search_travel_knowledge' in legacy,
         'runtime_source_directory': 'knowledge/travel',
         'runtime_documents': [d['source'] for d in docs],
         'runtime_document_count': len(docs), 'runtime_chunk_count': len(chunks),
