@@ -1,295 +1,545 @@
-# TravelMind-Agent：LLM 多 Agent 旅行规划助手
+<div align="center">
 
-> 基于开源项目 [FloatTrip](https://github.com/shouzhuoshouzhuo/FloatTrip) 的课程二次开发。面向“输入旅行需求，生成可解释的行程方案”的场景，重点实现多智能体协作、工具调用、个性化记忆与可复现测试。
+# TravelMind · 途见
 
-## 二次开发边界与可验证材料
+### 把目的地交给我，你只管期待出发。
 
-原项目提供基础的旅行规划页面、POI/天气查询和初始规划流程。本仓库的主要增量集中在：
+**支持长期记忆与动态修改的 LLM 多 Agent 旅行规划应用**
 
-- 使用 LangGraph 重构 Planner、Reviewer、Time Check、POI Search 等节点，增加风险门控、失败重试和用户修改后的 checkpoint 局部重规划；确定性风险门控先检查，低风险跳过 LLM Reviewer，高风险才进入审核修复；
-- 将原直线距离判断替换为高德路线 API 的实际步行/驾车距离核验，距离查询失败时明确标记“未核验”，不伪造道路距离；
-- 使用 SQLite + Chroma 实现结构化/语义个性化记忆，SQLite 保存事实源，Chroma 按 `user_id` 隔离语义记忆；旅行知识库按约 420 字符切块、保留约 80 字符段落重叠，默认召回 Top-3 并用 RRF 融合关键词与向量结果；
-- 增加天气/POI Cache-Aside、可并行查询、FastAPI + SSE 流式进度、单次执行 Trace 和失败降级状态；
-- 增加 39 条编排消融案例、真实 API 响应回放、故障轨迹测试和 GitHub Actions 离线 CI。
-- `POST /api/plan/stream` 支持 `engine=supervisor`：使用登录用户范围内的角色记忆和统一 SSE 事件；行程修改与确认会沿用同一编排引擎，硬约束复核优先于模型审核结论。
+[![Python CI](https://github.com/yf-922/TravelMind-Agent/actions/workflows/ci.yml/badge.svg)](https://github.com/yf-922/TravelMind-Agent/actions/workflows/ci.yml)
+![Python](https://img.shields.io/badge/Python-3.11%20%7C%203.12-3776AB?logo=python&logoColor=white)
+![LangGraph](https://img.shields.io/badge/Agent-LangGraph-1C3C3C)
+![FastAPI](https://img.shields.io/badge/API-FastAPI-009688?logo=fastapi&logoColor=white)
+![Chroma](https://img.shields.io/badge/Memory-Chroma%20%2B%20SQLite-B74724)
+![Docker](https://img.shields.io/badge/Deploy-Docker%20Compose-2496ED?logo=docker&logoColor=white)
 
-可验证材料：
+自然语言需求 → 真实景点候选 → 景点与餐饮联合规划 → 道路核验与审核 → 可修改的每日行程
 
-- `docker compose up --build`：一键启动 API + Redis；
-- `http://127.0.0.1:8765/docs`：FastAPI Swagger 接口文档；
-- `evaluation/*.md` / `evaluation/*.json`：消融、回放、RAG、记忆和故障评测报告；
-- `scripts/evaluate_risk_gate.py`、`tests/eval/ablation.py`：可复现评测入口；
-- `.github/workflows/ci.yml`：GitHub Actions 编译检查、评测资产校验和 `pytest -q`。
+[产品预览](#产品预览) · [核心设计](#核心设计) · [快速开始](#快速开始) · [评测与结果](#评测与结果) · [压测数据](#本机-http-并发压测) · [源码导航](#源码导航)
 
-## 项目能力
+</div>
 
-### RAG 对最终路线选点的验证（进行中）
+![TravelMind 旅行规划首页](static/images/规划页.png)
 
-新增南京、上海、三亚 30 条配对用例，使用同一生产联合 Planner 至最终输出链路，对比提供/不提供知识，评分只读取最终选中景点。包含重复景点修复、证据关联、实际 Token 计量、预算账本及冻结测试保护；生产检索默认保持不变。
-目前已保存 18 条官方知识、18 个真实候选坐标及 90 条道路回放，南京、上海、三亚均覆盖 6/6 候选；豫园事实来自官方《游览须知》页面，门票价格和开放时段仍需实时查询。标注待人工确认，账户计费倍率未核验，**尚无最终路线收益结论**。运行 `python scripts/review_route_interest.py validate` 校验草稿资产，详见 [执行流程与待完成项](docs/route_interest_evaluation.md)。
+## 项目简介
 
-### 独立旅游知识检索评测（路线收益仍待验证）
+TravelMind 将一句旅行需求转换为包含景点、餐饮、天气、交通与时间安排的行程。用户可以继续提出“第二天换个景点”“少走一点路”等修改意见，系统复用已保存的规划状态，再生成并检查新路线。
 
-`knowledge/benchmark_v1` 保存公开官方页面快照、稳定 chunk ID、URL、城市、主题、采集日期、内容哈希、证据组和采集失败记录。
-当前只有 38 个有效快照 chunk（上海、景德镇），未达到六城 120–180 chunk 目标；106 条问题为程序起草且全部 `pending_review`，不称人工 gold。
-新评测入口 `scripts/sweep_rag_v2.py` 对比关键词、固定 jieba 分词的 BM25、真实 Chroma 向量、BM25+向量标准 RRF、关键词+向量标准 RRF以及旧取整 RRF。
-索引位于独立 `data/travel_knowledge_benchmark_v1`，按语料指纹命名 collection，生产语料、索引、默认 Top-3 保持不变。
-显式向量/融合失败会报告错误，不能用关键词降级冒充融合；开发扫 k=1/2/3/5/8/10 和 c=20/60/100。
-仅待审核开发草稿执行烟测，冻结测试未执行；详细边界与命令见 [检索评测报告](docs/rag_retrieval_v2_smoke.md)。
-安装独立依赖：`python -m pip install -r requirements-rag-eval.txt`；生成端及 Judge 尚未运行，预算预估见报告。
+项目围绕旅行 Agent 的三个实际问题展开：**模型可能编造地点，生成的时间表未必可执行，修改需求容易重复查询**。地点事实来自外部工具，路线由 Planner 生成，规则与 Reviewer 分别检查可计算约束和语义质量，LangGraph 负责条件路由与有限次返工。
 
-### 有界候选池 ReAct
+| 用户遇到的问题 | 项目的处理方式 |
+| :--- | :--- |
+| 推荐了不存在或不匹配的景点 | 先建立高德 POI 候选池，再约束 Planner 从候选中选择 |
+| 到达时未开放、时间冲突、步行过长 | 规则检查时间结构，使用高德实际步行 / 驾车距离与耗时核验 |
+| 形式正确，但偏好不匹配或节奏过密 | LLM Reviewer 读取用户需求、候选事实和路线，给出修改意见 |
+| 修改一个景点也要重新查询所有信息 | 保存应用层 checkpoint，复用需求、天气与候选，必要时定向补查 |
+| 等待时不知道系统在做什么 | SSE 返回节点进度、阶段摘要、最终结果及失败原因 |
+| 每次都要重复说明喜好 | SQLite 保存结构化画像，Chroma 按用户隔离召回语义记忆 |
 
-主链路在需求分析、查询改写和天气查询完成后，先通过 `attraction_search`
-建立不依赖 LLM 的城市基础候选池，再进入
-`candidate_react -> candidate_search -> candidate_validator` 补检索循环。
-模型只提出最多两个类别/景点搜索动作；工具执行高德查询、合并去重和来源标注，
-校验器检查数量、明确景点覆盖、室内外约束及类型多样性。
-最多执行两轮，每次请求的基础与补充检索共享四次 HTTP 尝试预算（含重试），Redis 命中不计外部请求。
-这个预算目前仅覆盖候选池检索，不包含天气、餐馆和道路查询。
-LLM 失败或对空池提出停止时丢弃模型决策，使用服务端预定义类别查询；已有池则保留结果。
-API 失败或预算耗尽时保留已有候选并返回 `insufficient`，
-Planner 接收覆盖缺口，最终结果包含 `candidate_pool` 状态与统计。
-室内外标签来自高德类型/名称启发式，未知标签不计为已满足；明确用户限制优先于多样性。
-有评分的候选执行最低评分过滤，无评分但坐标有效的真实 POI 保留并标注 `rating_status=unknown`。
-配置通过 `TravelPlanState` 的 `candidate_min_per_day`、`candidate_max_rounds`、
-`candidate_api_budget` 控制；默认数量目标为天数乘每日两个景点，再加至少两个备选，受 `max_spots` 限制。
+## 产品预览
 
-离线验收：`python -m pytest tests/test_candidate_react.py -q`。
-六场景契约评测：`python scripts/evaluate_candidate_react.py`，打印 JSON，
-包含覆盖数、明确景点命中、室内外分布、检索轮数、请求次数和不足场景；不调用真实 LLM/API。
-这些结果用于验证循环与预算机制，实际检索质量仍需要独立真实 Provider 对照。
+**一份行程，一张地图，一条可继续修改的时间线。**
 
-- 解析目的地、日期、预算、偏好等旅行约束，缺少关键字段时提示用户补充。
-- 调用高德 POI、天气、路径等服务，生成景点候选、餐饮、酒店与出行建议。
-- 使用 Planner / Reviewer 工作流生成并审查行程；候选池中没有用户指定景点时可重新检索。
-- 支持用户画像与语义记忆，降低重复表达偏好的成本。
-- 将明确的“少走路”和“雨天优先室内”需求抽取为结构化约束，并在 Planner、Reviewer 与离线评测中复用。
-- Intent 后将天气查询与用户画像改写 fan-out 并行执行；路线的多段步行/驾车查询也并发调用，完成后再进入 Reviewer。
-- 距离约束优先使用高德路线 API 的实际道路步行/驾车距离；接口失败时明确标记“未核验”，不再用直线距离冒充道路距离。
-- 手动拖拽保存与路线优化同样使用道路距离：保存时并发重算相邻路段，优化时基于有向驾车距离矩阵比较候选顺序；路线服务失败时拒绝伪优化。
-- 用户修改已有行程时默认复用 checkpoint 候选池；对带引号明确指定的新景点执行高德定向核验后再加入候选池。
-- 前端展示规划过程、景点候选、行程路线、预算与阶段性播报。
-- 提供独立的课程实验三多智能体核心：Supervisor 集中调度、Agent 私有记忆、工具权限隔离与失败重试。
+![每日行程、天气、候选景点和高德地图](static/images/规划详情.png)
 
-## 技术栈
+<details>
+<summary><strong>展开查看：流式规划过程与用户画像</strong></summary>
 
-| 层级 | 技术 |
-| --- | --- |
-| LLM / Agent | LLM Agent、LangGraph、Pydantic 结构化输出、Reviewer 工作流 |
-| 记忆 / RAG | Chroma 语义记忆、SQLite 结构化记忆、关键词 + 向量混合检索 |
-| 后端支撑 | Python、FastAPI、Uvicorn、Redis |
-| 大模型 | OpenAI / Grok / DeepSeek / 豆包（环境变量切换） |
-| 地图与工具 | 高德地图 Web 服务 API、JS API |
-| 数据与记忆 | SQLite、Chroma 语义记忆（本地运行数据不提交） |
-| 前端 | React/JSX、SSE、Amap JS API |
-| 质量保障 | pytest、离线 Golden Set、LLM-as-Judge 评测 |
+**节点进度**：显示意图分析、查询、规划与审核过程。以下为仓库保存的界面截图，具体节点及轮次以当前执行为准。
 
-## 架构概览
+![规划阶段展示](static/images/规划进程.png)
 
-```text
-用户需求
-  -> Intent
-  -> [Query Rewrite || Weather Search]（并行后汇合）
-  -> POI Search
-  -> Planner Agent
-  -> Route Distance Check（各路段并行）
-  -> Reviewer Agent（不通过则有限次返工）
-  -> Time Check / 餐饮推荐 / 路线与预算汇总
-  -> 流式展示行程
+**用户画像**：查看与编辑景点、饮食和出行习惯偏好。
 
-实验三独立核心：
-Supervisor -> IntentAgent -> POIResearchAgent -> PlannerAgent -> ReviewerAgent
+![用户画像界面](static/images/我的画像.png)
+
+</details>
+
+可以从这样的请求开始：
+
+> 南京明天出发，玩三天，喜欢历史和博物馆，想吃当地小吃，每天别安排太满，下雨优先室内。
+
+再提出修改：
+
+> 第二天把一个景点换成美术馆，其他安排尽量保留。
+
+建议先注册并登录，完整体验行程保存、画像更新和后续修改。
+
+## 核心设计
+
+### 01 · 用状态图管理规划过程
+
+主链路使用 **LangGraph + Pydantic State + 条件边**。模型输出意图、行程或审核结论等结构化业务结果；代码更新状态并选择下一步，模型不能直接指定任意节点或跳过校验。
+
+```mermaid
+flowchart TD
+    U[自然语言旅行需求] --> I[Intent：目的地 / 日期 / 偏好]
+    I -->|信息缺失| C[Clarify：请求补充信息]
+    I -->|信息完整| Q[Query Rewrite：结合画像改写]
+    I -->|信息完整| W[Weather Search：天气查询]
+    I -->|信息完整| M[Main Meal Search：餐馆候选]
+    Q --> A[Attraction Search：基础景点候选]
+    W --> A
+    A --> R[Candidate ReAct：选择补查动作]
+    R --> S[Candidate Search：执行工具 / 校验 / 去重]
+    S --> V{Candidate Validator：覆盖检查}
+    V -->|有缺口且预算未耗尽| R
+    V -->|覆盖满足或达到上限| J[Candidate Ready：保留覆盖状态]
+    J --> P[Joint Planner：景点 + 餐饮时间块]
+    M --> P
+    K[候选关联的旅行知识] -.->|本轮参考证据| P
+    P --> D[Route Distance Check：并发核验道路]
+    D --> G{Risk Gate：确定性风险检查}
+    G -->|需要语义审核| L[LLM Reviewer]
+    G -->|仅需时间核查| T[Time Check]
+    G -->|满足跳过条件| O[餐饮结果整理 + 景点贴士]
+    L -->|驳回且未达上限| P
+    L -->|通过或达到上限| T
+    T -->|需要修改且未达上限| P
+    T -->|需补充语义复核| L
+    T -->|检查结束| O
+    O --> F[Finalize：最终校验 / 结果 / 失败原因]
+    F --> E[SSE 展示与行程保存]
+
+    classDef model fill:#fff0e7,stroke:#bc4b24,color:#512b20;
+    classDef tool fill:#edf5f0,stroke:#557963,color:#233c2e;
+    classDef gate fill:#fff8df,stroke:#b08a2e,color:#58491f;
+    class I,Q,R,P,L,T model;
+    class W,M,A,S,D tool;
+    class V,G,F gate;
 ```
 
-实验三核心中，每个 Worker Agent 都拥有独立的 `system_prompt` 与 `private_memory`。Agent 仅通过结构化 `AgentMessage` 传递任务结果，不能读取其他 Agent 的私有记忆；POI 工具也通过白名单限制为 POIResearchAgent 使用。
+查询改写、天气与餐馆候选依赖 Intent，可以并行启动；基础景点检索等待查询改写与天气，联合 Planner 等待景点池和餐馆池。路线核验中的独立路段也并发执行。图中“餐饮结果整理 + 景点贴士”合并展示两个并行分支，Finalize 等待两者完成。
 
-## 快速开始（Windows）
+**两种运行方式**：默认 `engine=langgraph` 使用共享 `TravelPlanState`；可选 `engine=supervisor` 使用代码主管调度、角色私有记忆和工具权限控制。两条链路共用部分生产节点，主图不依赖一个自由决定节点的 LLM Supervisor。详见 [Supervisor 运行时说明](docs/supervisor-runtime-progress.md)。
 
-### 1. 克隆并创建虚拟环境
+### 02 · 候选池先核验，ReAct 只补缺口
 
-```powershell
+先通过城市级查询建立基础候选池，再用 `candidate_react → candidate_search → candidate_validator` 进行有界补查。模型只返回允许的搜索动作，例如室内景点或用户点名地点；实际 POI 来自高德响应。
+
+| 保护机制 | 当前实现 |
+| :--- | :--- |
+| 动作范围 | Pydantic 枚举约束搜索类型，每轮最多 2 个动作 |
+| 点名景点 | 查询必须来自用户明确点名；返回 POI 名称严格匹配 |
+| 候选写入 | 检查名称、经纬度合法性；普通候选按评分过滤；按名称去重 |
+| 重复查询 | 城市、关键词和类型生成 `query_key`，已执行查询不再调用 |
+| 终止条件 | 补查最多 2 轮；基础与补查共享默认 4 次候选搜索 HTTP 尝试预算，包含重试 |
+| 不足与失败 | 保留已有候选及缺口，标记 `insufficient`，交给后续规划与校验 |
+
+缓存命中不消耗外部调用预算；上述预算仅覆盖景点候选搜索，不包括天气、餐馆和道路查询。覆盖检查涉及数量、点名命中及室内外分布；室内外标签来自类型 / 名称启发式，未知不算已满足。
+
+代码入口：[candidate_react.py](app/planning/candidate_react.py) · [POI 适配器](app/providers/amap/poi.py)
+
+### 03 · 硬约束与软约束分工审核
+
+**规则处理能明确计算的问题，模型补充需要理解语义的问题。**
+
+| 层次 | 检查内容 | 处理方式 |
+| :--- | :--- | :--- |
+| 规则与道路工具 | 候选越界、重复景点、时间结构、开放时间冲突、道路耗时与步行限制、餐位冲突 | 写入风险标记，供路由、返工与最终检查使用 |
+| LLM Reviewer | 当前兴趣、排除偏好、游玩节奏及整体合理性 | 输出通过位、问题与修改意见；未通过时有限次回退 Planner |
+| 时间核查 | 日程时间与开放窗口，需要修改时再复核 | 独立修正循环，结束后进入结果整理 |
+| Finalize | 检查当前状态并整理结果 | 返回成功状态、降级项或无法完成原因 |
+
+当前门控根据规则风险及用户偏好决定是否进入 Reviewer：**有兴趣 / 习惯要求或明确偏好表述，也会触发语义审核**，并非“硬约束没有风险就必然跳过”。主链路默认 `max_review_rounds=3`，时间核查也有独立上限。
+
+审核发现路线问题时，主图回到 Planner 重排；审核阶段自动回到候选检索不是当前主图已实现的通用分支。候选补查主要发生在初始覆盖检查，以及修改请求中的定向核验。路线在同一候选池上仍无法满足时，由后续校验返回失败原因。
+
+代码入口：[风险规则、Reviewer 与 Finalize](app/planning/nodes.py) · [结构化 State 与输出](app/planning/schemas.py)
+
+### 04 · 保存状态，让修改从已有信息继续
+
+登录用户的行程记录保存 `plan_json` 与 `planner_state_json`。修改时恢复目的地、日期、偏好、天气、景点和餐馆候选等上下文，运行修改子图，再做道路与审核检查。用户从搜索结果选择新景点时，服务端核验后才合并进入候选池。
+
+这里的 **checkpoint 是应用保存到 SQLite 的规划状态快照**，用于行程修改与信息复用；主 LangGraph 尚未接入支持任意节点恢复的持久化 checkpointer。
+
+Planner 重新写入当前路线；知识来源按轮覆盖，空召回不沿用旧证据；存在修改顾虑时，返回确认事件并保存待确认状态，用户确认后继续。
+
+代码入口：[规划 API 与 checkpoint 保存](app/main.py) · [修改子图](app/planning/graph.py) · [行程存储](app/core/memory.py)
+
+### 05 · 长期记忆与公共知识各司其职
+
+| 存储 | 保存什么 | 用途 |
+| :--- | :--- | :--- |
+| SQLite · `data/app.db` | 用户账户、景点 / 饮食 / 习惯画像、历史行程、规划快照、待确认修改 | 精确读取、更新与持久化 |
+| Chroma · `data/semantic_memory/` | 从用户需求提取的自然语言记忆及 `user_id` 元数据 | 语义召回；查询与删除均按用户过滤 |
+| 旅行知识 · `knowledge/travel/` | 公共指引和带来源的具名景点事实卡 | 给 Planner 比较已核验候选提供参考 |
+| Redis | 高频 POI 与天气查询响应 | Cache-Aside 缓存；POI TTL 12 小时，天气 TTL 4 小时 |
+
+用户本次明确要求优先于历史偏好。主 LangGraph 的节点通过共享 State 交接信息；角色私有对话记忆属于可选 Supervisor 链路。Chroma 语义用户记忆与公共知识混合检索是两种能力。
+
+知识检索按城市和候选实体过滤，将来源、URL 与采集日期交给 Planner；知识只能用于候选比较，不能新增候选池外地点。票价、余量与临时政策不能由历史快照当作当前事实。
+
+检索实验独立比较关键词、BM25、向量及 RRF 混合召回，使用固定 revision 的中文 BGE；**生产 Chroma 默认 embedding 与该评测配置分开管理**。实验兴趣知识默认关闭，详见 [RAG 评测说明](docs/rag_benchmark_v2.md) 与 [最终选点对照方案](docs/route_interest_evaluation.md)。
+
+## 快速开始
+
+### 方式一：Docker Compose
+
+需要 Git、Docker 与支持 `env_file.required` 的 Docker Compose v2.24+。
+
+```bash
+# 获取项目
 git clone https://github.com/yf-922/TravelMind-Agent.git
 cd TravelMind-Agent
-py -3.10 -m venv .venv
+
+# 首次配置：复制模板，并填写地图与模型 Key
+cp .env.example .env.local
+
+# 启动 FastAPI 与 Redis
+docker compose up --build -d
+
+# 查看应用日志
+docker compose logs -f travelmind
+```
+
+Windows PowerShell 复制模板使用 `Copy-Item .env.example .env.local`。
+
+| 入口 | 地址 |
+| :--- | :--- |
+| Web 应用 | http://127.0.0.1:8765 |
+| Swagger 接口文档 | http://127.0.0.1:8765/docs |
+| 依赖健康检查 | http://127.0.0.1:8765/api/health |
+| Prometheus 格式指标 | http://127.0.0.1:8765/api/metrics |
+
+Compose 通过命名卷保留应用与 Redis 数据。未配置 Key 也可以启动页面与健康检查，真实旅行规划需要高德 Web 服务 Key 和一个可用模型提供商。
+
+**Docker 默认关闭 Chroma 能力**，避免首次启动下载 embedding 模型。开启时需同时修改 `docker-compose.yml` 中的 `SEMANTIC_MEMORY_ENABLED` 和 `TRAVEL_KNOWLEDGE_ENABLED`；仅修改 `.env.local` 不会覆盖 Compose 中的同名设置。
+
+### 方式二：本地 Python
+
+推荐 Python 3.11 或 3.12。前端由应用直接提供，基本运行无需另行执行 npm 构建。
+
+```powershell
+# Windows PowerShell
+git clone https://github.com/yf-922/TravelMind-Agent.git
+cd TravelMind-Agent
+py -3.11 -m venv .venv
 .\.venv\Scripts\Activate.ps1
-pip install -r requirements.txt
+python -m pip install -r requirements.txt
+Copy-Item .env.example .env.local
+
+# 编辑 .env.local 后启动
+python run.py
 ```
 
-### 2. 配置环境变量
+<details>
+<summary><strong>Linux / macOS 启动命令</strong></summary>
 
-复制 `.env.example` 为 `.env.local`，按需填写：
-
-```env
-AMAP_API_KEY=你的高德Web服务Key
-AMAP_JS_KEY=你的高德JS_API_Key
-AMAP_JS_SECURITY_CODE=你的高德安全密钥
-LLM_PROVIDER=grok
-GROK_API_KEY=你的Grok_API_Key
-GROK_BASE_URL=https://api.x.ai/v1
-GROK_MODEL=grok-4.6
-GROK_USE_RESPONSES_API=1
-GROK_REASONING_EFFORT=low
+```bash
+git clone https://github.com/yf-922/TravelMind-Agent.git
+cd TravelMind-Agent
+python3.11 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt
+cp .env.example .env.local
+# 填写环境变量后启动
+python run.py
 ```
 
-官方 xAI 使用 `https://api.x.ai/v1`；如果接 Grok CLI 的 OpenAI 兼容中转，把 `GROK_BASE_URL` 和 Key 按 CLI 的 `config.toml` 填入。项目不会自动读取 CLI 配置文件。
+</details>
 
-`.env.local`、本地数据库和记忆数据均被 `.gitignore` 排除，切勿提交真实 Key。
+### 最小配置与可选能力
 
-### 3. 启动 Web 应用
+下面使用 DeepSeek 提供商；模型名称请与账户当前可访问的模型保持一致。
 
-```powershell
-.\.venv\Scripts\python.exe run.py
+```dotenv
+# 高德 Web 服务 Key：后端 POI、天气与道路查询
+AMAP_API_KEY=your_amap_web_service_key
+
+# 高德 JS API Key 与安全密钥：前端地图展示
+AMAP_JS_KEY=your_amap_js_key
+AMAP_JS_SECURITY_CODE=your_amap_js_security_code
+
+# 选择一个模型提供商；支持 deepseek / openai / grok / doubao
+LLM_PROVIDER=deepseek
+DEEPSEEK_API_KEY=your_deepseek_key
+# DEEPSEEK_MODEL=your_available_model
+
+# 本地 Redis 可选；不使用缓存时留空
+REDIS_URL=
+
+# 普通运行按节点超时；关闭整单 180 秒截止
+# 模板原值为 180，复制后请按需要修改
+PLAN_TIMEOUT_SECONDS=0
+
+# 先运行基础链路，再按需开启语义能力
+SEMANTIC_MEMORY_ENABLED=0
+TRAVEL_KNOWLEDGE_ENABLED=0
+TRAVEL_INTEREST_KNOWLEDGE_ENABLED=0
 ```
 
-打开 <http://127.0.0.1:8765>。
+其他提供商的字段见 [.env.example](.env.example) 和 [LLM 接入说明](LLM_PROVIDERS.md)。环境变量、数据库、运行时索引及账本在 `data/` 或 `.env.local` 中，不提交到仓库。
 
-## 实验三：可运行的多智能体核心
+## 流式交互与可观测性
 
-课程实验三的独立实现位于 [`app/multi_agent_core`](app/multi_agent_core)。使用离线 Fixture 数据即可稳定复现，不依赖 API Key：
+SSE 负责**服务端到前端**的进度推送，Agent 之间通过 State 或结构化消息传递信息。规划第一帧包含 `run_id`，响应头包含 `X-Request-ID` 与 `X-Agent-Run-ID`。
 
-```powershell
-.\.venv\Scripts\python.exe -m app.multi_agent_core.demo_run --offline --city Beijing --request "Plan a relaxed cultural day trip"
+| 事件 / 接口 | 作用 |
+| :--- | :--- |
+| `run` / `stage` / `stage_summary` | 标识执行、当前节点及阶段摘要 |
+| `modification_warning` | 返回修改顾虑，等待用户确认 |
+| `result` | 返回最终成功状态、路线或失败信息 |
+| `GET /api/agent-runs/{run_id}` | 登录用户查看自己的节点耗时、降级项和 LLM 用量摘要 |
+| `GET /api/metrics` | HTTP 时延、节点统计、LLM 调用、输入 / 输出 Token 与 usage 精确率 |
+
+默认节点期限：Planner 150 秒、Intent 90 秒、查询改写与 ReAct 决策 60 秒、天气 15 秒，其余 120 秒。可用 `NODE_TIMEOUT_SECONDS` 或 `NODE_TIMEOUT_PLANNER_SECONDS` 等覆盖。整单应急上限由 `PLAN_TIMEOUT_SECONDS` 控制；代码默认关闭，但环境模板填写了 180 秒，部署时需显式选择。
+
+Token 统计区分供应商实际 usage 与字符估算；只有配置单价后成本估算才有意义。执行 Trace 保留最近 200 次，位于进程内存，不保存原始 Prompt、模型思考与完整回复。SSE 尚不提供基于 event ID 的断线重放。
+
+<details>
+<summary><strong>接口调用示例：注册并发起流式规划</strong></summary>
+
+以下为 Bash 示例，依赖 `curl` 和 Python。注册用户名应使用未占用的名称，密码自行设置。
+
+```bash
+# 注册返回 token；已有账号可改用 /api/auth/login
+TRAVELMIND_TOKEN=$(curl -fsS http://127.0.0.1:8765/api/auth/register \
+  -H 'Content-Type: application/json' \
+  -d '{"username":"travelmind-demo","password":"replace-with-your-password"}' \
+  | python -c 'import sys,json; print(json.load(sys.stdin)["token"])')
+
+# -N 禁止 curl 缓冲，实时显示 SSE 数据
+curl -N http://127.0.0.1:8765/api/plan/stream \
+  -H "Authorization: Bearer $TRAVELMIND_TOKEN" \
+  -H 'Content-Type: application/json' \
+  -d '{"query":"南京明天出发三日游，喜欢历史和博物馆，慢节奏","engine":"langgraph","max_review_rounds":3}'
 ```
 
-终端会输出：
+修改请求在相同接口传入 `plan_id` 与 `modification_notes`。个人画像、历史行程、景点搜索与路线编辑的完整 schema 可在本地 Swagger 查看。
 
-1. `dispatch_log`：Supervisor 依次调度四个 Agent 的证据；
-2. `PRIVATE MEMORY CONTENTS`：各 Agent 系统提示与私有记忆不同的证据；
-3. POI 工具调用和最终行程。
+</details>
 
-运行实验三测试：
+## 评测与结果
 
-```powershell
-.\.venv\Scripts\python.exe -m pytest tests\test_multi_agent_core.py -q
+### 已复现的工程验证
+
+2026-10-20，本地 Python 3.12.8 全量回归：**501 项 pytest 通过**（42.83 秒，3 条依赖弃用警告），另有 **5 项 SSE 客户端测试通过**；Python 编译与三项评测资产校验均完成。测试覆盖结构化输出、调度、候选边界、记忆隔离、修改链路、风险检查、SSE 结果处理与降级契约。GitHub Actions 配置同类检查，具体远程执行状态以上方 CI 徽章为准。
+
+### 本机 HTTP 并发压测
+
+**2026-10-20 实测 8,100 次请求**：真实 TCP 请求进入独立 Uvicorn 单进程，经 FastAPI 和临时 SQLite 返回。使用 50 个合成用户、1,000 条历史行程；画像和历史接口同时检查返回数据归属，健康检查验证数据库状态。测试不读取个人数据库，不调用模型或地图。
+
+三个接口分别测试并发 **1 / 8 / 32**，每档 **300 请求 × 3 次重复**，每次另预热 12 请求。以下展示并发 8 的合并结果，P95 及吞吐均包含失败请求；本轮未出现失败。
+
+| 接口 | 请求数 | 吞吐 req/s | P50 | P95 | 失败 |
+| :--- | ---: | ---: | ---: | ---: | ---: |
+| 健康检查 `/api/health` | 900 | 1,595.74 | 3.818 ms | 10.463 ms | 0 |
+| 用户画像 `/api/profile` | 900 | 1,125.28 | 5.271 ms | 17.285 ms | 0 |
+| 历史行程 `/api/history` | 900 | 797.94 | 9.700 ms | 14.020 ms | 0 |
+
+**并发增加不等于吞吐持续增加**：并发 32 时，画像接口 P95 升至 **105.489 ms**，吞吐降至 **796.46 req/s**；历史接口 P95 升至 **62.811 ms**。本轮结果支持继续排查高并发排队、数据库与连接开销，尚未定位具体瓶颈。
+
+这是同机客户端的闭环读接口测试，不包含 LLM 规划、SSE 长连接、外部 API、持续写入或多实例部署，不能据此估算旅行规划容量。完整 9 档结果、三次重复、逐请求耗时、错误和源码指纹见 [HTTP 压测报告](evaluation/http_load_20261020.md) / [原始 JSON](evaluation/http_load_20261020.json)。
+
+### 规划节点并行基准
+
+使用生产状态图 / 道路核验节点，将外部操作替换为固定延迟的离线实现；与相同工作量的串行执行比较，每项重复 **30 次**。该实验用于验证调度效果。
+
+| 对照 | 固定工作量 | 串行 P50 | 并行 P50 | P50 加速比 |
+| :--- | :--- | ---: | ---: | ---: |
+| 查询改写、天气、餐馆候选 | 3 分支，各 40 ms | 132.684 ms | 50.707 ms | **2.62×** |
+| 餐饮结果、景点贴士 | 2 分支，各 40 ms | 88.900 ms | 48.519 ms | **1.83×** |
+| 道路距离核验 | 8 路段，各 20 ms | 164.091 ms | 24.186 ms | **6.79×** |
+
+checkpoint 另有阶段成本模拟：完整重跑 P50 **94.741 ms**，复用上游阶段后 **64.591 ms**，模拟减少 **31.8%**；固定输入预算假设由 9,900 减至 8,400。该项未执行真实模型，也不是历史版本实测，不能当作真实 Token 节省或线上耗时收益。
+
+完整 P50 / P95、逐次配对数据、环境与源码指纹见 [工程基准报告](evaluation/offline_engineering_benchmark.md) / [原始 JSON](evaluation/offline_engineering_benchmark.json)。真实模型的质量与用量另见下面的配对消融。
+
+### 真实模型配对消融
+
+最新 Reviewer 消融使用 **60 个自建场景、3 组、180 个记录结果**：30 个任务场景与 30 个鲁棒性场景。共享真实模型生成的首轮联合 Planner 草案，使用相同候选与回放；规则组和 Reviewer 组均允许最多 3 次返工，并移除 Time Check 以隔离 Reviewer 作用。
+
+| 指标 | 仅 Planner | 规则 + 返工 | 规则 + Reviewer + 返工 |
+| :--- | ---: | ---: | ---: |
+| 任务成功 | 26/30 | 30/30 | 30/30 |
+| 任务错误放行 | 4/30 | 0/30 | 0/30 |
+| 鲁棒性成功或明确拒绝 | 14/30 | 18/30 | 20/30 |
+| 实际恢复 | 14/30 | 15/30 | 15/30 |
+| 有原因的安全拒绝 | 0/30 | 3/30 | 5/30 |
+
+**结论**：完整审核闭环较仅规划的任务成功率提高 **13.3 个百分点**，本批提升主要来自规则与返工；Reviewer 没有进一步提高普通任务通过数。它在“必须安排不存在景点”的请求中识别出无解条件，拒绝把替代路线当作满足请求。
+
+这是实际生产规划 / 审核节点的受控实验：上游候选与道路响应使用固定回放，评分为预设代码 rubric，不能当作人工审查结论或完整线上服务成功率。Reviewer 组仍有 9/30 鲁棒性错误放行，道路证据缺失是下一项重点。
+
+<details>
+<summary><strong>查看资源开销与复现边界</strong></summary>
+
+实验使用 `grok-4.6`，实际付费尝试 196 次，记录输入 428,869、输出 195,661 Token；超时调用用量未知，费用为 `unpriced`。各组资源归因将共享草案计入每组逻辑开销，不能相加当作实际账单。
+
+| 组别 | 记录的逻辑 Token | 平均实测耗时 |
+| :--- | ---: | ---: |
+| 仅 Planner | 276,655 | 36.3 秒 |
+| 规则 + 返工 | 324,014 | 42.6 秒 |
+| 规则 + Reviewer + 返工 | 573,825 | 69.9 秒 |
+
+耗时包含天气变化 / 修改场景的共享前置草案；一条未恢复耗时的共享失败不参与均值。详细实验与逐项失败解释见 [Reviewer 消融报告](docs/reviewer_ablation_v2.md)。旧版 [任务与鲁棒性报告](docs/task_robustness_real_v1.md) 保留评分资产缺陷和原始失败，不覆盖为新版结果。
+
+</details>
+
+### RAG：分别检验召回与最终选点
+
+| 评测 | 资产 / 结果 | 当前状态 |
+| :--- | :--- | :--- |
+| 旧检索契约集 | 30 条查询：24 条可回答、6 条无答案；关键词与混合均命中 24/24，Top-1 分别 24/24、23/24 | 未显示混合检索优势；旧 `Recall@3` 实为来源 Hit@3 的别名 |
+| 六城检索评测 v2 | 128 个语料块、120 条草稿查询，开发 / 测试各 60；关键词、BM25、向量及 3 种融合对照 | 工具与资产就绪；正式报告要求人工标注、来源确认和冻结 |
+| 最终路线选点对照 | 南京、上海、三亚 30 个案例，相同候选池对比有 / 无知识 | 用最终选点而非说明文字衡量收益，正式结论仍需冻结评测 |
+
+128 块含 **28 块项目规划建议**，不全部是官方事实。v2 区分 Recall、Hit、MRR、nDCG、Precision、事实覆盖、失败率与可用率；融合失败不会偷偷降级为关键词成功。BGE 固定 revision、语料和配置指纹参与索引及冻结验证。
+
+目前检索增强仍保留实验开关，尚未完成支持其生产收益的正式冻结报告。混合检索是否优于单路，需要由相同数据与明确标注的实验结果决定。
+
+详见 [早期检索报告](docs/rag_test_report.md) · [v2 协议](docs/rag_benchmark_v2.md) · [实施记录](docs/rag_benchmark_v2_implementation_report.md) · [最终路线对照](docs/route_interest_evaluation.md)。
+
+## 测试与复现
+
+以下检查不需要真实 LLM 或高德调用。
+
+```bash
+# 安装测试与检索评测依赖
+python -m pip install -r requirements-dev.txt -r requirements-rag-eval.txt
+
+# 与 CI 一致的基本检查
+python -m compileall -q app tests scripts
+python scripts/validate_eval_assets.py
+python scripts/validate_rag_assets.py --corpus knowledge/benchmark_v2_curated/chunks.json --cases evaluation/rag_benchmark_v2_draft.json --require-quota
+python scripts/review_route_interest.py validate
+python -m pytest -q
+node --test scripts/test_sse_client.cjs
+
+# 本机 HTTP 压测：独立服务进程与临时 SQLite，约 8,100 次实测请求
+python scripts/benchmark_http.py --requests 300 --concurrency 1 8 32 --warmups 12 --repetitions 3
+
+# 调度基准：固定外部延迟，每组 30 次，输出 JSON 与 Markdown
+python scripts/offline_engineering_benchmark.py --runs 30 --route-legs 8 --fanout-delay-ms 40 --provider-delay-ms 20 --stage-unit-delay-ms 2
+
+# 有界候选检索的六场景契约检查
+python scripts/evaluate_candidate_react.py
+
+# 独立 Supervisor 演示：离线工具，不需要 API Key
+python -m app.multi_agent_core.demo_run --offline --city Beijing --request "Plan a relaxed cultural day trip"
 ```
 
-测试覆盖：多 Worker 调度、POI 候选约束、Reviewer 驳回后的返工路由、超时重试与结构化失败、跨 Agent 工具权限拒绝、模型适配器私有上下文与 SQLite 记忆隔离。
+<details>
+<summary><strong>展开查看：离线消融、检索开发实验与真实评测入口</strong></summary>
 
-## 项目结构
+**历史结构消融**：39 条人工构造案例，9/39 → 26/39 → 35/39 是离线结构契约成绩，不是最近真实模型消融的结果。
+
+```bash
+python -m tests.eval.ablation --json evaluation/ablation_report.json --out evaluation/ablation_report.md
+```
+
+**真实节点评测预检**：不加 `--execute` 时不调用真实模型，生成运行记录到被忽略的 `data/`。
+
+```bash
+python scripts/evaluate_task_robustness.py --out data/eval/task_robustness_offline.json
+python scripts/evaluate_reviewer_ablation.py
+```
+
+**RAG 开发实验**：先显式下载固定 BGE，再运行开发集。该命令使用待审标签，只产生探索性报告；模型下载需要网络和本地存储，查询阶段不会下载模型。
+
+```bash
+python scripts/prepare_rag_embedding.py --download
+python scripts/sweep_rag_v2.py --cases evaluation/rag_benchmark_v2_draft.json --corpus knowledge/benchmark_v2_curated/chunks.json --out data/rag_v2_dev_draft.json
+```
+
+人工审核与冻结命令见 [v2 协议](docs/rag_benchmark_v2.md)。真实模型 / 地图运行须使用相应入口的显式授权开关及调用上限，执行前查看其 `--help`；缺失实际 Token、费用或执行结果的字段保留未知。原始运行账本、逐请求输出与本地索引保存在 `data/`，不提交。
+
+</details>
+
+## 源码导航
+
+| 层次 | 技术 / 设计 | 入口 |
+| :--- | :--- | :--- |
+| Agent 编排 | LangGraph、条件边、有限循环、Pydantic 结构化输出 | [graph.py](app/planning/graph.py)、[schemas.py](app/planning/schemas.py) |
+| 规划与审核 | 联合 Planner、规则门控、Reviewer、Time Check | [nodes.py](app/planning/nodes.py) |
+| 工具检索 | 高德 POI、天气、步行 / 驾车路径 | [providers](app/providers)、[candidate_react.py](app/planning/candidate_react.py) |
+| 用户记忆 | SQLite 画像 / 行程、Chroma 用户过滤 | [memory.py](app/core/memory.py)、[semantic_memory.py](app/core/semantic_memory.py) |
+| 公共知识 / RAG | 候选实体过滤、关键词 / 向量、独立 BM25 + BGE 评测 | [travel_knowledge.py](app/core/travel_knowledge.py)、[rag_retrieval.py](app/evaluation/rag_retrieval.py) |
+| 服务与交互 | FastAPI、SSE、React / JSX、高德 JS API | [main.py](app/main.py)、[frontend](frontend) |
+| 可靠性与观测 | Redis、节点超时、Trace、Token / 延迟指标 | [agent_runs.py](app/core/agent_runs.py)、[cache.py](app/core/cache.py) |
+| 实验协作引擎 | Supervisor、私有角色记忆、工具白名单、本地消息契约 | [multi_agent_core](app/multi_agent_core) |
+| 部署与验证 | Docker Compose、pytest、GitHub Actions | [Compose](docker-compose.yml)、[CI](.github/workflows/ci.yml) |
 
 ```text
-app/
-  api/                 # FastAPI 路由
-  planning/            # LangGraph 旅行规划工作流
-  providers/           # 高德 POI、天气、路径等外部服务
-  multi_agent_core/    # 实验三：独立可运行的 Supervisor 与 Worker Agent
-  core/                # 配置、数据库、缓存、记忆等基础能力
-frontend/              # React/JSX 前端
-tests/                 # 单元、集成、端到端和评测测试
+TravelMind-Agent/
+├── app/
+│   ├── planning/           # 主状态图、候选 ReAct、联合规划与审核
+│   ├── multi_agent_core/   # 可选 Supervisor 与私有记忆协作引擎
+│   ├── providers/          # 地图、天气、票务等外部适配器
+│   ├── core/               # 用户记忆、缓存、鉴权、指标与执行 Trace
+│   ├── evaluation/         # 检索协议、路线评分与故障评测
+│   ├── llm/                # 提供商适配、结构化调用与模型路由
+│   └── api/                # 用户、画像、历史与路线编辑接口
+├── frontend/               # 页面、地图、时间线与 SSE 客户端
+├── static/images/          # 项目界面截图
+├── knowledge/              # 旅行知识、来源快照与版本化评测语料
+├── evaluation/             # 版本化评测资产和可公开报告
+├── tests/                  # 单测、集成测试、契约及评测 Fixture
+├── scripts/                # 采集、校验、评测、账本与报告工具
+├── docs/                   # 架构、实验设计和进展说明
+└── data/                   # 本地数据库 / 索引 / 账本；Git 忽略
 ```
 
-## 测试与评估
+## 常见问题
 
-```powershell
-# 多智能体课程核心测试
-.\.venv\Scripts\python.exe -m pytest tests\test_multi_agent_core.py -q
+<details>
+<summary><strong>页面能打开，但规划不能运行？</strong></summary>
 
-# 项目完整测试（按本地依赖与 Key 配置执行）
-.\.venv\Scripts\python.exe -m pytest -q
+检查 `.env.local` 中的 `LLM_PROVIDER` 与对应 Key 是否匹配，高德 Key 是否为 Web 服务类型，模型名是否可用。地图展示另需 JS API Key 与安全密钥；它们与后端 Web 服务 Key 不通用。查看 `docker compose logs -f travelmind` 或本地终端的错误码。
 
-# 编排消融（离线结构契约，不调用外部 LLM/API）
-.\.venv\Scripts\python.exe -m tests.eval.ablation --json evaluation/ablation_report.json --out evaluation/ablation_report.md
+</details>
 
-# 使用当前 .env.local 的真实 LLM/地图配置做一次安全冒烟（只输出元数据）
-.\.venv\Scripts\python.exe scripts\provider_smoke.py --allow-external-calls
+<details>
+<summary><strong>规划超过 180 秒就停止？</strong></summary>
 
-# 重复真实链路，输出成功率、P50/P95、Token/成本与节点耗时增量
-.\.venv\Scripts\python.exe scripts\benchmark_pipeline.py --runs 3 --allow-external-calls
+`.env.example` 中填写了 `PLAN_TIMEOUT_SECONDS=180`。改为 `0` 并重启应用，即使用节点级期限；保留正值则启用整单应急上限。某节点超时会返回 `NODE_TIMEOUT` 与节点名，不能靠其他分支持续进度刷新它的期限。
 
-# 免费检查 30 用例矩阵和 30/30 已生成 fixture，不访问网络
-.\.venv\Scripts\python.exe scripts\validate_eval_assets.py --require-fixtures --out evaluation\eval_asset_report.json
+</details>
 
-# 免费预估在线评测的逻辑调用和重试后供应商请求上限
-.\.venv\Scripts\python.exe -m tests.eval.run_eval --dry-run
+<details>
+<summary><strong>Chroma 或 Redis 不可用，是否完全不能规划？</strong></summary>
 
-# 异常输入发现集：固定随机种子，检查 malformed 路线是否被安全拦截
-.\.venv\Scripts\python.exe tests\eval\run_adversarial_risk_gate.py
-```
+Redis 不可用时跳过缓存；Chroma 用户记忆返回 `skipped/degraded` 状态，仍可使用当前需求与 SQLite 画像。知识检索失败不能沿用旧证据。模型、候选或道路等核心依赖的失败会影响结果，具体状态由最终检查决定。
 
-离线测试用于验证结构化输出、调度、隔离与降级路径；涉及真实地图、天气、票价的数据必须在配置 Key 后实时调用，不能将本地测试数据当作实时事实。
+</details>
 
-消融评测固定比较三种编排：仅 Planner、Planner + 独立 Reviewer、Planner + Reviewer + Time Check。当前 39 条分层离线案例的通过数分别为 9/39、26/39、35/39，平均调用节点为 1.0、2.0、3.0；该结果用于量化硬约束节点的增益和成本，不代表线上真实 LLM 通过率。真实 API 响应回放目前为保存样本，不等同于线上压测或 SLA。
+<details>
+<summary><strong>这里的 checkpoint 能从任意节点崩溃恢复吗？</strong></summary>
 
-## 工程化运行与可观测性
+当前应用快照用于已保存行程的修改，并未实现主 LangGraph 任意节点的持久化恢复。Trace 也位于进程内存。生产多实例部署前需要另行设计持久化执行状态、会话并发控制和断线恢复。
 
-### Supervisor 协作链路验证
+</details>
 
-前端可选“协作规划”，对应 `engine=supervisor`；默认仍为 LangGraph。
-Planner、Reviewer、Time Check 分别读取会话内的角色私有记忆，SQLite 事务快照
-和 4,000 字符预算限制跨请求干扰与上下文膨胀。公共状态保存候选池、当前路线、
-审核结论和必要反馈，不保存角色私有对话。未通过审核的草稿不会作为成功行程展示。
-修改景点类型等偏好时，Supervisor 会先判断旧候选池是否覆盖；不足时最多执行三次
-关键词补查，只合并高德返回的真实 POI，补查失败会进入审核失败而不是编造满足。
-首轮规划还会查询餐馆候选并由联合 Planner 生成餐位时间块；餐馆候选、营业时间、
-道路距离和景点重叠会进入同一审核链路。仅修改时间时复用餐馆池，修改饮食偏好时重新查询。
-初始化或运行中的私有记忆读写失败均会在结果中标记 `private_memory` 降级，
-本次规划可继续，但不声称记忆已持久化。四进程 SQLite 测试验证同会话 80 条
-并发写入无丢失及用户/角色隔离；这不是多实例 API 负载验证。
-Chroma 语义检索也返回 `ok/skipped/degraded` 状态；不可用时仍可规划，但最终
-结果会明确列出 `semantic_memory` 降级，不把空召回误报为“没有用户偏好”。
-用户可通过 `DELETE /api/profile/semantic-memory` 删除自己的长期语义记忆，
-删除失败返回 503，不会伪造成功。
+<details>
+<summary><strong>MCP / A2A 是已部署的协议服务吗？</strong></summary>
 
-```bash
-python scripts/evaluate_supervisor_parity.py --dry-run
-python scripts/evaluate_supervisor_api.py --dry-run
-node --test scripts/test_sse_client.cjs
-```
+目前是本地 `AgentCard`、工具 manifest 与任务 envelope 契约，用于演示能力发现、权限与消息结构。它们不是已部署的远程 MCP Server 或 A2A 网络服务。
 
-真实调用必须显式传入 `--allow-external-calls` 和相应预算；API smoke 使用临时
-SQLite，关闭 Chroma 与后台画像提取，仍执行真实天气、POI、模型及行程补充节点。
-预算为保守调用上界估算，不是供应商计费硬限额。验证边界和尚未完成的验收见
-[`docs/supervisor-runtime-progress.md`](docs/supervisor-runtime-progress.md)。
+</details>
 
-## 平台化能力边界
+## 文档与后续方向
 
-- `app/llm/router.py`：已接入统一 LLM 工厂的可选模型路由。短任务（意图改写、画像/记忆抽取、短输入补充信息）可使用当前供应商的 `LLM_SMALL_MODEL`，Planner/Reviewer/Judge 保留主模型；`LLM_ROUTING_ENABLED=0` 时完全保持现有模型配置。当前只有离线路由契约，没有声称真实成本收益。
-- `app/multi_agent_core/protocols.py`：本地 `AgentCard`、`MCPToolManifest`、`A2ATaskEnvelope` 契约，配合 `ToolRegistry.manifest(agent)` 和 `Supervisor.agent_cards()` 做能力发现、最小权限和审计字段演示。
+- [部署与观测](docs/production-readiness.md)：健康检查、Token、节点指标和降级。
+- [Supervisor 运行时](docs/supervisor-runtime-progress.md)：私有记忆、角色隔离与协作链路。
+- [Reviewer 真实消融](docs/reviewer_ablation_v2.md)：对照方式、资源和失败归因。
+- [RAG 评测协议](docs/rag_benchmark_v2.md)：语料、标注、冻结、指标公式与对照配置。
+- [最终路线兴趣评测](docs/route_interest_evaluation.md)：只用实际选点验证知识是否有效。
 
-这部分是可运行的协议化本地原型，不等同于已部署远程 MCP Server、A2A 网络传输或服务注册中心；旅行主链路仍按稳定依赖使用 LangGraph。
+下一阶段优先补齐道路证据缺失时的最终放行策略、候选问题的审核回检索路由、正式人工标注与冻结检索对照，以及持久化执行恢复。生产默认配置随证据调整，保留每版报告与失败案例。
 
-项目提供 `Dockerfile` 和 `docker-compose.yml`，可在本地同时启动 API 与 Redis：
+## 项目来源与致谢
 
-```bash
-docker compose up --build
-```
+本项目基于 [FloatTrip](https://github.com/shouzhuoshouzhuo/FloatTrip) 开展课程与个人工程实践。原项目提供基础界面与旅行规划能力；本仓库重点扩展有界候选搜索、审核与返工、状态复用、道路核验、用户记忆、协作引擎及评测工具。具体改动以 [提交记录](https://github.com/yf-922/TravelMind-Agent/commits) 为准。
 
-健康检查和离线功能无需密钥即可启动；调用真实地图与 LLM 规划前，再复制 `.env.example` 为 `.env.local` 并填写对应 Key。
+感谢 LangGraph、FastAPI、Chroma 及其他开源依赖。使用地图与模型服务时遵守各提供商条款；贡献代码前请移除真实密钥、用户数据和运行账本。
 
-部署检查接口：
+---
 
-- `GET /api/health`：检查 SQLite 和 Redis 状态；
-- `GET /api/metrics`：输出 HTTP 与 Agent 节点的 Prometheus 兼容指标；
-- `GET /api/agent-runs/{run_id}`：登录用户查询自己的 Agent 节点耗时、并行重叠、慢节点、降级服务和单次 LLM 用量摘要；
-- 所有响应包含 `X-Request-ID`，可用于关联一次 SSE 规划请求。
+<div align="center">
 
-`/api/metrics` 还会输出 HTTP 平均/P95/最大延迟，以及 LLM 调用次数、输入/输出 token、累计 LLM 延迟、估算成本和 usage 精确率。结构化输出解析后供应商不一定保留 usage metadata：能读取时使用真实 token，读取不到时使用字符数估算并计入 `travelmind_llm_usage_exact_ratio`。成本单价不硬编码，可通过 `LLM_INPUT_USD_PER_1K` 和 `LLM_OUTPUT_USD_PER_1K` 按当前供应商账单配置。
+**让每一步规划都有依据，让每一次修改都能继续。**
 
-规划 SSE 的第一帧返回 `run_id`，响应头同时包含 `X-Agent-Run-ID`。默认不设整单 180 秒截止，而按节点计时：Planner 150 秒、intent 90 秒、查询改写 60 秒、天气 15 秒、ReAct 决策 60 秒，其余节点 120 秒。可通过 `NODE_TIMEOUT_SECONDS` 设置通用上限，或通过 `NODE_TIMEOUT_PLANNER_SECONDS` 等设置单节点上限。并行节点独立计时；其他分支进度和心跳不会刷新卡住节点的期限。超过期限返回 `NODE_TIMEOUT` 和节点名，不将未完成结果当成功；取消协程不能强制停止已进入线程的同步调用，底层 HTTP 仍保留请求超时。有需要时运营可显式设置 `PLAN_TIMEOUT_SECONDS` 作为整单应急上限（默认 0，关闭）。Trace 仅保留最近 200 次执行，不保存用户原始 Prompt、模型思考或模型输出。单次 Token 通过 request context 归因，仍需结合 `usage_exact_ratio` 区分供应商原始 usage 与字符估算。
+[查看源码](https://github.com/yf-922/TravelMind-Agent) · [反馈问题](https://github.com/yf-922/TravelMind-Agent/issues) · [查看 CI](https://github.com/yf-922/TravelMind-Agent/actions)
 
-Docker 默认关闭 Chroma embedding 模型下载，旅行知识库使用带来源标签的本地关键词检索，避免首次启动下载约 79 MB 模型而阻塞服务。需要完整向量检索时，将 `SEMANTIC_MEMORY_ENABLED=1`、`TRAVEL_KNOWLEDGE_ENABLED=1`；语义记忆检索仍会在 `MEMORY_LOOKUP_TIMEOUT_SECONDS`（默认 2.5 秒）后降级。
-
-详细说明见 [`docs/production-readiness.md`](docs/production-readiness.md)。GitHub Actions 会执行 Python 编译检查和完整离线测试集，不依赖外部 API Key。
-
-简历项目表述、可验证指标和 3 分钟演示脚本见 [`docs/interview-project-sheet.md`](docs/interview-project-sheet.md)。
-
-在线提供商验证脚本只打印 SSE 事件数量、成功状态、错误码和耗时，不打印 API Key、Prompt 或完整行程；所有真实 LLM/地图评测入口默认拒绝执行。Planner/Reviewer 评测还要求 `--max-llm-calls`，Fixture 生成要求 `--max-api-calls`，并将结构化调用最多 3 次尝试纳入预算。第三方兼容中转的稳定性和隐私边界需按服务商条款评估。
-
-## 旅游知识 RAG 评测补强
-
-独立的 v2 评测语料包含六城 128 块（含 28 块明确标记的项目规划建议），
-配套 120 条待人工确认的查询，开发集/测试集各 60 条。提供六种检索对照、
-固定版本中文 BGE、分块对照、失败计入指标、来源与标注冻结保护，以及
-生成/Judge 预算预检。生产检索默认未修改；草稿分数不是正式效果结论。
-
-复现命令、来源局限、人工审核流程和未完成实验见
-[`docs/rag_benchmark_v2.md`](docs/rag_benchmark_v2.md)。
-本次实验、测试记录及待完成门禁见
-[`docs/rag_benchmark_v2_implementation_report.md`](docs/rag_benchmark_v2_implementation_report.md)。
-
-## 说明与致谢
-
-- 本项目用于《人工智能应用实践》课程实验和个人工程学习。
-- 原始项目：[`shouzhuoshouzhuo/FloatTrip`](https://github.com/shouzhuoshouzhuo/FloatTrip)。二次开发内容应以本仓库提交记录为准。
-- 请遵守高德地图、模型服务商及第三方服务的使用条款，不要提交 API Key、用户对话、用户画像或本地数据库。
+</div>
