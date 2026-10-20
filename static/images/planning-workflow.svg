@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="1420" viewBox="0 0 1120 1420" role="img" aria-labelledby="title description">
+  <title id="title">TravelMind 旅行规划主链路</title>
+  <desc id="description">需求分析后，并行改写查询、查询天气与餐馆；查询改写和天气汇合后建立并补充景点候选池。候选池与餐馆候选汇合进入联合 Planner，可选旅行知识提供参考。路线道路核验后，由风险门控选择 Reviewer、时间核查或后处理。审核失败在上限内返回 Planner。餐饮结果与景点贴士并行整理，Finalize 最终校验后通过 SSE 返回结果或失败原因。登录用户保存行程及应用层状态快照。</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#698075"/>
+    </marker>
+    <marker id="retry" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#b96641"/>
+    </marker>
+  </defs>
+
+  <rect x="1" y="1" width="1118" height="1418" rx="24" fill="#f8faf5" stroke="#e0e7dd"/>
+  <text x="56" y="66" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#263e33" font-size="31" font-weight="700">一份行程，是怎样生成的？</text>
+  <text x="56" y="98" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#6a7a70" font-size="15">TravelMind · LangGraph 主链路总览</text>
+  <rect x="790" y="46" width="16" height="16" rx="4" fill="#fff0e4" stroke="#d5b397" stroke-width="1.5"/>
+  <text x="815" y="59" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#617467" font-size="14">模型节点</text>
+  <rect x="917" y="46" width="16" height="16" rx="4" fill="#edf5ee" stroke="#b8ccbd" stroke-width="1.5"/>
+  <text x="942" y="59" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#617467" font-size="14">工具 / 处理</text>
+
+  <rect x="340" y="136" width="440" height="62" rx="15" fill="#fffefa" stroke="#cedbd1" stroke-width="1.5"/>
+  <text x="560" y="175" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#263e33" font-size="21" font-weight="700" text-anchor="middle">用户输入自然语言旅行需求</text>
+  <path d="M560 198 V226" fill="none" stroke="#698075" stroke-width="2" marker-end="url(#arrow)"/>
+  <rect x="340" y="228" width="440" height="74" rx="15" fill="#fff0e4" stroke="#d5b397" stroke-width="1.5"/>
+  <text x="560" y="259" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#263e33" font-size="21" font-weight="700" text-anchor="middle">需求分析 Intent</text>
+  <text x="560" y="284" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#5b7063" font-size="15" text-anchor="middle">识别目的地、日期与本次偏好</text>
+  <path d="M780 265 H856" fill="none" stroke="#698075" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="800" y="249" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#617467" font-size="14">信息缺失</text>
+  <rect x="860" y="234" width="210" height="63" rx="13" fill="#fffefa" stroke="#cedbd1" stroke-width="1.5"/>
+  <text x="965" y="260" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#5b7063" font-size="15" text-anchor="middle">返回澄清问题</text>
+  <text x="965" y="282" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#5b7063" font-size="15" text-anchor="middle">等待用户补充</text>
+
+  <rect x="64" y="352" width="984" height="148" rx="20" fill="#eef3e9"/>
+  <text x="88" y="493" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#617467" font-size="14">并行查询 · 三个分支只依赖需求分析</text>
+  <path d="M560 302 V330 H225 V405" fill="none" stroke="#698075" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M560 330 V405" fill="none" stroke="#698075" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M560 330 H895 V405" fill="none" stroke="#698075" stroke-width="2" marker-end="url(#arrow)"/>
+  <rect x="100" y="407" width="250" height="70" rx="13" fill="#fff0e4" stroke="#d5b397" stroke-width="1.5"/>
+  <text x="225" y="437" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#263e33" font-size="21" font-weight="700" text-anchor="middle">查询改写</text>
+  <text x="225" y="460" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#5b7063" font-size="15" text-anchor="middle">结合画像与用户记忆</text>
+  <rect x="435" y="407" width="250" height="70" rx="13" fill="#edf5ee" stroke="#b8ccbd" stroke-width="1.5"/>
+  <text x="560" y="437" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#263e33" font-size="21" font-weight="700" text-anchor="middle">天气查询</text>
+  <text x="560" y="460" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#5b7063" font-size="15" text-anchor="middle">获取天气与雨天提示</text>
+  <rect x="770" y="407" width="250" height="70" rx="13" fill="#edf5ee" stroke="#b8ccbd" stroke-width="1.5"/>
+  <text x="895" y="437" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#263e33" font-size="21" font-weight="700" text-anchor="middle">餐馆候选查询</text>
+  <text x="895" y="460" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#5b7063" font-size="15" text-anchor="middle">建立真实餐饮候选池</text>
+
+  <path d="M225 477 V516 H560" fill="none" stroke="#698075" stroke-width="2"/>
+  <path d="M560 477 V538" fill="none" stroke="#698075" stroke-width="2" marker-end="url(#arrow)"/>
+  <rect x="340" y="540" width="440" height="86" rx="15" fill="#edf5ee" stroke="#b8ccbd" stroke-width="1.5"/>
+  <text x="560" y="572" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#263e33" font-size="21" font-weight="700" text-anchor="middle">建立并核验景点候选池</text>
+  <text x="560" y="596" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#5b7063" font-size="15" text-anchor="middle">基础 POI → ReAct 补查 → 去重与覆盖检查</text>
+  <text x="560" y="616" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#5b7063" font-size="15" text-anchor="middle">补查最多 2 轮；保留不足状态</text>
+  <path d="M560 626 V665" fill="none" stroke="#698075" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M895 477 V705 H782" fill="none" stroke="#698075" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="910" y="594" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#617467" font-size="14">等待候选汇合</text>
+
+  <rect x="62" y="665" width="215" height="80" rx="14" fill="#fffefa" stroke="#cedbd1" stroke-width="1.5"/>
+  <text x="169" y="696" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#5b7063" font-size="15" text-anchor="middle">候选关联的旅行知识</text>
+  <text x="169" y="720" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#5b7063" font-size="15" text-anchor="middle">可选 · 只提供选点参考</text>
+  <path d="M277 705 H338" fill="none" stroke="#698075" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+  <rect x="340" y="667" width="440" height="78" rx="15" fill="#fff0e4" stroke="#d5b397" stroke-width="1.5"/>
+  <text x="560" y="699" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#263e33" font-size="21" font-weight="700" text-anchor="middle">联合 Planner</text>
+  <text x="560" y="725" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#5b7063" font-size="15" text-anchor="middle">从候选池安排景点、餐饮与每日时间块</text>
+  <path d="M560 745 V785" fill="none" stroke="#698075" stroke-width="2" marker-end="url(#arrow)"/>
+  <rect x="340" y="787" width="440" height="72" rx="15" fill="#edf5ee" stroke="#b8ccbd" stroke-width="1.5"/>
+  <text x="560" y="817" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#263e33" font-size="21" font-weight="700" text-anchor="middle">高德道路核验</text>
+  <text x="560" y="841" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#5b7063" font-size="15" text-anchor="middle">并发检查独立路段的实际距离与耗时</text>
+  <path d="M560 859 V898" fill="none" stroke="#698075" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <rect x="340" y="900" width="440" height="90" rx="15" fill="#fff6d8" stroke="#d4bd78" stroke-width="1.5"/>
+  <text x="560" y="932" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#263e33" font-size="21" font-weight="700" text-anchor="middle">规则门控与条件审核</text>
+  <text x="560" y="957" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#5b7063" font-size="15" text-anchor="middle">按风险与偏好进入 Reviewer / 时间核查</text>
+  <text x="560" y="979" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#5b7063" font-size="15" text-anchor="middle">满足跳过条件时直接进入后处理</text>
+  <path d="M340 946 H306 V769 H320 V706 H338" fill="none" stroke="#b96641" stroke-width="2" marker-end="url(#retry)"/>
+  <text x="78" y="815" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#ad5a35" font-size="14">未通过且未达上限</text>
+  <text x="78" y="840" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#ad5a35" font-size="14">携带问题返回 Planner</text>
+  <text x="78" y="865" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#ad5a35" font-size="14">不重新执行初始查询</text>
+
+  <path d="M560 990 V1017 H315 V1040" fill="none" stroke="#698075" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M560 1017 H805 V1040" fill="none" stroke="#698075" stroke-width="2" marker-end="url(#arrow)"/>
+  <rect x="165" y="1042" width="300" height="68" rx="14" fill="#edf5ee" stroke="#b8ccbd" stroke-width="1.5"/>
+  <text x="315" y="1071" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#263e33" font-size="21" font-weight="700" text-anchor="middle">餐饮结果整理</text>
+  <text x="315" y="1094" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#5b7063" font-size="15" text-anchor="middle">保留已规划的用餐安排</text>
+  <rect x="655" y="1042" width="300" height="68" rx="14" fill="#edf5ee" stroke="#b8ccbd" stroke-width="1.5"/>
+  <text x="805" y="1071" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#263e33" font-size="21" font-weight="700" text-anchor="middle">景点贴士</text>
+  <text x="805" y="1094" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#5b7063" font-size="15" text-anchor="middle">补充信息；失败标记降级</text>
+  <path d="M315 1110 V1141 H560" fill="none" stroke="#698075" stroke-width="2"/>
+  <path d="M805 1110 V1141 H560 V1164" fill="none" stroke="#698075" stroke-width="2" marker-end="url(#arrow)"/>
+  <rect x="340" y="1166" width="440" height="72" rx="15" fill="#fff6d8" stroke="#d4bd78" stroke-width="1.5"/>
+  <text x="560" y="1197" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#263e33" font-size="21" font-weight="700" text-anchor="middle">Finalize 最终校验</text>
+  <text x="560" y="1221" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#5b7063" font-size="15" text-anchor="middle">确认有效路线，或整理无法满足的原因</text>
+  <path d="M560 1238 V1274" fill="none" stroke="#698075" stroke-width="2" marker-end="url(#arrow)"/>
+  <rect x="280" y="1276" width="560" height="68" rx="15" fill="#365e49"/>
+  <text x="560" y="1305" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#fffefa" font-size="21" font-weight="700" text-anchor="middle">SSE 返回路线 / 降级项 / 失败原因</text>
+  <text x="560" y="1329" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#e0ebdf" font-size="15" text-anchor="middle">登录用户保存行程与应用层状态快照，支持后续修改</text>
+  <text x="560" y="1386" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" fill="#5b7063" font-size="15" text-anchor="middle">这是流程总览；Reviewer 与时间核查的完整条件边见下方节点图。</text>
+</svg>
