@@ -210,7 +210,7 @@ def route_key(origin, destination, mode):
     return json.dumps([origin, destination, mode], sort_keys=True)
 
 
-def run_final_route(case, model, lookup, factory, route_replay):
+def run_final_route(case, model, lookup, factory, route_replay, *, distance_override=None):
     """Sequential-only isolation: patch external provider seams, never live maps."""
     from threading import Event
     tips_done = Event()
@@ -233,7 +233,7 @@ def run_final_route(case, model, lookup, factory, route_replay):
         for name, replacement in {
             'build_structured_llm': factory,
             'amap_key': lambda: 'replay-only',
-            'plan_route_distance': distance,
+            'plan_route_distance': distance_override or distance,
             'plan_transport_leg': lambda *a, **kw: distance(kw.get('origin', a[0] if a else None), kw.get('destination', a[1] if len(a)>1 else None), 'replay-only'),
             'recommend_chain_hotel': lambda *a, **kw: None,
             'lookup_live_ticket_prices': lambda *a, **kw: {},

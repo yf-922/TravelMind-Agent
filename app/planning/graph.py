@@ -27,6 +27,7 @@ from app.planning.nodes import (
     make_reviewer_node,
     make_spot_tips_node,
     make_time_check_node,
+    clarify_request_node,
     route_distance_check_node,
     route_risk_gate_node,
     weather_search_node,
@@ -59,6 +60,7 @@ def build_graph(
 
     g.add_node("query_rewrite",    make_query_rewrite_node(model_name, user_id))
     g.add_node("intent",           make_intent_node(model_name, profile_hint=profile_hint))
+    g.add_node("clarify",          clarify_request_node)
     g.add_node("weather_search",   weather_search_node)
     g.add_node("candidate_react", make_candidate_react_node(model_name))
     g.add_node("candidate_search", candidate_search_node)
@@ -84,9 +86,10 @@ def build_graph(
             "query_rewrite": "query_rewrite",
             "weather_search": "weather_search",
             "main_meal_search": "main_meal_search",
-            END: END,
+            "clarify": "clarify",
         }
     )
+    g.add_edge("clarify", END)
     # 查询改写、天气与主链路餐馆候选都只依赖 intent 的输出，可以并行执行。
     # 初始景点池使用稳定的城市级检索；之后再由 ReAct 针对缺口定向补充。
     g.add_edge(["query_rewrite", "weather_search"], "attraction_search")
@@ -140,6 +143,7 @@ _NODE_LABELS: dict[str, str] = {
     "candidate_ready": "景点候选检索已结束",
     "query_rewrite":     "🔎 正在结合用户画像改写查询",
     "intent":            "🧭 正在理解出行意图（目的地 / 日期 / 偏好）",
+    "clarify":           "❓ 正在确认旅行请求信息",
     "weather_search":    "🌦 正在查询出行天气",
     "attraction_search": "🗺 正在调用高德搜索景点池",
     "main_meal_search":  "🍽 正在查询联合规划餐馆候选",
@@ -237,6 +241,9 @@ def _stage_summary(node: str, state_before: dict[str, Any], update: dict[str, An
 
     if node == "intent":
         return f"已识别：{destination}，{days} 天行程。"
+    if node == "clarify":
+        issues = state.get("reviewer_issues") or []
+        return issues[0] if issues else "旅行信息不完整，等待补充。"
     if node == "weather_search":
         weather = "已获取天气预报" if state.get("weather_forecast") else (state.get("weather_note") or "天气暂不可用")
         return weather + "。"
@@ -629,5 +636,8 @@ async def run_stream(
         "success": success,
         "missing_fields": final.missing_fields,
         "history": final.history,
+        "message": (final.reviewer_issues[0] if final.reviewer_issues else None),
+        "failure_details": ({"missing_fields": final.missing_fields}
+                            if final.missing_fields else None),
         "plan": final.final_plan if success else None,
     }

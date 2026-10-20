@@ -310,7 +310,12 @@ class TravelSupervisor:
             state = await execute("intent")
             yield {"type": "stage_summary", "node": "intent", "summary": "completed"}
             if state.missing_fields:
-                yield {"type": "result", "success": False, "missing_fields": state.missing_fields, "plan": None}
+                labels = {"目的地": "目的地城市", "出行开始日期": "出发日期（或相对日期，如明天）",
+                          "出行结束日期": "旅行天数/结束日期", "结束日期早于开始日期": "有效的日期范围"}
+                missing = [labels.get(x, x) for x in state.missing_fields]
+                message = f"我还不能准确理解这次旅行请求，请补充：{'、'.join(dict.fromkeys(missing))}。"
+                yield {"type": "result", "success": False, "missing_fields": state.missing_fields,
+                       "message": message, "failure_details": {"kind": "clarification"}, "plan": None}
                 return
             initial_parallel_roles = ["query_rewrite", "weather_search"]
             if "main_meal_search" in self.nodes:
@@ -452,7 +457,9 @@ class TravelSupervisor:
                 plan["degraded_services"] = list(dict.fromkeys([*(plan.get("degraded_services") or []), "private_memory"]))
         yield {"type": "result", "success": bool(plan) and state.approved,
                "plan": plan, "missing_fields": [], "history": state.history,
-               "message": None if state.approved else "行程在修复次数上限内未通过审核，草稿仅供参考。",
+               "message": None if state.approved else (
+                   (state.reviewer_issues[0] if state.reviewer_issues else
+                    "当前无法生成满足全部要求的路线，请调整约束或补充候选后重试。")),
                "failure_details": None if state.approved else {
                    "risk_flags": state.route_risk_flags,
                    "time_violations": state.time_violations,

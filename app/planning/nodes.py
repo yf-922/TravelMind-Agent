@@ -67,9 +67,6 @@ from app.core.travel_knowledge import search_travel_knowledge, search_planning_k
 from app.core.memory import search_profile_fields
 from app.core.risk_gate_metrics import record as record_risk_gate
 
-from langgraph.graph import END
-
-
 def canonicalize_route_spot_names(
     route: list[dict[str, Any]], pois: list[dict[str, Any]],
 ) -> list[tuple[str, str]]:
@@ -255,7 +252,35 @@ def weather_search_node(state: TravelPlanState) -> dict[str, Any]:
 
 def route_after_intent(state: TravelPlanState) -> str | list[str]:
     """Fan out independent post-intent work, or terminate on missing fields."""
-    return END if state.missing_fields else ["query_rewrite", "weather_search", "main_meal_search"]
+    return "clarify" if state.missing_fields else ["query_rewrite", "weather_search", "main_meal_search"]
+
+
+def clarify_request_node(state: TravelPlanState) -> dict[str, Any]:
+    """Stop early when the request cannot be planned deterministically.
+
+    Missing required planning facts are a clarification case, not a route
+    quality problem.  Keeping this outside the Reviewer loop prevents the
+    system from spending LLM calls on an underspecified or misunderstood
+    request and gives the UI a useful next question.
+    """
+    labels = {
+        "目的地": "目的地城市",
+        "出行开始日期": "出发日期（或相对日期，如明天）",
+        "出行结束日期": "旅行天数/结束日期",
+        "结束日期早于开始日期": "有效的日期范围",
+    }
+    missing = [labels.get(item, item) for item in (state.missing_fields or [])]
+    detail = "、".join(dict.fromkeys(missing)) or "目的地、出行日期"
+    message = f"我还不能准确理解这次旅行请求，请补充：{detail}。"
+    return {
+        "approved": False,
+        "route": [],
+        "final_plan": None,
+        "review_required": False,
+        "review_skipped": True,
+        "reviewer_issues": [message],
+        "history": state.history + [f"[clarify] {message}"],
+    }
 
 
 # ─── 高德景点搜索 ─────────────────────────────────────────────

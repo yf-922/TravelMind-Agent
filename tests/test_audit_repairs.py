@@ -67,3 +67,13 @@ def test_invalid_reviewer_response_is_not_approved(monkeypatch):
     result = nodes.make_reviewer_node(None)(TravelPlanState(**build_cases()[0]['state']))
     assert result['approved'] is False
     assert '未获审核通过' in result['reviewer_issues'][0]
+
+
+def test_missing_request_fields_are_clarified_without_review():
+    state = TravelPlanState(query='帮我安排一个旅行', missing_fields=['目的地', '出行开始日期'])
+    result = nodes.clarify_request_node(state)
+    assert result['approved'] is False
+    assert result['route'] == []
+    assert not result['review_required']
+    assert '目的地城市' in result['reviewer_issues'][0]
+    assert '出发日期' in result['reviewer_issues'][0]
