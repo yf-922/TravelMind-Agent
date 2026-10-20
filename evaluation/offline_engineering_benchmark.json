@@ -1,93 +1,590 @@
 {
   "schema_version": 1,
   "external_calls": false,
+  "captured_at": "2026-10-20T05:03:47.342635+00:00",
+  "environment": {
+    "python": "3.12.8",
+    "platform": "Windows-10-10.0.19045-SP0",
+    "logical_cpus": 20,
+    "langgraph": "1.2.11"
+  },
+  "source_fingerprint": "762a6977cb44be71a4511d5a444baf976907e96bca67f1d63cb8d38386bf606c",
   "post_intent_fanout": {
     "measurement_type": "production-langgraph-with-delayed-fake-nodes",
-    "runs": 5,
+    "runs": 30,
     "parallel_nodes": [
       "query_rewrite",
-      "weather_search"
+      "weather_search",
+      "main_meal_search"
     ],
     "fake_delay_ms_per_node": 40.0,
     "serial_baseline_ms": {
-      "mean": 92.205,
-      "p50": 92.113,
-      "p95": 94.313,
-      "max": 94.313
+      "mean": 133.608,
+      "p50": 132.684,
+      "p95": 140.027,
+      "max": 140.066
     },
     "current_fanout_ms": {
-      "mean": 52.346,
-      "p50": 51.796,
-      "p95": 54.06,
-      "max": 54.06
+      "mean": 52.171,
+      "p50": 50.707,
+      "p95": 60.712,
+      "max": 75.838
     },
-    "p50_speedup": 1.778,
+    "paired_samples_ms": [
+      {
+        "serial": 131.85939998948015,
+        "concurrent": 48.32439997699112
+      },
+      {
+        "serial": 140.06639999570325,
+        "concurrent": 53.85070000193082
+      },
+      {
+        "serial": 140.02720001735725,
+        "concurrent": 56.075000000419095
+      },
+      {
+        "serial": 138.56610000948422,
+        "concurrent": 55.39080000016838
+      },
+      {
+        "serial": 138.42339999973774,
+        "concurrent": 55.42419999255799
+      },
+      {
+        "serial": 135.85789999342524,
+        "concurrent": 47.70660001668148
+      },
+      {
+        "serial": 129.3569999979809,
+        "concurrent": 47.3348000086844
+      },
+      {
+        "serial": 136.03169997804798,
+        "concurrent": 54.04849999467842
+      },
+      {
+        "serial": 133.03669999004342,
+        "concurrent": 48.31969999941066
+      },
+      {
+        "serial": 134.46110000950284,
+        "concurrent": 60.71160000283271
+      },
+      {
+        "serial": 136.49789997725748,
+        "concurrent": 50.70749999140389
+      },
+      {
+        "serial": 128.4940000041388,
+        "concurrent": 50.48320000059903
+      },
+      {
+        "serial": 135.65700000617653,
+        "concurrent": 51.91000000922941
+      },
+      {
+        "serial": 132.68430001335219,
+        "concurrent": 48.15690001123585
+      },
+      {
+        "serial": 131.02579998667352,
+        "concurrent": 75.83759998669848
+      },
+      {
+        "serial": 131.08890000148676,
+        "concurrent": 50.61330000171438
+      },
+      {
+        "serial": 132.04890000633895,
+        "concurrent": 49.025500018615276
+      },
+      {
+        "serial": 130.43210000614636,
+        "concurrent": 47.317299991846085
+      },
+      {
+        "serial": 131.4299999794457,
+        "concurrent": 50.25160001241602
+      },
+      {
+        "serial": 132.52120002289303,
+        "concurrent": 51.00420000962913
+      },
+      {
+        "serial": 136.84229998034425,
+        "concurrent": 52.87670000689104
+      },
+      {
+        "serial": 131.21429999591783,
+        "concurrent": 48.03110001375899
+      },
+      {
+        "serial": 132.49000001815148,
+        "concurrent": 47.960399999283254
+      },
+      {
+        "serial": 137.24320000619628,
+        "concurrent": 53.002300002845004
+      },
+      {
+        "serial": 134.32749998173676,
+        "concurrent": 54.95819999487139
+      },
+      {
+        "serial": 134.05839999904856,
+        "concurrent": 55.858800013083965
+      },
+      {
+        "serial": 134.19250000151806,
+        "concurrent": 51.61480000242591
+      },
+      {
+        "serial": 128.64989999798127,
+        "concurrent": 51.93180000060238
+      },
+      {
+        "serial": 128.7000000011176,
+        "concurrent": 49.07660000026226
+      },
+      {
+        "serial": 130.95270001213066,
+        "concurrent": 47.330800007330254
+      }
+    ],
+    "p50_speedup": 2.617,
     "pass": true,
     "pass_criterion": "p50 speedup >= 1.5x through the compiled production graph"
   },
   "enrichment_fanout": {
     "measurement_type": "production-langgraph-with-delayed-fake-nodes",
-    "runs": 5,
+    "runs": 30,
     "parallel_nodes": [
-      "meal_enrichment",
+      "main_meal_output",
       "spot_tips"
     ],
     "fake_delay_ms_per_node": 40.0,
     "serial_baseline_ms": {
-      "mean": 94.31,
-      "p50": 96.321,
-      "p95": 96.991,
-      "max": 96.991
+      "mean": 90.061,
+      "p50": 88.9,
+      "p95": 96.736,
+      "max": 102.556
     },
     "current_fanout_ms": {
-      "mean": 54.498,
-      "p50": 54.379,
-      "p95": 58.49,
-      "max": 58.49
+      "mean": 50.033,
+      "p50": 48.519,
+      "p95": 58.046,
+      "max": 62.046
     },
-    "p50_speedup": 1.771,
+    "paired_samples_ms": [
+      {
+        "serial": 89.25690001342446,
+        "concurrent": 49.347199994372204
+      },
+      {
+        "serial": 88.24660000391304,
+        "concurrent": 47.92949999682605
+      },
+      {
+        "serial": 88.56849998119287,
+        "concurrent": 49.80870001600124
+      },
+      {
+        "serial": 87.88880001520738,
+        "concurrent": 50.98500000895001
+      },
+      {
+        "serial": 90.35740001127124,
+        "concurrent": 47.6998999947682
+      },
+      {
+        "serial": 88.8998000009451,
+        "concurrent": 51.17570000584237
+      },
+      {
+        "serial": 91.65439999196678,
+        "concurrent": 48.66480000782758
+      },
+      {
+        "serial": 89.90979997906834,
+        "concurrent": 48.127499991096556
+      },
+      {
+        "serial": 88.79899999010377,
+        "concurrent": 48.58440000680275
+      },
+      {
+        "serial": 88.62490000319667,
+        "concurrent": 50.06539999158122
+      },
+      {
+        "serial": 90.69919999456033,
+        "concurrent": 48.519000003580004
+      },
+      {
+        "serial": 88.19719997700304,
+        "concurrent": 47.56879998603836
+      },
+      {
+        "serial": 88.3136999909766,
+        "concurrent": 48.36260000593029
+      },
+      {
+        "serial": 88.95150001626462,
+        "concurrent": 49.54169999109581
+      },
+      {
+        "serial": 89.62189999874681,
+        "concurrent": 58.045800018589944
+      },
+      {
+        "serial": 96.73630000906996,
+        "concurrent": 55.73309998726472
+      },
+      {
+        "serial": 89.49709997978061,
+        "concurrent": 47.610599984182045
+      },
+      {
+        "serial": 88.86819999315776,
+        "concurrent": 47.60259998147376
+      },
+      {
+        "serial": 88.55720001156442,
+        "concurrent": 48.09590001241304
+      },
+      {
+        "serial": 87.54820001195185,
+        "concurrent": 48.17919997731224
+      },
+      {
+        "serial": 91.29199999733828,
+        "concurrent": 53.64120000740513
+      },
+      {
+        "serial": 86.93459999631159,
+        "concurrent": 47.080200019991025
+      },
+      {
+        "serial": 87.66190000460483,
+        "concurrent": 47.537799982819706
+      },
+      {
+        "serial": 87.39400000195019,
+        "concurrent": 47.51199999009259
+      },
+      {
+        "serial": 90.89190000668168,
+        "concurrent": 47.26190000656061
+      },
+      {
+        "serial": 91.22149998438545,
+        "concurrent": 53.249799995683134
+      },
+      {
+        "serial": 95.90939999907278,
+        "concurrent": 54.922400013310835
+      },
+      {
+        "serial": 91.75600000889972,
+        "concurrent": 47.28080000495538
+      },
+      {
+        "serial": 102.55630000028759,
+        "concurrent": 62.045700004091486
+      },
+      {
+        "serial": 87.02910001738928,
+        "concurrent": 48.798700008774176
+      }
+    ],
+    "p50_speedup": 1.832,
     "pass": true,
     "pass_criterion": "p50 speedup >= 1.5x through the compiled production graph"
   },
   "road_distance": {
     "measurement_type": "production-node-with-delayed-fake-provider",
-    "runs": 5,
+    "runs": 30,
     "route_legs": 8,
     "fake_provider_delay_ms_per_leg": 20.0,
     "serial_baseline_ms": {
-      "mean": 163.824,
-      "p50": 163.719,
-      "p95": 165.138,
-      "max": 165.138
+      "mean": 164.172,
+      "p50": 164.091,
+      "p95": 166.96,
+      "max": 167.733
     },
     "current_concurrent_ms": {
-      "mean": 27.631,
-      "p50": 28.508,
-      "p95": 29.062,
-      "max": 29.062
+      "mean": 24.436,
+      "p50": 24.186,
+      "p95": 26.682,
+      "max": 28.763
     },
-    "p50_speedup": 5.743,
+    "paired_samples_ms": [
+      {
+        "serial": 164.09060001024045,
+        "concurrent": 25.86580000934191
+      },
+      {
+        "serial": 162.58480001124553,
+        "concurrent": 25.077199999941513
+      },
+      {
+        "serial": 162.65090001979843,
+        "concurrent": 24.27620001253672
+      },
+      {
+        "serial": 163.20450001512654,
+        "concurrent": 28.762699977960438
+      },
+      {
+        "serial": 163.9034999825526,
+        "concurrent": 24.19009999721311
+      },
+      {
+        "serial": 164.69959999085404,
+        "concurrent": 26.130699989153072
+      },
+      {
+        "serial": 164.33989998768084,
+        "concurrent": 22.4107000103686
+      },
+      {
+        "serial": 166.96000000229105,
+        "concurrent": 22.556599986273795
+      },
+      {
+        "serial": 165.7932000234723,
+        "concurrent": 23.018500010948628
+      },
+      {
+        "serial": 167.73250000551343,
+        "concurrent": 23.356299992883578
+      },
+      {
+        "serial": 166.0748999856878,
+        "concurrent": 22.22839999012649
+      },
+      {
+        "serial": 165.03439997904934,
+        "concurrent": 23.742399993352592
+      },
+      {
+        "serial": 164.55190000124276,
+        "concurrent": 22.393999999621883
+      },
+      {
+        "serial": 163.01020001992583,
+        "concurrent": 24.201699998229742
+      },
+      {
+        "serial": 162.33469999860972,
+        "concurrent": 25.95919999293983
+      },
+      {
+        "serial": 164.5913999818731,
+        "concurrent": 23.028000025078654
+      },
+      {
+        "serial": 163.94570001284592,
+        "concurrent": 24.18579999357462
+      },
+      {
+        "serial": 164.56520001520403,
+        "concurrent": 26.561200007563457
+      },
+      {
+        "serial": 163.22020001825877,
+        "concurrent": 26.105199998710304
+      },
+      {
+        "serial": 164.4545000162907,
+        "concurrent": 25.982300023315474
+      },
+      {
+        "serial": 164.55780001706444,
+        "concurrent": 22.832599992398173
+      },
+      {
+        "serial": 164.07729999627918,
+        "concurrent": 23.70400002109818
+      },
+      {
+        "serial": 164.17130001354963,
+        "concurrent": 24.395899992669
+      },
+      {
+        "serial": 163.0734000063967,
+        "concurrent": 26.682499999878928
+      },
+      {
+        "serial": 164.11479999078438,
+        "concurrent": 23.011599987512454
+      },
+      {
+        "serial": 163.54549999232404,
+        "concurrent": 25.571800011675805
+      },
+      {
+        "serial": 162.1832000091672,
+        "concurrent": 23.900400003185496
+      },
+      {
+        "serial": 163.49770000670105,
+        "concurrent": 23.10690001468174
+      },
+      {
+        "serial": 164.37600000062957,
+        "concurrent": 23.377799981972203
+      },
+      {
+        "serial": 163.8192000100389,
+        "concurrent": 26.467799994861707
+      }
+    ],
+    "p50_speedup": 6.785,
     "pass": true,
     "pass_criterion": "p50 speedup >= 2.0x with identical completed route legs"
   },
   "checkpoint_replan": {
     "measurement_type": "deterministic-stage-cost-simulation",
     "baseline_label": "simulated full replay; not historical production data",
-    "runs": 5,
+    "runs": 30,
     "unit_delay_ms": 2.0,
     "full_replay_ms": {
-      "mean": 94.384,
-      "p50": 93.871,
-      "p95": 95.778,
-      "max": 95.778
+      "mean": 95.387,
+      "p50": 94.741,
+      "p95": 99.837,
+      "max": 100.092
     },
     "checkpoint_local_replan_ms": {
-      "mean": 64.603,
-      "p50": 64.757,
-      "p95": 65.282,
-      "max": 65.282
+      "mean": 64.512,
+      "p50": 64.591,
+      "p95": 65.784,
+      "max": 65.97
     },
-    "p50_latency_reduction_ratio": 0.31,
+    "paired_samples_ms": [
+      {
+        "full_replay": 93.46010000444949,
+        "local_replan": 64.35659999260679
+      },
+      {
+        "full_replay": 100.09220000938512,
+        "local_replan": 65.78439997974783
+      },
+      {
+        "full_replay": 94.59059999790043,
+        "local_replan": 63.420699996640906
+      },
+      {
+        "full_replay": 93.91229998436756,
+        "local_replan": 65.02300000283867
+      },
+      {
+        "full_replay": 95.19469999941066,
+        "local_replan": 64.23039999208413
+      },
+      {
+        "full_replay": 94.5662000158336,
+        "local_replan": 64.66440000804141
+      },
+      {
+        "full_replay": 93.13150000525638,
+        "local_replan": 64.88019999233074
+      },
+      {
+        "full_replay": 94.65349998208694,
+        "local_replan": 63.980999984778464
+      },
+      {
+        "full_replay": 94.86099999048747,
+        "local_replan": 65.3108999831602
+      },
+      {
+        "full_replay": 97.52350000781007,
+        "local_replan": 65.97039999905974
+      },
+      {
+        "full_replay": 94.35369999846444,
+        "local_replan": 64.0784999995958
+      },
+      {
+        "full_replay": 93.80010000313632,
+        "local_replan": 64.23079999512993
+      },
+      {
+        "full_replay": 96.84729998116381,
+        "local_replan": 64.59589998121373
+      },
+      {
+        "full_replay": 94.22609998728149,
+        "local_replan": 62.40520000574179
+      },
+      {
+        "full_replay": 93.55650001089089,
+        "local_replan": 64.6693000162486
+      },
+      {
+        "full_replay": 95.62629999709316,
+        "local_replan": 64.72690001828596
+      },
+      {
+        "full_replay": 94.75279998150654,
+        "local_replan": 65.27849999838509
+      },
+      {
+        "full_replay": 94.74129998125136,
+        "local_replan": 64.30060000275262
+      },
+      {
+        "full_replay": 96.18639998370782,
+        "local_replan": 64.21720000798814
+      },
+      {
+        "full_replay": 94.69980001449585,
+        "local_replan": 64.59069999982603
+      },
+      {
+        "full_replay": 93.9492000034079,
+        "local_replan": 64.44369998644106
+      },
+      {
+        "full_replay": 94.39099999144673,
+        "local_replan": 64.0842999855522
+      },
+      {
+        "full_replay": 93.25790000730194,
+        "local_replan": 62.88700000732206
+      },
+      {
+        "full_replay": 96.44809999736026,
+        "local_replan": 65.42510000872426
+      },
+      {
+        "full_replay": 97.25509997224435,
+        "local_replan": 65.05850001121871
+      },
+      {
+        "full_replay": 95.12099999119528,
+        "local_replan": 64.04060000204481
+      },
+      {
+        "full_replay": 99.83670001383871,
+        "local_replan": 64.9503999738954
+      },
+      {
+        "full_replay": 95.58120000292547,
+        "local_replan": 64.85180000890978
+      },
+      {
+        "full_replay": 98.55719999177381,
+        "local_replan": 63.703699997859076
+      },
+      {
+        "full_replay": 96.42780001740903,
+        "local_replan": 65.20780001301318
+      }
+    ],
+    "p50_latency_reduction_ratio": 0.318,
     "avoided_nodes": [
       "intent",
       "query_rewrite",

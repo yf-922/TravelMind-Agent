@@ -4,24 +4,31 @@
 
 ## Post-intent LangGraph fan-out
 
-- Workload: query_rewrite, weather_search, 10 repeated runs, 40.0 ms deterministic delay per node
-- Serial baseline P50/P95: 81.163 / 81.853 ms
-- Current graph P50/P95: 45.227 / 48.512 ms
-- P50 speedup: 1.795x; threshold result: PASS
+- Workload: query_rewrite, weather_search, main_meal_search, 30 repeated runs, 40.0 ms deterministic delay per node
+- Serial baseline P50/P95: 132.684 / 140.027 ms
+- Current graph P50/P95: 50.707 / 60.712 ms
+- P50 speedup: 2.617x; threshold result: PASS
+
+## Meal and spot-tip fan-out
+
+- Workload: main_meal_output, spot_tips, 30 repeated runs, 40.0 ms deterministic delay per branch
+- Serial baseline P50/P95: 88.9 / 96.736 ms
+- Current graph P50/P95: 48.519 / 58.046 ms
+- P50 speedup: 1.832x; threshold result: PASS
 
 ## Road-distance concurrency
 
-- Workload: 8 route legs, 10 repeated runs, 20.0 ms deterministic provider delay per leg
-- Serial baseline P50/P95: 164.339 / 167.026 ms
-- Current concurrent node P50/P95: 22.247 / 23.138 ms
-- P50 speedup: 7.387x; threshold result: PASS
+- Workload: 8 route legs, 30 repeated runs, 20.0 ms deterministic provider delay per leg
+- Serial baseline P50/P95: 164.091 / 166.96 ms
+- Current concurrent node P50/P95: 24.186 / 26.682 ms
+- P50 speedup: 6.785x; threshold result: PASS
 
 ## Checkpoint local replanning
 
 - Comparison boundary: simulated full replay; not historical production data
-- Full replay P50/P95: 100.237 / 102.205 ms
-- Local replan P50/P95: 70.106 / 72.876 ms
-- Modeled P50 latency reduction: 30.1%
+- Full replay P50/P95: 94.741 / 99.837 ms
+- Local replan P50/P95: 64.591 / 65.784 ms
+- Modeled P50 latency reduction: 31.8%
 - Avoided stages: intent, query_rewrite, weather_search, attraction_search
 - Simulated LLM input budget avoided: 1500 / 9900 (15.2%)
 - Token boundary: fixed budget assumptions, not provider-reported token usage

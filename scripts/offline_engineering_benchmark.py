@@ -9,12 +9,16 @@ repository has no historical revision that can be executed as an old version.
 from __future__ import annotations
 
 import argparse
+import hashlib
+import importlib.metadata
 import json
 import math
+import os
+import platform
 import sys
 import time
 from concurrent.futures import ThreadPoolExecutor
-from datetime import date
+from datetime import date, datetime, timezone
 from pathlib import Path
 from statistics import mean
 from threading import Lock
@@ -158,6 +162,7 @@ def benchmark_road_distance(runs: int, leg_count: int, delay_ms: float) -> dict[
         "fake_provider_delay_ms_per_leg": delay_ms,
         "serial_baseline_ms": serial,
         "current_concurrent_ms": concurrent,
+        "paired_samples_ms": [{"serial": a, "concurrent": b} for a, b in zip(serial_ms, concurrent_ms)],
         "p50_speedup": round(speedup, 3),
         "pass": speedup >= 2.0,
         "pass_criterion": "p50 speedup >= 2.0x with identical completed route legs",
@@ -255,6 +260,7 @@ def benchmark_post_intent_fanout(runs: int, delay_ms: float) -> dict[str, Any]:
         "fake_delay_ms_per_node": delay_ms,
         "serial_baseline_ms": serial,
         "current_fanout_ms": concurrent,
+        "paired_samples_ms": [{"serial": a, "concurrent": b} for a, b in zip(serial_ms, concurrent_ms)],
         "p50_speedup": round(speedup, 3),
         "pass": speedup >= 1.5,
         "pass_criterion": "p50 speedup >= 1.5x through the compiled production graph",
@@ -344,6 +350,7 @@ def benchmark_enrichment_fanout(runs: int, delay_ms: float) -> dict[str, Any]:
         "fake_delay_ms_per_node": delay_ms,
         "serial_baseline_ms": serial,
         "current_fanout_ms": concurrent,
+        "paired_samples_ms": [{"serial": a, "concurrent": b} for a, b in zip(serial_ms, concurrent_ms)],
         "p50_speedup": round(speedup, 3),
         "pass": speedup >= 1.5,
         "pass_criterion": "p50 speedup >= 1.5x through the compiled production graph",
@@ -391,6 +398,7 @@ def benchmark_checkpoint_replan(runs: int, unit_delay_ms: float) -> dict[str, An
         "unit_delay_ms": unit_delay_ms,
         "full_replay_ms": full,
         "checkpoint_local_replan_ms": local,
+        "paired_samples_ms": [{"full_replay": a, "local_replan": b} for a, b in zip(full_ms, local_ms)],
         "p50_latency_reduction_ratio": round(latency_saved, 3),
         "avoided_nodes": avoided_nodes,
         "simulated_llm_input_tokens": {
@@ -481,6 +489,13 @@ def main() -> int:
     report = {
         "schema_version": 1,
         "external_calls": False,
+        "captured_at": datetime.now(timezone.utc).isoformat(),
+        "environment": {"python": platform.python_version(), "platform": platform.platform(),
+                        "logical_cpus": os.cpu_count(), "langgraph": importlib.metadata.version("langgraph")},
+        "source_fingerprint": hashlib.sha256(b"".join(
+            path.relative_to(ROOT).as_posix().encode() + path.read_bytes()
+            for path in sorted((ROOT / "app").rglob("*.py")) + [Path(__file__).resolve()]
+        )).hexdigest(),
         "post_intent_fanout": benchmark_post_intent_fanout(args.runs, args.fanout_delay_ms),
         "enrichment_fanout": benchmark_enrichment_fanout(args.runs, args.fanout_delay_ms),
         "road_distance": benchmark_road_distance(args.runs, args.route_legs, args.provider_delay_ms),
