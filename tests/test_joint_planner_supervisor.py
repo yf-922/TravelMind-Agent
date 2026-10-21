@@ -37,11 +37,9 @@ def test_joint_meal_risk_gate_rejects_unknown_and_overlapping_restaurant():
     assert "meal_overlap" in flags
 
 
-def test_supervisor_production_nodes_include_joint_meal_stage(monkeypatch):
-    import app.planning.nodes as production
+def test_supervisor_production_nodes_include_joint_meal_stage(offline_supervisor_models):
     from app.multi_agent_core.runtime import production_nodes
 
-    monkeypatch.setattr(production, "build_structured_llm", lambda *args, **kwargs: object())
     nodes_map = production_nodes()
     assert "main_meal_search" in nodes_map
     assert nodes_map["planner"] is not None

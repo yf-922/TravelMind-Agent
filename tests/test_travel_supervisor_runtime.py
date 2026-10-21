@@ -788,10 +788,9 @@ def test_production_auditors_satisfy_contract_and_receive_role_local_context(mon
     assert "reviewer previous finding" not in prompts["TimeCheckResult"]
 
 
-def test_production_rejected_draft_does_not_call_live_finalization(monkeypatch):
+def test_production_rejected_draft_does_not_call_live_finalization(monkeypatch, offline_supervisor_models):
     import app.planning.nodes as nodes_module
     from app.multi_agent_core.runtime import production_nodes
-    monkeypatch.setattr(nodes_module, "build_structured_llm", lambda *a, **k: object())
     calls = []
     def make_finalize():
         def finalize(state):
