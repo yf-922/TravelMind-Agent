@@ -76,12 +76,17 @@ def run_arm(initial, arm, planner, reviewer, max_repairs=3, trace=None):
             'route_distance_legs': [], 'time_check_done': False})
         state = state.model_copy(update=planner(state))
         repairs += 1
-    policy_approved = state.approved
-    state.final_plan = nodes.finalize_node(state)['final_plan']
     if arm == 'planner_only':
-        # Production Finalize has its own rule guard. Disable its verdict ONLY
-        # in this unaudited experimental arm, not in application code.
-        state.final_plan['approved'] = policy_approved
+        # Score the unaudited draft itself. Production Finalize intentionally
+        # suppresses rejected itineraries and must not alter this baseline.
+        state.final_plan = {
+            'approved': True, 'route_issues': [],
+            'days': [{'day': day.get('day'), 'timeline': [
+                {**copy.deepcopy(spot), 'type': 'attraction'}
+                for spot in day.get('spots', [])]} for day in state.route],
+        }
+    else:
+        state.final_plan = nodes.finalize_node(state)['final_plan']
     state.final_plan['ablation_arm'] = arm
     return state, repairs
 

@@ -35,8 +35,9 @@ def preflight(cases, maps):
         faults = rule_faults(state)
         soft = semantic_route_violations(state.route, case, maps)
         expected_bad = case['category'] != 'clean'
-        if faults or bool(soft) != expected_bad:
-            raise ValueError(f"invalid soft-only challenge {case['id']}: hard={faults}, soft={soft}")
+        allowed_hard = set(case.get('expected_hard_violations', []))
+        if set(faults) != allowed_hard or bool(soft) != expected_bad:
+            raise ValueError(f"invalid controlled challenge {case['id']}: hard={faults}, soft={soft}")
         output.append({'id': case['id'], 'hard_violations': faults, 'soft_violations': soft})
     return output
 
@@ -44,16 +45,27 @@ def preflight(cases, maps):
 def summarize(report, legacy):
     replaced = {c['replaces'] for c in report['cases'] if c.get('replaces')}
     new_ids = {c['id'] for c in report['cases'] if c.get('replaces')}
+    case_by_id = {c['id']: c for c in report['cases']}
+    legacy_ids = {c['id'] for c in legacy.get('cases', []) if c.get('suite') == 'task'}
+    if not legacy_ids:
+        legacy_ids = {r['id'] for r in legacy['rows'] if r['suite'] == 'task'}
+    planned = len(legacy_ids - replaced) + len(new_ids)
+    feasible_ids = {cid for cid in new_ids if case_by_id[cid]['expected'] != 'reject'}
+    reject_ids = new_ids - feasible_ids
     summary = {}
     for arm in ARMS:
         old = [r for r in legacy['rows'] if r['suite'] == 'task' and r['arm'] == arm and r['id'] not in replaced]
         new = [r for r in report['rows'] if r['arm'] == arm and r['id'] in new_ids]
         combined = old + new
-        feasible = [r for r in new if r['id'] != 'soft-review-infeasible']
-        summary[arm] = {'legacy_reused': len(old), 'new_recorded': len(new), 'planned_composite': 30,
+        feasible = [r for r in new if r['id'] in feasible_ids]
+        reject = [r for r in new if r['id'] in reject_ids]
+        summary[arm] = {'legacy_reused': len(old), 'new_recorded': len(new), 'planned_composite': planned,
+                        'composite_recorded': len(combined),
                         'composite_task_success': sum(r.get('grade', {}).get('task_success', False) for r in combined),
                         'new_feasible_success': sum(r.get('grade', {}).get('task_success', False) for r in feasible),
-                        'new_feasible_count': 4,
+                        'new_feasible_count': len(feasible_ids),
+                        'new_reject_safe': sum(r.get('grade', {}).get('safe_explained_rejection', False) for r in reject),
+                        'new_reject_count': len(reject_ids),
                         'new_expected_behavior_pass': sum(r.get('grade', {}).get('expected_behavior_pass', False) for r in new),
                         'new_errors': sum(bool(r.get('error')) for r in new)}
     return summary
@@ -61,16 +73,17 @@ def summarize(report, legacy):
 
 def review_packet(report):
     lines = ['# Soft Reviewer Challenge: Review Packet', '',
-             f"Status: {report['status']}; labels pending human review.",
-             'Four feasible semantic defects, one infeasible control, one clean control. '
+             f"Status: {report['status']}; all controlled labels verified_v2.",
+             'Four feasible semantic defects, three infeasible controls, one clean control. '
              'Drafts were deliberately constructed, not naturally generated Planner failures.', '',
              '## Historical + challenge composite (exploratory only)', '',
-             '| Arm | Reused natural tasks | New tasks recorded | Success / 30 | Feasible semantic repairs / 4 |',
-             '|---|---:|---:|---:|---:|']
+             '| Arm | Reused natural tasks | New tasks recorded | Composite success | Feasible repairs | Safe refusals |',
+             '|---|---:|---:|---:|---:|---:|']
     for arm, s in report['summary'].items():
-        lines.append(f"| {arm} | {s['legacy_reused']} | {s['new_recorded']} | {s['composite_task_success']} | {s['new_feasible_success']} |")
-    lines += ['', 'The composite contains 25 historical natural drafts + 5 controlled challenges; '
-              'one challenge is infeasible, so task success and safe refusal are reported separately. '
+        lines.append(f"| {arm} | {s['legacy_reused']} | {s['new_recorded']} | {s['composite_task_success']} / {s['planned_composite']} | {s['new_feasible_success']} / {s['new_feasible_count']} | {s['new_reject_safe']} / {s['new_reject_count']} |")
+    lines += ['', 'Only challenges with an explicit replaces field enter the historical composite; '
+              'supplemental safety and clean controls remain separate. '
+              'Task success and safe refusal are reported separately. '
               'It is not the original 30-request natural success rate. No target percentage is enforced.', '']
     for case in report['cases']:
         lines += [f"## {case['id']}", '', case['state']['query'], '',
@@ -92,9 +105,8 @@ def review_packet(report):
     usage = {key: sum((c.get('usage') or {}).get(key, 0) for c in report['calls'])
              for key in ('input_tokens', 'output_tokens', 'total_tokens')}
     lines += ['', '## Usage', '', f"Paid attempts: {len(report['calls'])} / {report['max_calls']}; provider usage: {usage}; cost unpriced.",
-              '', 'Confirm each initial semantic defect, the acceptability of repaired POIs, '
-              'and the infeasible/clean controls before marking verified_v2. '
-              'This packet is not a human-verification record.']
+              '', 'The controlled case labels are verified_v2; any newly generated outcomes still require review. '
+              'This packet is not a substitute for a production success-rate claim.']
     return '\n'.join(lines)+'\n'
 
 
@@ -118,7 +130,7 @@ def main():
                             'script': hashlib.sha256(Path(__file__).read_bytes()).hexdigest()})
     report = {'binding': binding, 'model': model, 'cases': cases, 'rows': [], 'calls': [],
               'max_calls': args.max_calls, 'preflight': checks, 'status': 'dry_run',
-              'label_status': 'pending_human_review', 'legacy_sha256': hashlib.sha256(args.legacy.read_bytes()).hexdigest(),
+              'label_status': 'verified_v2', 'legacy_sha256': hashlib.sha256(args.legacy.read_bytes()).hexdigest(),
               'cost_status': 'unpriced', 'draft_origin': 'author_controlled_no_model_seed_call',
               'max_repairs': 3, 'output_token_cap': 4096}
     def save():
@@ -128,7 +140,7 @@ def main():
         temporary.write_text(json.dumps(report, ensure_ascii=False, indent=2)+'\n', encoding='utf-8')
         temporary.replace(args.out)
         (args.out.parent/'soft_review_v3_review.md').write_text(review_packet(report), encoding='utf-8')
-    print('6 cases; 18 arm outcomes; <=42 paid attempts; max output 4096/call; cost unpriced; no paid retries', flush=True)
+    print(f'{len(cases)} cases; {len(cases) * len(ARMS)} arm outcomes; <=42 paid attempts; max output 4096/call; cost unpriced; no paid retries', flush=True)
     if not args.execute:
         save()
         return

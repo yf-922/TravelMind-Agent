@@ -2,7 +2,7 @@
 
 ## 1. 不预设结果的软约束挑战
 
-原始 `reviewer_ablation_real_v2.json` 不修改。新版本只运行 6 个受控草案，
+原始 `reviewer_ablation_real_v2.json` 不修改。原真实模型小试只运行 6 个受控草案，
 不是将人工注入错误冒充自然 Planner 失败：
 
 - 4 个可满足语义缺陷：老人登阶、38 度正午暴晒、隐式排斥商业主题、跨区折返。
@@ -14,6 +14,8 @@
 没有无障碍设施。折返按保存的实际道路距离矩阵计算：当前顺序距离超过
 相同景点最短排列 30% 记为不必要折返，不使用直线距离替代道路。
 高温用例预设 11:00–14:00 不安排露天游览，是用例标签，不是全国统一规则。
+新增两条安全用例允许且必须检测到声明的确定性冲突，不能当作规则无法发现的
+Reviewer 专属语义缺陷。两条补充用例没有 `replaces`，不会改变原组合表的分子分母。
 
 三组共用草案、模型和地图回放。仅 Reviewer 组读取语义审核意见；评分标签
 不进入 Planner/Reviewer Prompt。最多三次返工，无隐藏调用重试。每次记录
@@ -23,15 +25,18 @@
 必须标记为“历史自然请求＋受控挑战组合”，不能改称原 30 条自然请求成功率。
 不可满足用例正确拒绝计为安全行为，不计为生成了成功行程。
 
-本批 6 条受控用例已由项目负责人逐项核对，标签状态为 `verified_v2`，并在
-`evaluation/soft_review_v3.json` 中记录确认状态。该确认只适用于这 6 条受控
-用例，不改变历史自然请求的来源标注，也不把组合结果升级为线上成功率。
-后续新增或修改用例仍必须通过绑定用例指纹的人工确认流程，不能批量继承
-`verified_v2`。
+原 6 条受控用例及新增 2 条不可满足冲突用例的标签状态为 `verified_v2`。
+新增两条只通过确定性三轮返工安全退出测试，不补造真实模型消融结果；历史自然
+请求来源标注和原 6 条模型运行结果均不变。确认范围与新增安全测试见
+`evaluation/soft_review_v3_safety_addendum.md`，组合结果仍不是线上成功率。
+后续新增或修改用例仍必须单独确认，不能批量继承 `verified_v2`。
 
 ```powershell
-python scripts/evaluate_soft_review.py
-python scripts/evaluate_soft_review.py --execute --max-calls 42
+python scripts/evaluate_infeasible_safety.py
+# 如需另开真实模型实验，使用新账本，避免覆盖原 6 条的已完成账本：
+python scripts/evaluate_soft_review.py --out data/eval/soft_review_extended_v3.json
+# 真实调用另行执行；总调用上限仍为 42，完成状态与缺失结果分别记录。
+python scripts/evaluate_soft_review.py --execute --max-calls 42 --out data/eval/soft_review_extended_v3.json
 python scripts/review_soft_review_labels.py export
 # 人工编辑 data/eval/soft_review_v3_human_review.json，填写身份、带时区时间和逐项确认
 python scripts/review_soft_review_labels.py import

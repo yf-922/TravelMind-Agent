@@ -78,14 +78,20 @@ calls cannot be automatically replayed. No production-default change was made.
 
 ## v3 controlled soft-constraint extension (`verified_v2`)
 
-The original v2 ledger above is immutable. v3 adds a separate audit-tail+experiment for cases that deterministic rules do not express well: elderly+mobility, heat exposure, aversion to commercial themes and avoidable+backtracking. It also includes one infeasible control and one clean control.
+The original v2 ledger above is immutable. v3 adds a separate audit-tailexperiment for cases that deterministic rules do not express well: elderly
+mobility, heat exposure, aversion to commercial themes and avoidable
+backtracking. It also includes one infeasible control and one clean control.
 The initial routes are author-controlled injected drafts, so these results do
 not estimate how often a natural Planner makes each mistake. The project owner
 manually reviewed all six controlled cases, including the four feasible defects,
 the infeasible refusal and the clean control; the labels and recorded outcomes
 are now bound as `verified_v2`.
 
-The composite reuses 25 unchanged natural task rows and replaces five rows+with the controlled challenges. It is therefore not a new 30-request natural+success rate. The four feasible defects are graded against an independent+predeclared rubric; a successful result requires the final route to change in+the route JSON, not merely in notes. The infeasible case is expected to be a+safe explained refusal, not a successful itinerary.
+The composite reuses 25 unchanged natural task rows and replaces five rowswith the controlled challenges. It is therefore not a new 30-request natural
+success rate. The four feasible defects are graded against an independent
+predeclared rubric; a successful result requires the final route to change in
+the route JSON, not merely in notes. The infeasible case is expected to be a
+safe explained refusal, not a successful itinerary.
 
 | Arm | Composite task success / 30 | Feasible challenge repairs / 4 |
 | --- | ---: | ---: |
@@ -95,7 +101,9 @@ The composite reuses 25 unchanged natural task rows and replaces five rows+with
 
 The Reviewer arm made one actual parsing-failure call on the infeasible case;
 the production fallback ultimately returned an unapproved, explained refusal.
-This is safe fallback evidence, not a clean semantic rejection without+execution failure. The run used 20 paid attempts, 19 parsed successfully,+39,930 input and 21,184 output tokens, and `unpriced` cost. Requested output+cap was 4,096, while one provider usage record reported 4,288 output tokens;
+This is safe fallback evidence, not a clean semantic rejection withoutexecution failure. The run used 20 paid attempts, 19 parsed successfully,
+39,930 input and 21,184 output tokens, and `unpriced` cost. Requested output
+cap was 4,096, while one provider usage record reported 4,288 output tokens;
 the report records both rather than claiming strict provider enforcement.
 
 The review packet at [evaluation/soft_review_v3.md](../evaluation/soft_review_v3.md)
@@ -103,3 +111,17 @@ contains the six confirmed cases and their full route-level evidence. This
 confirmation changes the case-label status only; the report remains a
 controlled audit-tail experiment rather than a natural-request production
 success-rate claim.
+
+### Verified infeasibility safety cases (deterministic replay)
+
+Two further cases were added to the confirmed v3 label set: a two-hour,
+two-required-attraction time deadlock with real saved road duration, and an
+indoor-history-only request whose controlled Shanghai candidate pool contains
+only outdoor POIs while supplemental search is forbidden. Together with the
+previous senior-mobility infeasibility case, these are three distinct refusal
+scenarios. A deterministic replay test holds each impossible draft constant
+through the three allowed Planner repairs and verifies that the final response
+is unapproved, has no itinerary days, and contains the case-specific refusal
+reason. The labels are `verified_v2`; the new cases have **no new live-model
+ablation outcomes** and do not change the six-case model-result table above.
+See [the safety addendum](../evaluation/soft_review_v3_safety_addendum.md).

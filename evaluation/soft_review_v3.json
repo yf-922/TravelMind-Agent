@@ -4,6 +4,21 @@
   "formal_test_report": false,
   "verification_scope": "six controlled soft-constraint cases manually reviewed and confirmed; historical rows retain original provenance",
   "verification_note": "The project owner manually confirmed the six controlled cases and their recorded outcomes.",
+  "additional_verified_cases": [
+    {
+      "id": "soft-review-time-deadlock",
+      "label_status": "verified_v2",
+      "verification_method": "deterministic_three_repair_safety_test",
+      "real_model_ablation_outcome": false
+    },
+    {
+      "id": "soft-review-indoor-pool-conflict",
+      "label_status": "verified_v2",
+      "verification_method": "deterministic_three_repair_safety_test",
+      "real_model_ablation_outcome": false
+    }
+  ],
+  "additional_verification_scope": "Two user-confirmed infeasible case labels; deterministic safety-path tests only, not live-model outcomes.",
   "scope": "25 historical natural drafts plus 5 controlled challenges; clean control separate",
   "model": "grok-4.6",
   "binding": "256cffd06c303db8987502b48f3e1851bf2b98dc2396b652cd957859125c32d6",
@@ -4147,7 +4162,7 @@
   "requested_max_output_tokens": 4096,
   "observed_max_output_tokens": 4288,
   "limitations": [
-    "Challenge labels await explicit human confirmation; historical labels remain author drafts.",
+    "Controlled case labels are verified_v2; historical labels retain original provenance.",
     "Controlled drafts test audit-tail repair, not natural initial Planner error frequency.",
     "Hard scoring partly reuses application risk rules; this is not independent travel validation.",
     "Semantic scoring uses separate predeclared labels, not Reviewer approval or generated notes.",

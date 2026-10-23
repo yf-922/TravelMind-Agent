@@ -677,6 +677,8 @@ def _route_risk_flags(state: TravelPlanState) -> list[str]:
     if requires_indoor_only(state):
         if any(poi_by_name.get(name, {}).get("indoor") is not True for name in names):
             flags.append("indoor_constraint")
+        if not any(poi.get("indoor") is True for poi in state.pois):
+            flags.append("candidate_pool_preference_conflict")
     # A non-overlapping itinerary can still leave too little time to travel.
     for day in route:
         for previous, current in zip(day.get("spots") or [], (day.get("spots") or [])[1:]):
@@ -708,6 +710,7 @@ def route_risk_gate_node(state: TravelPlanState, *, semantic_review: bool = True
         "meal_unknown_restaurant", "meal_duplicate_restaurant", "meal_time_structure",
         "meal_opening_conflict", "meal_overlap", "meal_budget_conflict",
         "meal_preference_conflict",
+        "candidate_pool_preference_conflict",
     )
     review_required = any(
         flag == prefix or flag.startswith(prefix + ":")
@@ -1781,6 +1784,7 @@ def _finalize_impl(state: TravelPlanState) -> dict[str, Any]:
             "modification_time_unfulfilled": "路线未满足用户指定的游玩时段",
             "walking_constraint": "步行距离超限或尚未核验",
             "commute_time_conflict": "景点间预留的通勤时间不足",
+            "candidate_pool_preference_conflict": "候选池中没有满足纯室内要求的景点",
         }
         reason = "；".join(explanations.get(flag, flag) for flag in dict.fromkeys(hard_failures)) or "审核未通过"
         state = state.model_copy(update={
@@ -2019,6 +2023,12 @@ def _finalize_impl(state: TravelPlanState) -> dict[str, Any]:
         "main_meal_search": "主链路餐馆候选查询部分失败，餐馆时间块可能为空或为降级结果。",
         "spot_tips": "景点贴士生成暂不可用，请以景区官方游览须知为准。",
     }
+
+    # A rejected draft is never exposed as a usable itinerary.  The route is
+    # retained in state for diagnostics/checkpoint replay, while the client
+    # receives an empty days list and the explicit refusal reasons above.
+    if hard_failures or not state.approved:
+        days_out = []
 
     final_plan = {
         "candidate_pool": {

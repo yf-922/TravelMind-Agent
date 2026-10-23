@@ -1,8 +1,10 @@
 # Reviewer 软约束挑战：人工复核材料
 
-状态：6 条新增用例已人工复核，标签为 `verified_v2`；这是受控审计小试，不是自然请求的正式线上成功率报告。模型：`grok-4.6`。
+状态：原 6 条模型评测用例标签为 `verified_v2`；另有 2 条新增不可满足场景已确认标签并通过确定性安全退出测试，详见[安全用例补充](soft_review_v3_safety_addendum.md)。模型：`grok-4.6`。新增两条没有真实模型消融结果。
 
 以下组合只复用 25 条历史自然草案，替换加入 5 条人工构造挑战；正常对照单列。它不是重新运行的 30 条自然请求，也不用于估计自然请求中的缺陷比例。
+
+本文逐案记录的是原 6 条真实模型评测。之后新增的两条不可满足标签及其确定性安全退出验证见[补充材料](soft_review_v3_safety_addendum.md)，不加入下表或原始模型调用统计。
 
 | 组别 | 组合任务成功 / 30 | 新增可满足挑战修复 / 4 |
 |---|---:|---:|
@@ -270,7 +272,7 @@ python scripts/review_soft_review_labels.py export
 ```
 
 限制：
-- Challenge labels await explicit human confirmation; historical labels remain author drafts.
+- Controlled case labels are verified_v2; historical labels retain original provenance.
 - Controlled drafts test audit-tail repair, not natural initial Planner error frequency.
 - Hard scoring partly reuses application risk rules; this is not independent travel validation.
 - Semantic scoring uses separate predeclared labels, not Reviewer approval or generated notes.

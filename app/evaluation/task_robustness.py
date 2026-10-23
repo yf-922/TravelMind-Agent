@@ -211,11 +211,31 @@ def semantic_route_violations(route, case, maps):
         best = min(length(order) for order in itertools.permutations(names))
         if best and length(names) / best > rubric['max_detour_ratio']:
             violations.append('avoidable_backtracking')
+    if rubric.get('physical_time_deadlock'):
+        required = set(rubric.get('required', []))
+        names = [str(s.get('name') or '') for s in spots]
+        locations = {p['name']: p['location'] for p in case['state']['pois']}
+        earliest = int(rubric.get('earliest', 0))
+        latest = int(rubric.get('latest', 1440))
+        min_visit = int(rubric.get('min_visit', 0))
+        if required.issubset(names) and len(required) > 1:
+            total_visit = len(required) * min_visit
+            road_minutes = []
+            for origin, destination in itertools.permutations(required, 2):
+                evidence = maps.get(route_key(locations[origin], locations[destination], 'drive'), {})
+                if evidence.get('duration_min') is not None:
+                    road_minutes.append(float(evidence['duration_min']))
+            if total_visit + (min(road_minutes) if road_minutes else 0) > latest - earliest:
+                violations.append('physical_time_deadlock')
+    if rubric.get('candidate_pool_indoor_only_unavailable'):
+        has_indoor = any(poi.get('indoor') is True for poi in case['state'].get('pois', []))
+        if not has_indoor and spots:
+            violations.append('candidate_pool_preference_conflict')
     return sorted(set(violations))
 
 
 def build_soft_review_cases():
-    """Controlled drafts; frozen v2 cases remain unchanged. Labels await review."""
+    """Controlled drafts; all eight cases were confirmed by the project owner."""
     bases = {c['state']['destination']: c for c in build_cases()['tasks']}
     specs = [
         ('stairs', '南京', 'task-南京-family',
@@ -237,6 +257,18 @@ def build_soft_review_cases():
          '带75岁腿脚不便老人，不能爬连续台阶和登高；只允许候选中无需登高的活动，不允许补充候选或假称有无障碍替代。',
          [('中山陵景区', '10:00', '12:00')],
          {'unsuitable_pois': ['中山陵景区'], 'violation': 'mobility_intensity_conflict'}, 'only_seed_pois'),
+        ('time-deadlock', '南京', None,
+         '只有10:00到12:00两小时窗口，必须去南京博物院和南京欢乐谷，每处至少游玩60分钟，两个景点都不能删减，必须保留真实道路通勤时间，禁止补查和新增候选。',
+         [('南京博物院', '10:00', '11:00'), ('南京欢乐谷', '11:00', '12:00')],
+         {'physical_time_deadlock': True, 'required': ['南京博物院', '南京欢乐谷'],
+          'earliest': 600, 'latest': 720, 'min_visit': 60, 'violation': 'physical_time_deadlock'},
+         'only_seed_pois'),
+        ('indoor-pool-conflict', '上海', None,
+         '只安排纯室内历史场馆或博物馆，禁止安排户外景点；当前候选池只有户外自然景点，禁止补查和新增候选。',
+         [('上海动物园', '10:00', '12:00')],
+         {'candidate_pool_indoor_only_unavailable': True,
+          'unsuitable_pois': ['上海动物园'], 'violation': 'candidate_pool_preference_conflict'},
+         'only_seed_pois'),
         ('clean', '南京', None,
          '带老人轻松游，想在玄武湖平缓入口附近散步休息，只安排一个景点。',
          [('玄武湖景区', '10:00', '12:00')], {}, 'only_seed_pois'),
@@ -256,14 +288,36 @@ def build_soft_review_cases():
             state['pois'] = [p for p in state['pois'] if p['name'] in {x[0] for x in schedule}]
         route = [{'day': 1, 'spots': [{'name': name, 'start_time': start, 'end_time': end,
                   'period': 'morning' if clock(start) < 720 else 'afternoon'} for name, start, end in schedule]}]
+        if label == 'time-deadlock':
+            case['state']['pois'] = [p for p in case['state']['pois']
+                                     if p['name'] in {'南京博物院', '南京欢乐谷'}]
+        elif label == 'indoor-pool-conflict':
+            case['state']['pois'] = [p for p in case['state']['pois']
+                                     if p.get('indoor') is False]
+        expected_hard = []
+        if label == 'time-deadlock':
+            expected_hard = ['commute_time_conflict']
+        elif label == 'indoor-pool-conflict':
+            expected_hard = ['candidate_pool_preference_conflict', 'indoor_constraint']
         case.update(id='soft-review-'+label, suite='soft_review', category=label,
-                    replaces=replacement, label_status='pending_human_review',
+                    replaces=replacement, label_status='verified_v2',
                     draft_origin='author_injected_controlled_defect' if label != 'clean' else 'author_clean_control',
-                    expected='reject' if label == 'infeasible' else 'repair_or_preserve',
+                    expected='reject' if label in {'infeasible', 'time-deadlock', 'indoor-pool-conflict'} else 'repair_or_preserve',
+                    expected_hard_violations=expected_hard,
                     rubric={'min_count': len(schedule), 'min_visit': 60},
                     semantic_rubric=semantic, injected_route=route,
                     scope='controlled_audit_tail_not_natural_planner_success',
                     annotation_reason=request)
+        if label == 'time-deadlock':
+            case['rubric'].update(required=['南京博物院', '南京欢乐谷'], earliest=600, latest=720)
+            case['impossibility_reason'] = '两小时窗口不足以覆盖两个必去景点各60分钟及南京博物院至南京欢乐谷的道路通勤时间，且用户禁止删减景点。'
+            case['required_refusal_phrase'] = '景点间预留的通勤时间不足'
+        elif label == 'indoor-pool-conflict':
+            case['rubric'].update(min_count=1, indoor_only=True)
+            case['impossibility_reason'] = '候选池中没有室内历史场馆，用户又禁止补查和新增候选，因此无法生成满足要求的路线。'
+            case['required_refusal_phrase'] = '候选池中没有满足纯室内要求的景点'
+        elif label == 'infeasible':
+            case['impossibility_reason'] = '候选池中没有满足老人不能登高要求的可排景点，且用户禁止补查和替代。'
         output.append(case)
     return output
 
@@ -277,6 +331,15 @@ def grade_soft_review(state, case, maps, error=None):
     result['soft_pass'] = not result['soft_violations']
     result['task_success'] = result['task_success'] and result['soft_pass']
     result['unsafe_release'] = result['approved'] and bool(result['hard_violations'] or result['soft_violations'])
+    if case['expected'] == 'reject':
+        refusal_text = ' '.join(str(message) for message in result['user_messages'])
+        result['safe_explained_rejection'] = bool(
+            result['safe_explained_rejection']
+            and result['approved'] is False
+            and not result['selected']
+            and (not case.get('required_refusal_phrase')
+                 or case['required_refusal_phrase'] in refusal_text)
+        )
     result['expected_behavior_pass'] = (result['safe_explained_rejection'] if case['expected'] == 'reject'
                                         else result['task_success'])
     return result

@@ -407,9 +407,9 @@ checkpoint 已移除阶段等待与固定 Token 预算模拟，改为读取 **30
 
 ### Reviewer 软约束挑战（待人工复核）
 
-在不改变原始账本的前提下，新增 4 个可满足的语义缺陷（老人登阶、38°C 正午暴晒、排斥商业主题、跨区折返）、1 个不可满足对照和 1 个正常对照。三组共用人工注入的初始草案，最多 3 轮返工；组合结果是 **25 条历史自然草案 + 5 条受控挑战**，不能改称新的 30 条自然请求成功率：Planner-only **21/30**、Rules **25/30**、Rules + Reviewer **29/30**；4 个可满足缺陷的修复为 **0/4、0/4、4/4**。新标签与结果仍为 `pending_human_review`，其中不可满足对照发生过 1 次 Reviewer 结构化解析失败，最终由安全兜底拒绝，已在逐案报告中单列。
+在不改变原始账本的前提下，新增 4 个可满足的语义缺陷（老人登阶、38°C 正午暴晒、排斥商业主题、跨区折返）、1 个不可满足对照和 1 个正常对照。三组共用人工注入的初始草案，最多 3 轮返工；组合结果是 **25 条历史自然草案 + 5 条受控挑战**，不能改称新的 30 条自然请求成功率：Planner-only **21/30**、Rules **25/30**、Rules + Reviewer **29/30**；4 个可满足缺陷的修复为 **0/4、0/4、4/4**。原 6 条标签已由用户确认；另新增两条不可满足冲突用例，标签均为 `verified_v2`，并用确定性回放验证三轮返工后安全拒绝。它们没有新增真实模型消融结果；原不可满足模型对照曾发生 1 次 Reviewer 结构化解析失败，安全兜底结果已在逐案报告中单列。
 
-当前风险门控回放基于 30 个保存的真实初稿：30/30 进入语义 Reviewer，跳过率 **0%**；历史账本没有 Time Check 或自适应 A/B 的完整用量，因此不再把旧的 61.8% 当作当前实测节省。详见 [当前门控审计](evaluation/adaptive_routing_replay.md)、[软约束人工复核材料](evaluation/soft_review_v3.md) 和 [评测协议](docs/evidence_benchmark_protocol_v3.md)。
+当前风险门控回放基于 30 个保存的真实初稿：30/30 进入语义 Reviewer，跳过率 **0%**；历史账本没有 Time Check 或自适应 A/B 的完整用量，因此不再把旧的 61.8% 当作当前实测节省。详见[当前门控审计](evaluation/adaptive_routing_replay.md)、[软约束人工复核材料](evaluation/soft_review_v3.md)、[不可满足安全用例补充](evaluation/soft_review_v3_safety_addendum.md)和[评测协议](docs/evidence_benchmark_protocol_v3.md)。
 
 </details>
 

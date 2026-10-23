@@ -56,7 +56,9 @@ def public_report(report, legacy):
         'observed_max_output_tokens': max(((c.get('usage') or {}).get('output_tokens', 0)
                                           for c in report['calls']), default=0),
         'limitations': [
-            'Challenge labels await explicit human confirmation; historical labels remain author drafts.',
+            ('Controlled case labels are verified_v2; historical labels retain original provenance.'
+             if report.get('label_status') == 'verified_v2' else
+             'Challenge labels await explicit human confirmation; historical labels remain author drafts.'),
             'Controlled drafts test audit-tail repair, not natural initial Planner error frequency.',
             'Hard scoring partly reuses application risk rules; this is not independent travel validation.',
             'Semantic scoring uses separate predeclared labels, not Reviewer approval or generated notes.',
@@ -78,7 +80,9 @@ def render(report):
     for arm, s in report['summary'].items():
         lines.append(f"| {arm} | {s['composite_task_success']} | {s['new_feasible_success']} |")
     lines += ['', '成功要求：最终批准、生产硬约束及用例附加要求全部满足、语义标签全部满足。'
-              '不可满足场景的安全拒绝不计为完成行程。硬约束评分部分复用生产规则；语义标签是作者预设，尚待人工确认。', '']
+              '不可满足场景的安全拒绝不计为完成行程。硬约束评分部分复用生产规则；'
+              + ('受控用例标签已确认；新增运行结果仍需单独核对。' if report['label_status'] == 'verified_v2'
+                 else '语义标签是作者预设，尚待人工确认。'), '']
     for case in report['cases']:
         lines += [f"## {case['id']}", '', case['query'], '',
                   f"预期：`{case['expected']}`；标签：`{case['label_status']}`。",

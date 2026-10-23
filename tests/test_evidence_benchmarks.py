@@ -54,12 +54,62 @@ def test_controlled_cases_are_rule_clean_and_soft_defective_before_spending():
     cases = build_soft_review_cases()
     _, maps = load_assets()
     result = preflight(cases, maps)
-    assert len(result) == 6
-    assert all(not row['hard_violations'] for row in result)
-    assert sum(bool(row['soft_violations']) for row in result) == 5
-    assert all(c['label_status'] == 'pending_human_review' for c in cases)
+    assert len(result) == 8
+    by_id = {row['id']: row for row in result}
+    assert all(not [fault for fault in row['hard_violations']
+                   if fault not in next(c for c in cases if c['id'] == row['id']).get('expected_hard_violations', [])]
+               for row in result)
+    assert sum(bool(row['soft_violations']) for row in result) == 7
+    assert all(c['label_status'] == 'verified_v2' for c in cases)
     assert sum(bool(c.get('replaces')) for c in cases) == 5
+    assert by_id['soft-review-time-deadlock']['hard_violations'] == ['commute_time_conflict']
+    assert by_id['soft-review-indoor-pool-conflict']['hard_violations'] == [
+        'candidate_pool_preference_conflict', 'indoor_constraint']
     assert any(c['expected'] == 'reject' for c in cases)
+
+
+@pytest.mark.parametrize('arm', ['rules', 'rules_reviewer'])
+@pytest.mark.parametrize('case_id', [
+    'soft-review-time-deadlock', 'soft-review-indoor-pool-conflict',
+])
+def test_new_infeasible_cases_exit_after_three_repairs_with_specific_refusal(case_id, arm):
+    from unittest.mock import patch
+    from app.evaluation.route_interest import route_key
+    from app.planning import nodes
+    from scripts.evaluate_reviewer_ablation import run_arm
+
+    cases = build_soft_review_cases()
+    case = next(c for c in cases if c['id'] == case_id)
+    _, maps = load_assets()
+    initial = {**copy.deepcopy(case['state']), 'route': copy.deepcopy(case['injected_route'])}
+
+    def planner(state):
+        return {'route': copy.deepcopy(case['injected_route']), 'review_round': state.review_round + 1}
+
+    def reviewer(state):
+        # An optimistic Reviewer cannot override deterministic conflicts.
+        return {'approved': True, 'route_modify_opinion': '',
+                'reviewer_issues': []}
+
+    with patch.object(nodes, 'amap_key', return_value='replay'), \
+         patch.object(nodes, 'plan_route_distance', side_effect=lambda a, b, key, mode='drive':
+                      copy.deepcopy(maps.get(route_key(a, b, mode)))), \
+         patch.object(nodes, 'recommend_chain_hotel', return_value=None), \
+         patch.object(nodes, 'lookup_live_ticket_prices', return_value={}):
+        trace = []
+        state, repairs = run_arm(initial, arm, planner, reviewer, max_repairs=3, trace=trace)
+
+    assert repairs == 3
+    assert len(trace) == 4
+    assert state.pois == initial['pois']
+    assert state.final_plan['approved'] is False
+    assert state.final_plan['days'] == []
+    assert any(case['required_refusal_phrase'] in message
+               for message in state.final_plan['route_issues'])
+    grade = grade_soft_review(state, case, maps)
+    assert grade['safe_explained_rejection']
+    assert grade['expected_behavior_pass']
+    assert not grade['task_success']
 
 
 @pytest.mark.parametrize('case', build_soft_review_cases(), ids=lambda c: c['id'])
@@ -77,10 +127,31 @@ def test_semantic_challenge_scoring_never_trusts_optimistic_model_verdict(case):
 def test_infeasible_refusal_is_not_counted_as_completed_itinerary():
     case = next(c for c in build_soft_review_cases() if c['category'] == 'infeasible')
     state = TravelPlanState(**case['state'])
+    state.review_round = 3
     state.final_plan = {'approved': False, 'days': [], 'route_issues': ['当前无法生成满足条件的路线：没有合适候选。']}
     result = grade_soft_review(state, case, {})
     assert result['expected_behavior_pass']
     assert not result['task_success']
+
+
+def test_offline_infeasible_replay_preserves_unaudited_baseline_and_never_calls_providers(monkeypatch):
+    from scripts.evaluate_infeasible_safety import evaluate
+    from app.planning import nodes
+
+    def unexpected_call(*args, **kwargs):
+        raise AssertionError('live provider access is forbidden')
+
+    monkeypatch.setattr(nodes, 'plan_route_distance', unexpected_call)
+    monkeypatch.setattr(nodes, 'invoke_structured', unexpected_call)
+    report = evaluate()
+    assert report['summary']['rules'] == {'safe_rejections': 2, 'cases': 2}
+    assert report['summary']['rules_reviewer'] == {'safe_rejections': 2, 'cases': 2}
+    assert report['model_calls'] == report['external_calls'] == 0
+    baseline = [r for r in report['rows'] if r['arm'] == 'planner_only']
+    assert len(baseline) == 2
+    assert all(r['grade']['unsafe_release'] for r in baseline)
+    assert all(r['grade']['selected'] for r in baseline)
+    assert all(not r['grade']['task_success'] for r in baseline)
 
 
 def test_repaired_heat_slot_must_change_route_json_not_notes():
@@ -125,12 +196,18 @@ def test_composite_reuse_is_explicit_and_does_not_mutate_legacy():
     report = {'cases': build_soft_review_cases(), 'rows': []}
     result = summarize(report, legacy)
     assert result['rules_reviewer']['new_recorded'] == 0
+    assert result['rules_reviewer']['planned_composite'] == 6
+    assert result['rules_reviewer']['new_feasible_count'] == 4
+    assert result['rules_reviewer']['new_reject_count'] == 1
     assert json.dumps(legacy, sort_keys=True) == before
 
 
 def test_human_verification_requires_identity_all_cases_and_bound_content():
+    cases = build_soft_review_cases()
+    for case in cases:
+        case['label_status'] = 'pending_human_review'
     report = {'binding': 'test-binding', 'status': 'complete_pending_human_review',
-              'cases': build_soft_review_cases()}
+              'cases': cases}
     form = export_form(report)
     with pytest.raises(ValueError, match='identity'):
         apply_confirmation(report, form)
@@ -144,8 +221,11 @@ def test_human_verification_requires_identity_all_cases_and_bound_content():
 
 
 def test_confirmed_copy_records_review_provenance():
+    cases = build_soft_review_cases()
+    for case in cases:
+        case['label_status'] = 'pending_human_review'
     report = {'binding': 'test-binding', 'status': 'complete_pending_human_review',
-              'cases': build_soft_review_cases()}
+              'cases': cases}
     form = export_form(report)
     form.update(reviewer='test-reviewer', reviewed_at='2026-10-23T12:00:00+08:00')
     for decision in form['decisions']:
