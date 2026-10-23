@@ -56,11 +56,14 @@ def test_checkpoint_benchmark_captures_production_prompts_without_sleep(tmp_path
     ]
     assert result['text_input_tokens']['full'] > 0
     assert result['text_input_tokens']['local'] > 0
-    assert result['avoided_front_llm_invocations'] == 2
+    assert result['avoided_front_llm_invocations'] == 8
+    assert result['modification_requests'] == 4
+    assert result['timed_runs_per_arm'] == 8
     assert result['external_io_latency'] is None
     assert result['end_to_end_latency_reduction_ratio'] is None
     assert set(result['_prompts'][0]['full']) == {'intent', 'query_rewrite', 'planner'}
     assert set(result['_prompts'][0]['local']) == {'planner'}
+    assert result['rows'][0]['scenario'] == 'start_time'
 
     fanout = {
         "parallel_nodes": ["a", "b"], "runs": 5, "fake_delay_ms_per_node": 1,
@@ -76,3 +79,41 @@ def test_checkpoint_benchmark_captures_production_prompts_without_sleep(tmp_path
     }, "checkpoint_replan": result})
     assert "must not be presented as online quality data" in report
     assert 'modeled p50' not in report.lower()
+
+
+def test_checkpoint_benchmark_covers_four_modifications_and_one_mocked_targeted_lookup():
+    from app.evaluation.checkpoint_benchmark import measure_checkpoint_prompts
+    from app.evaluation.task_robustness import build_cases
+    import copy
+
+    cases = build_cases()['tasks'][:4]
+    seeds = {}
+    for case in cases:
+        state = copy.deepcopy(case['state'])
+        state['route'] = [{'day': 1, 'spots': [{
+            'name': state['pois'][0]['name'], 'period': 'morning',
+            'start_time': '10:00', 'end_time': '12:00',
+        }]}]
+        seeds[case['id']] = {'state': state}
+
+    result = measure_checkpoint_prompts(
+        {'cases': cases, 'seeds': seeds}, samples=4, repetitions=2,
+    )
+
+    summaries = {item['id']: item for item in result['modification_scenarios']}
+    assert set(summaries) == {'start_time', 'replace_poi', 'rain_indoor', 'niche_candidate'}
+    assert all(summaries[key]['mocked_targeted_lookup_calls'] == 0
+               for key in ('start_time', 'replace_poi', 'rain_indoor'))
+    assert summaries['niche_candidate']['mocked_targeted_lookup_calls'] == 4
+    assert result['mocked_targeted_lookup']['calls'] == 4
+    assert result['mocked_targeted_lookup']['real_provider_calls'] == 0
+    assert result['rows'][-1]['mocked_targeted_lookup_calls'] == 1
+    assert '离线Mock非遗手作博物馆' in str(result['_prompts'][-1]['local'])
+    assert '离线Mock非遗手作博物馆' in str(result['_prompts'][-1]['full'])
+    assert all(row['identical_candidate_pool'] for row in result['rows'])
+    assert result['modification_requests'] == 16
+    assert result['timed_runs_per_arm'] == 32
+    assert result['mock_provider_calls']['full'] == {
+        'weather_prefetch': 16, 'poi_prefetch': 16, 'poi_targeted': 0,
+    }
+    assert all(item['prompt_token_reduction_ratio'] is not None for item in summaries.values())

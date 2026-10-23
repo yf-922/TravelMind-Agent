@@ -62,12 +62,25 @@ python scripts/audit_current_risk_gate.py
 ## 3. 真实状态与生产 Prompt，而非成本常量
 
 从同一账本选取 30 个不同的普通任务初稿，保留解析需求、天气、候选与路线。
-构造晚出发/下午室内的局部修改，不能复制一份状态凑样本数。
+每份状态独立运行四类修改：延后出发、池内替换一个景点、下午室内避雨、
+新增明确点名的池外小众场馆。30 份状态形成 120 个修改探针；计时重复三次
+另计，不把重复次数包装成更多用户请求。不能复制一份状态凑初稿样本数。
+
+新增场馆使用显式标记的虚构离线 POI，不是新采集的真实高德数据。API 与
+基准共同使用 `refresh_explicit_modification_candidates`：池内点名不补查，
+池外点名最多查三项，只有同名且坐标有效的返回才入池。此基准每次只点名
+一个缺失场馆，实际 Mock 调用数来自 `Mock.call_count`，不是预填结果。
+未点名的新主题、Supervisor 的 LLM 修改分析均不在这个测量范围。
+
+缓存复用与需求可满足分开统计：若候选池没有已知室内景点，该避雨探针
+保留在总体统计，标记 `no_verified_indoor_candidate`，不能称为缓存命中
+成功。基准不运行生成模型，因此不能把此标记写成已经验证最终安全拒绝。
 
 - 完整路径：生产 Intent Prompt、Query Rewrite Prompt、回放保存的解析字段
   与天气/POI JSON、生产联合 Planner Prompt；不携带旧路线作为初稿。
 - 局部路径：与修改 API 共用 `restore_modification_state`，保留原路线供修改，
-  使用真实生产 Planner Prompt，不再构造前置 Prompt。
+  使用真实生产 Planner Prompt，不再构造前置 Prompt；需要时在恢复前执行
+  共享的定向补查函数。两组补查后的候选池必须逐字段一致，否则立即失败。
 
 按 `tiktoken==0.14.0 / cl100k_base` 对实际 system/human 文本分词，合并各节点
 文本数后计算 `1 - local/full`。不统计工具 Schema、消息协议边界或输出，
@@ -76,12 +89,25 @@ python scripts/audit_current_risk_gate.py
 
 每状态本地计时重复三次，测序列化、状态恢复、Prompt 构造，不加 sleep。
 没有天气/POI历史耗时 Trace，因此不使用示例 150ms/100ms/800ms 填值。
-每次省去两个前置 Prompt 调用机会及天气、POI两类查询；不能据此说一定
-省两次 HTTP，因为真实检索可能分页、重试或命中缓存。
+每次省去两个前置 Prompt 构造机会及天气、原候选池全量查询。全量组分别
+调用一次天气/POI 回放 Mock，局部组只在缺少明确点名景点时调用定向 Mock；
+这些不是历史 HTTP 次数，真实检索可能分页、重试或命中缓存。补查 Mock
+每次修改只执行一次，发生在重复本地计时之前，查找耗时不纳入恢复计时。
+
+总 Token 缩减比例为 `1 - sum(local)/sum(full)`；另报每请求比例的算术
+均值及 P50，保留负收益。分场景报告全部探针和满足候选前提的探针；
+不把预期“约 30%”作为验收门槛，不对结果做筛选。
 
 ```powershell
 python scripts/offline_engineering_benchmark.py --runs 30 --checkpoint-samples 30 --checkpoint-repetitions 3
 python -m pytest -q tests/test_evidence_benchmarks.py tests/test_offline_engineering_benchmark.py
+```
+
+四类修改报告建议使用新路径，保留此前两类修改的历史产物：
+
+```powershell
+python scripts/offline_engineering_benchmark.py --runs 10 --checkpoint-samples 30 --checkpoint-repetitions 3 --json-out data/eval/checkpoint_modifications_v2.json --markdown-out data/eval/checkpoint_modifications_v2.md --prompt-out data/eval/checkpoint_modifications_v2_prompts.json
+python -m pytest -q tests/test_checkpoint_modifications.py
 ```
 
 道路并发基准仍单独采用固定延迟服务来测调度，不能与上述本地计时合成

@@ -362,16 +362,28 @@ def render_markdown(report: dict[str, Any]) -> str:
         "",
         "## Checkpoint local replanning",
         "",
-        f"- Actual saved checkpoints: {replan['samples']}; repeats per checkpoint: {replan['runs']}",
+        f"- Actual saved checkpoints: {replan['samples']}; independent modifications per checkpoint: {replan['modifications_per_checkpoint']}; "
+        f"modification requests: {replan['modification_requests']}; timer repetitions per modification: {replan['runs']} (not additional user modifications)",
         f"- Full replay P50/P95: {replan['full_replay_ms']['p50']} / {replan['full_replay_ms']['p95']} ms",
         f"- Local replan P50/P95: {replan['checkpoint_local_replan_ms']['p50']} / {replan['checkpoint_local_replan_ms']['p95']} ms",
         "- Timing scope: local serialization, production prompt assembly and checkpoint restore only.",
         f"- Avoided stages: {', '.join(replan['avoided_nodes'])}",
         f"- Production prompt text tokens ({replan['encoding']}): full {tokens['full']}, local {tokens['local']}; reduction {tokens['reduction_ratio']:.1%}.",
-        f"- Avoided front-node LLM invocations: {replan['avoided_front_llm_invocations']} across {replan['samples']} requests.",
-        "- Skipped external query categories per request: weather and POI; exact historical HTTP requests unavailable.",
+        f"- Avoided front-node prompt constructions: {replan['avoided_front_llm_invocations']} across {replan['modification_requests']} modifications (no model invoked).",
+        "- Modification scenarios (requests / applicable / cache-pool sufficient / mocked targeted lookups / Prompt token reduction):",
+        *[f"  - {item['label']}: {item['requests']} / {item['applicable_requests']} / "
+          f"{item['cache_pool_sufficient_requests']} / {item['mocked_targeted_lookup_calls']} / "
+          f"{item['prompt_token_reduction_ratio']:.1%}"
+          for item in replan['modification_scenarios']],
+        f"- Offline mock targeted lookups: {replan['mocked_targeted_lookup']['calls']} total; "
+        "API-shared quoted-name lookup logic with fictional fixtures; zero real provider calls.",
+        f"- Counted mock provider calls by arm: {replan['mock_provider_calls']}",
+        f"- First-three supported cache edits: full {replan['first_three_cache_hit_tokens']['full']} vs "
+        f"local {replan['first_three_cache_hit_tokens']['local']} text tokens. Unsupported edits remain in rows and are not counted as cache hits.",
+        "- Weather and existing POI data are restored from checkpoint in local modifications; exact historical HTTP calls unavailable.",
         "- Token boundary: text tokenization, not provider billing; schemas and wire framing excluded.",
         "- External API/model timing trace: unavailable; no end-to-end latency claim.",
+        "- No model generated a modified route; these are routing and Prompt-construction probes, not edit-success evaluations.",
         "",
         "## Interpretation boundary",
         "",
@@ -391,7 +403,9 @@ def main() -> int:
     parser.add_argument("--provider-delay-ms", type=float, default=20.0)
     parser.add_argument("--checkpoint-ledger", type=Path, default=ROOT/'data/eval/reviewer_ablation_real_v2.json')
     parser.add_argument("--checkpoint-samples", type=int, default=30)
-    parser.add_argument("--checkpoint-repetitions", type=int, default=3)
+    parser.add_argument("--checkpoint-repetitions", type=int, default=3,
+                        help="Local timer repetitions per edit; all four edits run independently on every checkpoint")
+    parser.add_argument("--prompt-out", type=Path, default=ROOT/'data/eval/checkpoint_prompt_capture.json')
     parser.add_argument("--json-out", type=Path, default=ROOT / "evaluation" / "offline_engineering_benchmark.json")
     parser.add_argument("--markdown-out", type=Path, default=ROOT / "evaluation" / "offline_engineering_benchmark.md")
     args = parser.parse_args()
@@ -403,7 +417,7 @@ def main() -> int:
         parser.error("delay values must be positive")
 
     report = {
-        "schema_version": 1,
+        "schema_version": 2,
         "external_calls": False,
         "captured_at": datetime.now(timezone.utc).isoformat(),
         "environment": {"python": platform.python_version(), "platform": platform.platform(),
@@ -419,7 +433,7 @@ def main() -> int:
     }
     args.json_out.parent.mkdir(parents=True, exist_ok=True)
     prompts = report['checkpoint_replan'].pop('_prompts')
-    prompt_out = ROOT/'data/eval/checkpoint_prompt_capture.json'
+    prompt_out = args.prompt_out
     prompt_out.parent.mkdir(parents=True, exist_ok=True)
     prompt_out.write_text(json.dumps(prompts, ensure_ascii=False, indent=2), encoding='utf-8')
     report['checkpoint_replan']['prompt_capture_sha256'] = hashlib.sha256(prompt_out.read_bytes()).hexdigest()

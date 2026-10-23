@@ -53,7 +53,8 @@ from app.core.cache import redis_status
 from app.core.observability import prometheus_text, request_finished, request_started
 from app.planning.graph import run_modification_stream
 from app.planning.graph import run_stream as run_plan_stream
-from app.planning.helpers import amap_key, merge_verified_poi, missing_explicit_places
+from app.planning.helpers import amap_key, merge_verified_poi
+from app.planning.modification import refresh_explicit_modification_candidates
 from app.planning.profile_updater import run_profile_update_agent
 from app.providers.amap.poi import ATTRACTION_TYPE, poi_to_spot, search_city_pois
 from app.api.auth_routes import router as auth_router
@@ -302,35 +303,9 @@ async def create_plan_stream(req: PlanRequest, request: Request):
             # 外部搜索，避免把模糊语义误当成 POI；用户明确选择的景点仍走下方
             # selected_poi_name 的严格核验路径。
             if not req.selected_poi_name:
-                missing_places = missing_explicit_places(
-                    modification_notes, list(checkpoint.get("pois") or [])
+                checkpoint, modification_notes, _ = refresh_explicit_modification_candidates(
+                    checkpoint, modification_notes, lookup=search_city_pois, key_provider=amap_key,
                 )
-                for requested_name in missing_places[:3]:
-                    destination = str(checkpoint.get("destination") or "").strip()
-                    if not destination:
-                        logger.warning("[modification] skip targeted POI lookup without destination name=%s", requested_name)
-                        break
-                    try:
-                        raw_pois = search_city_pois(
-                            destination, amap_key(), keywords=requested_name,
-                            types=ATTRACTION_TYPE, offset=8,
-                        )
-                    except RuntimeError as exc:
-                        logger.warning("[modification] targeted POI lookup failed name=%s error=%s", requested_name, exc)
-                        continue
-                    verified = next(
-                        (poi_to_spot(raw) for raw in raw_pois
-                         if str(raw.get("name") or "").strip() == requested_name),
-                        None,
-                    )
-                    if verified:
-                        checkpoint = {
-                            **checkpoint,
-                            "pois": merge_verified_poi(list(checkpoint.get("pois") or []), verified),
-                        }
-                        modification_notes += (
-                            f"\n【系统已核验新增景点】{verified['name']}，已加入候选池并参与本轮重规划。"
-                        )
             if req.selected_poi_name:
                 poi_name = req.selected_poi_name.strip()
                 destination = str(checkpoint.get("destination") or "").strip()

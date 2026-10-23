@@ -186,7 +186,7 @@ def test_prompt_tokens_use_encoding_and_can_report_negative_saving():
     state['route'][0]['spots'][0]['notes'] = '额外的历史路线信息' * 3000
     result = measure_checkpoint_prompts(ledger, samples=1, repetitions=1)
     assert result['text_input_tokens']['reduction_ratio'] < 0
-    assert result['avoided_front_llm_invocations'] == 2
+    assert result['avoided_front_llm_invocations'] == 8
     assert result['end_to_end_latency_reduction_ratio'] is None
 
 
