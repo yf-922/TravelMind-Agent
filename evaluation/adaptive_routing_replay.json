@@ -1,525 +1,376 @@
 {
-  "measurement_type": "offline-policy-replay-of-saved-real-provider-outcomes",
-  "generated_at": "2026-09-25T06:59:04.622443+00:00",
-  "cases": [
+  "schema_version": 1,
+  "external_calls": false,
+  "method": "current_policy_on_saved_initial_states_and_observed_provider_usage",
+  "source_binding": "0dec6e18e1f917871296e98b25d72039cfc074a09c1325a10262a92c469bad4f",
+  "requests": 30,
+  "rows": [
     {
-      "case_id": "nanjing-3d-sunny-history",
-      "source": "saved-natural-provider-output",
-      "route": "planner_only",
-      "single_pass": true,
-      "full_pass": true,
-      "adaptive_pass": true,
-      "single_ms": 70065.978,
-      "full_ms": 83037.719,
-      "adaptive_ms": 70065.978
+      "id": "task-南京-interest",
+      "seed_available": true,
+      "observed_audit_calls": 1,
+      "flags": [
+        "preference_review"
+      ],
+      "review_required": true,
+      "time_check_required": true,
+      "initial_skip": false
     },
     {
-      "case_id": "nanjing-3d-singlerain-history",
-      "source": "saved-natural-provider-output",
-      "route": "planner_only",
-      "single_pass": true,
-      "full_pass": true,
-      "adaptive_pass": true,
-      "single_ms": 53310.681,
-      "full_ms": 190821.954,
-      "adaptive_ms": 53310.681
+      "id": "task-南京-excluded",
+      "seed_available": true,
+      "observed_audit_calls": 1,
+      "flags": [
+        "preference_review"
+      ],
+      "review_required": true,
+      "time_check_required": true,
+      "initial_skip": false
     },
     {
-      "case_id": "nanjing-3d-tighthours-negative",
-      "source": "saved-natural-provider-output",
-      "route": "planner_only",
-      "single_pass": true,
-      "full_pass": true,
-      "adaptive_pass": true,
-      "single_ms": 63404.136,
-      "full_ms": 104828.487,
-      "adaptive_ms": 63404.136
+      "id": "task-南京-slow",
+      "seed_available": true,
+      "observed_audit_calls": 1,
+      "flags": [
+        "preference_review"
+      ],
+      "review_required": true,
+      "time_check_required": true,
+      "initial_skip": false
     },
     {
-      "case_id": "injected:duplicate_poi",
-      "source": "saved-real-draft-with-deterministic-fault",
-      "route": "planner_reviewer_time_check",
-      "single_pass": false,
-      "full_pass": true,
-      "adaptive_pass": true,
-      "single_ms": 53310.681,
-      "full_ms": 139506.775,
-      "adaptive_ms": 139506.775
+      "id": "task-南京-late",
+      "seed_available": true,
+      "observed_audit_calls": 2,
+      "flags": [
+        "commute_time_conflict",
+        "preference_review"
+      ],
+      "review_required": true,
+      "time_check_required": true,
+      "initial_skip": false
     },
     {
-      "case_id": "injected:opening_hours",
-      "source": "saved-real-draft-with-deterministic-fault",
-      "route": "planner_reviewer_time_check",
-      "single_pass": false,
-      "full_pass": true,
-      "adaptive_pass": true,
-      "single_ms": 63404.136,
-      "full_ms": 180289.34600000002,
-      "adaptive_ms": 180289.34600000002
+      "id": "task-南京-family",
+      "seed_available": true,
+      "observed_audit_calls": 1,
+      "flags": [
+        "preference_review"
+      ],
+      "review_required": true,
+      "time_check_required": true,
+      "initial_skip": false
     },
     {
-      "case_id": "injected:opening_hours_only",
-      "source": "saved-real-draft-with-deterministic-fault",
-      "route": "time_check_only",
-      "single_pass": false,
-      "full_pass": true,
-      "adaptive_pass": true,
-      "single_ms": 63404.136,
-      "full_ms": 136962.03100000002,
-      "adaptive_ms": 148285.157
+      "id": "task-南京-rain",
+      "seed_available": true,
+      "observed_audit_calls": 1,
+      "flags": [
+        "preference_review"
+      ],
+      "review_required": true,
+      "time_check_required": true,
+      "initial_skip": false
+    },
+    {
+      "id": "task-南京-nature",
+      "seed_available": true,
+      "observed_audit_calls": 1,
+      "flags": [
+        "preference_review"
+      ],
+      "review_required": true,
+      "time_check_required": true,
+      "initial_skip": false
+    },
+    {
+      "id": "task-南京-window",
+      "seed_available": true,
+      "observed_audit_calls": 1,
+      "flags": [
+        "preference_review"
+      ],
+      "review_required": true,
+      "time_check_required": true,
+      "initial_skip": false
+    },
+    {
+      "id": "task-南京-choice",
+      "seed_available": true,
+      "observed_audit_calls": 1,
+      "flags": [
+        "preference_review"
+      ],
+      "review_required": true,
+      "time_check_required": true,
+      "initial_skip": false
+    },
+    {
+      "id": "task-南京-elder",
+      "seed_available": true,
+      "observed_audit_calls": 1,
+      "flags": [
+        "preference_review"
+      ],
+      "review_required": true,
+      "time_check_required": true,
+      "initial_skip": false
+    },
+    {
+      "id": "task-上海-interest",
+      "seed_available": true,
+      "observed_audit_calls": 1,
+      "flags": [
+        "preference_review"
+      ],
+      "review_required": true,
+      "time_check_required": true,
+      "initial_skip": false
+    },
+    {
+      "id": "task-上海-excluded",
+      "seed_available": true,
+      "observed_audit_calls": 1,
+      "flags": [
+        "preference_review"
+      ],
+      "review_required": true,
+      "time_check_required": true,
+      "initial_skip": false
+    },
+    {
+      "id": "task-上海-slow",
+      "seed_available": true,
+      "observed_audit_calls": 1,
+      "flags": [
+        "preference_review"
+      ],
+      "review_required": true,
+      "time_check_required": true,
+      "initial_skip": false
+    },
+    {
+      "id": "task-上海-late",
+      "seed_available": true,
+      "observed_audit_calls": 1,
+      "flags": [
+        "preference_review"
+      ],
+      "review_required": true,
+      "time_check_required": true,
+      "initial_skip": false
+    },
+    {
+      "id": "task-上海-family",
+      "seed_available": true,
+      "observed_audit_calls": 1,
+      "flags": [
+        "preference_review"
+      ],
+      "review_required": true,
+      "time_check_required": true,
+      "initial_skip": false
+    },
+    {
+      "id": "task-上海-rain",
+      "seed_available": true,
+      "observed_audit_calls": 1,
+      "flags": [
+        "preference_review"
+      ],
+      "review_required": true,
+      "time_check_required": true,
+      "initial_skip": false
+    },
+    {
+      "id": "task-上海-nature",
+      "seed_available": true,
+      "observed_audit_calls": 1,
+      "flags": [
+        "preference_review"
+      ],
+      "review_required": true,
+      "time_check_required": true,
+      "initial_skip": false
+    },
+    {
+      "id": "task-上海-window",
+      "seed_available": true,
+      "observed_audit_calls": 1,
+      "flags": [
+        "preference_review"
+      ],
+      "review_required": true,
+      "time_check_required": true,
+      "initial_skip": false
+    },
+    {
+      "id": "task-上海-choice",
+      "seed_available": true,
+      "observed_audit_calls": 1,
+      "flags": [
+        "preference_review"
+      ],
+      "review_required": true,
+      "time_check_required": true,
+      "initial_skip": false
+    },
+    {
+      "id": "task-上海-elder",
+      "seed_available": true,
+      "observed_audit_calls": 1,
+      "flags": [
+        "preference_review"
+      ],
+      "review_required": true,
+      "time_check_required": true,
+      "initial_skip": false
+    },
+    {
+      "id": "task-三亚-interest",
+      "seed_available": true,
+      "observed_audit_calls": 1,
+      "flags": [
+        "preference_review"
+      ],
+      "review_required": true,
+      "time_check_required": true,
+      "initial_skip": false
+    },
+    {
+      "id": "task-三亚-excluded",
+      "seed_available": true,
+      "observed_audit_calls": 1,
+      "flags": [
+        "preference_review"
+      ],
+      "review_required": true,
+      "time_check_required": true,
+      "initial_skip": false
+    },
+    {
+      "id": "task-三亚-slow",
+      "seed_available": true,
+      "observed_audit_calls": 1,
+      "flags": [
+        "preference_review"
+      ],
+      "review_required": true,
+      "time_check_required": true,
+      "initial_skip": false
+    },
+    {
+      "id": "task-三亚-late",
+      "seed_available": true,
+      "observed_audit_calls": 2,
+      "flags": [
+        "long_road_leg",
+        "commute_time_conflict",
+        "preference_review"
+      ],
+      "review_required": true,
+      "time_check_required": true,
+      "initial_skip": false
+    },
+    {
+      "id": "task-三亚-family",
+      "seed_available": true,
+      "observed_audit_calls": 1,
+      "flags": [
+        "preference_review"
+      ],
+      "review_required": true,
+      "time_check_required": true,
+      "initial_skip": false
+    },
+    {
+      "id": "task-三亚-weather_window",
+      "seed_available": true,
+      "observed_audit_calls": 1,
+      "flags": [
+        "preference_review"
+      ],
+      "review_required": true,
+      "time_check_required": true,
+      "initial_skip": false
+    },
+    {
+      "id": "task-三亚-nature",
+      "seed_available": true,
+      "observed_audit_calls": 2,
+      "flags": [
+        "long_road_leg",
+        "commute_time_conflict",
+        "preference_review"
+      ],
+      "review_required": true,
+      "time_check_required": true,
+      "initial_skip": false
+    },
+    {
+      "id": "task-三亚-window",
+      "seed_available": true,
+      "observed_audit_calls": 2,
+      "flags": [
+        "commute_time_conflict",
+        "preference_review"
+      ],
+      "review_required": true,
+      "time_check_required": true,
+      "initial_skip": false
+    },
+    {
+      "id": "task-三亚-choice",
+      "seed_available": true,
+      "observed_audit_calls": 1,
+      "flags": [
+        "long_road_leg",
+        "preference_review"
+      ],
+      "review_required": true,
+      "time_check_required": true,
+      "initial_skip": false
+    },
+    {
+      "id": "task-三亚-elder",
+      "seed_available": true,
+      "observed_audit_calls": 1,
+      "flags": [
+        "preference_review"
+      ],
+      "review_required": true,
+      "time_check_required": true,
+      "initial_skip": false
     }
   ],
-  "routing_matrix": [
-    {
-      "case_id": "sunny_indoor",
-      "expected_mode": "planner_only",
-      "actual_mode": "planner_only",
-      "passed": true,
-      "flags": []
-    },
-    {
-      "case_id": "sunny_outdoor",
-      "expected_mode": "planner_only",
-      "actual_mode": "planner_only",
-      "passed": true,
-      "flags": []
-    },
-    {
-      "case_id": "valid_two_spots",
-      "expected_mode": "planner_only",
-      "actual_mode": "planner_only",
-      "passed": true,
-      "flags": []
-    },
-    {
-      "case_id": "no_forecast",
-      "expected_mode": "planner_only",
-      "actual_mode": "planner_only",
-      "passed": true,
-      "flags": []
-    },
-    {
-      "case_id": "valid_walking_leg",
-      "expected_mode": "planner_only",
-      "actual_mode": "planner_only",
-      "passed": true,
-      "flags": []
-    },
-    {
-      "case_id": "unknown_hours",
-      "expected_mode": "planner_only",
-      "actual_mode": "planner_only",
-      "passed": true,
-      "flags": [
-        "opening_time_unknown"
-      ]
-    },
-    {
-      "case_id": "rain_indoor",
-      "expected_mode": "planner_only",
-      "actual_mode": "planner_only",
-      "passed": true,
-      "flags": []
-    },
-    {
-      "case_id": "rain_outdoor",
-      "expected_mode": "planner_reviewer_time_check",
-      "actual_mode": "planner_reviewer_time_check",
-      "passed": true,
-      "flags": [
-        "weather_outdoor_conflict"
-      ]
-    },
-    {
-      "case_id": "duplicate_poi",
-      "expected_mode": "planner_reviewer_time_check",
-      "actual_mode": "planner_reviewer_time_check",
-      "passed": true,
-      "flags": [
-        "duplicate_poi"
-      ]
-    },
-    {
-      "case_id": "unknown_poi",
-      "expected_mode": "planner_reviewer_time_check",
-      "actual_mode": "planner_reviewer_time_check",
-      "passed": true,
-      "flags": [
-        "unknown_poi"
-      ]
-    },
-    {
-      "case_id": "missing_day",
-      "expected_mode": "planner_reviewer_time_check",
-      "actual_mode": "planner_reviewer_time_check",
-      "passed": true,
-      "flags": [
-        "route_structure"
-      ]
-    },
-    {
-      "case_id": "empty_day",
-      "expected_mode": "planner_reviewer_time_check",
-      "actual_mode": "planner_reviewer_time_check",
-      "passed": true,
-      "flags": [
-        "route_structure"
-      ]
-    },
-    {
-      "case_id": "duplicate_day_number",
-      "expected_mode": "planner_reviewer_time_check",
-      "actual_mode": "planner_reviewer_time_check",
-      "passed": true,
-      "flags": [
-        "route_structure"
-      ]
-    },
-    {
-      "case_id": "overlap",
-      "expected_mode": "planner_reviewer_time_check",
-      "actual_mode": "planner_reviewer_time_check",
-      "passed": true,
-      "flags": [
-        "route_structure"
-      ]
-    },
-    {
-      "case_id": "reverse_period",
-      "expected_mode": "planner_reviewer_time_check",
-      "actual_mode": "planner_reviewer_time_check",
-      "passed": true,
-      "flags": [
-        "route_structure"
-      ]
-    },
-    {
-      "case_id": "missing_time",
-      "expected_mode": "planner_reviewer_time_check",
-      "actual_mode": "planner_reviewer_time_check",
-      "passed": true,
-      "flags": [
-        "route_structure"
-      ]
-    },
-    {
-      "case_id": "closed_hours",
-      "expected_mode": "time_check_only",
-      "actual_mode": "time_check_only",
-      "passed": true,
-      "flags": [
-        "opening_time_conflict"
-      ]
-    },
-    {
-      "case_id": "late_start",
-      "expected_mode": "planner_reviewer_time_check",
-      "actual_mode": "planner_reviewer_time_check",
-      "passed": true,
-      "flags": [
-        "habit_constraint"
-      ]
-    },
-    {
-      "case_id": "slow_pace",
-      "expected_mode": "planner_reviewer_time_check",
-      "actual_mode": "planner_reviewer_time_check",
-      "passed": true,
-      "flags": [
-        "habit_constraint"
-      ]
-    },
-    {
-      "case_id": "walking_too_far",
-      "expected_mode": "planner_reviewer_time_check",
-      "actual_mode": "planner_reviewer_time_check",
-      "passed": true,
-      "flags": [
-        "walking_constraint"
-      ]
-    },
-    {
-      "case_id": "walking_leg_missing",
-      "expected_mode": "planner_reviewer_time_check",
-      "actual_mode": "planner_reviewer_time_check",
-      "passed": true,
-      "flags": [
-        "walking_constraint"
-      ]
-    },
-    {
-      "case_id": "long_drive",
-      "expected_mode": "planner_reviewer_time_check",
-      "actual_mode": "planner_reviewer_time_check",
-      "passed": true,
-      "flags": [
-        "long_road_leg"
-      ]
-    },
-    {
-      "case_id": "user_change",
-      "expected_mode": "planner_reviewer_time_check",
-      "actual_mode": "planner_reviewer_time_check",
-      "passed": true,
-      "flags": [
-        "user_modification"
-      ]
-    },
-    {
-      "case_id": "compound_fault",
-      "expected_mode": "planner_reviewer_time_check",
-      "actual_mode": "planner_reviewer_time_check",
-      "passed": true,
-      "flags": [
-        "duplicate_poi",
-        "unknown_poi"
-      ]
-    },
-    {
-      "case_id": "valid_evening",
-      "expected_mode": "planner_only",
-      "actual_mode": "planner_only",
-      "passed": true,
-      "flags": []
-    },
-    {
-      "case_id": "too_many_per_day",
-      "expected_mode": "planner_reviewer_time_check",
-      "actual_mode": "planner_reviewer_time_check",
-      "passed": true,
-      "flags": [
-        "route_structure",
-        "opening_time_conflict"
-      ]
-    },
-    {
-      "case_id": "day_number_gap",
-      "expected_mode": "planner_reviewer_time_check",
-      "actual_mode": "planner_reviewer_time_check",
-      "passed": true,
-      "flags": [
-        "route_structure"
-      ]
-    },
-    {
-      "case_id": "zero_length_visit",
-      "expected_mode": "planner_reviewer_time_check",
-      "actual_mode": "planner_reviewer_time_check",
-      "passed": true,
-      "flags": [
-        "route_structure"
-      ]
-    },
-    {
-      "case_id": "period_missing",
-      "expected_mode": "planner_reviewer_time_check",
-      "actual_mode": "planner_reviewer_time_check",
-      "passed": true,
-      "flags": [
-        "route_structure"
-      ]
-    },
-    {
-      "case_id": "opening_conflict_with_clean_structure",
-      "expected_mode": "time_check_only",
-      "actual_mode": "time_check_only",
-      "passed": true,
-      "flags": [
-        "opening_time_conflict"
-      ]
-    },
-    {
-      "case_id": "unknown_hours_plus_duplicate",
-      "expected_mode": "planner_reviewer_time_check",
-      "actual_mode": "planner_reviewer_time_check",
-      "passed": true,
-      "flags": [
-        "duplicate_poi",
-        "opening_time_unknown"
-      ]
-    },
-    {
-      "case_id": "transit_leg_not_walk",
-      "expected_mode": "planner_reviewer_time_check",
-      "actual_mode": "planner_reviewer_time_check",
-      "passed": true,
-      "flags": [
-        "walking_constraint"
-      ]
-    },
-    {
-      "case_id": "walk_limit_exact_boundary",
-      "expected_mode": "planner_only",
-      "actual_mode": "planner_only",
-      "passed": true,
-      "flags": []
-    },
-    {
-      "case_id": "drive_leg_below_threshold",
-      "expected_mode": "planner_only",
-      "actual_mode": "planner_only",
-      "passed": true,
-      "flags": []
-    },
-    {
-      "case_id": "route_modify_opinion",
-      "expected_mode": "planner_reviewer_time_check",
-      "actual_mode": "planner_reviewer_time_check",
-      "passed": true,
-      "flags": [
-        "user_modification"
-      ]
-    },
-    {
-      "case_id": "late_start_valid",
-      "expected_mode": "planner_only",
-      "actual_mode": "planner_only",
-      "passed": true,
-      "flags": []
-    },
-    {
-      "case_id": "lijiang_all_rain_indoor",
-      "expected_mode": "planner_only",
-      "actual_mode": "planner_only",
-      "passed": true,
-      "flags": []
-    },
-    {
-      "case_id": "lijiang_all_rain_outdoor",
-      "expected_mode": "planner_reviewer_time_check",
-      "actual_mode": "planner_reviewer_time_check",
-      "passed": true,
-      "flags": [
-        "weather_outdoor_conflict"
-      ]
-    },
-    {
-      "case_id": "sanya_all_rain_outdoor",
-      "expected_mode": "planner_reviewer_time_check",
-      "actual_mode": "planner_reviewer_time_check",
-      "passed": true,
-      "flags": [
-        "weather_outdoor_conflict"
-      ]
-    },
-    {
-      "case_id": "shanghai_all_rain_indoor",
-      "expected_mode": "planner_only",
-      "actual_mode": "planner_only",
-      "passed": true,
-      "flags": []
-    },
-    {
-      "case_id": "shanghai_all_rain_outdoor",
-      "expected_mode": "planner_reviewer_time_check",
-      "actual_mode": "planner_reviewer_time_check",
-      "passed": true,
-      "flags": [
-        "weather_outdoor_conflict"
-      ]
-    },
-    {
-      "case_id": "jingdezhen_open",
-      "expected_mode": "planner_only",
-      "actual_mode": "planner_only",
-      "passed": true,
-      "flags": []
-    },
-    {
-      "case_id": "jingdezhen_closed",
-      "expected_mode": "time_check_only",
-      "actual_mode": "time_check_only",
-      "passed": true,
-      "flags": [
-        "opening_time_conflict"
-      ]
-    },
-    {
-      "case_id": "lijiang_open",
-      "expected_mode": "planner_only",
-      "actual_mode": "planner_only",
-      "passed": true,
-      "flags": []
-    },
-    {
-      "case_id": "lijiang_closed",
-      "expected_mode": "time_check_only",
-      "actual_mode": "time_check_only",
-      "passed": true,
-      "flags": [
-        "opening_time_conflict"
-      ]
-    },
-    {
-      "case_id": "sanya_open",
-      "expected_mode": "planner_only",
-      "actual_mode": "planner_only",
-      "passed": true,
-      "flags": []
-    },
-    {
-      "case_id": "sanya_closed",
-      "expected_mode": "time_check_only",
-      "actual_mode": "time_check_only",
-      "passed": true,
-      "flags": [
-        "opening_time_conflict"
-      ]
-    },
-    {
-      "case_id": "shanghai_open",
-      "expected_mode": "planner_only",
-      "actual_mode": "planner_only",
-      "passed": true,
-      "flags": []
-    },
-    {
-      "case_id": "shanghai_closed",
-      "expected_mode": "time_check_only",
-      "actual_mode": "time_check_only",
-      "passed": true,
-      "flags": [
-        "opening_time_conflict"
-      ]
-    }
+  "observed_audit_calls_by_task": {
+    "reviewer": 34
+  },
+  "observed_audit_usage": {
+    "input_tokens": 67892,
+    "output_tokens": 21733,
+    "total_tokens": 89625
+  },
+  "observed_usage_complete": true,
+  "initial_skip_count": 0,
+  "initial_review_required_count": 30,
+  "initial_deterministic_hard_clean_count": 26,
+  "initial_call_reduction_ratio": 0.0,
+  "initial_gate_opportunity_status": "measured_decisions_not_executed_adaptive_arm",
+  "initial_reviewer_token_saving_ratio": 0.0,
+  "initial_reviewer_tokens_avoided": 0,
+  "observed_initial_reviewer_tokens": 78916,
+  "historical_reviewer_only_reduction_ratio": 0.0,
+  "full_current_policy_audit_calls": null,
+  "full_current_policy_audit_tokens": null,
+  "full_current_policy_call_reduction_ratio": null,
+  "full_current_policy_token_reduction_ratio": null,
+  "limitations": [
+    "Historical experiment has no TimeCheck calls and no adaptive-policy arm.",
+    "Intermediate repair states and per-round gate decisions were not recorded.",
+    "Initial decisions are replayed with current code, not live production executions.",
+    "Tokenizer counts cannot reconstruct unseen completions or provider billing usage."
   ],
-  "policies": {
-    "single": {
-      "passed": 3,
-      "total": 6,
-      "elapsed_total_ms": 366899.748,
-      "elapsed_mean_ms": 61149.958
-    },
-    "full": {
-      "passed": 6,
-      "total": 6,
-      "elapsed_total_ms": 835446.312,
-      "elapsed_mean_ms": 139241.052
-    },
-    "adaptive": {
-      "passed": 6,
-      "total": 6,
-      "elapsed_total_ms": 654862.073,
-      "elapsed_mean_ms": 109143.679
-    }
-  },
-  "metrics": {
-    "adaptive_latency_reduction_vs_full": 0.216,
-    "natural_only_estimated_token_reduction": 0.618,
-    "natural_only_estimated_tokens": {
-      "single": 9242,
-      "full": 24182
-    },
-    "isolated_hours_estimated_tokens": {
-      "time_check_only": 6939,
-      "planner_reviewer_time_check": 6658
-    },
-    "routing_matrix_pass_rate": 1.0,
-    "routing_matrix_category_counts": {
-      "planner_only": 17,
-      "time_check_only": 6,
-      "planner_reviewer_time_check": 26
-    }
-  },
-  "boundary": "Six selected saved drafts, including three injected faults; one provider run per route. Timing adds measured Planner and recovery runs, not a new end-to-end adaptive execution. Fault-mode tokens are not separately attributable in the old report, so no all-case Token saving is claimed. Fault prevalence and statistical quality stability cannot be inferred."
+  "ledger_sha256": "1fd90eeca8e10abfcabad13ce9702809ef4619eeafa3736359a91d055f0c9045",
+  "policy_sha256": "0ecd85cc2d301d6935d7a69525f1ad88fdd3e7bfbd35b6541d357d8d4206362d"
 }

@@ -386,20 +386,11 @@ def build_confirm_graph(model_name: str | None = None, memory_writer=None):
     return g.compile()
 
 
-async def run_modification_stream(
-    checkpoint: dict[str, Any],
-    modification_notes: str,
-    memory_writer=None,
-    **overrides: Any,
-) -> AsyncIterator[dict[str, Any]]:
-    """修改模式流式执行。
-
-    从 checkpoint 恢复 planner 状态，注入用户修改意见，运行迷你图。
-    若 planner 有顾虑（modification_concern 非空），yield modification_warning 事件后停止
-    （由调用方存 pending 状态，等待用户确认后调 run_confirm_stream 续跑）。
-    """
-    app = build_modification_graph(overrides.get("model_name"), memory_writer)
-    init = TravelPlanState(
+def restore_modification_state(
+    checkpoint: dict[str, Any], modification_notes: str, **overrides: Any
+) -> TravelPlanState:
+    """Shared application checkpoint restoration, without model/provider calls."""
+    return TravelPlanState(
         query=checkpoint.get("query", "修改行程"),
         route=checkpoint.get("route", []),
         pois=checkpoint.get("pois", []),
@@ -439,6 +430,17 @@ async def run_modification_stream(
         **{k: v for k, v in overrides.items()
            if k not in ("model_name", "max_per_day", "route_modify_opinion", "max_review_rounds")},
     )
+
+
+async def run_modification_stream(
+    checkpoint: dict[str, Any],
+    modification_notes: str,
+    memory_writer=None,
+    **overrides: Any,
+) -> AsyncIterator[dict[str, Any]]:
+    """Restore the application snapshot and execute the modification graph."""
+    app = build_modification_graph(overrides.get("model_name"), memory_writer)
+    init = restore_modification_state(checkpoint, modification_notes, **overrides)
     config = {"recursion_limit": 2 * (2 + 1) + 2 * init.max_time_check_rounds + 14}
 
     acc: dict[str, Any] = init.model_dump()

@@ -15,7 +15,7 @@
 - **多 Agent 编排：** 使用 LangGraph 的 `TravelPlanState + checkpoint` 编排 Planner、检索 Worker 和 Reviewer；用户替换景点等局部修改时复用候选池，仅重跑受影响节点，候选不足再定向检索。
 - **质量与回归：** 基于规则风险分决定是否调用 LLM Reviewer，并用高德步行/驾车路线核验通勤；在 39 条人工构造的硬约束回归用例中，完整链路通过 **35/39**，较仅规划基线多通过 26 条（离线回归集，非线上指标）。
 - **个性化记忆：** SQLite 保存结构化偏好与历史记录，Chroma 以 `user_id` 隔离语义记忆并在规划时召回；Pydantic 约束 Agent 消息，FastAPI + SSE 流式返回节点进度。
-- **效率与可靠性：** 并行执行可独立的天气、意图改写和路线查询，按风险分跳过不必要的 Reviewer；小样本真实 API 回放中平均审核延迟降低约 **22%**（非线上指标），GitHub Actions 配置 178 项测试覆盖规划、校验和降级核心链路。
+- **效率与可靠性：** 并行执行可独立的天气、意图改写和路线查询；当前 30 条保存初稿全部触发语义审核，未观察到可核实的跳过收益，因此不宣称审核节省；GitHub Actions 配置 **520 项测试**覆盖规划、校验、评测账本和降级核心链路。
 
 ### 后端开发方向
 
@@ -27,7 +27,7 @@
 
 | 证据 | 命令或接口 | 当前结果 |
 |---|---|---|
-| Python 回归 | `python -m pytest -q` | 178 passed, 1 warning |
+| Python 回归 | `python -m pytest -q` | 520 passed, 3 dependency warnings |
 | Python 编译 | `python -m compileall -q app tests scripts` | 通过 |
 | 编排消融 | `python -m tests.eval.ablation --json evaluation/ablation_report.json --out evaluation/ablation_report.md` | 39 条分层案例：planner_only 23% → planner+reviewer 67% → +time_check 90% |
 | 容器构建 | `docker compose up --build -d` | 镜像构建成功 |
@@ -39,7 +39,7 @@
 | 在线预算预检 | `python -m tests.eval.run_eval --dry-run` | 只计算逻辑调用、供应商尝试上限和 Fixture 就绪状态，不访问网络 |
 | 在线单/多 Agent 消融预算 | `python -m tests.eval.run_online_ablation --max-cases 10 --k 3 --dry-run` | 扩展到 10 案例 × 3 次前的最坏供应商尝试上限为 2,430；当前只执行了 3 案例 × 1 次 |
 | 首轮真实单/多 Agent 对照 | `evaluation/real_single_vs_multi_ablation.md`；`evaluation/real_fault_recovery_ablation.md` | 自然请求未观察到多 Agent 质量收益；同稿故障恢复为 0/2 → 2/2，但仅 2 个注入场景、每例 1 次 |
-| 风险门控策略回放 | `python scripts/evaluate_risk_gate.py` | 保存真实输出上自然路线跳过 3/3、注入故障升级 2/2；Token/延迟节省 61.8%/50.7% 为投影 |
+| 当前风险门控回放 | `python scripts/audit_current_risk_gate.py` | 30 条保存初稿全部进入语义 Reviewer，跳过 0/30；Time Check 与完整自适应 A/B 用量不可统计 |
 | Agent/工具轨迹 | `python -m tests.eval.run_trajectory_eval` | 4 类故障场景、每类 8 项契约检查；校验调度顺序、权限、脱敏参数、重复调用、重试边界、终止状态和候选池传递 |
 | 模型路由/协议契约 | `python -m pytest tests/test_model_router.py tests/test_agent_protocols.py -q` | 9 passed；路由已接主流程，协议仍是本地原型，不等同远程 MCP/A2A 服务 |
 | 在线链路基准 | `python scripts/benchmark_pipeline.py --runs 3 --allow-external-calls` | 输出配置指纹、成功率、P50/P95/最大延迟、Token/成本和节点耗时增量；新数据待明确预算后实测 |

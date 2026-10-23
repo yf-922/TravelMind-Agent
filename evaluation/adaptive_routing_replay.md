@@ -1,26 +1,56 @@
-# Single vs Full vs Adaptive Audit Replay
+# Current Risk Gate: Evidence Audit
 
-> Saved real-provider outcomes and deterministic fault injection; not a new online A/B.
+- Requests: 30 saved task requests.
+- Current initial gate: review required 30; skipped 0.
+- Observed historical audit calls: {'reviewer': 34}.
+- Recorded provider audit Token: input 67892, output 21733, total 89625.
+- Initial review skip opportunity: 0.0%.
+- Full current Reviewer + TimeCheck call reduction: unavailable.
+- Full current audit Token saving: unavailable.
+- Initial Reviewer Token saving opportunity: 0.0; avoided Token 0.
 
-| Policy | Hard-constraint pass | Total latency | Mean latency |
-|---|---:|---:|---:|
-| single | 3/6 | 366.9s | 61.1s |
-| full | 6/6 | 835.4s | 139.2s |
-| adaptive | 6/6 | 654.9s | 109.1s |
+## Why the old 61.8% is not a replacement metric
 
-- Adaptive latency reduction vs full: 21.6% on this selected replay.
-- Natural-case estimated Token reduction: 61.8% (3 cases only).
-- Isolated opening-hours fault estimated Tokens: time_check_only=6939, planner_reviewer_time_check=6658.
-- Overall Token reduction: unavailable; old fault report does not attribute usage per mode.
-- Offline routing matrix: 49/49 mode decisions correct; no LLM calls.
+All current initial states requesting preferences enter semantic review. The historical ledger has no TimeCheck calls and no recorded adaptive arm. Do not invent TimeCheck tokens, reconstruct missing completions with a tokenizer, or present an offline routing decision as measured online savings.
 
-| Draft | Routed mode | Single | Full | Adaptive |
-|---|---|---:|---:|---:|
-| nanjing-3d-sunny-history | planner_only | pass | pass | pass |
-| nanjing-3d-singlerain-history | planner_only | pass | pass | pass |
-| nanjing-3d-tighthours-negative | planner_only | pass | pass | pass |
-| injected:duplicate_poi | planner_reviewer_time_check | fail | pass | pass |
-| injected:opening_hours | planner_reviewer_time_check | fail | pass | pass |
-| injected:opening_hours_only | time_check_only | fail | pass | pass |
+## Per request
 
-Boundary: Six selected saved drafts, including three injected faults; one provider run per route. Timing adds measured Planner and recovery runs, not a new end-to-end adaptive execution. Fault-mode tokens are not separately attributable in the old report, so no all-case Token saving is claimed. Fault prevalence and statistical quality stability cannot be inferred.
+| Request | Review | TimeCheck | Flags |
+|---|---|---|---|
+| task-南京-interest | True | True | preference_review |
+| task-南京-excluded | True | True | preference_review |
+| task-南京-slow | True | True | preference_review |
+| task-南京-late | True | True | commute_time_conflict, preference_review |
+| task-南京-family | True | True | preference_review |
+| task-南京-rain | True | True | preference_review |
+| task-南京-nature | True | True | preference_review |
+| task-南京-window | True | True | preference_review |
+| task-南京-choice | True | True | preference_review |
+| task-南京-elder | True | True | preference_review |
+| task-上海-interest | True | True | preference_review |
+| task-上海-excluded | True | True | preference_review |
+| task-上海-slow | True | True | preference_review |
+| task-上海-late | True | True | preference_review |
+| task-上海-family | True | True | preference_review |
+| task-上海-rain | True | True | preference_review |
+| task-上海-nature | True | True | preference_review |
+| task-上海-window | True | True | preference_review |
+| task-上海-choice | True | True | preference_review |
+| task-上海-elder | True | True | preference_review |
+| task-三亚-interest | True | True | preference_review |
+| task-三亚-excluded | True | True | preference_review |
+| task-三亚-slow | True | True | preference_review |
+| task-三亚-late | True | True | long_road_leg, commute_time_conflict, preference_review |
+| task-三亚-family | True | True | preference_review |
+| task-三亚-weather_window | True | True | preference_review |
+| task-三亚-nature | True | True | long_road_leg, commute_time_conflict, preference_review |
+| task-三亚-window | True | True | commute_time_conflict, preference_review |
+| task-三亚-choice | True | True | long_road_leg, preference_review |
+| task-三亚-elder | True | True | preference_review |
+
+## Evidence gaps
+
+- Historical experiment has no TimeCheck calls and no adaptive-policy arm.
+- Intermediate repair states and per-round gate decisions were not recorded.
+- Initial decisions are replayed with current code, not live production executions.
+- Tokenizer counts cannot reconstruct unseen completions or provider billing usage.

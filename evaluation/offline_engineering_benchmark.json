@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
   "external_calls": false,
-  "captured_at": "2026-10-20T05:03:47.342635+00:00",
+  "captured_at": "2026-10-23T05:32:16.131927+00:00",
   "environment": {
     "python": "3.12.8",
     "platform": "Windows-10-10.0.19045-SP0",
     "logical_cpus": 20,
     "langgraph": "1.2.11"
   },
-  "source_fingerprint": "762a6977cb44be71a4511d5a444baf976907e96bca67f1d63cb8d38386bf606c",
+  "source_fingerprint": "235b3f06490f0378a0632d7f697c7e3bfa89bd695967c936a502258ad4ee19a9",
   "post_intent_fanout": {
     "measurement_type": "production-langgraph-with-delayed-fake-nodes",
     "runs": 30,
@@ -19,140 +19,140 @@
     ],
     "fake_delay_ms_per_node": 40.0,
     "serial_baseline_ms": {
-      "mean": 133.608,
-      "p50": 132.684,
-      "p95": 140.027,
-      "max": 140.066
+      "mean": 134.602,
+      "p50": 134.407,
+      "p95": 139.727,
+      "max": 140.58
     },
     "current_fanout_ms": {
-      "mean": 52.171,
-      "p50": 50.707,
-      "p95": 60.712,
-      "max": 75.838
+      "mean": 52.62,
+      "p50": 52.257,
+      "p95": 57.525,
+      "max": 76.785
     },
     "paired_samples_ms": [
       {
-        "serial": 131.85939998948015,
-        "concurrent": 48.32439997699112
+        "serial": 135.1246999693103,
+        "concurrent": 49.846099980641156
       },
       {
-        "serial": 140.06639999570325,
-        "concurrent": 53.85070000193082
+        "serial": 134.40779998200014,
+        "concurrent": 52.25659999996424
       },
       {
-        "serial": 140.02720001735725,
-        "concurrent": 56.075000000419095
+        "serial": 131.1608999967575,
+        "concurrent": 48.09730005217716
       },
       {
-        "serial": 138.56610000948422,
-        "concurrent": 55.39080000016838
+        "serial": 129.5486000017263,
+        "concurrent": 52.35120002180338
       },
       {
-        "serial": 138.42339999973774,
-        "concurrent": 55.42419999255799
+        "serial": 139.08630004152656,
+        "concurrent": 52.0263000507839
       },
       {
-        "serial": 135.85789999342524,
-        "concurrent": 47.70660001668148
+        "serial": 137.6909000100568,
+        "concurrent": 54.29369997000322
       },
       {
-        "serial": 129.3569999979809,
-        "concurrent": 47.3348000086844
+        "serial": 131.7529000225477,
+        "concurrent": 47.822400054428726
       },
       {
-        "serial": 136.03169997804798,
-        "concurrent": 54.04849999467842
+        "serial": 129.04560001334175,
+        "concurrent": 47.943999990820885
       },
       {
-        "serial": 133.03669999004342,
-        "concurrent": 48.31969999941066
+        "serial": 129.3930999818258,
+        "concurrent": 47.636000032071024
       },
       {
-        "serial": 134.46110000950284,
-        "concurrent": 60.71160000283271
+        "serial": 129.17989998823032,
+        "concurrent": 47.68670001067221
       },
       {
-        "serial": 136.49789997725748,
-        "concurrent": 50.70749999140389
+        "serial": 129.667499975767,
+        "concurrent": 48.72259998228401
       },
       {
-        "serial": 128.4940000041388,
-        "concurrent": 50.48320000059903
+        "serial": 133.98149999557063,
+        "concurrent": 56.922600022517145
       },
       {
-        "serial": 135.65700000617653,
-        "concurrent": 51.91000000922941
+        "serial": 136.29100000252947,
+        "concurrent": 55.78390002483502
       },
       {
-        "serial": 132.68430001335219,
-        "concurrent": 48.15690001123585
+        "serial": 134.4004000420682,
+        "concurrent": 51.30349996034056
       },
       {
-        "serial": 131.02579998667352,
-        "concurrent": 75.83759998669848
+        "serial": 134.40709997667,
+        "concurrent": 76.785099983681
       },
       {
-        "serial": 131.08890000148676,
-        "concurrent": 50.61330000171438
+        "serial": 133.26869998127222,
+        "concurrent": 50.157500023487955
       },
       {
-        "serial": 132.04890000633895,
-        "concurrent": 49.025500018615276
+        "serial": 136.01829996332526,
+        "concurrent": 53.73370001325384
       },
       {
-        "serial": 130.43210000614636,
-        "concurrent": 47.317299991846085
+        "serial": 138.57420004205778,
+        "concurrent": 54.99849998159334
       },
       {
-        "serial": 131.4299999794457,
-        "concurrent": 50.25160001241602
+        "serial": 136.956799949985,
+        "concurrent": 52.92240000562742
       },
       {
-        "serial": 132.52120002289303,
-        "concurrent": 51.00420000962913
+        "serial": 139.2962000099942,
+        "concurrent": 52.93470004107803
       },
       {
-        "serial": 136.84229998034425,
-        "concurrent": 52.87670000689104
+        "serial": 140.57989994762465,
+        "concurrent": 51.27080000238493
       },
       {
-        "serial": 131.21429999591783,
-        "concurrent": 48.03110001375899
+        "serial": 132.1231999900192,
+        "concurrent": 57.525400014128536
       },
       {
-        "serial": 132.49000001815148,
-        "concurrent": 47.960399999283254
+        "serial": 139.72740003373474,
+        "concurrent": 52.53029998857528
       },
       {
-        "serial": 137.24320000619628,
-        "concurrent": 53.002300002845004
+        "serial": 138.2336999522522,
+        "concurrent": 54.68050000490621
       },
       {
-        "serial": 134.32749998173676,
-        "concurrent": 54.95819999487139
+        "serial": 133.557099965401,
+        "concurrent": 50.42639997554943
       },
       {
-        "serial": 134.05839999904856,
-        "concurrent": 55.858800013083965
+        "serial": 134.26840002648532,
+        "concurrent": 48.947200004477054
       },
       {
-        "serial": 134.19250000151806,
-        "concurrent": 51.61480000242591
+        "serial": 136.81129994802177,
+        "concurrent": 53.78850002307445
       },
       {
-        "serial": 128.64989999798127,
-        "concurrent": 51.93180000060238
+        "serial": 138.07660003658384,
+        "concurrent": 54.70859998604283
       },
       {
-        "serial": 128.7000000011176,
-        "concurrent": 49.07660000026226
+        "serial": 135.31629997305572,
+        "concurrent": 52.82189999707043
       },
       {
-        "serial": 130.95270001213066,
-        "concurrent": 47.330800007330254
+        "serial": 130.1184999756515,
+        "concurrent": 47.66809998545796
       }
     ],
-    "p50_speedup": 2.617,
+    "p50_speedup": 2.572,
     "pass": true,
     "pass_criterion": "p50 speedup >= 1.5x through the compiled production graph"
   },
@@ -165,140 +165,140 @@
     ],
     "fake_delay_ms_per_node": 40.0,
     "serial_baseline_ms": {
-      "mean": 90.061,
-      "p50": 88.9,
-      "p95": 96.736,
-      "max": 102.556
+      "mean": 90.598,
+      "p50": 90.101,
+      "p95": 93.772,
+      "max": 97.94
     },
     "current_fanout_ms": {
-      "mean": 50.033,
-      "p50": 48.519,
-      "p95": 58.046,
-      "max": 62.046
+      "mean": 50.043,
+      "p50": 49.425,
+      "p95": 55.507,
+      "max": 55.63
     },
     "paired_samples_ms": [
       {
-        "serial": 89.25690001342446,
-        "concurrent": 49.347199994372204
+        "serial": 88.53040001122281,
+        "concurrent": 53.28739999094978
       },
       {
-        "serial": 88.24660000391304,
-        "concurrent": 47.92949999682605
+        "serial": 97.94020000845194,
+        "concurrent": 55.50650000805035
       },
       {
-        "serial": 88.56849998119287,
-        "concurrent": 49.80870001600124
+        "serial": 93.50730001460761,
+        "concurrent": 54.648299992550164
       },
       {
-        "serial": 87.88880001520738,
-        "concurrent": 50.98500000895001
+        "serial": 91.13010001601651,
+        "concurrent": 48.3076999662444
       },
       {
-        "serial": 90.35740001127124,
-        "concurrent": 47.6998999947682
+        "serial": 89.99050001148134,
+        "concurrent": 51.34659999748692
       },
       {
-        "serial": 88.8998000009451,
-        "concurrent": 51.17570000584237
+        "serial": 91.06960002100095,
+        "concurrent": 50.14070001197979
       },
       {
-        "serial": 91.65439999196678,
-        "concurrent": 48.66480000782758
+        "serial": 89.35220004059374,
+        "concurrent": 51.2750000343658
       },
       {
-        "serial": 89.90979997906834,
-        "concurrent": 48.127499991096556
+        "serial": 93.77159998985007,
+        "concurrent": 49.30010001407936
       },
       {
-        "serial": 88.79899999010377,
-        "concurrent": 48.58440000680275
+        "serial": 90.1008999790065,
+        "concurrent": 50.62789999647066
       },
       {
-        "serial": 88.62490000319667,
-        "concurrent": 50.06539999158122
+        "serial": 90.70299996528774,
+        "concurrent": 49.71420002402738
       },
       {
-        "serial": 90.69919999456033,
-        "concurrent": 48.519000003580004
+        "serial": 91.10890002921224,
+        "concurrent": 51.01940000895411
       },
       {
-        "serial": 88.19719997700304,
-        "concurrent": 47.56879998603836
+        "serial": 92.66550000756979,
+        "concurrent": 49.34909997973591
       },
       {
-        "serial": 88.3136999909766,
-        "concurrent": 48.36260000593029
+        "serial": 89.46099999593571,
+        "concurrent": 49.547200032975525
       },
       {
-        "serial": 88.95150001626462,
-        "concurrent": 49.54169999109581
+        "serial": 89.16960004717112,
+        "concurrent": 49.10910001490265
       },
       {
-        "serial": 89.62189999874681,
-        "concurrent": 58.045800018589944
+        "serial": 90.33879998605698,
+        "concurrent": 48.170499969273806
       },
       {
-        "serial": 96.73630000906996,
-        "concurrent": 55.73309998726472
+        "serial": 88.35769997676834,
+        "concurrent": 47.64830000931397
       },
       {
-        "serial": 89.49709997978061,
-        "concurrent": 47.610599984182045
+        "serial": 87.93530002003536,
+        "concurrent": 48.26469998806715
       },
       {
-        "serial": 88.86819999315776,
-        "concurrent": 47.60259998147376
+        "serial": 89.37070000683889,
+        "concurrent": 49.86329999519512
       },
       {
-        "serial": 88.55720001156442,
-        "concurrent": 48.09590001241304
+        "serial": 91.45559999160469,
+        "concurrent": 49.10459998063743
       },
       {
-        "serial": 87.54820001195185,
-        "concurrent": 48.17919997731224
+        "serial": 90.3878000099212,
+        "concurrent": 49.42480003228411
       },
       {
-        "serial": 91.29199999733828,
-        "concurrent": 53.64120000740513
+        "serial": 88.52470002602786,
+        "concurrent": 49.08129997784272
       },
       {
-        "serial": 86.93459999631159,
-        "concurrent": 47.080200019991025
+        "serial": 89.35909997671843,
+        "concurrent": 47.312700015027076
       },
       {
-        "serial": 87.66190000460483,
-        "concurrent": 47.537799982819706
+        "serial": 88.08760001556948,
+        "concurrent": 47.10060002980754
       },
       {
-        "serial": 87.39400000195019,
-        "concurrent": 47.51199999009259
+        "serial": 88.00560003146529,
+        "concurrent": 48.0972999939695
       },
       {
-        "serial": 90.89190000668168,
-        "concurrent": 47.26190000656061
+        "serial": 92.6515000173822,
+        "concurrent": 55.6300999596715
       },
       {
-        "serial": 91.22149998438545,
-        "concurrent": 53.249799995683134
+        "serial": 93.27419998589903,
+        "concurrent": 48.83520002476871
       },
       {
-        "serial": 95.90939999907278,
-        "concurrent": 54.922400013310835
+        "serial": 90.90380003908649,
+        "concurrent": 49.530900025274605
       },
       {
-        "serial": 91.75600000889972,
-        "concurrent": 47.28080000495538
+        "serial": 90.02229996258393,
+        "concurrent": 50.55939999874681
       },
       {
-        "serial": 102.55630000028759,
-        "concurrent": 62.045700004091486
+        "serial": 91.75530000356957,
+        "concurrent": 50.641799985896796
       },
       {
-        "serial": 87.02910001738928,
-        "concurrent": 48.798700008774176
+        "serial": 89.00049998192117,
+        "concurrent": 48.84219996165484
       }
     ],
-    "p50_speedup": 1.832,
+    "p50_speedup": 1.823,
     "pass": true,
     "pass_criterion": "p50 speedup >= 1.5x through the compiled production graph"
   },
@@ -308,297 +308,1068 @@
     "route_legs": 8,
     "fake_provider_delay_ms_per_leg": 20.0,
     "serial_baseline_ms": {
-      "mean": 164.172,
-      "p50": 164.091,
-      "p95": 166.96,
-      "max": 167.733
+      "mean": 164.948,
+      "p50": 164.498,
+      "p95": 168.125,
+      "max": 170.046
     },
     "current_concurrent_ms": {
-      "mean": 24.436,
-      "p50": 24.186,
-      "p95": 26.682,
-      "max": 28.763
+      "mean": 25.71,
+      "p50": 25.275,
+      "p95": 27.782,
+      "max": 46.52
     },
     "paired_samples_ms": [
       {
-        "serial": 164.09060001024045,
-        "concurrent": 25.86580000934191
+        "serial": 165.31269997358322,
+        "concurrent": 25.867699994705617
       },
       {
-        "serial": 162.58480001124553,
-        "concurrent": 25.077199999941513
+        "serial": 162.4683999689296,
+        "concurrent": 23.73260003514588
       },
       {
-        "serial": 162.65090001979843,
-        "concurrent": 24.27620001253672
+        "serial": 163.41889998875558,
+        "concurrent": 24.458899977616966
       },
       {
-        "serial": 163.20450001512654,
-        "concurrent": 28.762699977960438
+        "serial": 164.2435000394471,
+        "concurrent": 22.687199991196394
       },
       {
-        "serial": 163.9034999825526,
-        "concurrent": 24.19009999721311
+        "serial": 163.99749997071922,
+        "concurrent": 24.718200031202286
       },
       {
-        "serial": 164.69959999085404,
-        "concurrent": 26.130699989153072
+        "serial": 165.29450000962242,
+        "concurrent": 24.35299998614937
       },
       {
-        "serial": 164.33989998768084,
-        "concurrent": 22.4107000103686
+        "serial": 163.76209998270497,
+        "concurrent": 26.805699977558106
       },
       {
-        "serial": 166.96000000229105,
-        "concurrent": 22.556599986273795
+        "serial": 162.8587999730371,
+        "concurrent": 27.425599982962012
       },
       {
-        "serial": 165.7932000234723,
-        "concurrent": 23.018500010948628
+        "serial": 167.61620005127043,
+        "concurrent": 21.9601999851875
       },
       {
-        "serial": 167.73250000551343,
-        "concurrent": 23.356299992883578
+        "serial": 164.06589996768162,
+        "concurrent": 27.782299963291734
       },
       {
-        "serial": 166.0748999856878,
-        "concurrent": 22.22839999012649
+        "serial": 164.41999998642132,
+        "concurrent": 24.88359995186329
       },
       {
-        "serial": 165.03439997904934,
-        "concurrent": 23.742399993352592
+        "serial": 165.4104000190273,
+        "concurrent": 26.881100027821958
       },
       {
-        "serial": 164.55190000124276,
-        "concurrent": 22.393999999621883
+        "serial": 165.15529999742284,
+        "concurrent": 22.862100042402744
       },
       {
-        "serial": 163.01020001992583,
-        "concurrent": 24.201699998229742
+        "serial": 164.48390000732616,
+        "concurrent": 23.38870003586635
       },
       {
-        "serial": 162.33469999860972,
-        "concurrent": 25.95919999293983
+        "serial": 166.6065000463277,
+        "concurrent": 46.520299976691604
       },
       {
-        "serial": 164.5913999818731,
-        "concurrent": 23.028000025078654
+        "serial": 167.56299999542534,
+        "concurrent": 23.32520001800731
       },
       {
-        "serial": 163.94570001284592,
-        "concurrent": 24.18579999357462
+        "serial": 164.50630000326782,
+        "concurrent": 23.070499999448657
       },
       {
-        "serial": 164.56520001520403,
-        "concurrent": 26.561200007563457
+        "serial": 164.498400001321,
+        "concurrent": 25.40380001300946
       },
       {
-        "serial": 163.22020001825877,
-        "concurrent": 26.105199998710304
+        "serial": 165.59730004519224,
+        "concurrent": 25.53720003925264
       },
       {
-        "serial": 164.4545000162907,
-        "concurrent": 25.982300023315474
+        "serial": 163.4722999879159,
+        "concurrent": 26.59180003684014
       },
       {
-        "serial": 164.55780001706444,
-        "concurrent": 22.832599992398173
+        "serial": 168.12530002789572,
+        "concurrent": 22.9527999763377
       },
       {
-        "serial": 164.07729999627918,
-        "concurrent": 23.70400002109818
+        "serial": 165.66070000408217,
+        "concurrent": 26.40520001295954
       },
       {
-        "serial": 164.17130001354963,
-        "concurrent": 24.395899992669
+        "serial": 163.48899999866262,
+        "concurrent": 26.5400999924168
       },
       {
-        "serial": 163.0734000063967,
-        "concurrent": 26.682499999878928
+        "serial": 164.55809999024495,
+        "concurrent": 26.262100029271096
       },
       {
-        "serial": 164.11479999078438,
-        "concurrent": 23.011599987512454
+        "serial": 165.40830000303686,
+        "concurrent": 25.42750001884997
       },
       {
-        "serial": 163.54549999232404,
-        "concurrent": 25.571800011675805
+        "serial": 164.77509995456785,
+        "concurrent": 23.490099993068725
       },
       {
-        "serial": 162.1832000091672,
-        "concurrent": 23.900400003185496
+        "serial": 164.15329999290407,
+        "concurrent": 26.889400032814592
       },
       {
-        "serial": 163.49770000670105,
-        "concurrent": 23.10690001468174
+        "serial": 163.42140000779182,
+        "concurrent": 25.275400024838746
       },
       {
-        "serial": 164.37600000062957,
-        "concurrent": 23.377799981972203
+        "serial": 164.05820002546534,
+        "concurrent": 26.912699977401644
       },
       {
-        "serial": 163.8192000100389,
-        "concurrent": 26.467799994861707
+        "serial": 170.04649998852983,
+        "concurrent": 22.888399951625615
       }
     ],
-    "p50_speedup": 6.785,
+    "p50_speedup": 6.508,
     "pass": true,
     "pass_criterion": "p50 speedup >= 2.0x with identical completed route legs"
   },
   "checkpoint_replan": {
-    "measurement_type": "deterministic-stage-cost-simulation",
-    "baseline_label": "simulated full replay; not historical production data",
-    "runs": 30,
-    "unit_delay_ms": 2.0,
+    "measurement_type": "production-prompt-capture-and-application-checkpoint-restore",
+    "samples": 30,
+    "runs": 3,
+    "timed_runs_per_arm": 90,
+    "source_binding": "0dec6e18e1f917871296e98b25d72039cfc074a09c1325a10262a92c469bad4f",
+    "encoding": "cl100k_base",
+    "tokenizer_version": "0.14.0",
+    "prompt_capture_date": "2026-10-23",
+    "text_input_tokens": {
+      "full": 73858,
+      "local": 51941,
+      "reduction_ratio": 0.29674510547266375
+    },
+    "avoided_front_llm_invocations": 60,
+    "avoided_external_query_categories_per_request": [
+      "weather",
+      "poi"
+    ],
     "full_replay_ms": {
-      "mean": 95.387,
-      "p50": 94.741,
-      "p95": 99.837,
-      "max": 100.092
+      "p50": 0.7521,
+      "p95": 1.0277,
+      "mean": 0.7834
     },
     "checkpoint_local_replan_ms": {
-      "mean": 64.512,
-      "p50": 64.591,
-      "p95": 65.784,
-      "max": 65.97
+      "p50": 0.2955,
+      "p95": 0.5278,
+      "mean": 0.3373
     },
-    "paired_samples_ms": [
+    "paired_samples_ms": {
+      "full": [
+        1.1501000262796879,
+        0.7272000075317919,
+        0.7146999705582857,
+        0.8254999993368983,
+        0.7169999880716205,
+        0.7242999854497612,
+        0.7781999884173274,
+        0.7195000071078539,
+        0.6749999593012035,
+        0.9071999811567366,
+        0.7457999745383859,
+        0.7535999757237732,
+        0.8091999916359782,
+        0.7329999934881926,
+        0.7303999736905098,
+        0.929499976336956,
+        0.7288000197149813,
+        0.7405000505968928,
+        0.7686000317335129,
+        0.7258999976329505,
+        0.750300008803606,
+        0.9218999766744673,
+        0.7021999917924404,
+        0.7378000300377607,
+        0.7999000372365117,
+        0.6994999712333083,
+        0.6966000073589385,
+        0.6899000145494938,
+        0.6968000088818371,
+        0.7252000505104661,
+        0.7953000022098422,
+        0.7166999857872725,
+        0.7517000194638968,
+        1.06819998472929,
+        1.027699967380613,
+        0.7796999998390675,
+        1.0813000262714922,
+        0.7231999770738184,
+        0.9151999838650227,
+        0.8071999764069915,
+        0.6750000175088644,
+        0.729300023522228,
+        0.7140000234358013,
+        0.7570000016130507,
+        0.692899979185313,
+        0.8749999688006938,
+        0.755299988668412,
+        0.8000999805517495,
+        0.8655000128783286,
+        0.986300001386553,
+        0.7820999599061906,
+        0.831299985293299,
+        0.8095999946817756,
+        0.8221000316552818,
+        0.8294000290334225,
+        1.1088000028394163,
+        0.784000032581389,
+        0.8214999688789248,
+        0.6750999600626528,
+        0.7183999987319112,
+        0.6949999951757491,
+        0.7131999591365457,
+        0.6726999999955297,
+        0.694399990607053,
+        0.7343000033870339,
+        0.7521000225096941,
+        0.8273999555967748,
+        0.8364999666810036,
+        0.7749000214971602,
+        0.8353999583050609,
+        0.7483999943360686,
+        0.7847000379115343,
+        0.9240999934263527,
+        0.6755000213161111,
+        0.7228999747894704,
+        0.805300020147115,
+        0.6578999455086887,
+        0.7786999922245741,
+        0.7356000132858753,
+        0.7511000148952007,
+        0.7187000010162592,
+        0.7342000026255846,
+        0.7778999861329794,
+        0.8821999654173851,
+        0.792600039858371,
+        0.7063000230118632,
+        0.7656000088900328,
+        0.7969000143930316,
+        0.7340000011026859,
+        0.7538999780081213
+      ],
+      "local": [
+        0.31669996678829193,
+        0.25969999842345715,
+        0.2753000007942319,
+        0.2712999703362584,
+        1.6722999862395227,
+        0.2885999856516719,
+        0.3237000200897455,
+        0.2713000285439193,
+        0.32270001247525215,
+        0.3591999993659556,
+        0.26790000265464187,
+        0.29150000773370266,
+        0.2969999914057553,
+        0.2753000007942319,
+        0.2889000461436808,
+        0.27120002778247,
+        0.27329998556524515,
+        0.2590000513009727,
+        0.28819998260587454,
+        0.2691000117920339,
+        0.265000038780272,
+        0.2867999719455838,
+        0.35170000046491623,
+        0.25970005663111806,
+        0.32489997101947665,
+        0.26810000417754054,
+        0.5068000173196197,
+        0.3458999563008547,
+        0.2544000162743032,
+        0.27820002287626266,
+        0.29580004047602415,
+        0.2566000330261886,
+        0.26870000874623656,
+        0.6512000109069049,
+        0.5278000026009977,
+        0.2680000034160912,
+        0.3296000068075955,
+        0.348100031260401,
+        0.29170000925660133,
+        0.27489999774843454,
+        0.3530000103637576,
+        0.35659997956827283,
+        0.47909998102113605,
+        0.30509999487549067,
+        0.6010999786667526,
+        0.36320002982392907,
+        0.29120000544935465,
+        0.3097999724559486,
+        0.3254999755881727,
+        0.28959999326616526,
+        0.3129999968223274,
+        0.3305000136606395,
+        0.29779999749735,
+        0.29039999935775995,
+        0.3117000451311469,
+        0.8399999933317304,
+        0.278000021353364,
+        0.29550003819167614,
+        0.3503000480122864,
+        0.35340001340955496,
+        0.4799999878741801,
+        0.2566000330261886,
+        0.3254999755881727,
+        0.4434000002220273,
+        0.2764000091701746,
+        0.298099999781698,
+        0.30559999868273735,
+        0.3000000142492354,
+        0.3002999583259225,
+        0.30210003023967147,
+        0.26979995891451836,
+        0.2728000399656594,
+        0.27140002930536866,
+        0.31430000672116876,
+        0.2886999864131212,
+        0.2882999833673239,
+        0.33110001822933555,
+        0.3305000136606395,
+        0.35769998794421554,
+        0.2941000275313854,
+        0.34900003811344504,
+        0.37080002948641777,
+        0.26950001483783126,
+        0.2866999711841345,
+        0.2779999631457031,
+        0.25179999647662044,
+        0.271500030066818,
+        0.3229000139981508,
+        0.2589999930933118,
+        0.26249996153637767
+      ]
+    },
+    "rows": [
       {
-        "full_replay": 93.46010000444949,
-        "local_replan": 64.35659999260679
+        "id": "task-南京-interest",
+        "modification": "把当天开始时间调整为10:00以后，其余当前要求保留。",
+        "checkpoint_sha256": "3214a2a05e4991d856508052ef38e150eef8af77dfd0c4babd5cc9b4ecf47c93",
+        "full_text_tokens_by_node": {
+          "intent": 337,
+          "query_rewrite": 451,
+          "planner": 1610
+        },
+        "local_text_tokens_by_node": {
+          "planner": 1687
+        },
+        "full_text_tokens": 2398,
+        "local_text_tokens": 1687,
+        "avoided_front_llm_invocations": 2,
+        "full_prompt_invocations": 3,
+        "local_prompt_invocations": 1,
+        "avoided_external_query_categories": [
+          "weather",
+          "poi"
+        ],
+        "avoided_actual_provider_requests": null
       },
       {
-        "full_replay": 100.09220000938512,
-        "local_replan": 65.78439997974783
+        "id": "task-南京-excluded",
+        "modification": "下午优先选择候选池内的室内景点；没有合适室内候选时明确说明，不新增景点。",
+        "checkpoint_sha256": "464f19a57588094beb78056f52823034ef04689a63244fd5b472d5b0b2dd09a2",
+        "full_text_tokens_by_node": {
+          "intent": 355,
+          "query_rewrite": 459,
+          "planner": 1636
+        },
+        "local_text_tokens_by_node": {
+          "planner": 1738
+        },
+        "full_text_tokens": 2450,
+        "local_text_tokens": 1738,
+        "avoided_front_llm_invocations": 2,
+        "full_prompt_invocations": 3,
+        "local_prompt_invocations": 1,
+        "avoided_external_query_categories": [
+          "weather",
+          "poi"
+        ],
+        "avoided_actual_provider_requests": null
       },
       {
-        "full_replay": 94.59059999790043,
-        "local_replan": 63.420699996640906
+        "id": "task-南京-slow",
+        "modification": "把当天开始时间调整为10:00以后，其余当前要求保留。",
+        "checkpoint_sha256": "7a4475bf9fd58b6b4450068d714be6ee6d1c22d1873fefe6dc1b579f639f3320",
+        "full_text_tokens_by_node": {
+          "intent": 338,
+          "query_rewrite": 445,
+          "planner": 1599
+        },
+        "local_text_tokens_by_node": {
+          "planner": 1691
+        },
+        "full_text_tokens": 2382,
+        "local_text_tokens": 1691,
+        "avoided_front_llm_invocations": 2,
+        "full_prompt_invocations": 3,
+        "local_prompt_invocations": 1,
+        "avoided_external_query_categories": [
+          "weather",
+          "poi"
+        ],
+        "avoided_actual_provider_requests": null
       },
       {
-        "full_replay": 93.91229998436756,
-        "local_replan": 65.02300000283867
+        "id": "task-南京-late",
+        "modification": "下午优先选择候选池内的室内景点；没有合适室内候选时明确说明，不新增景点。",
+        "checkpoint_sha256": "3fbbd6243eae772d00dfe7d06cd5d86d5622a07ffcb7e40f7d8ece977f5b0cfc",
+        "full_text_tokens_by_node": {
+          "intent": 347,
+          "query_rewrite": 451,
+          "planner": 1612
+        },
+        "local_text_tokens_by_node": {
+          "planner": 1717
+        },
+        "full_text_tokens": 2410,
+        "local_text_tokens": 1717,
+        "avoided_front_llm_invocations": 2,
+        "full_prompt_invocations": 3,
+        "local_prompt_invocations": 1,
+        "avoided_external_query_categories": [
+          "weather",
+          "poi"
+        ],
+        "avoided_actual_provider_requests": null
       },
       {
-        "full_replay": 95.19469999941066,
-        "local_replan": 64.23039999208413
+        "id": "task-南京-family",
+        "modification": "把当天开始时间调整为10:00以后，其余当前要求保留。",
+        "checkpoint_sha256": "88ed05a4415da028d0a90a69a3f96675b3c5b60f8ce11adf8c8868d5c0ad5ec7",
+        "full_text_tokens_by_node": {
+          "intent": 344,
+          "query_rewrite": 452,
+          "planner": 1617
+        },
+        "local_text_tokens_by_node": {
+          "planner": 1702
+        },
+        "full_text_tokens": 2413,
+        "local_text_tokens": 1702,
+        "avoided_front_llm_invocations": 2,
+        "full_prompt_invocations": 3,
+        "local_prompt_invocations": 1,
+        "avoided_external_query_categories": [
+          "weather",
+          "poi"
+        ],
+        "avoided_actual_provider_requests": null
       },
       {
-        "full_replay": 94.5662000158336,
-        "local_replan": 64.66440000804141
+        "id": "task-南京-rain",
+        "modification": "下午优先选择候选池内的室内景点；没有合适室内候选时明确说明，不新增景点。",
+        "checkpoint_sha256": "affcea68789e6306a878b4c04e659f26431df68d31483fec50f31c73d89c5c81",
+        "full_text_tokens_by_node": {
+          "intent": 350,
+          "query_rewrite": 450,
+          "planner": 1643
+        },
+        "local_text_tokens_by_node": {
+          "planner": 1711
+        },
+        "full_text_tokens": 2443,
+        "local_text_tokens": 1711,
+        "avoided_front_llm_invocations": 2,
+        "full_prompt_invocations": 3,
+        "local_prompt_invocations": 1,
+        "avoided_external_query_categories": [
+          "weather",
+          "poi"
+        ],
+        "avoided_actual_provider_requests": null
       },
       {
-        "full_replay": 93.13150000525638,
-        "local_replan": 64.88019999233074
+        "id": "task-南京-nature",
+        "modification": "把当天开始时间调整为10:00以后，其余当前要求保留。",
+        "checkpoint_sha256": "f5073e66c413c1b6f32c41b49bcd7973649e2f4184a810d1720fcc8d98c14110",
+        "full_text_tokens_by_node": {
+          "intent": 341,
+          "query_rewrite": 446,
+          "planner": 1608
+        },
+        "local_text_tokens_by_node": {
+          "planner": 1691
+        },
+        "full_text_tokens": 2395,
+        "local_text_tokens": 1691,
+        "avoided_front_llm_invocations": 2,
+        "full_prompt_invocations": 3,
+        "local_prompt_invocations": 1,
+        "avoided_external_query_categories": [
+          "weather",
+          "poi"
+        ],
+        "avoided_actual_provider_requests": null
       },
       {
-        "full_replay": 94.65349998208694,
-        "local_replan": 63.980999984778464
+        "id": "task-南京-window",
+        "modification": "下午优先选择候选池内的室内景点；没有合适室内候选时明确说明，不新增景点。",
+        "checkpoint_sha256": "bb943034106f7dbc61a6a880920939af4617222fe6d024ce9c816bedb42552c2",
+        "full_text_tokens_by_node": {
+          "intent": 360,
+          "query_rewrite": 470,
+          "planner": 1651
+        },
+        "local_text_tokens_by_node": {
+          "planner": 1713
+        },
+        "full_text_tokens": 2481,
+        "local_text_tokens": 1713,
+        "avoided_front_llm_invocations": 2,
+        "full_prompt_invocations": 3,
+        "local_prompt_invocations": 1,
+        "avoided_external_query_categories": [
+          "weather",
+          "poi"
+        ],
+        "avoided_actual_provider_requests": null
       },
       {
-        "full_replay": 94.86099999048747,
-        "local_replan": 65.3108999831602
+        "id": "task-南京-choice",
+        "modification": "把当天开始时间调整为10:00以后，其余当前要求保留。",
+        "checkpoint_sha256": "ba33e4faecc434e96049f0f4f957999b612cfa183d4a223b0b5040c29c376318",
+        "full_text_tokens_by_node": {
+          "intent": 344,
+          "query_rewrite": 452,
+          "planner": 1617
+        },
+        "local_text_tokens_by_node": {
+          "planner": 1699
+        },
+        "full_text_tokens": 2413,
+        "local_text_tokens": 1699,
+        "avoided_front_llm_invocations": 2,
+        "full_prompt_invocations": 3,
+        "local_prompt_invocations": 1,
+        "avoided_external_query_categories": [
+          "weather",
+          "poi"
+        ],
+        "avoided_actual_provider_requests": null
       },
       {
-        "full_replay": 97.52350000781007,
-        "local_replan": 65.97039999905974
+        "id": "task-南京-elder",
+        "modification": "下午优先选择候选池内的室内景点；没有合适室内候选时明确说明，不新增景点。",
+        "checkpoint_sha256": "f6451bbbc262175a7a1b8c44123cdf0b4b80a787d09635b6a9e205565b845cc7",
+        "full_text_tokens_by_node": {
+          "intent": 362,
+          "query_rewrite": 479,
+          "planner": 1657
+        },
+        "local_text_tokens_by_node": {
+          "planner": 1686
+        },
+        "full_text_tokens": 2498,
+        "local_text_tokens": 1686,
+        "avoided_front_llm_invocations": 2,
+        "full_prompt_invocations": 3,
+        "local_prompt_invocations": 1,
+        "avoided_external_query_categories": [
+          "weather",
+          "poi"
+        ],
+        "avoided_actual_provider_requests": null
       },
       {
-        "full_replay": 94.35369999846444,
-        "local_replan": 64.0784999995958
+        "id": "task-上海-interest",
+        "modification": "把当天开始时间调整为10:00以后，其余当前要求保留。",
+        "checkpoint_sha256": "5f8e54d79dd5e6aad49f2ab7d881f7af3d5587422bf3b6d224d226b4d200c577",
+        "full_text_tokens_by_node": {
+          "intent": 333,
+          "query_rewrite": 443,
+          "planner": 1745
+        },
+        "local_text_tokens_by_node": {
+          "planner": 1827
+        },
+        "full_text_tokens": 2521,
+        "local_text_tokens": 1827,
+        "avoided_front_llm_invocations": 2,
+        "full_prompt_invocations": 3,
+        "local_prompt_invocations": 1,
+        "avoided_external_query_categories": [
+          "weather",
+          "poi"
+        ],
+        "avoided_actual_provider_requests": null
       },
       {
-        "full_replay": 93.80010000313632,
-        "local_replan": 64.23079999512993
+        "id": "task-上海-excluded",
+        "modification": "下午优先选择候选池内的室内景点；没有合适室内候选时明确说明，不新增景点。",
+        "checkpoint_sha256": "111fd5b7a98f3a3331021b1ab5e61133ea50ba101d4c1716ec023e8c164594a4",
+        "full_text_tokens_by_node": {
+          "intent": 356,
+          "query_rewrite": 461,
+          "planner": 1786
+        },
+        "local_text_tokens_by_node": {
+          "planner": 1855
+        },
+        "full_text_tokens": 2603,
+        "local_text_tokens": 1855,
+        "avoided_front_llm_invocations": 2,
+        "full_prompt_invocations": 3,
+        "local_prompt_invocations": 1,
+        "avoided_external_query_categories": [
+          "weather",
+          "poi"
+        ],
+        "avoided_actual_provider_requests": null
       },
       {
-        "full_replay": 96.84729998116381,
-        "local_replan": 64.59589998121373
+        "id": "task-上海-slow",
+        "modification": "把当天开始时间调整为10:00以后，其余当前要求保留。",
+        "checkpoint_sha256": "6848310828dbf40779a18b019f6dbd42d9cc420ffc2366978d34174468bd4f87",
+        "full_text_tokens_by_node": {
+          "intent": 338,
+          "query_rewrite": 445,
+          "planner": 1746
+        },
+        "local_text_tokens_by_node": {
+          "planner": 1831
+        },
+        "full_text_tokens": 2529,
+        "local_text_tokens": 1831,
+        "avoided_front_llm_invocations": 2,
+        "full_prompt_invocations": 3,
+        "local_prompt_invocations": 1,
+        "avoided_external_query_categories": [
+          "weather",
+          "poi"
+        ],
+        "avoided_actual_provider_requests": null
       },
       {
-        "full_replay": 94.22609998728149,
-        "local_replan": 62.40520000574179
+        "id": "task-上海-late",
+        "modification": "下午优先选择候选池内的室内景点；没有合适室内候选时明确说明，不新增景点。",
+        "checkpoint_sha256": "21b93cf0e1db6dd22e6b1c99ce7657ed997b0db73e4c97fbdb547fa84c713a7e",
+        "full_text_tokens_by_node": {
+          "intent": 347,
+          "query_rewrite": 451,
+          "planner": 1759
+        },
+        "local_text_tokens_by_node": {
+          "planner": 1874
+        },
+        "full_text_tokens": 2557,
+        "local_text_tokens": 1874,
+        "avoided_front_llm_invocations": 2,
+        "full_prompt_invocations": 3,
+        "local_prompt_invocations": 1,
+        "avoided_external_query_categories": [
+          "weather",
+          "poi"
+        ],
+        "avoided_actual_provider_requests": null
       },
       {
-        "full_replay": 93.55650001089089,
-        "local_replan": 64.6693000162486
+        "id": "task-上海-family",
+        "modification": "把当天开始时间调整为10:00以后，其余当前要求保留。",
+        "checkpoint_sha256": "374e8bbef8b5bf507337b4cf5bd2c542a3f6aa532646a336dc153c50eb068752",
+        "full_text_tokens_by_node": {
+          "intent": 347,
+          "query_rewrite": 458,
+          "planner": 1773
+        },
+        "local_text_tokens_by_node": {
+          "planner": 1863
+        },
+        "full_text_tokens": 2578,
+        "local_text_tokens": 1863,
+        "avoided_front_llm_invocations": 2,
+        "full_prompt_invocations": 3,
+        "local_prompt_invocations": 1,
+        "avoided_external_query_categories": [
+          "weather",
+          "poi"
+        ],
+        "avoided_actual_provider_requests": null
       },
       {
-        "full_replay": 95.62629999709316,
-        "local_replan": 64.72690001828596
+        "id": "task-上海-rain",
+        "modification": "下午优先选择候选池内的室内景点；没有合适室内候选时明确说明，不新增景点。",
+        "checkpoint_sha256": "f18cf990f0fe79cbc10a8c963778a8ad3611815744bb596ebeccdd2451c753b6",
+        "full_text_tokens_by_node": {
+          "intent": 350,
+          "query_rewrite": 450,
+          "planner": 1790
+        },
+        "local_text_tokens_by_node": {
+          "planner": 1861
+        },
+        "full_text_tokens": 2590,
+        "local_text_tokens": 1861,
+        "avoided_front_llm_invocations": 2,
+        "full_prompt_invocations": 3,
+        "local_prompt_invocations": 1,
+        "avoided_external_query_categories": [
+          "weather",
+          "poi"
+        ],
+        "avoided_actual_provider_requests": null
       },
       {
-        "full_replay": 94.75279998150654,
-        "local_replan": 65.27849999838509
+        "id": "task-上海-nature",
+        "modification": "把当天开始时间调整为10:00以后，其余当前要求保留。",
+        "checkpoint_sha256": "2ac188f663d846c418e6bcd81e7ab44bd499ca150c9e2d7450075cb028fb2bd4",
+        "full_text_tokens_by_node": {
+          "intent": 341,
+          "query_rewrite": 446,
+          "planner": 1755
+        },
+        "local_text_tokens_by_node": {
+          "planner": 1830
+        },
+        "full_text_tokens": 2542,
+        "local_text_tokens": 1830,
+        "avoided_front_llm_invocations": 2,
+        "full_prompt_invocations": 3,
+        "local_prompt_invocations": 1,
+        "avoided_external_query_categories": [
+          "weather",
+          "poi"
+        ],
+        "avoided_actual_provider_requests": null
       },
       {
-        "full_replay": 94.74129998125136,
-        "local_replan": 64.30060000275262
+        "id": "task-上海-window",
+        "modification": "下午优先选择候选池内的室内景点；没有合适室内候选时明确说明，不新增景点。",
+        "checkpoint_sha256": "38ec4b8acee6300f9d22a753856d68aaa4d146c6faa070a1a7f684b1661d1bc7",
+        "full_text_tokens_by_node": {
+          "intent": 360,
+          "query_rewrite": 470,
+          "planner": 1798
+        },
+        "local_text_tokens_by_node": {
+          "planner": 1867
+        },
+        "full_text_tokens": 2628,
+        "local_text_tokens": 1867,
+        "avoided_front_llm_invocations": 2,
+        "full_prompt_invocations": 3,
+        "local_prompt_invocations": 1,
+        "avoided_external_query_categories": [
+          "weather",
+          "poi"
+        ],
+        "avoided_actual_provider_requests": null
       },
       {
-        "full_replay": 96.18639998370782,
-        "local_replan": 64.21720000798814
+        "id": "task-上海-choice",
+        "modification": "把当天开始时间调整为10:00以后，其余当前要求保留。",
+        "checkpoint_sha256": "5826ce1ab22607b4b779a2781618dd78998930c0c1b007d72487e84efd4e891a",
+        "full_text_tokens_by_node": {
+          "intent": 347,
+          "query_rewrite": 458,
+          "planner": 1773
+        },
+        "local_text_tokens_by_node": {
+          "planner": 1856
+        },
+        "full_text_tokens": 2578,
+        "local_text_tokens": 1856,
+        "avoided_front_llm_invocations": 2,
+        "full_prompt_invocations": 3,
+        "local_prompt_invocations": 1,
+        "avoided_external_query_categories": [
+          "weather",
+          "poi"
+        ],
+        "avoided_actual_provider_requests": null
       },
       {
-        "full_replay": 94.69980001449585,
-        "local_replan": 64.59069999982603
+        "id": "task-上海-elder",
+        "modification": "下午优先选择候选池内的室内景点；没有合适室内候选时明确说明，不新增景点。",
+        "checkpoint_sha256": "d4330f55891d52e67a63bd1f1e354399122811e35463919aa6e9b8f710d79dad",
+        "full_text_tokens_by_node": {
+          "intent": 362,
+          "query_rewrite": 479,
+          "planner": 1804
+        },
+        "local_text_tokens_by_node": {
+          "planner": 1840
+        },
+        "full_text_tokens": 2645,
+        "local_text_tokens": 1840,
+        "avoided_front_llm_invocations": 2,
+        "full_prompt_invocations": 3,
+        "local_prompt_invocations": 1,
+        "avoided_external_query_categories": [
+          "weather",
+          "poi"
+        ],
+        "avoided_actual_provider_requests": null
       },
       {
-        "full_replay": 93.9492000034079,
-        "local_replan": 64.44369998644106
+        "id": "task-三亚-interest",
+        "modification": "把当天开始时间调整为10:00以后，其余当前要求保留。",
+        "checkpoint_sha256": "5486fb9f4eb15a3549d02c70e7d448176968e3115897d0fe45bf72708f5509de",
+        "full_text_tokens_by_node": {
+          "intent": 346,
+          "query_rewrite": 469,
+          "planner": 1559
+        },
+        "local_text_tokens_by_node": {
+          "planner": 1613
+        },
+        "full_text_tokens": 2374,
+        "local_text_tokens": 1613,
+        "avoided_front_llm_invocations": 2,
+        "full_prompt_invocations": 3,
+        "local_prompt_invocations": 1,
+        "avoided_external_query_categories": [
+          "weather",
+          "poi"
+        ],
+        "avoided_actual_provider_requests": null
       },
       {
-        "full_replay": 94.39099999144673,
-        "local_replan": 64.0842999855522
+        "id": "task-三亚-excluded",
+        "modification": "下午优先选择候选池内的室内景点；没有合适室内候选时明确说明，不新增景点。",
+        "checkpoint_sha256": "1b2b4cd747ad403b36931bb0c115e79b41871122e48e5b7be805c6d40a94fe6c",
+        "full_text_tokens_by_node": {
+          "intent": 366,
+          "query_rewrite": 495,
+          "planner": 1604
+        },
+        "local_text_tokens_by_node": {
+          "planner": 1711
+        },
+        "full_text_tokens": 2465,
+        "local_text_tokens": 1711,
+        "avoided_front_llm_invocations": 2,
+        "full_prompt_invocations": 3,
+        "local_prompt_invocations": 1,
+        "avoided_external_query_categories": [
+          "weather",
+          "poi"
+        ],
+        "avoided_actual_provider_requests": null
       },
       {
-        "full_replay": 93.25790000730194,
-        "local_replan": 62.88700000732206
+        "id": "task-三亚-slow",
+        "modification": "把当天开始时间调整为10:00以后，其余当前要求保留。",
+        "checkpoint_sha256": "aeb2922a9f7cfde3651c410d9f5663a8986ce17eaa22bec7d1366e4eb1dc271a",
+        "full_text_tokens_by_node": {
+          "intent": 339,
+          "query_rewrite": 446,
+          "planner": 1523
+        },
+        "local_text_tokens_by_node": {
+          "planner": 1609
+        },
+        "full_text_tokens": 2308,
+        "local_text_tokens": 1609,
+        "avoided_front_llm_invocations": 2,
+        "full_prompt_invocations": 3,
+        "local_prompt_invocations": 1,
+        "avoided_external_query_categories": [
+          "weather",
+          "poi"
+        ],
+        "avoided_actual_provider_requests": null
       },
       {
-        "full_replay": 96.44809999736026,
-        "local_replan": 65.42510000872426
+        "id": "task-三亚-late",
+        "modification": "下午优先选择候选池内的室内景点；没有合适室内候选时明确说明，不新增景点。",
+        "checkpoint_sha256": "0dbdf6ab29bf2c88486b15a7d3f7f35ee6a661a3f58e541ddb7474637bbe0f01",
+        "full_text_tokens_by_node": {
+          "intent": 348,
+          "query_rewrite": 452,
+          "planner": 1536
+        },
+        "local_text_tokens_by_node": {
+          "planner": 1658
+        },
+        "full_text_tokens": 2336,
+        "local_text_tokens": 1658,
+        "avoided_front_llm_invocations": 2,
+        "full_prompt_invocations": 3,
+        "local_prompt_invocations": 1,
+        "avoided_external_query_categories": [
+          "weather",
+          "poi"
+        ],
+        "avoided_actual_provider_requests": null
       },
       {
-        "full_replay": 97.25509997224435,
-        "local_replan": 65.05850001121871
+        "id": "task-三亚-family",
+        "modification": "把当天开始时间调整为10:00以后，其余当前要求保留。",
+        "checkpoint_sha256": "1a33a645a285099ab28b61fdad25a03c7d47cc8592badfd29d2850a9616c9f44",
+        "full_text_tokens_by_node": {
+          "intent": 354,
+          "query_rewrite": 471,
+          "planner": 1568
+        },
+        "local_text_tokens_by_node": {
+          "planner": 1621
+        },
+        "full_text_tokens": 2393,
+        "local_text_tokens": 1621,
+        "avoided_front_llm_invocations": 2,
+        "full_prompt_invocations": 3,
+        "local_prompt_invocations": 1,
+        "avoided_external_query_categories": [
+          "weather",
+          "poi"
+        ],
+        "avoided_actual_provider_requests": null
       },
       {
-        "full_replay": 95.12099999119528,
-        "local_replan": 64.04060000204481
+        "id": "task-三亚-weather_window",
+        "modification": "下午优先选择候选池内的室内景点；没有合适室内候选时明确说明，不新增景点。",
+        "checkpoint_sha256": "177f1243c1fded603457cace3d67c175b40b09ccae64a89463ff1d813ae60876",
+        "full_text_tokens_by_node": {
+          "intent": 357,
+          "query_rewrite": 463,
+          "planner": 1563
+        },
+        "local_text_tokens_by_node": {
+          "planner": 1590
+        },
+        "full_text_tokens": 2383,
+        "local_text_tokens": 1590,
+        "avoided_front_llm_invocations": 2,
+        "full_prompt_invocations": 3,
+        "local_prompt_invocations": 1,
+        "avoided_external_query_categories": [
+          "weather",
+          "poi"
+        ],
+        "avoided_actual_provider_requests": null
       },
       {
-        "full_replay": 99.83670001383871,
-        "local_replan": 64.9503999738954
+        "id": "task-三亚-nature",
+        "modification": "把当天开始时间调整为10:00以后，其余当前要求保留。",
+        "checkpoint_sha256": "af927dce6965389981a3dfd3d8b15160cafd778d117638eaf25048cf72855c6b",
+        "full_text_tokens_by_node": {
+          "intent": 342,
+          "query_rewrite": 447,
+          "planner": 1532
+        },
+        "local_text_tokens_by_node": {
+          "planner": 1675
+        },
+        "full_text_tokens": 2321,
+        "local_text_tokens": 1675,
+        "avoided_front_llm_invocations": 2,
+        "full_prompt_invocations": 3,
+        "local_prompt_invocations": 1,
+        "avoided_external_query_categories": [
+          "weather",
+          "poi"
+        ],
+        "avoided_actual_provider_requests": null
       },
       {
-        "full_replay": 95.58120000292547,
-        "local_replan": 64.85180000890978
+        "id": "task-三亚-window",
+        "modification": "下午优先选择候选池内的室内景点；没有合适室内候选时明确说明，不新增景点。",
+        "checkpoint_sha256": "4783380b09f40134bdc911698391e9337100aff508cbe2b525f103fa18c5af90",
+        "full_text_tokens_by_node": {
+          "intent": 361,
+          "query_rewrite": 471,
+          "planner": 1575
+        },
+        "local_text_tokens_by_node": {
+          "planner": 1648
+        },
+        "full_text_tokens": 2407,
+        "local_text_tokens": 1648,
+        "avoided_front_llm_invocations": 2,
+        "full_prompt_invocations": 3,
+        "local_prompt_invocations": 1,
+        "avoided_external_query_categories": [
+          "weather",
+          "poi"
+        ],
+        "avoided_actual_provider_requests": null
       },
       {
-        "full_replay": 98.55719999177381,
-        "local_replan": 63.703699997859076
+        "id": "task-三亚-choice",
+        "modification": "把当天开始时间调整为10:00以后，其余当前要求保留。",
+        "checkpoint_sha256": "db5f3c8d8406da220638c7b3b26df22b73ece5435fbb938f862045ecc66dc366",
+        "full_text_tokens_by_node": {
+          "intent": 354,
+          "query_rewrite": 471,
+          "planner": 1568
+        },
+        "local_text_tokens_by_node": {
+          "planner": 1667
+        },
+        "full_text_tokens": 2393,
+        "local_text_tokens": 1667,
+        "avoided_front_llm_invocations": 2,
+        "full_prompt_invocations": 3,
+        "local_prompt_invocations": 1,
+        "avoided_external_query_categories": [
+          "weather",
+          "poi"
+        ],
+        "avoided_actual_provider_requests": null
       },
       {
-        "full_replay": 96.42780001740903,
-        "local_replan": 65.20780001301318
+        "id": "task-三亚-elder",
+        "modification": "下午优先选择候选池内的室内景点；没有合适室内候选时明确说明，不新增景点。",
+        "checkpoint_sha256": "257eab0387adf45408a729d5a46c77b38f7479597338c089b0bf73bdb3f6ac9b",
+        "full_text_tokens_by_node": {
+          "intent": 363,
+          "query_rewrite": 480,
+          "planner": 1581
+        },
+        "local_text_tokens_by_node": {
+          "planner": 1610
+        },
+        "full_text_tokens": 2424,
+        "local_text_tokens": 1610,
+        "avoided_front_llm_invocations": 2,
+        "full_prompt_invocations": 3,
+        "local_prompt_invocations": 1,
+        "avoided_external_query_categories": [
+          "weather",
+          "poi"
+        ],
+        "avoided_actual_provider_requests": null
       }
     ],
-    "p50_latency_reduction_ratio": 0.318,
+    "external_io_latency": null,
+    "end_to_end_latency_reduction_ratio": null,
     "avoided_nodes": [
       "intent",
       "query_rewrite",
       "weather_search",
       "attraction_search"
     ],
-    "simulated_llm_input_tokens": {
-      "full_replay": 9900,
-      "checkpoint_local_replan": 8400,
-      "avoided": 1500,
-      "reduction_ratio": 0.152,
-      "disclaimer": "fixed budget assumptions, not provider-reported token usage"
-    },
     "pass": true,
-    "pass_criterion": "modeled p50 latency reduction >= 20%"
+    "limitations": [
+      "Checkpoint seeds are saved real model drafts over fixed provider fixtures, not live prefetch traces.",
+      "Token counts cover actual production system/human prompt text, not tool schemas, wire framing or billed model tokens.",
+      "cl100k_base is an explicitly named comparison tokenizer, not a verified Grok billing tokenizer.",
+      "Full replay reuses stored parsed intent/rewrite fields; it does not regenerate them.",
+      "Local timing measures Python restore/serialization/prompt assembly only; no model/API waits, no sleep.",
+      "External categories are skipped by design; exact provider request counts are unknown."
+    ],
+    "ledger_sha256": "1fd90eeca8e10abfcabad13ce9702809ef4619eeafa3736359a91d055f0c9045",
+    "prompt_capture_sha256": "96c28e19255bf3bbf57abac49cb20c81fface6f9146381ac86de69e953063e52"
   }
 }

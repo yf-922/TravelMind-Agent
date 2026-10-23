@@ -2,8 +2,8 @@
 
 The road-distance benchmark executes the production concurrent node with a
 delayed fake route provider and compares it with an equivalent serial baseline.
-The replanning benchmark is a deterministic stage-cost model because this
-repository has no historical revision that can be executed as an old version.
+The replanning benchmark captures production prompts from saved checkpoints.
+It does not invent model/API latency or billable token usage.
 """
 
 from __future__ import annotations
@@ -34,47 +34,7 @@ from app.planning import graph as graph_module  # noqa: E402
 from app.planning.schemas import TravelPlanState  # noqa: E402
 
 
-FULL_REPLAY_PHASES: tuple[tuple[str, ...], ...] = (
-    ("intent",),
-    ("query_rewrite", "weather_search"),
-    ("attraction_search",),
-    ("planner",),
-    ("route_distance_check",),
-    ("reviewer",),
-    ("time_check",),
-    ("meal_enrichment", "spot_tips"),
-    ("finalize",),
-)
-LOCAL_REPLAN_PHASES: tuple[tuple[str, ...], ...] = FULL_REPLAY_PHASES[3:]
-
-# Fixed synthetic work per stage. These are controlled workload units, not
-# production measurements and not model-provider usage data.
-STAGE_WORK_UNITS = {
-    "intent": 3,
-    "query_rewrite": 4,
-    "weather_search": 5,
-    "attraction_search": 6,
-    "planner": 7,
-    "route_distance_check": 3,
-    "reviewer": 5,
-    "time_check": 4,
-    "meal_enrichment": 9,
-    "spot_tips": 3,
-    "finalize": 2,
-}
-
-# Explicit assumptions used only for estimating which LLM input budget is
-# avoided when checkpoint data lets us skip intent extraction and rewriting.
-SIMULATED_LLM_INPUT_TOKENS = {
-    "intent": 900,
-    "query_rewrite": 600,
-    "planner": 2500,
-    "reviewer": 1500,
-    "time_check": 1000,
-    "meal_recommend": 1200,
-    "spot_tips": 1400,
-    "finalize": 800,
-}
+from app.evaluation.checkpoint_benchmark import measure_checkpoint_prompts
 
 
 def percentile(values: list[float], fraction: float) -> float:
@@ -357,60 +317,12 @@ def benchmark_enrichment_fanout(runs: int, delay_ms: float) -> dict[str, Any]:
     }
 
 
-def _run_stage_model(phases: tuple[tuple[str, ...], ...], unit_delay_ms: float) -> None:
-    def run_stage(stage: str) -> None:
-        time.sleep(STAGE_WORK_UNITS[stage] * unit_delay_ms / 1000)
-
-    for phase in phases:
-        if len(phase) == 1:
-            run_stage(phase[0])
-        else:
-            with ThreadPoolExecutor(max_workers=len(phase)) as pool:
-                list(pool.map(run_stage, phase))
-
-
-def _phase_nodes(phases: tuple[tuple[str, ...], ...]) -> list[str]:
-    return [node for phase in phases for node in phase]
-
-
-def benchmark_checkpoint_replan(runs: int, unit_delay_ms: float) -> dict[str, Any]:
-    full_ms: list[float] = []
-    local_ms: list[float] = []
-    for _ in range(runs):
-        started = time.perf_counter()
-        _run_stage_model(FULL_REPLAY_PHASES, unit_delay_ms)
-        full_ms.append((time.perf_counter() - started) * 1000)
-
-        started = time.perf_counter()
-        _run_stage_model(LOCAL_REPLAN_PHASES, unit_delay_ms)
-        local_ms.append((time.perf_counter() - started) * 1000)
-
-    full = summarize_ms(full_ms)
-    local = summarize_ms(local_ms)
-    avoided_nodes = [node for node in _phase_nodes(FULL_REPLAY_PHASES) if node not in _phase_nodes(LOCAL_REPLAN_PHASES)]
-    full_token_budget = sum(SIMULATED_LLM_INPUT_TOKENS.values())
-    avoided_token_budget = sum(SIMULATED_LLM_INPUT_TOKENS.get(node, 0) for node in avoided_nodes)
-    latency_saved = 1 - local["p50"] / full["p50"] if full["p50"] else 0.0
-    return {
-        "measurement_type": "deterministic-stage-cost-simulation",
-        "baseline_label": "simulated full replay; not historical production data",
-        "runs": runs,
-        "unit_delay_ms": unit_delay_ms,
-        "full_replay_ms": full,
-        "checkpoint_local_replan_ms": local,
-        "paired_samples_ms": [{"full_replay": a, "local_replan": b} for a, b in zip(full_ms, local_ms)],
-        "p50_latency_reduction_ratio": round(latency_saved, 3),
-        "avoided_nodes": avoided_nodes,
-        "simulated_llm_input_tokens": {
-            "full_replay": full_token_budget,
-            "checkpoint_local_replan": full_token_budget - avoided_token_budget,
-            "avoided": avoided_token_budget,
-            "reduction_ratio": round(avoided_token_budget / full_token_budget, 3),
-            "disclaimer": "fixed budget assumptions, not provider-reported token usage",
-        },
-        "pass": latency_saved >= 0.20,
-        "pass_criterion": "modeled p50 latency reduction >= 20%",
-    }
+def benchmark_checkpoint_replan(runs: int, ledger_path: Path | None = None, *, samples=30):
+    path = ledger_path or ROOT/'data/eval/reviewer_ablation_real_v2.json'
+    ledger = json.loads(path.read_text(encoding='utf-8'))
+    result = measure_checkpoint_prompts(ledger, samples=samples, repetitions=runs)
+    result['ledger_sha256'] = hashlib.sha256(path.read_bytes()).hexdigest()
+    return result
 
 
 def render_markdown(report: dict[str, Any]) -> str:
@@ -418,7 +330,7 @@ def render_markdown(report: dict[str, Any]) -> str:
     enrichment = report["enrichment_fanout"]
     road = report["road_distance"]
     replan = report["checkpoint_replan"]
-    tokens = replan["simulated_llm_input_tokens"]
+    tokens = replan["text_input_tokens"]
     return "\n".join([
         "# Offline Engineering Benchmark",
         "",
@@ -450,20 +362,22 @@ def render_markdown(report: dict[str, Any]) -> str:
         "",
         "## Checkpoint local replanning",
         "",
-        f"- Comparison boundary: {replan['baseline_label']}",
+        f"- Actual saved checkpoints: {replan['samples']}; repeats per checkpoint: {replan['runs']}",
         f"- Full replay P50/P95: {replan['full_replay_ms']['p50']} / {replan['full_replay_ms']['p95']} ms",
         f"- Local replan P50/P95: {replan['checkpoint_local_replan_ms']['p50']} / {replan['checkpoint_local_replan_ms']['p95']} ms",
-        f"- Modeled P50 latency reduction: {replan['p50_latency_reduction_ratio']:.1%}",
+        "- Timing scope: local serialization, production prompt assembly and checkpoint restore only.",
         f"- Avoided stages: {', '.join(replan['avoided_nodes'])}",
-        f"- Simulated LLM input budget avoided: {tokens['avoided']} / {tokens['full_replay']} "
-        f"({tokens['reduction_ratio']:.1%})",
-        f"- Token boundary: {tokens['disclaimer']}",
+        f"- Production prompt text tokens ({replan['encoding']}): full {tokens['full']}, local {tokens['local']}; reduction {tokens['reduction_ratio']:.1%}.",
+        f"- Avoided front-node LLM invocations: {replan['avoided_front_llm_invocations']} across {replan['samples']} requests.",
+        "- Skipped external query categories per request: weather and POI; exact historical HTTP requests unavailable.",
+        "- Token boundary: text tokenization, not provider billing; schemas and wire framing excluded.",
+        "- External API/model timing trace: unavailable; no end-to-end latency claim.",
         "",
         "## Interpretation boundary",
         "",
         "The concurrency result measures the production node around a deterministic fake provider. "
-        "It proves scheduling behavior, not real AMap network latency. The checkpoint result is a "
-        "controlled stage-cost simulation because no runnable historical version exists. Real end-to-end "
+        "It proves scheduling behavior, not real AMap network latency. The checkpoint result uses actual "
+        "saved states and production prompt constructors with replayed parsed fields. Real end-to-end "
         "latency, exact token usage, answer quality and external-service failure rates require the online suite.",
         "",
     ])
@@ -475,7 +389,9 @@ def main() -> int:
     parser.add_argument("--route-legs", type=int, default=8)
     parser.add_argument("--fanout-delay-ms", type=float, default=40.0)
     parser.add_argument("--provider-delay-ms", type=float, default=20.0)
-    parser.add_argument("--stage-unit-delay-ms", type=float, default=2.0)
+    parser.add_argument("--checkpoint-ledger", type=Path, default=ROOT/'data/eval/reviewer_ablation_real_v2.json')
+    parser.add_argument("--checkpoint-samples", type=int, default=30)
+    parser.add_argument("--checkpoint-repetitions", type=int, default=3)
     parser.add_argument("--json-out", type=Path, default=ROOT / "evaluation" / "offline_engineering_benchmark.json")
     parser.add_argument("--markdown-out", type=Path, default=ROOT / "evaluation" / "offline_engineering_benchmark.md")
     args = parser.parse_args()
@@ -483,7 +399,7 @@ def main() -> int:
         parser.error("--runs must be at least 5")
     if not 1 <= args.route_legs <= 100:
         parser.error("--route-legs must be between 1 and 100")
-    if args.fanout_delay_ms <= 0 or args.provider_delay_ms <= 0 or args.stage_unit_delay_ms <= 0:
+    if args.fanout_delay_ms <= 0 or args.provider_delay_ms <= 0:
         parser.error("delay values must be positive")
 
     report = {
@@ -499,9 +415,14 @@ def main() -> int:
         "post_intent_fanout": benchmark_post_intent_fanout(args.runs, args.fanout_delay_ms),
         "enrichment_fanout": benchmark_enrichment_fanout(args.runs, args.fanout_delay_ms),
         "road_distance": benchmark_road_distance(args.runs, args.route_legs, args.provider_delay_ms),
-        "checkpoint_replan": benchmark_checkpoint_replan(args.runs, args.stage_unit_delay_ms),
+        "checkpoint_replan": benchmark_checkpoint_replan(args.checkpoint_repetitions, args.checkpoint_ledger, samples=args.checkpoint_samples),
     }
     args.json_out.parent.mkdir(parents=True, exist_ok=True)
+    prompts = report['checkpoint_replan'].pop('_prompts')
+    prompt_out = ROOT/'data/eval/checkpoint_prompt_capture.json'
+    prompt_out.parent.mkdir(parents=True, exist_ok=True)
+    prompt_out.write_text(json.dumps(prompts, ensure_ascii=False, indent=2), encoding='utf-8')
+    report['checkpoint_replan']['prompt_capture_sha256'] = hashlib.sha256(prompt_out.read_bytes()).hexdigest()
     args.markdown_out.parent.mkdir(parents=True, exist_ok=True)
     args.json_out.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     args.markdown_out.write_text(render_markdown(report), encoding="utf-8")

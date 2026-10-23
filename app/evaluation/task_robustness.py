@@ -183,6 +183,105 @@ def grade(state, case, maps, error=None):
             "unknown_weather_disclosed": unknown_weather_disclosed, "error": error}
 
 
+def semantic_route_violations(route, case, maps):
+    """Predeclared candidate labels, never supplied to the model as gold answers."""
+    import itertools
+    rubric = case.get('semantic_rubric', {})
+    spots = [spot for day in route for spot in day.get('spots', [])]
+    violations = []
+    if set(rubric.get('unsuitable_pois', [])) & {s['name'] for s in spots}:
+        violations.append(rubric.get('violation', 'semantic_mismatch'))
+    if rubric.get('avoid_outdoor_noon'):
+        outdoors = {p['name'] for p in case['state']['pois'] if p.get('indoor') is False}
+        for spot in spots:
+            try:
+                if spot['name'] in outdoors and clock(spot['start_time']) < 840 and clock(spot['end_time']) > 660:
+                    violations.append('heat_exposure')
+            except (ValueError, TypeError):
+                continue
+    if rubric.get('max_detour_ratio') and len(spots) >= 3:
+        locations = {p['name']: p['location'] for p in case['state']['pois']}
+        names = [s['name'] for s in spots]
+        def length(order):
+            values = [maps.get(route_key(locations[a], locations[b], 'drive'), {}).get('distance_km')
+                      for a, b in zip(order, order[1:])]
+            if any(v is None for v in values):
+                raise ValueError('semantic detour scoring requires all saved road distances')
+            return sum(values)
+        best = min(length(order) for order in itertools.permutations(names))
+        if best and length(names) / best > rubric['max_detour_ratio']:
+            violations.append('avoidable_backtracking')
+    return sorted(set(violations))
+
+
+def build_soft_review_cases():
+    """Controlled drafts; frozen v2 cases remain unchanged. Labels await review."""
+    bases = {c['state']['destination']: c for c in build_cases()['tasks']}
+    specs = [
+        ('stairs', '南京', 'task-南京-family',
+         '带75岁腿脚不便的老人，不能爬连续台阶，也不参加登高活动；只选平缓、可轻松停留的景点。慢节奏游览。',
+         [('中山陵景区', '10:00', '12:00')],
+         {'unsuitable_pois': ['中山陵景区'], 'violation': 'mobility_intensity_conflict'}, None),
+        ('heat', '三亚', 'task-三亚-family',
+         '预报晴天38度，怕热且不耐暴晒，正午想在遮阴处休息，户外观景尽量放在凉快时段。',
+         [('鹿回头风景区', '12:00', '13:30')], {'avoid_outdoor_noon': True}, None),
+        ('commercial', '上海', 'task-上海-choice',
+         '已经对商业化街区和人造主题乐园审美疲劳，这次更想看自然和历史真迹，不想再看仿造布景。',
+         [('上海迪士尼度假区', '10:00', '12:00')],
+         {'unsuitable_pois': ['上海迪士尼度假区'], 'violation': 'implicit_preference_conflict'}, None),
+        ('backtrack', '上海', 'task-上海-family',
+         '这三个候选都想去，每个参观至少60分钟，路线按相邻区域串起来，别在城市两端来回折返。',
+         [('上海博物馆东馆', '10:00', '11:00'), ('上海动物园', '13:00', '14:00'),
+          ('上海海洋水族馆', '16:00', '17:00')], {'max_detour_ratio': 1.3}, 'only_seed_pois'),
+        ('infeasible', '南京', 'task-南京-choice',
+         '带75岁腿脚不便老人，不能爬连续台阶和登高；只允许候选中无需登高的活动，不允许补充候选或假称有无障碍替代。',
+         [('中山陵景区', '10:00', '12:00')],
+         {'unsuitable_pois': ['中山陵景区'], 'violation': 'mobility_intensity_conflict'}, 'only_seed_pois'),
+        ('clean', '南京', None,
+         '带老人轻松游，想在玄武湖平缓入口附近散步休息，只安排一个景点。',
+         [('玄武湖景区', '10:00', '12:00')], {}, 'only_seed_pois'),
+    ]
+    output = []
+    for label, city, replacement, request, schedule, semantic, restriction in specs:
+        case = copy.deepcopy(bases[city])
+        state = case['state']
+        state.update(query=f'{city}2026年10月15日一日游。{request}',
+                     attraction_preference=request, habit_preference='', max_per_day=3,
+                     weather_forecast=weather(), rain_indoor_priority=False)
+        if label in ('stairs', 'infeasible'):
+            state['query'] += '本次活动条件：中山陵安排指登临陵寝的台阶游览，不包含山脚平地替代活动。'
+        if label == 'heat':
+            state['weather_forecast'][0].update(day_temp='38', night_temp='28')
+        if restriction:
+            state['pois'] = [p for p in state['pois'] if p['name'] in {x[0] for x in schedule}]
+        route = [{'day': 1, 'spots': [{'name': name, 'start_time': start, 'end_time': end,
+                  'period': 'morning' if clock(start) < 720 else 'afternoon'} for name, start, end in schedule]}]
+        case.update(id='soft-review-'+label, suite='soft_review', category=label,
+                    replaces=replacement, label_status='pending_human_review',
+                    draft_origin='author_injected_controlled_defect' if label != 'clean' else 'author_clean_control',
+                    expected='reject' if label == 'infeasible' else 'repair_or_preserve',
+                    rubric={'min_count': len(schedule), 'min_visit': 60},
+                    semantic_rubric=semantic, injected_route=route,
+                    scope='controlled_audit_tail_not_natural_planner_success',
+                    annotation_reason=request)
+        output.append(case)
+    return output
+
+
+def grade_soft_review(state, case, maps, error=None):
+    result = grade(state, case, maps, error)
+    route = [{'spots': [s for s in day.get('timeline', []) if s.get('type') == 'attraction']}
+             for day in (state.final_plan or {}).get('days', [])]
+    extra = semantic_route_violations(route, case, maps)
+    result['soft_violations'] = sorted(set(result['soft_violations'] + extra))
+    result['soft_pass'] = not result['soft_violations']
+    result['task_success'] = result['task_success'] and result['soft_pass']
+    result['unsafe_release'] = result['approved'] and bool(result['hard_violations'] or result['soft_violations'])
+    result['expected_behavior_pass'] = (result['safe_explained_rejection'] if case['expected'] == 'reject'
+                                        else result['task_success'])
+    return result
+
+
 def fault_distance(maps, fault, counters):
     """Inject transport failures at the provider boundary; never patch approval."""
     def distance(origin, destination, key, mode="drive"):

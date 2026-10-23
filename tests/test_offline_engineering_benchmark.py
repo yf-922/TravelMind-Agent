@@ -37,15 +37,30 @@ def test_enrichment_benchmark_exercises_compiled_production_graph():
     assert result["parallel_nodes"] == ["main_meal_output", "spot_tips"]
 
 
-def test_checkpoint_benchmark_is_explicitly_simulated_and_reports_avoided_work():
-    result = benchmark_checkpoint_replan(runs=5, unit_delay_ms=0.5)
+def test_checkpoint_benchmark_captures_production_prompts_without_sleep(tmp_path, monkeypatch):
+    import json
+    from app.evaluation import checkpoint_benchmark
+    from app.evaluation.task_robustness import build_cases
+    case = build_cases()['tasks'][0]
+    state = {**case['state'], 'route': [{'day': 1, 'spots': [
+        {'name': case['state']['pois'][0]['name'], 'period': 'morning',
+         'start_time': '10:00', 'end_time': '12:00'}]}]}
+    path = tmp_path/'ledger.json'
+    path.write_text(json.dumps({'cases': [case], 'seeds': {case['id']: {'state': state}}}), encoding='utf-8')
+    monkeypatch.setattr(checkpoint_benchmark.time, 'sleep', lambda *a: (_ for _ in ()).throw(AssertionError('sleep is forbidden')))
+    result = benchmark_checkpoint_replan(runs=2, ledger_path=path, samples=1)
 
     assert result["pass"] is True
     assert result["avoided_nodes"] == [
         "intent", "query_rewrite", "weather_search", "attraction_search",
     ]
-    assert result["simulated_llm_input_tokens"]["avoided"] == 1500
-    assert "not historical production data" in result["baseline_label"]
+    assert result['text_input_tokens']['full'] > 0
+    assert result['text_input_tokens']['local'] > 0
+    assert result['avoided_front_llm_invocations'] == 2
+    assert result['external_io_latency'] is None
+    assert result['end_to_end_latency_reduction_ratio'] is None
+    assert set(result['_prompts'][0]['full']) == {'intent', 'query_rewrite', 'planner'}
+    assert set(result['_prompts'][0]['local']) == {'planner'}
 
     fanout = {
         "parallel_nodes": ["a", "b"], "runs": 5, "fake_delay_ms_per_node": 1,
@@ -60,3 +75,4 @@ def test_checkpoint_benchmark_is_explicitly_simulated_and_reports_avoided_work()
         "p50_speedup": 2.5, "pass": True,
     }, "checkpoint_replan": result})
     assert "must not be presented as online quality data" in report
+    assert 'modeled p50' not in report.lower()

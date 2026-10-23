@@ -48,12 +48,17 @@ def rule_faults(state):
     return sorted(set(nodes._route_risk_flags(state)) - ADVISORY)
 
 
-def run_arm(initial, arm, planner, reviewer, max_repairs=3):
+def run_arm(initial, arm, planner, reviewer, max_repairs=3, trace=None):
     state = TravelPlanState(**initial)
     repairs = 0
     while True:
         state = state.model_copy(update=nodes.route_distance_check_node(state))
         faults = rule_faults(state)
+        if trace is not None:
+            with patch.object(nodes, 'record_risk_gate'):
+                gate = nodes.route_risk_gate_node(state)
+            trace.append({'repair_index': repairs, 'state_before_review': state.model_dump(mode='json'),
+                          'rule_faults': faults, 'current_gate': gate})
         if arm == 'planner_only':
             state.approved = True
             break

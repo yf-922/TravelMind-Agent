@@ -75,3 +75,31 @@ python -m pytest -q tests/test_reviewer_ablation.py
 Runtime reports in ignored `data/` retain shared seeds, final plans, per-call
 usage and errors. Completed arms are reused on resume. In-flight interrupted
 calls cannot be automatically replayed. No production-default change was made.
+
+## v3 controlled soft-constraint extension (pending human review)
+
+The original v2 ledger above is immutable. v3 adds a separate audit-tail+experiment for cases that deterministic rules do not express well: elderly+mobility, heat exposure, aversion to commercial themes and avoidable+backtracking. It also includes one infeasible control and one clean control.
+The initial routes are author-controlled injected drafts, so these results do
+not estimate how often a natural Planner makes each mistake.
+
+The composite reuses 25 unchanged natural task rows and replaces five rows+with the controlled challenges. It is therefore not a new 30-request natural+success rate. The four feasible defects are graded against an independent+predeclared rubric; a successful result requires the final route to change in+the route JSON, not merely in notes. The infeasible case is expected to be a+safe explained refusal, not a successful itinerary.
+
+| Arm | Composite task success / 30 | Feasible challenge repairs / 4 |
+| --- | ---: | ---: |
+| Planner only | 21 (70.0%) | 0/4 |
+| Rules + repair | 25 (83.3%) | 0/4 |
+| Rules + Reviewer + repair | 29 (96.7%) | 4/4 |
+
+The Reviewer arm made one actual parsing-failure call on the infeasible case;
+the production fallback ultimately returned an unapproved, explained refusal.
+This is safe fallback evidence, not a clean semantic rejection without+execution failure. The run used 20 paid attempts, 19 parsed successfully,+39,930 input and 21,184 output tokens, and `unpriced` cost. Requested output+cap was 4,096, while one provider usage record reported 4,288 output tokens;
+the report records both rather than claiming strict provider enforcement.
+
+Review every challenge in [the review packet](../evaluation/soft_review_v3.md)
+and export/import the bound form before changing `pending_human_review` to+`verified_v2`:
+
+```powershell
+python scripts/review_soft_review_labels.py export
+# edit data/eval/soft_review_v3_human_review.json and confirm each case
+python scripts/review_soft_review_labels.py import
+```

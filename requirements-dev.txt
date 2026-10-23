@@ -1,2 +1,3 @@
 -r requirements.txt
 pytest>=9.0
+tiktoken==0.14.0
