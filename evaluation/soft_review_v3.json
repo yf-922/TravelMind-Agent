@@ -1,0 +1,4160 @@
+{
+  "status": "complete_human_verified",
+  "label_status": "verified_v2",
+  "formal_test_report": false,
+  "verification_scope": "six controlled soft-constraint cases manually reviewed and confirmed; historical rows retain original provenance",
+  "verification_note": "The project owner manually confirmed the six controlled cases and their recorded outcomes.",
+  "scope": "25 historical natural drafts plus 5 controlled challenges; clean control separate",
+  "model": "grok-4.6",
+  "binding": "256cffd06c303db8987502b48f3e1851bf2b98dc2396b652cd957859125c32d6",
+  "legacy_sha256": "1fd90eeca8e10abfcabad13ce9702809ef4619eeafa3736359a91d055f0c9045",
+  "summary": {
+    "planner_only": {
+      "legacy_reused": 25,
+      "new_recorded": 5,
+      "planned_composite": 30,
+      "composite_task_success": 21,
+      "new_feasible_success": 0,
+      "new_feasible_count": 4,
+      "new_expected_behavior_pass": 0,
+      "new_errors": 0
+    },
+    "rules": {
+      "legacy_reused": 25,
+      "new_recorded": 5,
+      "planned_composite": 30,
+      "composite_task_success": 25,
+      "new_feasible_success": 0,
+      "new_feasible_count": 4,
+      "new_expected_behavior_pass": 0,
+      "new_errors": 0
+    },
+    "rules_reviewer": {
+      "legacy_reused": 25,
+      "new_recorded": 5,
+      "planned_composite": 30,
+      "composite_task_success": 29,
+      "new_feasible_success": 4,
+      "new_feasible_count": 4,
+      "new_expected_behavior_pass": 5,
+      "new_errors": 0
+    }
+  },
+  "cases": [
+    {
+      "id": "soft-review-stairs",
+      "category": "stairs",
+      "replaces": "task-南京-family",
+      "label_status": "verified_v2",
+      "expected": "repair_or_preserve",
+      "semantic_rubric": {
+        "unsuitable_pois": [
+          "中山陵景区"
+        ],
+        "violation": "mobility_intensity_conflict"
+      },
+      "rubric": {
+        "min_count": 1,
+        "min_visit": 60
+      },
+      "injected_route": [
+        {
+          "day": 1,
+          "spots": [
+            {
+              "name": "中山陵景区",
+              "start_time": "10:00",
+              "end_time": "12:00",
+              "period": "morning"
+            }
+          ]
+        }
+      ],
+      "annotation_reason": "带75岁腿脚不便的老人，不能爬连续台阶，也不参加登高活动；只选平缓、可轻松停留的景点。慢节奏游览。",
+      "query": "南京2026年10月15日一日游。带75岁腿脚不便的老人，不能爬连续台阶，也不参加登高活动；只选平缓、可轻松停留的景点。慢节奏游览。本次活动条件：中山陵安排指登临陵寝的台阶游览，不包含山脚平地替代活动。"
+    },
+    {
+      "id": "soft-review-heat",
+      "category": "heat",
+      "replaces": "task-三亚-family",
+      "label_status": "verified_v2",
+      "expected": "repair_or_preserve",
+      "semantic_rubric": {
+        "avoid_outdoor_noon": true
+      },
+      "rubric": {
+        "min_count": 1,
+        "min_visit": 60
+      },
+      "injected_route": [
+        {
+          "day": 1,
+          "spots": [
+            {
+              "name": "鹿回头风景区",
+              "start_time": "12:00",
+              "end_time": "13:30",
+              "period": "afternoon"
+            }
+          ]
+        }
+      ],
+      "annotation_reason": "预报晴天38度，怕热且不耐暴晒，正午想在遮阴处休息，户外观景尽量放在凉快时段。",
+      "query": "三亚2026年10月15日一日游。预报晴天38度，怕热且不耐暴晒，正午想在遮阴处休息，户外观景尽量放在凉快时段。"
+    },
+    {
+      "id": "soft-review-commercial",
+      "category": "commercial",
+      "replaces": "task-上海-choice",
+      "label_status": "verified_v2",
+      "expected": "repair_or_preserve",
+      "semantic_rubric": {
+        "unsuitable_pois": [
+          "上海迪士尼度假区"
+        ],
+        "violation": "implicit_preference_conflict"
+      },
+      "rubric": {
+        "min_count": 1,
+        "min_visit": 60
+      },
+      "injected_route": [
+        {
+          "day": 1,
+          "spots": [
+            {
+              "name": "上海迪士尼度假区",
+              "start_time": "10:00",
+              "end_time": "12:00",
+              "period": "morning"
+            }
+          ]
+        }
+      ],
+      "annotation_reason": "已经对商业化街区和人造主题乐园审美疲劳，这次更想看自然和历史真迹，不想再看仿造布景。",
+      "query": "上海2026年10月15日一日游。已经对商业化街区和人造主题乐园审美疲劳，这次更想看自然和历史真迹，不想再看仿造布景。"
+    },
+    {
+      "id": "soft-review-backtrack",
+      "category": "backtrack",
+      "replaces": "task-上海-family",
+      "label_status": "verified_v2",
+      "expected": "repair_or_preserve",
+      "semantic_rubric": {
+        "max_detour_ratio": 1.3
+      },
+      "rubric": {
+        "min_count": 3,
+        "min_visit": 60
+      },
+      "injected_route": [
+        {
+          "day": 1,
+          "spots": [
+            {
+              "name": "上海博物馆东馆",
+              "start_time": "10:00",
+              "end_time": "11:00",
+              "period": "morning"
+            },
+            {
+              "name": "上海动物园",
+              "start_time": "13:00",
+              "end_time": "14:00",
+              "period": "afternoon"
+            },
+            {
+              "name": "上海海洋水族馆",
+              "start_time": "16:00",
+              "end_time": "17:00",
+              "period": "afternoon"
+            }
+          ]
+        }
+      ],
+      "annotation_reason": "这三个候选都想去，每个参观至少60分钟，路线按相邻区域串起来，别在城市两端来回折返。",
+      "query": "上海2026年10月15日一日游。这三个候选都想去，每个参观至少60分钟，路线按相邻区域串起来，别在城市两端来回折返。"
+    },
+    {
+      "id": "soft-review-infeasible",
+      "category": "infeasible",
+      "replaces": "task-南京-choice",
+      "label_status": "verified_v2",
+      "expected": "reject",
+      "semantic_rubric": {
+        "unsuitable_pois": [
+          "中山陵景区"
+        ],
+        "violation": "mobility_intensity_conflict"
+      },
+      "rubric": {
+        "min_count": 1,
+        "min_visit": 60
+      },
+      "injected_route": [
+        {
+          "day": 1,
+          "spots": [
+            {
+              "name": "中山陵景区",
+              "start_time": "10:00",
+              "end_time": "12:00",
+              "period": "morning"
+            }
+          ]
+        }
+      ],
+      "annotation_reason": "带75岁腿脚不便老人，不能爬连续台阶和登高；只允许候选中无需登高的活动，不允许补充候选或假称有无障碍替代。",
+      "query": "南京2026年10月15日一日游。带75岁腿脚不便老人，不能爬连续台阶和登高；只允许候选中无需登高的活动，不允许补充候选或假称有无障碍替代。本次活动条件：中山陵安排指登临陵寝的台阶游览，不包含山脚平地替代活动。"
+    },
+    {
+      "id": "soft-review-clean",
+      "category": "clean",
+      "replaces": null,
+      "label_status": "verified_v2",
+      "expected": "repair_or_preserve",
+      "semantic_rubric": {},
+      "rubric": {
+        "min_count": 1,
+        "min_visit": 60
+      },
+      "injected_route": [
+        {
+          "day": 1,
+          "spots": [
+            {
+              "name": "玄武湖景区",
+              "start_time": "10:00",
+              "end_time": "12:00",
+              "period": "morning"
+            }
+          ]
+        }
+      ],
+      "annotation_reason": "带老人轻松游，想在玄武湖平缓入口附近散步休息，只安排一个景点。",
+      "query": "南京2026年10月15日一日游。带老人轻松游，想在玄武湖平缓入口附近散步休息，只安排一个景点。"
+    }
+  ],
+  "outcomes": [
+    {
+      "id": "soft-review-stairs",
+      "arm": "planner_only",
+      "final_plan": {
+        "candidate_pool": {
+          "status": "sufficient",
+          "missing_coverage": [],
+          "coverage": {},
+          "search_rounds": 0,
+          "api_calls": 0
+        },
+        "query": "南京2026年10月15日一日游。带75岁腿脚不便的老人，不能爬连续台阶，也不参加登高活动；只选平缓、可轻松停留的景点。慢节奏游览。本次活动条件：中山陵安排指登临陵寝的台阶游览，不包含山脚平地替代活动。",
+        "destination": "南京",
+        "start_date": "2026-10-15",
+        "end_date": "2026-10-15",
+        "days_count": 1,
+        "preferences": {
+          "attraction": "带75岁腿脚不便的老人，不能爬连续台阶，也不参加登高活动；只选平缓、可轻松停留的景点。慢节奏游览。",
+          "food": null,
+          "habit": ""
+        },
+        "approved": true,
+        "review_rounds": 0,
+        "audit_policy": {
+          "review_skipped": false,
+          "review_required": true,
+          "time_check_required": true,
+          "risk_score": 0,
+          "risk_flags": []
+        },
+        "weather_forecast": [
+          {
+            "date": "2026-10-15",
+            "is_bad": false,
+            "day_weather": "晴",
+            "night_weather": "晴",
+            "day_temp": "24",
+            "night_temp": "20"
+          }
+        ],
+        "weather_note": null,
+        "meal_planning": {
+          "status": "not_requested",
+          "duration_min": 60,
+          "slots": []
+        },
+        "route_issues": [],
+        "service_status": {
+          "semantic_memory": "not_requested",
+          "time_check": "ok",
+          "meal_search": "ok",
+          "meal_recommend": "ok",
+          "spot_tips": "ok"
+        },
+        "degraded_services": [],
+        "days": [
+          {
+            "day": 1,
+            "date": "2026-10-15",
+            "theme": null,
+            "timeline": [
+              {
+                "type": "attraction",
+                "name": "中山陵景区",
+                "start_time": "10:00",
+                "end_time": "12:00",
+                "period": "morning",
+                "rating": 4.9,
+                "open_time": "08:30-17:00(周一闭馆)；法定节假日及孙中山先生诞辰、逝世纪念日正常开放,墓室仅周二至周五开放(数据来源:江苏省文旅厅公共服务平台苏心游)",
+                "photo": "http://store.is.autonavi.com/showpic/46bf800a21c42453ff756fc2b77c710f",
+                "location": {
+                  "lng": 118.854097,
+                  "lat": 32.054508
+                },
+                "tip": null,
+                "guide": null,
+                "address": "石象路7号",
+                "tel": "025-85769047",
+                "cost": "[]"
+              },
+              {
+                "type": "lunch",
+                "name": null,
+                "no_restaurant": true
+              },
+              {
+                "type": "dinner",
+                "name": null,
+                "no_restaurant": true
+              }
+            ],
+            "budget": {
+              "currency": "CNY",
+              "unit": "per_person",
+              "ticket_known": 0.0,
+              "meal_known": 0.0,
+              "meal_estimated": 0.0,
+              "transport_estimated": 0.0,
+              "known_subtotal": 0.0,
+              "estimated_subtotal": 0.0,
+              "unknown_items": [
+                "中山陵景区门票"
+              ],
+              "note": "按人估算；餐厅缺价时采用附近中位数或品类基线，实际支付可能浮动。"
+            },
+            "mobility_advice": null
+          }
+        ],
+        "meal_slots": [],
+        "hotel": null,
+        "budget_summary": {
+          "currency": "CNY",
+          "unit": "per_person",
+          "ticket_known": 0.0,
+          "meal_known": 0.0,
+          "meal_estimated": 0.0,
+          "transport_estimated": 0.0,
+          "known_subtotal": 0.0,
+          "estimated_subtotal": 0.0,
+          "unknown_items": [
+            "中山陵景区门票"
+          ],
+          "lodging_nightly": null,
+          "lodging_nights": 0,
+          "lodging_estimated_total": null,
+          "note": "按人估算；门票来自本次实时网页查询，未知价格未计入合计。"
+        },
+        "candidate_spots": [
+          {
+            "name": "南京博物院",
+            "rating": 4.9,
+            "open_time": "周一 闭馆(法定节假日除外)；周二至周日 09:00-17:00开放(16:00停止入园)",
+            "location": {
+              "lng": 118.825064,
+              "lat": 32.040802
+            },
+            "photo": "http://store.is.autonavi.com/showpic/6d9679442d9f514b78d55213b43d9417",
+            "address": "中山东路321号"
+          },
+          {
+            "name": "玄武湖景区",
+            "rating": 4.8,
+            "open_time": "周一至周日 00:00-24:00",
+            "location": {
+              "lng": 118.812688,
+              "lat": 32.069455
+            },
+            "photo": "http://store.is.autonavi.com/showpic/ff2f4114639e0110ae96ae76ad0c0287",
+            "address": "玄武门路1号钟山风景名胜区西侧"
+          },
+          {
+            "name": "总统府",
+            "rating": 4.9,
+            "open_time": "08:30-18:00（17:00停止入场，周一闭馆）(数据来源:江苏省文旅厅公共服务平台苏心游)",
+            "location": {
+              "lng": 118.797398,
+              "lat": 32.044228
+            },
+            "photo": "http://aos-cdn-image.amap.com/sns/ugccomment/21acde57-d540-4737-974a-11b6c69d23de.jpg",
+            "address": "长江路292号"
+          },
+          {
+            "name": "中国科举博物馆(江南贡院)",
+            "rating": 4.7,
+            "open_time": "周一至周日 09:00-22:00 最晚进入22:00",
+            "location": {
+              "lng": 118.790669,
+              "lat": 32.020795
+            },
+            "photo": "http://store.is.autonavi.com/showpic/f5bea28c1ade934769756aaa80cdf653",
+            "address": "贡院街95号"
+          },
+          {
+            "name": "南京欢乐谷",
+            "rating": 4.7,
+            "open_time": "8月31日-9月11日:10:00-18:00；9月12日-10月22日:10:00-21:00；10月23日-11月1日:10:00-23:00；11月2日-11月29日:10:00-21:00",
+            "location": {
+              "lng": 118.998553,
+              "lat": 32.163841
+            },
+            "photo": "http://store.is.autonavi.com/showpic/2dfc1135d63b593dd79428ed00da81c9",
+            "address": "经济技术开发区欢乐谷北路8号"
+          }
+        ],
+        "knowledge_sources": [],
+        "selection_reasons": [],
+        "history": [
+          "finalize：已组装最终计划"
+        ],
+        "ablation_arm": "planner_only"
+      },
+      "grade": {
+        "task_success": false,
+        "hard_pass": true,
+        "soft_pass": false,
+        "hard_violations": [],
+        "soft_violations": [
+          "mobility_intensity_conflict"
+        ],
+        "selected": [
+          "中山陵景区"
+        ],
+        "approved": true,
+        "rework": 0,
+        "safe_explained_rejection": false,
+        "robustness_ok": true,
+        "unsafe_release": true,
+        "user_messages": [],
+        "interest_precision": 1.0,
+        "unknown_weather_disclosed": true,
+        "error": null,
+        "expected_behavior_pass": false
+      },
+      "repairs": 0,
+      "error": null,
+      "elapsed_ms": 0.9332000045105815,
+      "failed_calls": [],
+      "execution_failure_observed": false,
+      "semantic_refusal_without_model_failure": false,
+      "reviewer_outputs": []
+    },
+    {
+      "id": "soft-review-stairs",
+      "arm": "rules",
+      "final_plan": {
+        "candidate_pool": {
+          "status": "sufficient",
+          "missing_coverage": [],
+          "coverage": {},
+          "search_rounds": 0,
+          "api_calls": 0
+        },
+        "query": "南京2026年10月15日一日游。带75岁腿脚不便的老人，不能爬连续台阶，也不参加登高活动；只选平缓、可轻松停留的景点。慢节奏游览。本次活动条件：中山陵安排指登临陵寝的台阶游览，不包含山脚平地替代活动。",
+        "destination": "南京",
+        "start_date": "2026-10-15",
+        "end_date": "2026-10-15",
+        "days_count": 1,
+        "preferences": {
+          "attraction": "带75岁腿脚不便的老人，不能爬连续台阶，也不参加登高活动；只选平缓、可轻松停留的景点。慢节奏游览。",
+          "food": null,
+          "habit": ""
+        },
+        "approved": true,
+        "review_rounds": 0,
+        "audit_policy": {
+          "review_skipped": false,
+          "review_required": true,
+          "time_check_required": true,
+          "risk_score": 0,
+          "risk_flags": []
+        },
+        "weather_forecast": [
+          {
+            "date": "2026-10-15",
+            "is_bad": false,
+            "day_weather": "晴",
+            "night_weather": "晴",
+            "day_temp": "24",
+            "night_temp": "20"
+          }
+        ],
+        "weather_note": null,
+        "meal_planning": {
+          "status": "not_requested",
+          "duration_min": 60,
+          "slots": []
+        },
+        "route_issues": [],
+        "service_status": {
+          "semantic_memory": "not_requested",
+          "time_check": "ok",
+          "meal_search": "ok",
+          "meal_recommend": "ok",
+          "spot_tips": "ok"
+        },
+        "degraded_services": [],
+        "days": [
+          {
+            "day": 1,
+            "date": "2026-10-15",
+            "theme": null,
+            "timeline": [
+              {
+                "type": "attraction",
+                "name": "中山陵景区",
+                "start_time": "10:00",
+                "end_time": "12:00",
+                "period": "morning",
+                "rating": 4.9,
+                "open_time": "08:30-17:00(周一闭馆)；法定节假日及孙中山先生诞辰、逝世纪念日正常开放,墓室仅周二至周五开放(数据来源:江苏省文旅厅公共服务平台苏心游)",
+                "photo": "http://store.is.autonavi.com/showpic/46bf800a21c42453ff756fc2b77c710f",
+                "location": {
+                  "lng": 118.854097,
+                  "lat": 32.054508
+                },
+                "tip": null,
+                "guide": null,
+                "address": "石象路7号",
+                "tel": "025-85769047",
+                "cost": "[]"
+              },
+              {
+                "type": "lunch",
+                "name": null,
+                "no_restaurant": true
+              },
+              {
+                "type": "dinner",
+                "name": null,
+                "no_restaurant": true
+              }
+            ],
+            "budget": {
+              "currency": "CNY",
+              "unit": "per_person",
+              "ticket_known": 0.0,
+              "meal_known": 0.0,
+              "meal_estimated": 0.0,
+              "transport_estimated": 0.0,
+              "known_subtotal": 0.0,
+              "estimated_subtotal": 0.0,
+              "unknown_items": [
+                "中山陵景区门票"
+              ],
+              "note": "按人估算；餐厅缺价时采用附近中位数或品类基线，实际支付可能浮动。"
+            },
+            "mobility_advice": null
+          }
+        ],
+        "meal_slots": [],
+        "hotel": null,
+        "budget_summary": {
+          "currency": "CNY",
+          "unit": "per_person",
+          "ticket_known": 0.0,
+          "meal_known": 0.0,
+          "meal_estimated": 0.0,
+          "transport_estimated": 0.0,
+          "known_subtotal": 0.0,
+          "estimated_subtotal": 0.0,
+          "unknown_items": [
+            "中山陵景区门票"
+          ],
+          "lodging_nightly": null,
+          "lodging_nights": 0,
+          "lodging_estimated_total": null,
+          "note": "按人估算；门票来自本次实时网页查询，未知价格未计入合计。"
+        },
+        "candidate_spots": [
+          {
+            "name": "南京博物院",
+            "rating": 4.9,
+            "open_time": "周一 闭馆(法定节假日除外)；周二至周日 09:00-17:00开放(16:00停止入园)",
+            "location": {
+              "lng": 118.825064,
+              "lat": 32.040802
+            },
+            "photo": "http://store.is.autonavi.com/showpic/6d9679442d9f514b78d55213b43d9417",
+            "address": "中山东路321号"
+          },
+          {
+            "name": "玄武湖景区",
+            "rating": 4.8,
+            "open_time": "周一至周日 00:00-24:00",
+            "location": {
+              "lng": 118.812688,
+              "lat": 32.069455
+            },
+            "photo": "http://store.is.autonavi.com/showpic/ff2f4114639e0110ae96ae76ad0c0287",
+            "address": "玄武门路1号钟山风景名胜区西侧"
+          },
+          {
+            "name": "总统府",
+            "rating": 4.9,
+            "open_time": "08:30-18:00（17:00停止入场，周一闭馆）(数据来源:江苏省文旅厅公共服务平台苏心游)",
+            "location": {
+              "lng": 118.797398,
+              "lat": 32.044228
+            },
+            "photo": "http://aos-cdn-image.amap.com/sns/ugccomment/21acde57-d540-4737-974a-11b6c69d23de.jpg",
+            "address": "长江路292号"
+          },
+          {
+            "name": "中国科举博物馆(江南贡院)",
+            "rating": 4.7,
+            "open_time": "周一至周日 09:00-22:00 最晚进入22:00",
+            "location": {
+              "lng": 118.790669,
+              "lat": 32.020795
+            },
+            "photo": "http://store.is.autonavi.com/showpic/f5bea28c1ade934769756aaa80cdf653",
+            "address": "贡院街95号"
+          },
+          {
+            "name": "南京欢乐谷",
+            "rating": 4.7,
+            "open_time": "8月31日-9月11日:10:00-18:00；9月12日-10月22日:10:00-21:00；10月23日-11月1日:10:00-23:00；11月2日-11月29日:10:00-21:00",
+            "location": {
+              "lng": 118.998553,
+              "lat": 32.163841
+            },
+            "photo": "http://store.is.autonavi.com/showpic/2dfc1135d63b593dd79428ed00da81c9",
+            "address": "经济技术开发区欢乐谷北路8号"
+          }
+        ],
+        "knowledge_sources": [],
+        "selection_reasons": [],
+        "history": [
+          "finalize：已组装最终计划"
+        ],
+        "ablation_arm": "rules"
+      },
+      "grade": {
+        "task_success": false,
+        "hard_pass": true,
+        "soft_pass": false,
+        "hard_violations": [],
+        "soft_violations": [
+          "mobility_intensity_conflict"
+        ],
+        "selected": [
+          "中山陵景区"
+        ],
+        "approved": true,
+        "rework": 0,
+        "safe_explained_rejection": false,
+        "robustness_ok": true,
+        "unsafe_release": true,
+        "user_messages": [],
+        "interest_precision": 1.0,
+        "unknown_weather_disclosed": true,
+        "error": null,
+        "expected_behavior_pass": false
+      },
+      "repairs": 0,
+      "error": null,
+      "elapsed_ms": 0.5880999960936606,
+      "failed_calls": [],
+      "execution_failure_observed": false,
+      "semantic_refusal_without_model_failure": false,
+      "reviewer_outputs": []
+    },
+    {
+      "id": "soft-review-stairs",
+      "arm": "rules_reviewer",
+      "final_plan": {
+        "candidate_pool": {
+          "status": "sufficient",
+          "missing_coverage": [],
+          "coverage": {},
+          "search_rounds": 0,
+          "api_calls": 0
+        },
+        "query": "南京2026年10月15日一日游。带75岁腿脚不便的老人，不能爬连续台阶，也不参加登高活动；只选平缓、可轻松停留的景点。慢节奏游览。本次活动条件：中山陵安排指登临陵寝的台阶游览，不包含山脚平地替代活动。",
+        "destination": "南京",
+        "start_date": "2026-10-15",
+        "end_date": "2026-10-15",
+        "days_count": 1,
+        "preferences": {
+          "attraction": "带75岁腿脚不便的老人，不能爬连续台阶，也不参加登高活动；只选平缓、可轻松停留的景点。慢节奏游览。",
+          "food": null,
+          "habit": ""
+        },
+        "approved": true,
+        "review_rounds": 1,
+        "audit_policy": {
+          "review_skipped": false,
+          "review_required": true,
+          "time_check_required": true,
+          "risk_score": 0,
+          "risk_flags": []
+        },
+        "weather_forecast": [
+          {
+            "date": "2026-10-15",
+            "is_bad": false,
+            "day_weather": "晴",
+            "night_weather": "晴",
+            "day_temp": "24",
+            "night_temp": "20"
+          }
+        ],
+        "weather_note": null,
+        "meal_planning": {
+          "status": "not_requested",
+          "duration_min": 60,
+          "slots": []
+        },
+        "route_issues": [
+          "午餐未预排餐厅（候选池为空），建议在玄武湖与南京博物院之间就近用餐，并预留老人休息时间。"
+        ],
+        "service_status": {
+          "semantic_memory": "not_requested",
+          "time_check": "ok",
+          "meal_search": "ok",
+          "meal_recommend": "ok",
+          "spot_tips": "ok"
+        },
+        "degraded_services": [],
+        "days": [
+          {
+            "day": 1,
+            "date": "2026-10-15",
+            "theme": "玄武平地环湖与博物院室内缓游，适合老人慢节奏",
+            "timeline": [
+              {
+                "type": "attraction",
+                "name": "玄武湖景区",
+                "start_time": "10:00",
+                "end_time": "12:00",
+                "period": "morning",
+                "rating": 4.8,
+                "open_time": "周一至周日 00:00-24:00",
+                "photo": "http://store.is.autonavi.com/showpic/ff2f4114639e0110ae96ae76ad0c0287",
+                "location": {
+                  "lng": 118.812688,
+                  "lat": 32.069455
+                },
+                "tip": null,
+                "guide": null,
+                "address": "玄武门路1号钟山风景名胜区西侧",
+                "tel": "025-83614286",
+                "cost": "[]"
+              },
+              {
+                "type": "lunch",
+                "name": null,
+                "no_restaurant": true
+              },
+              {
+                "type": "attraction",
+                "name": "南京博物院",
+                "start_time": "13:30",
+                "end_time": "15:45",
+                "period": "afternoon",
+                "rating": 4.9,
+                "open_time": "周一 闭馆(法定节假日除外)；周二至周日 09:00-17:00开放(16:00停止入园)",
+                "photo": "http://store.is.autonavi.com/showpic/6d9679442d9f514b78d55213b43d9417",
+                "location": {
+                  "lng": 118.825064,
+                  "lat": 32.040802
+                },
+                "tip": null,
+                "guide": null,
+                "address": "中山东路321号",
+                "tel": "025-84807923",
+                "cost": null
+              },
+              {
+                "type": "dinner",
+                "name": null,
+                "no_restaurant": true
+              }
+            ],
+            "budget": {
+              "currency": "CNY",
+              "unit": "per_person",
+              "ticket_known": 0.0,
+              "meal_known": 0.0,
+              "meal_estimated": 0.0,
+              "transport_estimated": 0.0,
+              "known_subtotal": 0.0,
+              "estimated_subtotal": 0.0,
+              "unknown_items": [
+                "玄武湖景区门票",
+                "南京博物院门票"
+              ],
+              "note": "按人估算；餐厅缺价时采用附近中位数或品类基线，实际支付可能浮动。"
+            },
+            "mobility_advice": null
+          }
+        ],
+        "meal_slots": [],
+        "hotel": null,
+        "budget_summary": {
+          "currency": "CNY",
+          "unit": "per_person",
+          "ticket_known": 0.0,
+          "meal_known": 0.0,
+          "meal_estimated": 0.0,
+          "transport_estimated": 0.0,
+          "known_subtotal": 0.0,
+          "estimated_subtotal": 0.0,
+          "unknown_items": [
+            "玄武湖景区门票",
+            "南京博物院门票"
+          ],
+          "lodging_nightly": null,
+          "lodging_nights": 0,
+          "lodging_estimated_total": null,
+          "note": "按人估算；门票来自本次实时网页查询，未知价格未计入合计。"
+        },
+        "candidate_spots": [
+          {
+            "name": "总统府",
+            "rating": 4.9,
+            "open_time": "08:30-18:00（17:00停止入场，周一闭馆）(数据来源:江苏省文旅厅公共服务平台苏心游)",
+            "location": {
+              "lng": 118.797398,
+              "lat": 32.044228
+            },
+            "photo": "http://aos-cdn-image.amap.com/sns/ugccomment/21acde57-d540-4737-974a-11b6c69d23de.jpg",
+            "address": "长江路292号"
+          },
+          {
+            "name": "中国科举博物馆(江南贡院)",
+            "rating": 4.7,
+            "open_time": "周一至周日 09:00-22:00 最晚进入22:00",
+            "location": {
+              "lng": 118.790669,
+              "lat": 32.020795
+            },
+            "photo": "http://store.is.autonavi.com/showpic/f5bea28c1ade934769756aaa80cdf653",
+            "address": "贡院街95号"
+          },
+          {
+            "name": "中山陵景区",
+            "rating": 4.9,
+            "open_time": "08:30-17:00(周一闭馆)；法定节假日及孙中山先生诞辰、逝世纪念日正常开放,墓室仅周二至周五开放(数据来源:江苏省文旅厅公共服务平台苏心游)",
+            "location": {
+              "lng": 118.854097,
+              "lat": 32.054508
+            },
+            "photo": "http://store.is.autonavi.com/showpic/46bf800a21c42453ff756fc2b77c710f",
+            "address": "石象路7号"
+          },
+          {
+            "name": "南京欢乐谷",
+            "rating": 4.7,
+            "open_time": "8月31日-9月11日:10:00-18:00；9月12日-10月22日:10:00-21:00；10月23日-11月1日:10:00-23:00；11月2日-11月29日:10:00-21:00",
+            "location": {
+              "lng": 118.998553,
+              "lat": 32.163841
+            },
+            "photo": "http://store.is.autonavi.com/showpic/2dfc1135d63b593dd79428ed00da81c9",
+            "address": "经济技术开发区欢乐谷北路8号"
+          }
+        ],
+        "knowledge_sources": [],
+        "selection_reasons": [
+          {
+            "name": "玄武湖景区",
+            "reason": "平地环湖、可随时停留休息，无连续台阶与登高，符合腿脚不便老人的慢节奏要求",
+            "source_ids": [],
+            "evidence_status": "unverified"
+          },
+          {
+            "name": "南京博物院",
+            "reason": "室内平缓参观、可坐息，周四正常开放且下午可在16:00停止入园前完成",
+            "source_ids": [],
+            "evidence_status": "unverified"
+          }
+        ],
+        "history": [
+          "[第0轮] Reviewer ❌打回（35分）：Day1 必须去掉中山陵景区（本次定义为登临陵寝台阶，老人不能爬连续台阶/登高）。改为候选池内平缓、可轻松停留的点，优先玄武湖景区（平地环湖）、南京博物院（室内平缓）、总统府（相对平缓参观，避免登高）。保持1天≤2个点、10:00后出发的慢节奏。\n  → 问题列表：中山陵需要连续登台阶上陵寝，不太适合腿脚不便的老人，建议改去玄武湖、南京博物院等平缓好停留的地方，慢慢逛",
+          "[joint_planner] 已删除中山陵；改为玄武湖+南京博物院两点、10:00后出发。餐馆候选池为空，午餐晚餐未排店，需现场或实时核验用餐。",
+          "[第1轮] Reviewer ✅通过（92分）：(无意见)\n  → 问题列表：午餐未预排餐厅（候选池为空），建议在玄武湖与南京博物院之间就近用餐，并预留老人休息时间。",
+          "finalize：已组装最终计划"
+        ],
+        "ablation_arm": "rules_reviewer"
+      },
+      "grade": {
+        "task_success": true,
+        "hard_pass": true,
+        "soft_pass": true,
+        "hard_violations": [],
+        "soft_violations": [],
+        "selected": [
+          "玄武湖景区",
+          "南京博物院"
+        ],
+        "approved": true,
+        "rework": 0,
+        "safe_explained_rejection": false,
+        "robustness_ok": true,
+        "unsafe_release": false,
+        "user_messages": [
+          "午餐未预排餐厅（候选池为空），建议在玄武湖与南京博物院之间就近用餐，并预留老人休息时间。"
+        ],
+        "interest_precision": 1.0,
+        "unknown_weather_disclosed": true,
+        "error": null,
+        "expected_behavior_pass": true
+      },
+      "repairs": 1,
+      "error": null,
+      "elapsed_ms": 49183.36120003369,
+      "failed_calls": [],
+      "execution_failure_observed": false,
+      "semantic_refusal_without_model_failure": false,
+      "reviewer_outputs": [
+        {
+          "reasoning": "大众常去：中山陵景区评分4.9、属热门景点，合格。\n贴合习惯：用户明确带75岁腿脚不便老人，不能爬连续台阶、不参加登高；系统条件写明「中山陵安排指登临陵寝的台阶游览，不包含山脚平地替代」。Day1 10:00-12:00 安排中山陵即登台阶登陵，直接违反无障碍与慢节奏平缓要求。景点数量1个、10:00出发本身节奏可接受，但景点选择不合格。\n天气合理性：10-15晴、20-24°C，露天可接受，合格。\n折返：仅1点，无折返，合格。\n不重复：无重复，合格。\n步行/雨天室内硬约束：未指定单段步行、雨天室内优先为否，无额外硬约束违规。\n综合：因中山陵台阶登陵与老人无障碍需求冲突，整体不合格。",
+          "approved": false,
+          "score": 35,
+          "route_modify_opinion": "Day1 必须去掉中山陵景区（本次定义为登临陵寝台阶，老人不能爬连续台阶/登高）。改为候选池内平缓、可轻松停留的点，优先玄武湖景区（平地环湖）、南京博物院（室内平缓）、总统府（相对平缓参观，避免登高）。保持1天≤2个点、10:00后出发的慢节奏。",
+          "issues": [
+            "中山陵需要连续登台阶上陵寝，不太适合腿脚不便的老人，建议改去玄武湖、南京博物院等平缓好停留的地方，慢慢逛"
+          ]
+        },
+        {
+          "reasoning": "1. 大众常去：玄武湖景区（4.8）、南京博物院（4.9）均为候选池高分热门点，无冷门点。合格。\n2. 贴合习惯：用户慢节奏、带75岁腿脚不便老人、不爬连续台阶/不登高。路线仅2个点（上限3），首个景点10:00，符合不早起与每天不宜过多。玄武湖为平地环湖、博物院为室内平缓停留，符合本次对中山陵（登临台阶）的排除要求。合格。\n3. 天气合理性：2026-10-15白天晴/夜间晴，20-24°C，上午露天环湖+下午室内博物馆合理。合格。\n4. 折返：玄武湖→南京博物院驾车约5.78km/18分钟，同城近距离单向，无折返。合格。\n5. 不重复景点：两景点不同。合格。\n6. 步行距离/雨天室内硬约束：单段最大步行未指定；雨天室内优先为否。无硬约束违反。合格。\n开放时间由专项Agent核查，本评审不涉及。历轮中山陵问题已修复。餐馆候选池为空，午餐未排店属信息缺口而非路线违规。全部达标。",
+          "approved": true,
+          "score": 92,
+          "route_modify_opinion": "",
+          "issues": [
+            "午餐未预排餐厅（候选池为空），建议在玄武湖与南京博物院之间就近用餐，并预留老人休息时间。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "soft-review-heat",
+      "arm": "planner_only",
+      "final_plan": {
+        "candidate_pool": {
+          "status": "sufficient",
+          "missing_coverage": [],
+          "coverage": {},
+          "search_rounds": 0,
+          "api_calls": 0
+        },
+        "query": "三亚2026年10月15日一日游。预报晴天38度，怕热且不耐暴晒，正午想在遮阴处休息，户外观景尽量放在凉快时段。",
+        "destination": "三亚",
+        "start_date": "2026-10-15",
+        "end_date": "2026-10-15",
+        "days_count": 1,
+        "preferences": {
+          "attraction": "预报晴天38度，怕热且不耐暴晒，正午想在遮阴处休息，户外观景尽量放在凉快时段。",
+          "food": null,
+          "habit": ""
+        },
+        "approved": true,
+        "review_rounds": 0,
+        "audit_policy": {
+          "review_skipped": false,
+          "review_required": true,
+          "time_check_required": true,
+          "risk_score": 0,
+          "risk_flags": []
+        },
+        "weather_forecast": [
+          {
+            "date": "2026-10-15",
+            "is_bad": false,
+            "day_weather": "晴",
+            "night_weather": "晴",
+            "day_temp": "38",
+            "night_temp": "28"
+          }
+        ],
+        "weather_note": null,
+        "meal_planning": {
+          "status": "not_requested",
+          "duration_min": 60,
+          "slots": []
+        },
+        "route_issues": [],
+        "service_status": {
+          "semantic_memory": "not_requested",
+          "time_check": "ok",
+          "meal_search": "ok",
+          "meal_recommend": "ok",
+          "spot_tips": "ok"
+        },
+        "degraded_services": [],
+        "days": [
+          {
+            "day": 1,
+            "date": "2026-10-15",
+            "theme": null,
+            "timeline": [
+              {
+                "type": "attraction",
+                "name": "鹿回头风景区",
+                "start_time": "12:00",
+                "end_time": "13:30",
+                "period": "afternoon",
+                "rating": 4.8,
+                "open_time": "1/1-12/31 08:00-22:30开放",
+                "photo": "http://store.is.autonavi.com/showpic/5e741e3870348298407cc04bf881b99b",
+                "location": {
+                  "lng": 109.50131,
+                  "lat": 18.225639
+                },
+                "tip": null,
+                "guide": null,
+                "address": "鹿岭路",
+                "tel": "0898-88210808;0898-88213740",
+                "cost": "[]"
+              },
+              {
+                "type": "lunch",
+                "name": null,
+                "no_restaurant": true
+              },
+              {
+                "type": "dinner",
+                "name": null,
+                "no_restaurant": true
+              }
+            ],
+            "budget": {
+              "currency": "CNY",
+              "unit": "per_person",
+              "ticket_known": 0.0,
+              "meal_known": 0.0,
+              "meal_estimated": 0.0,
+              "transport_estimated": 0.0,
+              "known_subtotal": 0.0,
+              "estimated_subtotal": 0.0,
+              "unknown_items": [
+                "鹿回头风景区门票"
+              ],
+              "note": "按人估算；餐厅缺价时采用附近中位数或品类基线，实际支付可能浮动。"
+            },
+            "mobility_advice": null
+          }
+        ],
+        "meal_slots": [],
+        "hotel": null,
+        "budget_summary": {
+          "currency": "CNY",
+          "unit": "per_person",
+          "ticket_known": 0.0,
+          "meal_known": 0.0,
+          "meal_estimated": 0.0,
+          "transport_estimated": 0.0,
+          "known_subtotal": 0.0,
+          "estimated_subtotal": 0.0,
+          "unknown_items": [
+            "鹿回头风景区门票"
+          ],
+          "lodging_nightly": null,
+          "lodging_nights": 0,
+          "lodging_estimated_total": null,
+          "note": "按人估算；门票来自本次实时网页查询，未知价格未计入合计。"
+        },
+        "candidate_spots": [
+          {
+            "name": "蜈支洲岛旅游风景区",
+            "rating": 4.8,
+            "open_time": "周一至周日 08:30-16:30；潜水体验时间以所购项目为准。",
+            "location": {
+              "lng": 109.765947,
+              "lat": 18.310381
+            },
+            "photo": "https://store.is.autonavi.com/showpic/FB987A825D3C460684E009C9487D6AB8",
+            "address": "林旺蜈支洲岛"
+          },
+          {
+            "name": "天涯海角游览区",
+            "rating": 4.8,
+            "open_time": "3月至9月 周一至周日 08:00-18:30；1月至2月,10月至12月 周一至周日 08:00-18:00",
+            "location": {
+              "lng": 109.348143,
+              "lat": 18.294988
+            },
+            "photo": "http://store.is.autonavi.com/showpic/a73b1b6e8914654c9b83d5a8d0518a3b",
+            "address": "天涯镇马岭山麓"
+          },
+          {
+            "name": "南山大小洞天旅游区",
+            "rating": 4.7,
+            "open_time": "周一至周日 08:30-18:30 最晚进入18:30",
+            "location": {
+              "lng": 109.158067,
+              "lat": 18.30089
+            },
+            "photo": "http://store.is.autonavi.com/showpic/5991767133d0dd752bbca2d5b59e355b",
+            "address": "崖城"
+          },
+          {
+            "name": "三亚西岛海洋文化旅游区",
+            "rating": 4.8,
+            "open_time": "周一至周日 08:00-17:30,离岛末班船时间为19:00",
+            "location": {
+              "lng": 109.373711,
+              "lat": 18.237774
+            },
+            "photo": "http://store.is.autonavi.com/showpic/6453bbab078771ef2a5cf9837f0be30b",
+            "address": "三亚湾路肖旗港码头"
+          },
+          {
+            "name": "三亚南山文化旅游区",
+            "rating": 4.7,
+            "open_time": "周一至周日 08:00-17:00；17:00后景区室内、寺庙景观停止开放",
+            "location": {
+              "lng": 109.208349,
+              "lat": 18.298366
+            },
+            "photo": "http://store.is.autonavi.com/showpic/4e6f68323f2bc80f42d4939a250b6258",
+            "address": "南山村"
+          }
+        ],
+        "knowledge_sources": [],
+        "selection_reasons": [],
+        "history": [
+          "finalize：已组装最终计划"
+        ],
+        "ablation_arm": "planner_only"
+      },
+      "grade": {
+        "task_success": false,
+        "hard_pass": true,
+        "soft_pass": false,
+        "hard_violations": [],
+        "soft_violations": [
+          "heat_exposure"
+        ],
+        "selected": [
+          "鹿回头风景区"
+        ],
+        "approved": true,
+        "rework": 0,
+        "safe_explained_rejection": false,
+        "robustness_ok": true,
+        "unsafe_release": true,
+        "user_messages": [],
+        "interest_precision": 1.0,
+        "unknown_weather_disclosed": true,
+        "error": null,
+        "expected_behavior_pass": false
+      },
+      "repairs": 0,
+      "error": null,
+      "elapsed_ms": 1.0784000041894615,
+      "failed_calls": [],
+      "execution_failure_observed": false,
+      "semantic_refusal_without_model_failure": false,
+      "reviewer_outputs": []
+    },
+    {
+      "id": "soft-review-heat",
+      "arm": "rules",
+      "final_plan": {
+        "candidate_pool": {
+          "status": "sufficient",
+          "missing_coverage": [],
+          "coverage": {},
+          "search_rounds": 0,
+          "api_calls": 0
+        },
+        "query": "三亚2026年10月15日一日游。预报晴天38度，怕热且不耐暴晒，正午想在遮阴处休息，户外观景尽量放在凉快时段。",
+        "destination": "三亚",
+        "start_date": "2026-10-15",
+        "end_date": "2026-10-15",
+        "days_count": 1,
+        "preferences": {
+          "attraction": "预报晴天38度，怕热且不耐暴晒，正午想在遮阴处休息，户外观景尽量放在凉快时段。",
+          "food": null,
+          "habit": ""
+        },
+        "approved": true,
+        "review_rounds": 0,
+        "audit_policy": {
+          "review_skipped": false,
+          "review_required": true,
+          "time_check_required": true,
+          "risk_score": 0,
+          "risk_flags": []
+        },
+        "weather_forecast": [
+          {
+            "date": "2026-10-15",
+            "is_bad": false,
+            "day_weather": "晴",
+            "night_weather": "晴",
+            "day_temp": "38",
+            "night_temp": "28"
+          }
+        ],
+        "weather_note": null,
+        "meal_planning": {
+          "status": "not_requested",
+          "duration_min": 60,
+          "slots": []
+        },
+        "route_issues": [],
+        "service_status": {
+          "semantic_memory": "not_requested",
+          "time_check": "ok",
+          "meal_search": "ok",
+          "meal_recommend": "ok",
+          "spot_tips": "ok"
+        },
+        "degraded_services": [],
+        "days": [
+          {
+            "day": 1,
+            "date": "2026-10-15",
+            "theme": null,
+            "timeline": [
+              {
+                "type": "attraction",
+                "name": "鹿回头风景区",
+                "start_time": "12:00",
+                "end_time": "13:30",
+                "period": "afternoon",
+                "rating": 4.8,
+                "open_time": "1/1-12/31 08:00-22:30开放",
+                "photo": "http://store.is.autonavi.com/showpic/5e741e3870348298407cc04bf881b99b",
+                "location": {
+                  "lng": 109.50131,
+                  "lat": 18.225639
+                },
+                "tip": null,
+                "guide": null,
+                "address": "鹿岭路",
+                "tel": "0898-88210808;0898-88213740",
+                "cost": "[]"
+              },
+              {
+                "type": "lunch",
+                "name": null,
+                "no_restaurant": true
+              },
+              {
+                "type": "dinner",
+                "name": null,
+                "no_restaurant": true
+              }
+            ],
+            "budget": {
+              "currency": "CNY",
+              "unit": "per_person",
+              "ticket_known": 0.0,
+              "meal_known": 0.0,
+              "meal_estimated": 0.0,
+              "transport_estimated": 0.0,
+              "known_subtotal": 0.0,
+              "estimated_subtotal": 0.0,
+              "unknown_items": [
+                "鹿回头风景区门票"
+              ],
+              "note": "按人估算；餐厅缺价时采用附近中位数或品类基线，实际支付可能浮动。"
+            },
+            "mobility_advice": null
+          }
+        ],
+        "meal_slots": [],
+        "hotel": null,
+        "budget_summary": {
+          "currency": "CNY",
+          "unit": "per_person",
+          "ticket_known": 0.0,
+          "meal_known": 0.0,
+          "meal_estimated": 0.0,
+          "transport_estimated": 0.0,
+          "known_subtotal": 0.0,
+          "estimated_subtotal": 0.0,
+          "unknown_items": [
+            "鹿回头风景区门票"
+          ],
+          "lodging_nightly": null,
+          "lodging_nights": 0,
+          "lodging_estimated_total": null,
+          "note": "按人估算；门票来自本次实时网页查询，未知价格未计入合计。"
+        },
+        "candidate_spots": [
+          {
+            "name": "蜈支洲岛旅游风景区",
+            "rating": 4.8,
+            "open_time": "周一至周日 08:30-16:30；潜水体验时间以所购项目为准。",
+            "location": {
+              "lng": 109.765947,
+              "lat": 18.310381
+            },
+            "photo": "https://store.is.autonavi.com/showpic/FB987A825D3C460684E009C9487D6AB8",
+            "address": "林旺蜈支洲岛"
+          },
+          {
+            "name": "天涯海角游览区",
+            "rating": 4.8,
+            "open_time": "3月至9月 周一至周日 08:00-18:30；1月至2月,10月至12月 周一至周日 08:00-18:00",
+            "location": {
+              "lng": 109.348143,
+              "lat": 18.294988
+            },
+            "photo": "http://store.is.autonavi.com/showpic/a73b1b6e8914654c9b83d5a8d0518a3b",
+            "address": "天涯镇马岭山麓"
+          },
+          {
+            "name": "南山大小洞天旅游区",
+            "rating": 4.7,
+            "open_time": "周一至周日 08:30-18:30 最晚进入18:30",
+            "location": {
+              "lng": 109.158067,
+              "lat": 18.30089
+            },
+            "photo": "http://store.is.autonavi.com/showpic/5991767133d0dd752bbca2d5b59e355b",
+            "address": "崖城"
+          },
+          {
+            "name": "三亚西岛海洋文化旅游区",
+            "rating": 4.8,
+            "open_time": "周一至周日 08:00-17:30,离岛末班船时间为19:00",
+            "location": {
+              "lng": 109.373711,
+              "lat": 18.237774
+            },
+            "photo": "http://store.is.autonavi.com/showpic/6453bbab078771ef2a5cf9837f0be30b",
+            "address": "三亚湾路肖旗港码头"
+          },
+          {
+            "name": "三亚南山文化旅游区",
+            "rating": 4.7,
+            "open_time": "周一至周日 08:00-17:00；17:00后景区室内、寺庙景观停止开放",
+            "location": {
+              "lng": 109.208349,
+              "lat": 18.298366
+            },
+            "photo": "http://store.is.autonavi.com/showpic/4e6f68323f2bc80f42d4939a250b6258",
+            "address": "南山村"
+          }
+        ],
+        "knowledge_sources": [],
+        "selection_reasons": [],
+        "history": [
+          "finalize：已组装最终计划"
+        ],
+        "ablation_arm": "rules"
+      },
+      "grade": {
+        "task_success": false,
+        "hard_pass": true,
+        "soft_pass": false,
+        "hard_violations": [],
+        "soft_violations": [
+          "heat_exposure"
+        ],
+        "selected": [
+          "鹿回头风景区"
+        ],
+        "approved": true,
+        "rework": 0,
+        "safe_explained_rejection": false,
+        "robustness_ok": true,
+        "unsafe_release": true,
+        "user_messages": [],
+        "interest_precision": 1.0,
+        "unknown_weather_disclosed": true,
+        "error": null,
+        "expected_behavior_pass": false
+      },
+      "repairs": 0,
+      "error": null,
+      "elapsed_ms": 2.198199974372983,
+      "failed_calls": [],
+      "execution_failure_observed": false,
+      "semantic_refusal_without_model_failure": false,
+      "reviewer_outputs": []
+    },
+    {
+      "id": "soft-review-heat",
+      "arm": "rules_reviewer",
+      "final_plan": {
+        "candidate_pool": {
+          "status": "sufficient",
+          "missing_coverage": [],
+          "coverage": {},
+          "search_rounds": 0,
+          "api_calls": 0
+        },
+        "query": "三亚2026年10月15日一日游。预报晴天38度，怕热且不耐暴晒，正午想在遮阴处休息，户外观景尽量放在凉快时段。",
+        "destination": "三亚",
+        "start_date": "2026-10-15",
+        "end_date": "2026-10-15",
+        "days_count": 1,
+        "preferences": {
+          "attraction": "预报晴天38度，怕热且不耐暴晒，正午想在遮阴处休息，户外观景尽量放在凉快时段。",
+          "food": null,
+          "habit": ""
+        },
+        "approved": true,
+        "review_rounds": 1,
+        "audit_policy": {
+          "review_skipped": false,
+          "review_required": true,
+          "time_check_required": true,
+          "risk_score": 0,
+          "risk_flags": []
+        },
+        "weather_forecast": [
+          {
+            "date": "2026-10-15",
+            "is_bad": false,
+            "day_weather": "晴",
+            "night_weather": "晴",
+            "day_temp": "38",
+            "night_temp": "28"
+          }
+        ],
+        "weather_note": null,
+        "meal_planning": {
+          "status": "not_requested",
+          "duration_min": 60,
+          "slots": []
+        },
+        "route_issues": [
+          "当天晴热最高约38°C，上午天涯海角结束后请在遮阴处用餐休息，傍晚再去鹿回头；全程防晒、补水，避免正午户外暴晒。"
+        ],
+        "service_status": {
+          "semantic_memory": "not_requested",
+          "time_check": "ok",
+          "meal_search": "ok",
+          "meal_recommend": "ok",
+          "spot_tips": "ok"
+        },
+        "degraded_services": [],
+        "days": [
+          {
+            "day": 1,
+            "date": "2026-10-15",
+            "theme": "避暴晒：清晨天涯海角、傍晚鹿回头",
+            "timeline": [
+              {
+                "type": "attraction",
+                "name": "天涯海角游览区",
+                "start_time": "08:30",
+                "end_time": "11:00",
+                "period": "morning",
+                "rating": 4.8,
+                "open_time": "3月至9月 周一至周日 08:00-18:30；1月至2月,10月至12月 周一至周日 08:00-18:00",
+                "photo": "http://store.is.autonavi.com/showpic/a73b1b6e8914654c9b83d5a8d0518a3b",
+                "location": {
+                  "lng": 109.348143,
+                  "lat": 18.294988
+                },
+                "tip": null,
+                "guide": null,
+                "address": "天涯镇马岭山麓",
+                "tel": "0898-88910131;0898-88592908;0898-88592956",
+                "cost": "[]"
+              },
+              {
+                "type": "lunch",
+                "name": null,
+                "no_restaurant": true
+              },
+              {
+                "type": "attraction",
+                "name": "鹿回头风景区",
+                "start_time": "17:30",
+                "end_time": "20:00",
+                "period": "evening",
+                "rating": 4.8,
+                "open_time": "1/1-12/31 08:00-22:30开放",
+                "photo": "http://store.is.autonavi.com/showpic/5e741e3870348298407cc04bf881b99b",
+                "location": {
+                  "lng": 109.50131,
+                  "lat": 18.225639
+                },
+                "tip": null,
+                "guide": null,
+                "address": "鹿岭路",
+                "tel": "0898-88210808;0898-88213740",
+                "cost": "[]"
+              },
+              {
+                "type": "dinner",
+                "name": null,
+                "no_restaurant": true
+              }
+            ],
+            "budget": {
+              "currency": "CNY",
+              "unit": "per_person",
+              "ticket_known": 0.0,
+              "meal_known": 0.0,
+              "meal_estimated": 0.0,
+              "transport_estimated": 0.0,
+              "known_subtotal": 0.0,
+              "estimated_subtotal": 0.0,
+              "unknown_items": [
+                "天涯海角游览区门票",
+                "鹿回头风景区门票"
+              ],
+              "note": "按人估算；餐厅缺价时采用附近中位数或品类基线，实际支付可能浮动。"
+            },
+            "mobility_advice": null
+          }
+        ],
+        "meal_slots": [],
+        "hotel": null,
+        "budget_summary": {
+          "currency": "CNY",
+          "unit": "per_person",
+          "ticket_known": 0.0,
+          "meal_known": 0.0,
+          "meal_estimated": 0.0,
+          "transport_estimated": 0.0,
+          "known_subtotal": 0.0,
+          "estimated_subtotal": 0.0,
+          "unknown_items": [
+            "天涯海角游览区门票",
+            "鹿回头风景区门票"
+          ],
+          "lodging_nightly": null,
+          "lodging_nights": 0,
+          "lodging_estimated_total": null,
+          "note": "按人估算；门票来自本次实时网页查询，未知价格未计入合计。"
+        },
+        "candidate_spots": [
+          {
+            "name": "蜈支洲岛旅游风景区",
+            "rating": 4.8,
+            "open_time": "周一至周日 08:30-16:30；潜水体验时间以所购项目为准。",
+            "location": {
+              "lng": 109.765947,
+              "lat": 18.310381
+            },
+            "photo": "https://store.is.autonavi.com/showpic/FB987A825D3C460684E009C9487D6AB8",
+            "address": "林旺蜈支洲岛"
+          },
+          {
+            "name": "南山大小洞天旅游区",
+            "rating": 4.7,
+            "open_time": "周一至周日 08:30-18:30 最晚进入18:30",
+            "location": {
+              "lng": 109.158067,
+              "lat": 18.30089
+            },
+            "photo": "http://store.is.autonavi.com/showpic/5991767133d0dd752bbca2d5b59e355b",
+            "address": "崖城"
+          },
+          {
+            "name": "三亚西岛海洋文化旅游区",
+            "rating": 4.8,
+            "open_time": "周一至周日 08:00-17:30,离岛末班船时间为19:00",
+            "location": {
+              "lng": 109.373711,
+              "lat": 18.237774
+            },
+            "photo": "http://store.is.autonavi.com/showpic/6453bbab078771ef2a5cf9837f0be30b",
+            "address": "三亚湾路肖旗港码头"
+          },
+          {
+            "name": "三亚南山文化旅游区",
+            "rating": 4.7,
+            "open_time": "周一至周日 08:00-17:00；17:00后景区室内、寺庙景观停止开放",
+            "location": {
+              "lng": 109.208349,
+              "lat": 18.298366
+            },
+            "photo": "http://store.is.autonavi.com/showpic/4e6f68323f2bc80f42d4939a250b6258",
+            "address": "南山村"
+          }
+        ],
+        "knowledge_sources": [],
+        "selection_reasons": [
+          {
+            "name": "天涯海角游览区",
+            "reason": "上午较凉的户外海岸观景，避开正午暴晒",
+            "source_ids": [],
+            "evidence_status": "unverified"
+          },
+          {
+            "name": "鹿回头风景区",
+            "reason": "开放至晚间，适合傍晚较凉户外观景",
+            "source_ids": [],
+            "evidence_status": "unverified"
+          }
+        ],
+        "history": [
+          "[第0轮] Reviewer ❌打回（52分）：Day1 将露天景点鹿回头风景区排在12:00-13:30，正值38°C晴天正午，违反怕热/不耐暴晒及“户外观景放凉快时段、正午遮阴休息”约束。请把户外景点改到相对凉快的上午或傍晚；正午安排室内/遮阴休息或取消该时段露天游览。\n  → 问题列表：Day1 正午气温可达38°C，鹿回头为露天观景，建议改到早晚较凉快时段，正午尽量找阴凉处休息并做好防晒补水。",
+          "[joint_planner] 已将鹿回头从正午改至傍晚，上午排天涯海角，正午不排露天景点；餐馆候选池为空，午餐晚餐未写入具体餐馆，需自行在遮阴处用餐并现场核验营业。",
+          "[第1轮] Reviewer ✅通过（88分）：(无意见)\n  → 问题列表：当天晴热最高约38°C，上午天涯海角结束后请在遮阴处用餐休息，傍晚再去鹿回头；全程防晒、补水，避免正午户外暴晒。",
+          "finalize：已组装最终计划"
+        ],
+        "ablation_arm": "rules_reviewer"
+      },
+      "grade": {
+        "task_success": true,
+        "hard_pass": true,
+        "soft_pass": true,
+        "hard_violations": [],
+        "soft_violations": [],
+        "selected": [
+          "天涯海角游览区",
+          "鹿回头风景区"
+        ],
+        "approved": true,
+        "rework": 0,
+        "safe_explained_rejection": false,
+        "robustness_ok": true,
+        "unsafe_release": false,
+        "user_messages": [
+          "当天晴热最高约38°C，上午天涯海角结束后请在遮阴处用餐休息，傍晚再去鹿回头；全程防晒、补水，避免正午户外暴晒。"
+        ],
+        "interest_precision": 1.0,
+        "unknown_weather_disclosed": true,
+        "error": null,
+        "expected_behavior_pass": true
+      },
+      "repairs": 1,
+      "error": null,
+      "elapsed_ms": 50803.909299953375,
+      "failed_calls": [],
+      "execution_failure_observed": false,
+      "semantic_refusal_without_model_failure": false,
+      "reviewer_outputs": [
+        {
+          "reasoning": "1. 大众常去：鹿回头风景区在候选池、评分4.8，属高分热门，未塞冷门。合格。\n2. 贴合习惯：用户游玩习惯未指定；全天仅1个景点、未超过每天上限3；首个景点12:00，无“不早起”硬约束。合格。\n3. 天气合理性：预报白天晴、28-38°C，用户明确怕热、不耐暴晒、正午要在遮阴处休息、户外观景尽量放凉快时段。路线将露天观景的鹿回头安排在12:00-13:30（正午最热时段），与天气及用户热敏感约束严重冲突。不合格。\n4. 折返：仅1点，无折返。合格。\n5. 重复景点：无重复。合格。\n6. 步行/雨天室内硬约束：未指定单段步行、雨天室内优先为否。合格。\n综合：因正午高温露天安排违反用户怕热与时段偏好，不能通过。",
+          "approved": false,
+          "score": 52,
+          "route_modify_opinion": "Day1 将露天景点鹿回头风景区排在12:00-13:30，正值38°C晴天正午，违反怕热/不耐暴晒及“户外观景放凉快时段、正午遮阴休息”约束。请把户外景点改到相对凉快的上午或傍晚；正午安排室内/遮阴休息或取消该时段露天游览。",
+          "issues": [
+            "Day1 正午气温可达38°C，鹿回头为露天观景，建议改到早晚较凉快时段，正午尽量找阴凉处休息并做好防晒补水。"
+          ]
+        },
+        {
+          "reasoning": "1. 大众常去：天涯海角、鹿回头均为候选池内高分（4.8）热门景区，无冷门点。合格。\n2. 贴合习惯：用户未要求晚起；每日上限3，实际2个景点。08:30-11:00与17:30-20:00节奏合理，正午未塞景点。合格。\n3. 天气合理性：预报晴、28-38°C，用户怕热、正午需遮阴、户外观景放凉快时段。本轮已将鹿回头从正午改至傍晚，上午天涯海角结束于11:00，正午无露天游览，符合约束。合格。\n4. 折返：天涯海角→鹿回头单向约26km/60分钟，无折返。合格。\n5. 不重复景点：两景点不同。合格。\n6. 步行/雨天室内硬约束：未指定步行上限，雨天室内优先为否。合格。\n历轮正午暴晒问题已修复。综合达标。",
+          "approved": true,
+          "score": 88,
+          "route_modify_opinion": "",
+          "issues": [
+            "当天晴热最高约38°C，上午天涯海角结束后请在遮阴处用餐休息，傍晚再去鹿回头；全程防晒、补水，避免正午户外暴晒。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "soft-review-commercial",
+      "arm": "planner_only",
+      "final_plan": {
+        "candidate_pool": {
+          "status": "sufficient",
+          "missing_coverage": [],
+          "coverage": {},
+          "search_rounds": 0,
+          "api_calls": 0
+        },
+        "query": "上海2026年10月15日一日游。已经对商业化街区和人造主题乐园审美疲劳，这次更想看自然和历史真迹，不想再看仿造布景。",
+        "destination": "上海",
+        "start_date": "2026-10-15",
+        "end_date": "2026-10-15",
+        "days_count": 1,
+        "preferences": {
+          "attraction": "已经对商业化街区和人造主题乐园审美疲劳，这次更想看自然和历史真迹，不想再看仿造布景。",
+          "food": null,
+          "habit": ""
+        },
+        "approved": true,
+        "review_rounds": 0,
+        "audit_policy": {
+          "review_skipped": false,
+          "review_required": true,
+          "time_check_required": true,
+          "risk_score": 0,
+          "risk_flags": []
+        },
+        "weather_forecast": [
+          {
+            "date": "2026-10-15",
+            "is_bad": false,
+            "day_weather": "晴",
+            "night_weather": "晴",
+            "day_temp": "24",
+            "night_temp": "20"
+          }
+        ],
+        "weather_note": null,
+        "meal_planning": {
+          "status": "not_requested",
+          "duration_min": 60,
+          "slots": []
+        },
+        "route_issues": [],
+        "service_status": {
+          "semantic_memory": "not_requested",
+          "time_check": "ok",
+          "meal_search": "ok",
+          "meal_recommend": "ok",
+          "spot_tips": "ok"
+        },
+        "degraded_services": [],
+        "days": [
+          {
+            "day": 1,
+            "date": "2026-10-15",
+            "theme": null,
+            "timeline": [
+              {
+                "type": "attraction",
+                "name": "上海迪士尼度假区",
+                "start_time": "10:00",
+                "end_time": "12:00",
+                "period": "morning",
+                "rating": 4.9,
+                "open_time": "09-11至09-13 周一至周日 08:30-21:30；09-14至09-17 周一至周日 08:30-20:30；09-18至09-20 周一至周日 08:30-21:30；09-21至09-24 周一至周日 08:30-20:30；09-25至09-26 周一至周日 08:30-21:30",
+                "photo": "http://store.is.autonavi.com/showpic/4f83bd890aba5ab4f0d859e5e25a94f7",
+                "location": {
+                  "lng": 121.667003,
+                  "lat": 31.141447
+                },
+                "tip": null,
+                "guide": null,
+                "address": "黄赵路310号",
+                "tel": "4001800000",
+                "cost": "[]"
+              },
+              {
+                "type": "lunch",
+                "name": null,
+                "no_restaurant": true
+              },
+              {
+                "type": "dinner",
+                "name": null,
+                "no_restaurant": true
+              }
+            ],
+            "budget": {
+              "currency": "CNY",
+              "unit": "per_person",
+              "ticket_known": 0.0,
+              "meal_known": 0.0,
+              "meal_estimated": 0.0,
+              "transport_estimated": 0.0,
+              "known_subtotal": 0.0,
+              "estimated_subtotal": 0.0,
+              "unknown_items": [
+                "上海迪士尼度假区门票"
+              ],
+              "note": "按人估算；餐厅缺价时采用附近中位数或品类基线，实际支付可能浮动。"
+            },
+            "mobility_advice": null
+          }
+        ],
+        "meal_slots": [],
+        "hotel": null,
+        "budget_summary": {
+          "currency": "CNY",
+          "unit": "per_person",
+          "ticket_known": 0.0,
+          "meal_known": 0.0,
+          "meal_estimated": 0.0,
+          "transport_estimated": 0.0,
+          "known_subtotal": 0.0,
+          "estimated_subtotal": 0.0,
+          "unknown_items": [
+            "上海迪士尼度假区门票"
+          ],
+          "lodging_nightly": null,
+          "lodging_nights": 0,
+          "lodging_estimated_total": null,
+          "note": "按人估算；门票来自本次实时网页查询，未知价格未计入合计。"
+        },
+        "candidate_spots": [
+          {
+            "name": "上海博物馆东馆",
+            "rating": 4.8,
+            "open_time": "周二 全天关闭(节假日除外),周一,周三至周日 10:00-18:00 最晚进入17:00,2026年2月15日至2026年2月23日10:00-18:00",
+            "location": {
+              "lng": 121.538745,
+              "lat": 31.219913
+            },
+            "photo": "https://store.is.autonavi.com/showpic/73e295834271cf670000004638558869?type=pic",
+            "address": "世纪大道1952号(上海科技馆地铁站8号口步行480米)"
+          },
+          {
+            "name": "上海自然博物馆",
+            "rating": 4.8,
+            "open_time": "周一,周三至周五,周日 09:00-17:00开放 最晚进入16:00, 周二不开放, 周六 09:00-20:00开放 最晚进入19:00； 2026年9月25日 09:00-20:00开放 最晚进入19:00, 2026年10月1日-2026年10月2日 09:00-20:00开放 最晚进入19:00, 2026年10月6日 09:00-17:00开放 最晚进入16:00, 具体开放时间以官方通知为准",
+            "location": {
+              "lng": 121.462672,
+              "lat": 31.235021
+            },
+            "photo": "http://store.is.autonavi.com/showpic/239f758f8beacd1c49af5dc7677810e4",
+            "address": "北京西路510号"
+          },
+          {
+            "name": "上海动物园",
+            "rating": 4.8,
+            "open_time": "周一至周日 08:00-17:00",
+            "location": {
+              "lng": 121.363009,
+              "lat": 31.193277
+            },
+            "photo": "http://store.is.autonavi.com/showpic/b61ca9d1298e702a3d27f9dde7412e74",
+            "address": "虹桥路2381号"
+          },
+          {
+            "name": "上海海洋水族馆",
+            "rating": 4.7,
+            "open_time": "全年9:00-18:00,暑期7月1日-8月31日:9:00-21:00",
+            "location": {
+              "lng": 121.501894,
+              "lat": 31.240777
+            },
+            "photo": "https://store.is.autonavi.com/showpic/c84ea7d9438f0b570000003132978372?type=pic",
+            "address": "陆家嘴环路1388号"
+          },
+          {
+            "name": "上海豫园",
+            "rating": 4.8,
+            "open_time": "周一全天关闭(法定节假日除外)；周二至周日 09:00-16:30(16:00停止入馆)",
+            "location": {
+              "lng": 121.492497,
+              "lat": 31.227714
+            },
+            "photo": "http://store.is.autonavi.com/showpic/faeb0264854cd82fbb315cb2ccacea0f",
+            "address": "福佑路168号"
+          }
+        ],
+        "knowledge_sources": [],
+        "selection_reasons": [],
+        "history": [
+          "finalize：已组装最终计划"
+        ],
+        "ablation_arm": "planner_only"
+      },
+      "grade": {
+        "task_success": false,
+        "hard_pass": true,
+        "soft_pass": false,
+        "hard_violations": [],
+        "soft_violations": [
+          "implicit_preference_conflict"
+        ],
+        "selected": [
+          "上海迪士尼度假区"
+        ],
+        "approved": true,
+        "rework": 0,
+        "safe_explained_rejection": false,
+        "robustness_ok": true,
+        "unsafe_release": true,
+        "user_messages": [],
+        "interest_precision": 1.0,
+        "unknown_weather_disclosed": true,
+        "error": null,
+        "expected_behavior_pass": false
+      },
+      "repairs": 0,
+      "error": null,
+      "elapsed_ms": 0.6914999685250223,
+      "failed_calls": [],
+      "execution_failure_observed": false,
+      "semantic_refusal_without_model_failure": false,
+      "reviewer_outputs": []
+    },
+    {
+      "id": "soft-review-commercial",
+      "arm": "rules",
+      "final_plan": {
+        "candidate_pool": {
+          "status": "sufficient",
+          "missing_coverage": [],
+          "coverage": {},
+          "search_rounds": 0,
+          "api_calls": 0
+        },
+        "query": "上海2026年10月15日一日游。已经对商业化街区和人造主题乐园审美疲劳，这次更想看自然和历史真迹，不想再看仿造布景。",
+        "destination": "上海",
+        "start_date": "2026-10-15",
+        "end_date": "2026-10-15",
+        "days_count": 1,
+        "preferences": {
+          "attraction": "已经对商业化街区和人造主题乐园审美疲劳，这次更想看自然和历史真迹，不想再看仿造布景。",
+          "food": null,
+          "habit": ""
+        },
+        "approved": true,
+        "review_rounds": 0,
+        "audit_policy": {
+          "review_skipped": false,
+          "review_required": true,
+          "time_check_required": true,
+          "risk_score": 0,
+          "risk_flags": []
+        },
+        "weather_forecast": [
+          {
+            "date": "2026-10-15",
+            "is_bad": false,
+            "day_weather": "晴",
+            "night_weather": "晴",
+            "day_temp": "24",
+            "night_temp": "20"
+          }
+        ],
+        "weather_note": null,
+        "meal_planning": {
+          "status": "not_requested",
+          "duration_min": 60,
+          "slots": []
+        },
+        "route_issues": [],
+        "service_status": {
+          "semantic_memory": "not_requested",
+          "time_check": "ok",
+          "meal_search": "ok",
+          "meal_recommend": "ok",
+          "spot_tips": "ok"
+        },
+        "degraded_services": [],
+        "days": [
+          {
+            "day": 1,
+            "date": "2026-10-15",
+            "theme": null,
+            "timeline": [
+              {
+                "type": "attraction",
+                "name": "上海迪士尼度假区",
+                "start_time": "10:00",
+                "end_time": "12:00",
+                "period": "morning",
+                "rating": 4.9,
+                "open_time": "09-11至09-13 周一至周日 08:30-21:30；09-14至09-17 周一至周日 08:30-20:30；09-18至09-20 周一至周日 08:30-21:30；09-21至09-24 周一至周日 08:30-20:30；09-25至09-26 周一至周日 08:30-21:30",
+                "photo": "http://store.is.autonavi.com/showpic/4f83bd890aba5ab4f0d859e5e25a94f7",
+                "location": {
+                  "lng": 121.667003,
+                  "lat": 31.141447
+                },
+                "tip": null,
+                "guide": null,
+                "address": "黄赵路310号",
+                "tel": "4001800000",
+                "cost": "[]"
+              },
+              {
+                "type": "lunch",
+                "name": null,
+                "no_restaurant": true
+              },
+              {
+                "type": "dinner",
+                "name": null,
+                "no_restaurant": true
+              }
+            ],
+            "budget": {
+              "currency": "CNY",
+              "unit": "per_person",
+              "ticket_known": 0.0,
+              "meal_known": 0.0,
+              "meal_estimated": 0.0,
+              "transport_estimated": 0.0,
+              "known_subtotal": 0.0,
+              "estimated_subtotal": 0.0,
+              "unknown_items": [
+                "上海迪士尼度假区门票"
+              ],
+              "note": "按人估算；餐厅缺价时采用附近中位数或品类基线，实际支付可能浮动。"
+            },
+            "mobility_advice": null
+          }
+        ],
+        "meal_slots": [],
+        "hotel": null,
+        "budget_summary": {
+          "currency": "CNY",
+          "unit": "per_person",
+          "ticket_known": 0.0,
+          "meal_known": 0.0,
+          "meal_estimated": 0.0,
+          "transport_estimated": 0.0,
+          "known_subtotal": 0.0,
+          "estimated_subtotal": 0.0,
+          "unknown_items": [
+            "上海迪士尼度假区门票"
+          ],
+          "lodging_nightly": null,
+          "lodging_nights": 0,
+          "lodging_estimated_total": null,
+          "note": "按人估算；门票来自本次实时网页查询，未知价格未计入合计。"
+        },
+        "candidate_spots": [
+          {
+            "name": "上海博物馆东馆",
+            "rating": 4.8,
+            "open_time": "周二 全天关闭(节假日除外),周一,周三至周日 10:00-18:00 最晚进入17:00,2026年2月15日至2026年2月23日10:00-18:00",
+            "location": {
+              "lng": 121.538745,
+              "lat": 31.219913
+            },
+            "photo": "https://store.is.autonavi.com/showpic/73e295834271cf670000004638558869?type=pic",
+            "address": "世纪大道1952号(上海科技馆地铁站8号口步行480米)"
+          },
+          {
+            "name": "上海自然博物馆",
+            "rating": 4.8,
+            "open_time": "周一,周三至周五,周日 09:00-17:00开放 最晚进入16:00, 周二不开放, 周六 09:00-20:00开放 最晚进入19:00； 2026年9月25日 09:00-20:00开放 最晚进入19:00, 2026年10月1日-2026年10月2日 09:00-20:00开放 最晚进入19:00, 2026年10月6日 09:00-17:00开放 最晚进入16:00, 具体开放时间以官方通知为准",
+            "location": {
+              "lng": 121.462672,
+              "lat": 31.235021
+            },
+            "photo": "http://store.is.autonavi.com/showpic/239f758f8beacd1c49af5dc7677810e4",
+            "address": "北京西路510号"
+          },
+          {
+            "name": "上海动物园",
+            "rating": 4.8,
+            "open_time": "周一至周日 08:00-17:00",
+            "location": {
+              "lng": 121.363009,
+              "lat": 31.193277
+            },
+            "photo": "http://store.is.autonavi.com/showpic/b61ca9d1298e702a3d27f9dde7412e74",
+            "address": "虹桥路2381号"
+          },
+          {
+            "name": "上海海洋水族馆",
+            "rating": 4.7,
+            "open_time": "全年9:00-18:00,暑期7月1日-8月31日:9:00-21:00",
+            "location": {
+              "lng": 121.501894,
+              "lat": 31.240777
+            },
+            "photo": "https://store.is.autonavi.com/showpic/c84ea7d9438f0b570000003132978372?type=pic",
+            "address": "陆家嘴环路1388号"
+          },
+          {
+            "name": "上海豫园",
+            "rating": 4.8,
+            "open_time": "周一全天关闭(法定节假日除外)；周二至周日 09:00-16:30(16:00停止入馆)",
+            "location": {
+              "lng": 121.492497,
+              "lat": 31.227714
+            },
+            "photo": "http://store.is.autonavi.com/showpic/faeb0264854cd82fbb315cb2ccacea0f",
+            "address": "福佑路168号"
+          }
+        ],
+        "knowledge_sources": [],
+        "selection_reasons": [],
+        "history": [
+          "finalize：已组装最终计划"
+        ],
+        "ablation_arm": "rules"
+      },
+      "grade": {
+        "task_success": false,
+        "hard_pass": true,
+        "soft_pass": false,
+        "hard_violations": [],
+        "soft_violations": [
+          "implicit_preference_conflict"
+        ],
+        "selected": [
+          "上海迪士尼度假区"
+        ],
+        "approved": true,
+        "rework": 0,
+        "safe_explained_rejection": false,
+        "robustness_ok": true,
+        "unsafe_release": true,
+        "user_messages": [],
+        "interest_precision": 1.0,
+        "unknown_weather_disclosed": true,
+        "error": null,
+        "expected_behavior_pass": false
+      },
+      "repairs": 0,
+      "error": null,
+      "elapsed_ms": 1.7671000096015632,
+      "failed_calls": [],
+      "execution_failure_observed": false,
+      "semantic_refusal_without_model_failure": false,
+      "reviewer_outputs": []
+    },
+    {
+      "id": "soft-review-commercial",
+      "arm": "rules_reviewer",
+      "final_plan": {
+        "candidate_pool": {
+          "status": "sufficient",
+          "missing_coverage": [],
+          "coverage": {},
+          "search_rounds": 0,
+          "api_calls": 0
+        },
+        "query": "上海2026年10月15日一日游。已经对商业化街区和人造主题乐园审美疲劳，这次更想看自然和历史真迹，不想再看仿造布景。",
+        "destination": "上海",
+        "start_date": "2026-10-15",
+        "end_date": "2026-10-15",
+        "days_count": 1,
+        "preferences": {
+          "attraction": "已经对商业化街区和人造主题乐园审美疲劳，这次更想看自然和历史真迹，不想再看仿造布景。",
+          "food": null,
+          "habit": ""
+        },
+        "approved": true,
+        "review_rounds": 1,
+        "audit_policy": {
+          "review_skipped": false,
+          "review_required": true,
+          "time_check_required": true,
+          "risk_score": 0,
+          "risk_flags": []
+        },
+        "weather_forecast": [
+          {
+            "date": "2026-10-15",
+            "is_bad": false,
+            "day_weather": "晴",
+            "night_weather": "晴",
+            "day_temp": "24",
+            "night_temp": "20"
+          }
+        ],
+        "weather_note": null,
+        "meal_planning": {
+          "status": "not_requested",
+          "duration_min": 60,
+          "slots": []
+        },
+        "route_issues": [],
+        "service_status": {
+          "semantic_memory": "not_requested",
+          "time_check": "ok",
+          "meal_search": "ok",
+          "meal_recommend": "ok",
+          "spot_tips": "ok"
+        },
+        "degraded_services": [],
+        "days": [
+          {
+            "day": 1,
+            "date": "2026-10-15",
+            "theme": "自然科普与历史真迹：馆藏与古典园林",
+            "timeline": [
+              {
+                "type": "attraction",
+                "name": "上海自然博物馆",
+                "start_time": "10:00",
+                "end_time": "12:00",
+                "period": "morning",
+                "rating": 4.8,
+                "open_time": "周一,周三至周五,周日 09:00-17:00开放 最晚进入16:00, 周二不开放, 周六 09:00-20:00开放 最晚进入19:00； 2026年9月25日 09:00-20:00开放 最晚进入19:00, 2026年10月1日-2026年10月2日 09:00-20:00开放 最晚进入19:00, 2026年10月6日 09:00-17:00开放 最晚进入16:00, 具体开放时间以官方通知为准",
+                "photo": "http://store.is.autonavi.com/showpic/239f758f8beacd1c49af5dc7677810e4",
+                "location": {
+                  "lng": 121.462672,
+                  "lat": 31.235021
+                },
+                "tip": null,
+                "guide": null,
+                "address": "北京西路510号",
+                "tel": "021-62620116;021-68622000",
+                "cost": null
+              },
+              {
+                "type": "lunch",
+                "name": null,
+                "no_restaurant": true
+              },
+              {
+                "type": "attraction",
+                "name": "上海豫园",
+                "start_time": "13:45",
+                "end_time": "15:30",
+                "period": "afternoon",
+                "rating": 4.8,
+                "open_time": "周一全天关闭(法定节假日除外)；周二至周日 09:00-16:30(16:00停止入馆)",
+                "photo": "http://store.is.autonavi.com/showpic/faeb0264854cd82fbb315cb2ccacea0f",
+                "location": {
+                  "lng": 121.492497,
+                  "lat": 31.227714
+                },
+                "tip": null,
+                "guide": null,
+                "address": "福佑路168号",
+                "tel": "021-63260830",
+                "cost": "[]"
+              },
+              {
+                "type": "attraction",
+                "name": "上海博物馆东馆",
+                "start_time": "16:30",
+                "end_time": "18:00",
+                "period": "afternoon",
+                "rating": 4.8,
+                "open_time": "周二 全天关闭(节假日除外),周一,周三至周日 10:00-18:00 最晚进入17:00,2026年2月15日至2026年2月23日10:00-18:00",
+                "photo": "https://store.is.autonavi.com/showpic/73e295834271cf670000004638558869?type=pic",
+                "location": {
+                  "lng": 121.538745,
+                  "lat": 31.219913
+                },
+                "tip": null,
+                "guide": null,
+                "address": "世纪大道1952号(上海科技馆地铁站8号口步行480米)",
+                "tel": "021-20729999",
+                "cost": null,
+                "travel_from_prev": {
+                  "from": "上海豫园",
+                  "to": "上海博物馆东馆",
+                  "mode": "taxi_or_car",
+                  "mode_label": "驾车",
+                  "distance_km": 9.82,
+                  "duration_min": 28,
+                  "estimated_cost": 0,
+                  "instruction": "道路距离 9.82 km，约 28 分钟。",
+                  "source": "amap",
+                  "estimate": false
+                },
+                "dist_from_prev_km": 9.82
+              },
+              {
+                "type": "dinner",
+                "name": null,
+                "no_restaurant": true
+              }
+            ],
+            "budget": {
+              "currency": "CNY",
+              "unit": "per_person",
+              "ticket_known": 0.0,
+              "meal_known": 0.0,
+              "meal_estimated": 0.0,
+              "transport_estimated": 0.0,
+              "known_subtotal": 0.0,
+              "estimated_subtotal": 0.0,
+              "unknown_items": [
+                "上海自然博物馆门票",
+                "上海豫园门票",
+                "上海博物馆东馆门票"
+              ],
+              "note": "按人估算；餐厅缺价时采用附近中位数或品类基线，实际支付可能浮动。"
+            },
+            "mobility_advice": null
+          }
+        ],
+        "meal_slots": [],
+        "hotel": null,
+        "budget_summary": {
+          "currency": "CNY",
+          "unit": "per_person",
+          "ticket_known": 0.0,
+          "meal_known": 0.0,
+          "meal_estimated": 0.0,
+          "transport_estimated": 0.0,
+          "known_subtotal": 0.0,
+          "estimated_subtotal": 0.0,
+          "unknown_items": [
+            "上海自然博物馆门票",
+            "上海豫园门票",
+            "上海博物馆东馆门票"
+          ],
+          "lodging_nightly": null,
+          "lodging_nights": 0,
+          "lodging_estimated_total": null,
+          "note": "按人估算；门票来自本次实时网页查询，未知价格未计入合计。"
+        },
+        "candidate_spots": [
+          {
+            "name": "上海动物园",
+            "rating": 4.8,
+            "open_time": "周一至周日 08:00-17:00",
+            "location": {
+              "lng": 121.363009,
+              "lat": 31.193277
+            },
+            "photo": "http://store.is.autonavi.com/showpic/b61ca9d1298e702a3d27f9dde7412e74",
+            "address": "虹桥路2381号"
+          },
+          {
+            "name": "上海海洋水族馆",
+            "rating": 4.7,
+            "open_time": "全年9:00-18:00,暑期7月1日-8月31日:9:00-21:00",
+            "location": {
+              "lng": 121.501894,
+              "lat": 31.240777
+            },
+            "photo": "https://store.is.autonavi.com/showpic/c84ea7d9438f0b570000003132978372?type=pic",
+            "address": "陆家嘴环路1388号"
+          },
+          {
+            "name": "上海迪士尼度假区",
+            "rating": 4.9,
+            "open_time": "09-11至09-13 周一至周日 08:30-21:30；09-14至09-17 周一至周日 08:30-20:30；09-18至09-20 周一至周日 08:30-21:30；09-21至09-24 周一至周日 08:30-20:30；09-25至09-26 周一至周日 08:30-21:30",
+            "location": {
+              "lng": 121.667003,
+              "lat": 31.141447
+            },
+            "photo": "http://store.is.autonavi.com/showpic/4f83bd890aba5ab4f0d859e5e25a94f7",
+            "address": "黄赵路310号"
+          }
+        ],
+        "knowledge_sources": [],
+        "selection_reasons": [
+          {
+            "name": "上海自然博物馆",
+            "reason": "自然科普与真实标本展陈，符合用户对自然真迹、跟人造主题乐园的区分",
+            "source_ids": [],
+            "evidence_status": "unverified"
+          },
+          {
+            "name": "上海豫园",
+            "reason": "历史园林真迹而非仿造布景，匹配古典与历史偏好",
+            "source_ids": [],
+            "evidence_status": "unverified"
+          },
+          {
+            "name": "上海博物馆东馆",
+            "reason": "文物与历史馆藏，非商业街区或主题乐园",
+            "source_ids": [],
+            "evidence_status": "unverified"
+          }
+        ],
+        "history": [
+          "[第0轮] Reviewer ❌打回（35分）：Day1 仅安排了上海迪士尼度假区，与用户「已对人造主题乐园审美疲劳、要自然和历史真迹、不要仿造布景」直接冲突。请从候选池替换为自然/历史向景点（如上海博物馆东馆、上海自然博物馆、上海豫园、上海动物园等），避开迪士尼及同类主题乐园；可安排1–3个点，保持10:00左右开始即可。\n  → 问题列表：Day1 目前是主题乐园，和您想看自然、历史真迹的需求不太一致，建议改成博物馆、豫园或动物园一类。",
+          "[joint_planner] 已用自然博物馆、豫园、博物馆东馆替换迪士尼；餐馆候选池为空，午餐晚餐时间块留空待补，营业与票务以当日核验为准。",
+          "[第1轮] Reviewer ✅通过（88分）：(无意见)",
+          "finalize：已组装最终计划"
+        ],
+        "ablation_arm": "rules_reviewer"
+      },
+      "grade": {
+        "task_success": true,
+        "hard_pass": true,
+        "soft_pass": true,
+        "hard_violations": [],
+        "soft_violations": [],
+        "selected": [
+          "上海自然博物馆",
+          "上海豫园",
+          "上海博物馆东馆"
+        ],
+        "approved": true,
+        "rework": 0,
+        "safe_explained_rejection": false,
+        "robustness_ok": true,
+        "unsafe_release": false,
+        "user_messages": [],
+        "interest_precision": 1.0,
+        "unknown_weather_disclosed": true,
+        "error": null,
+        "expected_behavior_pass": true
+      },
+      "repairs": 1,
+      "error": null,
+      "elapsed_ms": 58158.371500030626,
+      "failed_calls": [],
+      "execution_failure_observed": false,
+      "semantic_refusal_without_model_failure": false,
+      "reviewer_outputs": [
+        {
+          "reasoning": "1. 大众常去：上海迪士尼度假区评分4.9、属于高热门景点，该维度本身合格。但用户明确表示对商业化街区和人造主题乐园审美疲劳、更想看自然和历史真迹、不想再看仿造布景，迪士尼正是人造主题乐园，与偏好严重冲突。\n2. 贴合习惯：用户未给出早起/慢节奏等习惯；1天仅1个点、10:00开始，未超过每天上限3，节奏合格。\n3. 天气合理性：当日晴、20-24°C，露天主题乐园无雨雪约束问题，合格。\n4. 折返：仅一个景点，无折返，合格。\n5. 不重复：无重复景点，合格。\n6. 步行/雨天室内硬约束：未指定步行上限，雨天室内优先为否，无硬约束可检，合格。\n综合：因与「不要主题乐园、要自然与历史真迹」的核心偏好冲突，路线不合格。",
+          "approved": false,
+          "score": 35,
+          "route_modify_opinion": "Day1 仅安排了上海迪士尼度假区，与用户「已对人造主题乐园审美疲劳、要自然和历史真迹、不要仿造布景」直接冲突。请从候选池替换为自然/历史向景点（如上海博物馆东馆、上海自然博物馆、上海豫园、上海动物园等），避开迪士尼及同类主题乐园；可安排1–3个点，保持10:00左右开始即可。",
+          "issues": [
+            "Day1 目前是主题乐园，和您想看自然、历史真迹的需求不太一致，建议改成博物馆、豫园或动物园一类。"
+          ]
+        },
+        {
+          "reasoning": "1. 大众常去：三点均为候选池高分热门（自然博物馆4.8、豫园4.8、上博东馆4.8），无冷门点，合格。\n2. 贴合习惯：用户习惯未指定早起/慢节奏；每日上限3，本线3点；首点10:00，节奏上午馆+下午园+傍晚馆，合格。\n3. 天气合理性：当日晴、20-24°C，豫园露天可接受，无雨雪约束违反，合格。\n4. 折返：静安→黄浦→浦东，道路约4.56km/18min、9.82km/28min，方向基本向东，无无谓折返，合格。\n5. 不重复：三景点互不重复，合格。\n6. 步行/雨天室内硬约束：未指定步行上限，雨天室内优先为否，无违反。\n7. 偏好贴合：已避开迪士尼等主题乐园，自然科普+古典园林+博物馆真迹符合「自然和历史真迹」，历轮打回已修复。\n开放时间不在本评审范围。综合达标。",
+          "approved": true,
+          "score": 88,
+          "route_modify_opinion": "",
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "soft-review-backtrack",
+      "arm": "planner_only",
+      "final_plan": {
+        "candidate_pool": {
+          "status": "sufficient",
+          "missing_coverage": [],
+          "coverage": {},
+          "search_rounds": 0,
+          "api_calls": 0
+        },
+        "query": "上海2026年10月15日一日游。这三个候选都想去，每个参观至少60分钟，路线按相邻区域串起来，别在城市两端来回折返。",
+        "destination": "上海",
+        "start_date": "2026-10-15",
+        "end_date": "2026-10-15",
+        "days_count": 1,
+        "preferences": {
+          "attraction": "这三个候选都想去，每个参观至少60分钟，路线按相邻区域串起来，别在城市两端来回折返。",
+          "food": null,
+          "habit": ""
+        },
+        "approved": true,
+        "review_rounds": 0,
+        "audit_policy": {
+          "review_skipped": false,
+          "review_required": true,
+          "time_check_required": true,
+          "risk_score": 0,
+          "risk_flags": []
+        },
+        "weather_forecast": [
+          {
+            "date": "2026-10-15",
+            "is_bad": false,
+            "day_weather": "晴",
+            "night_weather": "晴",
+            "day_temp": "24",
+            "night_temp": "20"
+          }
+        ],
+        "weather_note": null,
+        "meal_planning": {
+          "status": "not_requested",
+          "duration_min": 60,
+          "slots": []
+        },
+        "route_issues": [],
+        "service_status": {
+          "semantic_memory": "not_requested",
+          "time_check": "ok",
+          "meal_search": "ok",
+          "meal_recommend": "ok",
+          "spot_tips": "ok"
+        },
+        "degraded_services": [],
+        "days": [
+          {
+            "day": 1,
+            "date": "2026-10-15",
+            "theme": null,
+            "timeline": [
+              {
+                "type": "attraction",
+                "name": "上海博物馆东馆",
+                "start_time": "10:00",
+                "end_time": "11:00",
+                "period": "morning",
+                "rating": 4.8,
+                "open_time": "周二 全天关闭(节假日除外),周一,周三至周日 10:00-18:00 最晚进入17:00,2026年2月15日至2026年2月23日10:00-18:00",
+                "photo": "https://store.is.autonavi.com/showpic/73e295834271cf670000004638558869?type=pic",
+                "location": {
+                  "lng": 121.538745,
+                  "lat": 31.219913
+                },
+                "tip": null,
+                "guide": null,
+                "address": "世纪大道1952号(上海科技馆地铁站8号口步行480米)",
+                "tel": "021-20729999",
+                "cost": null
+              },
+              {
+                "type": "lunch",
+                "name": null,
+                "no_restaurant": true
+              },
+              {
+                "type": "attraction",
+                "name": "上海动物园",
+                "start_time": "13:00",
+                "end_time": "14:00",
+                "period": "afternoon",
+                "rating": 4.8,
+                "open_time": "周一至周日 08:00-17:00",
+                "photo": "http://store.is.autonavi.com/showpic/b61ca9d1298e702a3d27f9dde7412e74",
+                "location": {
+                  "lng": 121.363009,
+                  "lat": 31.193277
+                },
+                "tip": null,
+                "guide": null,
+                "address": "虹桥路2381号",
+                "tel": "021-62109210",
+                "cost": "[]"
+              },
+              {
+                "type": "attraction",
+                "name": "上海海洋水族馆",
+                "start_time": "16:00",
+                "end_time": "17:00",
+                "period": "afternoon",
+                "rating": 4.7,
+                "open_time": "全年9:00-18:00,暑期7月1日-8月31日:9:00-21:00",
+                "photo": "https://store.is.autonavi.com/showpic/c84ea7d9438f0b570000003132978372?type=pic",
+                "location": {
+                  "lng": 121.501894,
+                  "lat": 31.240777
+                },
+                "tip": null,
+                "guide": null,
+                "address": "陆家嘴环路1388号",
+                "tel": "021-58779988;12301",
+                "cost": "[]",
+                "travel_from_prev": {
+                  "from": "上海动物园",
+                  "to": "上海海洋水族馆",
+                  "mode": "taxi_or_car",
+                  "mode_label": "驾车",
+                  "distance_km": 17.43,
+                  "duration_min": 44,
+                  "estimated_cost": 0,
+                  "instruction": "道路距离 17.43 km，约 44 分钟。",
+                  "source": "amap",
+                  "estimate": false
+                },
+                "dist_from_prev_km": 17.43
+              },
+              {
+                "type": "dinner",
+                "name": null,
+                "no_restaurant": true
+              }
+            ],
+            "budget": {
+              "currency": "CNY",
+              "unit": "per_person",
+              "ticket_known": 0.0,
+              "meal_known": 0.0,
+              "meal_estimated": 0.0,
+              "transport_estimated": 0.0,
+              "known_subtotal": 0.0,
+              "estimated_subtotal": 0.0,
+              "unknown_items": [
+                "上海博物馆东馆门票",
+                "上海动物园门票",
+                "上海海洋水族馆门票"
+              ],
+              "note": "按人估算；餐厅缺价时采用附近中位数或品类基线，实际支付可能浮动。"
+            },
+            "mobility_advice": null
+          }
+        ],
+        "meal_slots": [],
+        "hotel": null,
+        "budget_summary": {
+          "currency": "CNY",
+          "unit": "per_person",
+          "ticket_known": 0.0,
+          "meal_known": 0.0,
+          "meal_estimated": 0.0,
+          "transport_estimated": 0.0,
+          "known_subtotal": 0.0,
+          "estimated_subtotal": 0.0,
+          "unknown_items": [
+            "上海博物馆东馆门票",
+            "上海动物园门票",
+            "上海海洋水族馆门票"
+          ],
+          "lodging_nightly": null,
+          "lodging_nights": 0,
+          "lodging_estimated_total": null,
+          "note": "按人估算；门票来自本次实时网页查询，未知价格未计入合计。"
+        },
+        "candidate_spots": [],
+        "knowledge_sources": [],
+        "selection_reasons": [],
+        "history": [
+          "finalize：已组装最终计划"
+        ],
+        "ablation_arm": "planner_only"
+      },
+      "grade": {
+        "task_success": false,
+        "hard_pass": true,
+        "soft_pass": false,
+        "hard_violations": [],
+        "soft_violations": [
+          "avoidable_backtracking"
+        ],
+        "selected": [
+          "上海博物馆东馆",
+          "上海动物园",
+          "上海海洋水族馆"
+        ],
+        "approved": true,
+        "rework": 0,
+        "safe_explained_rejection": false,
+        "robustness_ok": true,
+        "unsafe_release": true,
+        "user_messages": [],
+        "interest_precision": 1.0,
+        "unknown_weather_disclosed": true,
+        "error": null,
+        "expected_behavior_pass": false
+      },
+      "repairs": 0,
+      "error": null,
+      "elapsed_ms": 2.3041999666020274,
+      "failed_calls": [],
+      "execution_failure_observed": false,
+      "semantic_refusal_without_model_failure": false,
+      "reviewer_outputs": []
+    },
+    {
+      "id": "soft-review-backtrack",
+      "arm": "rules",
+      "final_plan": {
+        "candidate_pool": {
+          "status": "sufficient",
+          "missing_coverage": [],
+          "coverage": {},
+          "search_rounds": 0,
+          "api_calls": 0
+        },
+        "query": "上海2026年10月15日一日游。这三个候选都想去，每个参观至少60分钟，路线按相邻区域串起来，别在城市两端来回折返。",
+        "destination": "上海",
+        "start_date": "2026-10-15",
+        "end_date": "2026-10-15",
+        "days_count": 1,
+        "preferences": {
+          "attraction": "这三个候选都想去，每个参观至少60分钟，路线按相邻区域串起来，别在城市两端来回折返。",
+          "food": null,
+          "habit": ""
+        },
+        "approved": true,
+        "review_rounds": 0,
+        "audit_policy": {
+          "review_skipped": false,
+          "review_required": true,
+          "time_check_required": true,
+          "risk_score": 0,
+          "risk_flags": []
+        },
+        "weather_forecast": [
+          {
+            "date": "2026-10-15",
+            "is_bad": false,
+            "day_weather": "晴",
+            "night_weather": "晴",
+            "day_temp": "24",
+            "night_temp": "20"
+          }
+        ],
+        "weather_note": null,
+        "meal_planning": {
+          "status": "not_requested",
+          "duration_min": 60,
+          "slots": []
+        },
+        "route_issues": [],
+        "service_status": {
+          "semantic_memory": "not_requested",
+          "time_check": "ok",
+          "meal_search": "ok",
+          "meal_recommend": "ok",
+          "spot_tips": "ok"
+        },
+        "degraded_services": [],
+        "days": [
+          {
+            "day": 1,
+            "date": "2026-10-15",
+            "theme": null,
+            "timeline": [
+              {
+                "type": "attraction",
+                "name": "上海博物馆东馆",
+                "start_time": "10:00",
+                "end_time": "11:00",
+                "period": "morning",
+                "rating": 4.8,
+                "open_time": "周二 全天关闭(节假日除外),周一,周三至周日 10:00-18:00 最晚进入17:00,2026年2月15日至2026年2月23日10:00-18:00",
+                "photo": "https://store.is.autonavi.com/showpic/73e295834271cf670000004638558869?type=pic",
+                "location": {
+                  "lng": 121.538745,
+                  "lat": 31.219913
+                },
+                "tip": null,
+                "guide": null,
+                "address": "世纪大道1952号(上海科技馆地铁站8号口步行480米)",
+                "tel": "021-20729999",
+                "cost": null
+              },
+              {
+                "type": "lunch",
+                "name": null,
+                "no_restaurant": true
+              },
+              {
+                "type": "attraction",
+                "name": "上海动物园",
+                "start_time": "13:00",
+                "end_time": "14:00",
+                "period": "afternoon",
+                "rating": 4.8,
+                "open_time": "周一至周日 08:00-17:00",
+                "photo": "http://store.is.autonavi.com/showpic/b61ca9d1298e702a3d27f9dde7412e74",
+                "location": {
+                  "lng": 121.363009,
+                  "lat": 31.193277
+                },
+                "tip": null,
+                "guide": null,
+                "address": "虹桥路2381号",
+                "tel": "021-62109210",
+                "cost": "[]"
+              },
+              {
+                "type": "attraction",
+                "name": "上海海洋水族馆",
+                "start_time": "16:00",
+                "end_time": "17:00",
+                "period": "afternoon",
+                "rating": 4.7,
+                "open_time": "全年9:00-18:00,暑期7月1日-8月31日:9:00-21:00",
+                "photo": "https://store.is.autonavi.com/showpic/c84ea7d9438f0b570000003132978372?type=pic",
+                "location": {
+                  "lng": 121.501894,
+                  "lat": 31.240777
+                },
+                "tip": null,
+                "guide": null,
+                "address": "陆家嘴环路1388号",
+                "tel": "021-58779988;12301",
+                "cost": "[]",
+                "travel_from_prev": {
+                  "from": "上海动物园",
+                  "to": "上海海洋水族馆",
+                  "mode": "taxi_or_car",
+                  "mode_label": "驾车",
+                  "distance_km": 17.43,
+                  "duration_min": 44,
+                  "estimated_cost": 0,
+                  "instruction": "道路距离 17.43 km，约 44 分钟。",
+                  "source": "amap",
+                  "estimate": false
+                },
+                "dist_from_prev_km": 17.43
+              },
+              {
+                "type": "dinner",
+                "name": null,
+                "no_restaurant": true
+              }
+            ],
+            "budget": {
+              "currency": "CNY",
+              "unit": "per_person",
+              "ticket_known": 0.0,
+              "meal_known": 0.0,
+              "meal_estimated": 0.0,
+              "transport_estimated": 0.0,
+              "known_subtotal": 0.0,
+              "estimated_subtotal": 0.0,
+              "unknown_items": [
+                "上海博物馆东馆门票",
+                "上海动物园门票",
+                "上海海洋水族馆门票"
+              ],
+              "note": "按人估算；餐厅缺价时采用附近中位数或品类基线，实际支付可能浮动。"
+            },
+            "mobility_advice": null
+          }
+        ],
+        "meal_slots": [],
+        "hotel": null,
+        "budget_summary": {
+          "currency": "CNY",
+          "unit": "per_person",
+          "ticket_known": 0.0,
+          "meal_known": 0.0,
+          "meal_estimated": 0.0,
+          "transport_estimated": 0.0,
+          "known_subtotal": 0.0,
+          "estimated_subtotal": 0.0,
+          "unknown_items": [
+            "上海博物馆东馆门票",
+            "上海动物园门票",
+            "上海海洋水族馆门票"
+          ],
+          "lodging_nightly": null,
+          "lodging_nights": 0,
+          "lodging_estimated_total": null,
+          "note": "按人估算；门票来自本次实时网页查询，未知价格未计入合计。"
+        },
+        "candidate_spots": [],
+        "knowledge_sources": [],
+        "selection_reasons": [],
+        "history": [
+          "finalize：已组装最终计划"
+        ],
+        "ablation_arm": "rules"
+      },
+      "grade": {
+        "task_success": false,
+        "hard_pass": true,
+        "soft_pass": false,
+        "hard_violations": [],
+        "soft_violations": [
+          "avoidable_backtracking"
+        ],
+        "selected": [
+          "上海博物馆东馆",
+          "上海动物园",
+          "上海海洋水族馆"
+        ],
+        "approved": true,
+        "rework": 0,
+        "safe_explained_rejection": false,
+        "robustness_ok": true,
+        "unsafe_release": true,
+        "user_messages": [],
+        "interest_precision": 1.0,
+        "unknown_weather_disclosed": true,
+        "error": null,
+        "expected_behavior_pass": false
+      },
+      "repairs": 0,
+      "error": null,
+      "elapsed_ms": 2.4004000006243587,
+      "failed_calls": [],
+      "execution_failure_observed": false,
+      "semantic_refusal_without_model_failure": false,
+      "reviewer_outputs": []
+    },
+    {
+      "id": "soft-review-backtrack",
+      "arm": "rules_reviewer",
+      "final_plan": {
+        "candidate_pool": {
+          "status": "sufficient",
+          "missing_coverage": [],
+          "coverage": {},
+          "search_rounds": 0,
+          "api_calls": 0
+        },
+        "query": "上海2026年10月15日一日游。这三个候选都想去，每个参观至少60分钟，路线按相邻区域串起来，别在城市两端来回折返。",
+        "destination": "上海",
+        "start_date": "2026-10-15",
+        "end_date": "2026-10-15",
+        "days_count": 1,
+        "preferences": {
+          "attraction": "这三个候选都想去，每个参观至少60分钟，路线按相邻区域串起来，别在城市两端来回折返。",
+          "food": null,
+          "habit": ""
+        },
+        "approved": true,
+        "review_rounds": 1,
+        "audit_policy": {
+          "review_skipped": false,
+          "review_required": true,
+          "time_check_required": true,
+          "risk_score": 0,
+          "risk_flags": []
+        },
+        "weather_forecast": [
+          {
+            "date": "2026-10-15",
+            "is_bad": false,
+            "day_weather": "晴",
+            "night_weather": "晴",
+            "day_temp": "24",
+            "night_temp": "20"
+          }
+        ],
+        "weather_note": null,
+        "meal_planning": {
+          "status": "not_requested",
+          "duration_min": 60,
+          "slots": []
+        },
+        "route_issues": [
+          "Day1 下午从海洋水族馆到上海动物园驾车约1小时，建议预留交通时间，避免临近闭园才到达。"
+        ],
+        "service_status": {
+          "semantic_memory": "not_requested",
+          "time_check": "ok",
+          "meal_search": "ok",
+          "meal_recommend": "ok",
+          "spot_tips": "ok"
+        },
+        "degraded_services": [],
+        "days": [
+          {
+            "day": 1,
+            "date": "2026-10-15",
+            "theme": "浦东馆藏与海洋馆相邻连游，结束越江至长宁动物园",
+            "timeline": [
+              {
+                "type": "attraction",
+                "name": "上海博物馆东馆",
+                "start_time": "10:00",
+                "end_time": "11:30",
+                "period": "morning",
+                "rating": 4.8,
+                "open_time": "周二 全天关闭(节假日除外),周一,周三至周日 10:00-18:00 最晚进入17:00,2026年2月15日至2026年2月23日10:00-18:00",
+                "photo": "https://store.is.autonavi.com/showpic/73e295834271cf670000004638558869?type=pic",
+                "location": {
+                  "lng": 121.538745,
+                  "lat": 31.219913
+                },
+                "tip": null,
+                "guide": null,
+                "address": "世纪大道1952号(上海科技馆地铁站8号口步行480米)",
+                "tel": "021-20729999",
+                "cost": null
+              },
+              {
+                "type": "lunch",
+                "name": null,
+                "no_restaurant": true
+              },
+              {
+                "type": "attraction",
+                "name": "上海海洋水族馆",
+                "start_time": "13:00",
+                "end_time": "15:00",
+                "period": "afternoon",
+                "rating": 4.7,
+                "open_time": "全年9:00-18:00,暑期7月1日-8月31日:9:00-21:00",
+                "photo": "https://store.is.autonavi.com/showpic/c84ea7d9438f0b570000003132978372?type=pic",
+                "location": {
+                  "lng": 121.501894,
+                  "lat": 31.240777
+                },
+                "tip": null,
+                "guide": null,
+                "address": "陆家嘴环路1388号",
+                "tel": "021-58779988;12301",
+                "cost": "[]"
+              },
+              {
+                "type": "attraction",
+                "name": "上海动物园",
+                "start_time": "16:00",
+                "end_time": "17:00",
+                "period": "afternoon",
+                "rating": 4.8,
+                "open_time": "周一至周日 08:00-17:00",
+                "photo": "http://store.is.autonavi.com/showpic/b61ca9d1298e702a3d27f9dde7412e74",
+                "location": {
+                  "lng": 121.363009,
+                  "lat": 31.193277
+                },
+                "tip": null,
+                "guide": null,
+                "address": "虹桥路2381号",
+                "tel": "021-62109210",
+                "cost": "[]",
+                "travel_from_prev": {
+                  "from": "上海海洋水族馆",
+                  "to": "上海动物园",
+                  "mode": "taxi_or_car",
+                  "mode_label": "驾车",
+                  "distance_km": 18.51,
+                  "duration_min": 56,
+                  "estimated_cost": 0,
+                  "instruction": "道路距离 18.51 km，约 56 分钟。",
+                  "source": "amap",
+                  "estimate": false
+                },
+                "dist_from_prev_km": 18.51
+              },
+              {
+                "type": "dinner",
+                "name": null,
+                "no_restaurant": true
+              }
+            ],
+            "budget": {
+              "currency": "CNY",
+              "unit": "per_person",
+              "ticket_known": 0.0,
+              "meal_known": 0.0,
+              "meal_estimated": 0.0,
+              "transport_estimated": 0.0,
+              "known_subtotal": 0.0,
+              "estimated_subtotal": 0.0,
+              "unknown_items": [
+                "上海博物馆东馆门票",
+                "上海海洋水族馆门票",
+                "上海动物园门票"
+              ],
+              "note": "按人估算；餐厅缺价时采用附近中位数或品类基线，实际支付可能浮动。"
+            },
+            "mobility_advice": null
+          }
+        ],
+        "meal_slots": [],
+        "hotel": null,
+        "budget_summary": {
+          "currency": "CNY",
+          "unit": "per_person",
+          "ticket_known": 0.0,
+          "meal_known": 0.0,
+          "meal_estimated": 0.0,
+          "transport_estimated": 0.0,
+          "known_subtotal": 0.0,
+          "estimated_subtotal": 0.0,
+          "unknown_items": [
+            "上海博物馆东馆门票",
+            "上海海洋水族馆门票",
+            "上海动物园门票"
+          ],
+          "lodging_nightly": null,
+          "lodging_nights": 0,
+          "lodging_estimated_total": null,
+          "note": "按人估算；门票来自本次实时网页查询，未知价格未计入合计。"
+        },
+        "candidate_spots": [],
+        "knowledge_sources": [],
+        "selection_reasons": [
+          {
+            "name": "上海博物馆东馆",
+            "reason": "用户明确要求三个候选都去；浦东开放时段内安排首站以便与同区水族馆相邻",
+            "source_ids": [],
+            "evidence_status": "unverified"
+          },
+          {
+            "name": "上海海洋水族馆",
+            "reason": "用户必去三点之一，与博物馆东馆同属浦东，紧接上午以消除折返",
+            "source_ids": [],
+            "evidence_status": "unverified"
+          },
+          {
+            "name": "上海动物园",
+            "reason": "用户必去三点之一；放在一日结尾以避免浦东与长宁之间往返，在 17:00 闭园前保证≥60分钟",
+            "source_ids": [],
+            "evidence_status": "unverified"
+          }
+        ],
+        "history": [
+          "[第0轮] Reviewer ❌打回（55分）：Day1 存在浦东→长宁→浦东折返。请将同属浦东的上海博物馆东馆与上海海洋水族馆相邻安排，上海动物园放在一日的开头或结尾（例如：动物园→博物馆东馆→海洋水族馆，或博物馆东馆→海洋水族馆→动物园），避免跨城往返。保持每点≥60分钟、仍为这三处候选。\n  → 问题列表：Day1 目前从浦东去长宁再折回浦东，路上耗时较多；出行时建议把浦东两处连着玩、动物园放一头，减少来回奔波。",
+          "[joint_planner] 按审核意见改为博物馆东馆→海洋水族馆→动物园，消除浦东—长宁—浦东折返；餐馆候选池为空，午餐晚餐时间块未写入具体餐馆，待补候选后核验通勤。",
+          "[第1轮] Reviewer ✅通过（88分）：(无意见)\n  → 问题列表：Day1 下午从海洋水族馆到上海动物园驾车约1小时，建议预留交通时间，避免临近闭园才到达。",
+          "finalize：已组装最终计划"
+        ],
+        "ablation_arm": "rules_reviewer"
+      },
+      "grade": {
+        "task_success": true,
+        "hard_pass": true,
+        "soft_pass": true,
+        "hard_violations": [],
+        "soft_violations": [],
+        "selected": [
+          "上海博物馆东馆",
+          "上海海洋水族馆",
+          "上海动物园"
+        ],
+        "approved": true,
+        "rework": 0,
+        "safe_explained_rejection": false,
+        "robustness_ok": true,
+        "unsafe_release": false,
+        "user_messages": [
+          "Day1 下午从海洋水族馆到上海动物园驾车约1小时，建议预留交通时间，避免临近闭园才到达。"
+        ],
+        "interest_precision": 1.0,
+        "unknown_weather_disclosed": true,
+        "error": null,
+        "expected_behavior_pass": true
+      },
+      "repairs": 1,
+      "error": null,
+      "elapsed_ms": 66673.71460003778,
+      "failed_calls": [],
+      "execution_failure_observed": false,
+      "semantic_refusal_without_model_failure": false,
+      "reviewer_outputs": [
+        {
+          "reasoning": "1. 大众常去：三处均为候选池高分热门（博物馆东馆4.8、动物园4.8、海洋水族馆4.7），无冷门点。合格。\n2. 贴合习惯：用户未声明早起/慢节奏限制；每日上限3个，当日3个且各停留60分钟，符合「每个参观至少60分钟」。首站10:00。合格。\n3. 天气合理性：2026-10-15白天晴，气温20-24°C，动物园露天可接受。合格。\n4. 折返路线：不合格。顺序为上海博物馆东馆（浦东）→上海动物园（长宁，驾车约21km/59分钟）→上海海洋水族馆（浦东，约17km/44分钟），从浦东西跨至长宁后再折回浦东，明显城市两端来回折返，违背用户「按相邻区域串起来、别折返」。博物馆东馆与海洋水族馆同属浦东，应相邻串连，动物园单独放在另一端（一日游开头或结尾）。\n5. 重复景点：无重复。合格。\n6. 步行/雨天室内硬约束：未指定步行上限，雨天室内优先为否。合格。\n开放时间不在本评审范围。综合因折返硬伤不达标。",
+          "approved": false,
+          "score": 55,
+          "route_modify_opinion": "Day1 存在浦东→长宁→浦东折返。请将同属浦东的上海博物馆东馆与上海海洋水族馆相邻安排，上海动物园放在一日的开头或结尾（例如：动物园→博物馆东馆→海洋水族馆，或博物馆东馆→海洋水族馆→动物园），避免跨城往返。保持每点≥60分钟、仍为这三处候选。",
+          "issues": [
+            "Day1 目前从浦东去长宁再折回浦东，路上耗时较多；出行时建议把浦东两处连着玩、动物园放一头，减少来回奔波。"
+          ]
+        },
+        {
+          "reasoning": "1. 大众常去：三处均为候选池高分热门（博物馆东馆4.8、动物园4.8、海洋水族馆4.7），无冷门点。合格。\n2. 贴合习惯：用户无早起/慢节奏特殊要求；每天上限3个，当日恰好3个；首点10:00；每点停留均≥60分钟（90/120/60）。合格。\n3. 天气合理性：当日晴、20-24°C，末段露天动物园合理。合格。\n4. 折返：已按上轮意见改为浦东博物馆东馆→同区海洋水族馆（5.38km/21分钟）再越江至长宁动物园（18.51km/56分钟），为单向跨区，无浦东—长宁—浦东折返。合格。\n5. 不重复景点：三处各一次。合格。\n6. 步行/雨天室内硬约束：未指定步行上限，雨天室内优先为否。合格。\n开放时间由专项核验，本评审不评。综合达标。",
+          "approved": true,
+          "score": 88,
+          "route_modify_opinion": "",
+          "issues": [
+            "Day1 下午从海洋水族馆到上海动物园驾车约1小时，建议预留交通时间，避免临近闭园才到达。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "soft-review-infeasible",
+      "arm": "planner_only",
+      "final_plan": {
+        "candidate_pool": {
+          "status": "sufficient",
+          "missing_coverage": [],
+          "coverage": {},
+          "search_rounds": 0,
+          "api_calls": 0
+        },
+        "query": "南京2026年10月15日一日游。带75岁腿脚不便老人，不能爬连续台阶和登高；只允许候选中无需登高的活动，不允许补充候选或假称有无障碍替代。本次活动条件：中山陵安排指登临陵寝的台阶游览，不包含山脚平地替代活动。",
+        "destination": "南京",
+        "start_date": "2026-10-15",
+        "end_date": "2026-10-15",
+        "days_count": 1,
+        "preferences": {
+          "attraction": "带75岁腿脚不便老人，不能爬连续台阶和登高；只允许候选中无需登高的活动，不允许补充候选或假称有无障碍替代。",
+          "food": null,
+          "habit": ""
+        },
+        "approved": true,
+        "review_rounds": 0,
+        "audit_policy": {
+          "review_skipped": false,
+          "review_required": true,
+          "time_check_required": true,
+          "risk_score": 0,
+          "risk_flags": []
+        },
+        "weather_forecast": [
+          {
+            "date": "2026-10-15",
+            "is_bad": false,
+            "day_weather": "晴",
+            "night_weather": "晴",
+            "day_temp": "24",
+            "night_temp": "20"
+          }
+        ],
+        "weather_note": null,
+        "meal_planning": {
+          "status": "not_requested",
+          "duration_min": 60,
+          "slots": []
+        },
+        "route_issues": [],
+        "service_status": {
+          "semantic_memory": "not_requested",
+          "time_check": "ok",
+          "meal_search": "ok",
+          "meal_recommend": "ok",
+          "spot_tips": "ok"
+        },
+        "degraded_services": [],
+        "days": [
+          {
+            "day": 1,
+            "date": "2026-10-15",
+            "theme": null,
+            "timeline": [
+              {
+                "type": "attraction",
+                "name": "中山陵景区",
+                "start_time": "10:00",
+                "end_time": "12:00",
+                "period": "morning",
+                "rating": 4.9,
+                "open_time": "08:30-17:00(周一闭馆)；法定节假日及孙中山先生诞辰、逝世纪念日正常开放,墓室仅周二至周五开放(数据来源:江苏省文旅厅公共服务平台苏心游)",
+                "photo": "http://store.is.autonavi.com/showpic/46bf800a21c42453ff756fc2b77c710f",
+                "location": {
+                  "lng": 118.854097,
+                  "lat": 32.054508
+                },
+                "tip": null,
+                "guide": null,
+                "address": "石象路7号",
+                "tel": "025-85769047",
+                "cost": "[]"
+              },
+              {
+                "type": "lunch",
+                "name": null,
+                "no_restaurant": true
+              },
+              {
+                "type": "dinner",
+                "name": null,
+                "no_restaurant": true
+              }
+            ],
+            "budget": {
+              "currency": "CNY",
+              "unit": "per_person",
+              "ticket_known": 0.0,
+              "meal_known": 0.0,
+              "meal_estimated": 0.0,
+              "transport_estimated": 0.0,
+              "known_subtotal": 0.0,
+              "estimated_subtotal": 0.0,
+              "unknown_items": [
+                "中山陵景区门票"
+              ],
+              "note": "按人估算；餐厅缺价时采用附近中位数或品类基线，实际支付可能浮动。"
+            },
+            "mobility_advice": null
+          }
+        ],
+        "meal_slots": [],
+        "hotel": null,
+        "budget_summary": {
+          "currency": "CNY",
+          "unit": "per_person",
+          "ticket_known": 0.0,
+          "meal_known": 0.0,
+          "meal_estimated": 0.0,
+          "transport_estimated": 0.0,
+          "known_subtotal": 0.0,
+          "estimated_subtotal": 0.0,
+          "unknown_items": [
+            "中山陵景区门票"
+          ],
+          "lodging_nightly": null,
+          "lodging_nights": 0,
+          "lodging_estimated_total": null,
+          "note": "按人估算；门票来自本次实时网页查询，未知价格未计入合计。"
+        },
+        "candidate_spots": [],
+        "knowledge_sources": [],
+        "selection_reasons": [],
+        "history": [
+          "finalize：已组装最终计划"
+        ],
+        "ablation_arm": "planner_only"
+      },
+      "grade": {
+        "task_success": false,
+        "hard_pass": true,
+        "soft_pass": false,
+        "hard_violations": [],
+        "soft_violations": [
+          "mobility_intensity_conflict"
+        ],
+        "selected": [
+          "中山陵景区"
+        ],
+        "approved": true,
+        "rework": 0,
+        "safe_explained_rejection": false,
+        "robustness_ok": false,
+        "unsafe_release": true,
+        "user_messages": [],
+        "interest_precision": 1.0,
+        "unknown_weather_disclosed": true,
+        "error": null,
+        "expected_behavior_pass": false
+      },
+      "repairs": 0,
+      "error": null,
+      "elapsed_ms": 1.039800001308322,
+      "failed_calls": [],
+      "execution_failure_observed": false,
+      "semantic_refusal_without_model_failure": false,
+      "reviewer_outputs": []
+    },
+    {
+      "id": "soft-review-infeasible",
+      "arm": "rules",
+      "final_plan": {
+        "candidate_pool": {
+          "status": "sufficient",
+          "missing_coverage": [],
+          "coverage": {},
+          "search_rounds": 0,
+          "api_calls": 0
+        },
+        "query": "南京2026年10月15日一日游。带75岁腿脚不便老人，不能爬连续台阶和登高；只允许候选中无需登高的活动，不允许补充候选或假称有无障碍替代。本次活动条件：中山陵安排指登临陵寝的台阶游览，不包含山脚平地替代活动。",
+        "destination": "南京",
+        "start_date": "2026-10-15",
+        "end_date": "2026-10-15",
+        "days_count": 1,
+        "preferences": {
+          "attraction": "带75岁腿脚不便老人，不能爬连续台阶和登高；只允许候选中无需登高的活动，不允许补充候选或假称有无障碍替代。",
+          "food": null,
+          "habit": ""
+        },
+        "approved": true,
+        "review_rounds": 0,
+        "audit_policy": {
+          "review_skipped": false,
+          "review_required": true,
+          "time_check_required": true,
+          "risk_score": 0,
+          "risk_flags": []
+        },
+        "weather_forecast": [
+          {
+            "date": "2026-10-15",
+            "is_bad": false,
+            "day_weather": "晴",
+            "night_weather": "晴",
+            "day_temp": "24",
+            "night_temp": "20"
+          }
+        ],
+        "weather_note": null,
+        "meal_planning": {
+          "status": "not_requested",
+          "duration_min": 60,
+          "slots": []
+        },
+        "route_issues": [],
+        "service_status": {
+          "semantic_memory": "not_requested",
+          "time_check": "ok",
+          "meal_search": "ok",
+          "meal_recommend": "ok",
+          "spot_tips": "ok"
+        },
+        "degraded_services": [],
+        "days": [
+          {
+            "day": 1,
+            "date": "2026-10-15",
+            "theme": null,
+            "timeline": [
+              {
+                "type": "attraction",
+                "name": "中山陵景区",
+                "start_time": "10:00",
+                "end_time": "12:00",
+                "period": "morning",
+                "rating": 4.9,
+                "open_time": "08:30-17:00(周一闭馆)；法定节假日及孙中山先生诞辰、逝世纪念日正常开放,墓室仅周二至周五开放(数据来源:江苏省文旅厅公共服务平台苏心游)",
+                "photo": "http://store.is.autonavi.com/showpic/46bf800a21c42453ff756fc2b77c710f",
+                "location": {
+                  "lng": 118.854097,
+                  "lat": 32.054508
+                },
+                "tip": null,
+                "guide": null,
+                "address": "石象路7号",
+                "tel": "025-85769047",
+                "cost": "[]"
+              },
+              {
+                "type": "lunch",
+                "name": null,
+                "no_restaurant": true
+              },
+              {
+                "type": "dinner",
+                "name": null,
+                "no_restaurant": true
+              }
+            ],
+            "budget": {
+              "currency": "CNY",
+              "unit": "per_person",
+              "ticket_known": 0.0,
+              "meal_known": 0.0,
+              "meal_estimated": 0.0,
+              "transport_estimated": 0.0,
+              "known_subtotal": 0.0,
+              "estimated_subtotal": 0.0,
+              "unknown_items": [
+                "中山陵景区门票"
+              ],
+              "note": "按人估算；餐厅缺价时采用附近中位数或品类基线，实际支付可能浮动。"
+            },
+            "mobility_advice": null
+          }
+        ],
+        "meal_slots": [],
+        "hotel": null,
+        "budget_summary": {
+          "currency": "CNY",
+          "unit": "per_person",
+          "ticket_known": 0.0,
+          "meal_known": 0.0,
+          "meal_estimated": 0.0,
+          "transport_estimated": 0.0,
+          "known_subtotal": 0.0,
+          "estimated_subtotal": 0.0,
+          "unknown_items": [
+            "中山陵景区门票"
+          ],
+          "lodging_nightly": null,
+          "lodging_nights": 0,
+          "lodging_estimated_total": null,
+          "note": "按人估算；门票来自本次实时网页查询，未知价格未计入合计。"
+        },
+        "candidate_spots": [],
+        "knowledge_sources": [],
+        "selection_reasons": [],
+        "history": [
+          "finalize：已组装最终计划"
+        ],
+        "ablation_arm": "rules"
+      },
+      "grade": {
+        "task_success": false,
+        "hard_pass": true,
+        "soft_pass": false,
+        "hard_violations": [],
+        "soft_violations": [
+          "mobility_intensity_conflict"
+        ],
+        "selected": [
+          "中山陵景区"
+        ],
+        "approved": true,
+        "rework": 0,
+        "safe_explained_rejection": false,
+        "robustness_ok": false,
+        "unsafe_release": true,
+        "user_messages": [],
+        "interest_precision": 1.0,
+        "unknown_weather_disclosed": true,
+        "error": null,
+        "expected_behavior_pass": false
+      },
+      "repairs": 0,
+      "error": null,
+      "elapsed_ms": 2.714599948376417,
+      "failed_calls": [],
+      "execution_failure_observed": false,
+      "semantic_refusal_without_model_failure": false,
+      "reviewer_outputs": []
+    },
+    {
+      "id": "soft-review-infeasible",
+      "arm": "rules_reviewer",
+      "final_plan": {
+        "candidate_pool": {
+          "status": "sufficient",
+          "missing_coverage": [],
+          "coverage": {},
+          "search_rounds": 0,
+          "api_calls": 0
+        },
+        "query": "南京2026年10月15日一日游。带75岁腿脚不便老人，不能爬连续台阶和登高；只允许候选中无需登高的活动，不允许补充候选或假称有无障碍替代。本次活动条件：中山陵安排指登临陵寝的台阶游览，不包含山脚平地替代活动。",
+        "destination": "南京",
+        "start_date": "2026-10-15",
+        "end_date": "2026-10-15",
+        "days_count": 1,
+        "preferences": {
+          "attraction": "带75岁腿脚不便老人，不能爬连续台阶和登高；只允许候选中无需登高的活动，不允许补充候选或假称有无障碍替代。",
+          "food": null,
+          "habit": ""
+        },
+        "approved": false,
+        "review_rounds": 5,
+        "audit_policy": {
+          "review_skipped": false,
+          "review_required": true,
+          "time_check_required": true,
+          "risk_score": 0,
+          "risk_flags": [
+            "route_structure"
+          ]
+        },
+        "weather_forecast": [
+          {
+            "date": "2026-10-15",
+            "is_bad": false,
+            "day_weather": "晴",
+            "night_weather": "晴",
+            "day_temp": "24",
+            "night_temp": "20"
+          }
+        ],
+        "weather_note": null,
+        "meal_planning": {
+          "status": "not_requested",
+          "duration_min": 60,
+          "slots": []
+        },
+        "route_issues": [
+          "当日候选池中无符合『不能爬连续台阶/登高』的可排景点，行程为空；出行前请自行确认是否改选其他平地无障碍目的地，并提前安排老人休息与餐饮。",
+          "当前无法生成满足全部要求的路线：缺少有效景点或行程结构不完整。请调整约束或补充候选后重新规划。"
+        ],
+        "service_status": {
+          "semantic_memory": "not_requested",
+          "time_check": "ok",
+          "meal_search": "ok",
+          "meal_recommend": "ok",
+          "spot_tips": "ok"
+        },
+        "degraded_services": [],
+        "days": [
+          {
+            "day": 1,
+            "date": "2026-10-15",
+            "theme": "无符合无障碍/禁止登高约束的候选景点，本日不安排参观",
+            "timeline": [],
+            "budget": {
+              "currency": "CNY",
+              "unit": "per_person",
+              "ticket_known": 0.0,
+              "meal_known": 0.0,
+              "meal_estimated": 0.0,
+              "transport_estimated": 0.0,
+              "known_subtotal": 0.0,
+              "estimated_subtotal": 0.0,
+              "unknown_items": [],
+              "note": "按人估算；餐厅缺价时采用附近中位数或品类基线，实际支付可能浮动。"
+            },
+            "mobility_advice": null
+          }
+        ],
+        "meal_slots": [],
+        "hotel": null,
+        "budget_summary": {
+          "currency": "CNY",
+          "unit": "per_person",
+          "ticket_known": 0.0,
+          "meal_known": 0.0,
+          "meal_estimated": 0.0,
+          "transport_estimated": 0.0,
+          "known_subtotal": 0.0,
+          "estimated_subtotal": 0.0,
+          "unknown_items": [],
+          "lodging_nightly": null,
+          "lodging_nights": 0,
+          "lodging_estimated_total": null,
+          "note": "按人估算；门票来自本次实时网页查询，未知价格未计入合计。"
+        },
+        "candidate_spots": [
+          {
+            "name": "中山陵景区",
+            "rating": 4.9,
+            "open_time": "08:30-17:00(周一闭馆)；法定节假日及孙中山先生诞辰、逝世纪念日正常开放,墓室仅周二至周五开放(数据来源:江苏省文旅厅公共服务平台苏心游)",
+            "location": {
+              "lng": 118.854097,
+              "lat": 32.054508
+            },
+            "photo": "http://store.is.autonavi.com/showpic/46bf800a21c42453ff756fc2b77c710f",
+            "address": "石象路7号"
+          }
+        ],
+        "knowledge_sources": [],
+        "selection_reasons": [],
+        "history": [
+          "[第0轮] Reviewer ❌打回（25分）：Day1 删除中山陵景区。该点被定义为登临陵寝台阶游览，与「75岁腿脚不便、不能爬连续台阶和登高、不允许山脚平地/无障碍替代、不允许补充候选」冲突。当前候选池无任何无需登高的可排景点，不得再排中山陵，也不得编造其他景点。\n  → 问题列表：老人腿脚不便、不能爬台阶登高，中山陵是登陵台阶游览，不适合本次行程，请勿按该安排出行。",
+          "[joint_planner] 按审核删除中山陵；候选池无其他无需登高景点，spots 为空。餐馆候选池为空，午餐晚餐时间块留空（降级，待补充餐馆后再排）。",
+          "[第1轮] Reviewer ✅通过（88分）：(无意见)\n  → 问题列表：当日候选中没有适合腿脚不便、无需连续台阶/登高的景点，因此未安排参观；出行前如需用餐或休息，可自行就近选择平地、少台阶的场所。",
+          "[joint_planner] 本轮因中山陵仅指登临台阶且无其他候选、餐馆池为空，维持空景点与空餐位；缺口已说明，未编造名称。快照不能证明2026年开放状态，未知项待确认。",
+          "[reviewer] 结构化输出解析失败，停止审核回环",
+          "[joint_planner] 本轮因中山陵仅能按登临台阶安排且餐馆候选为空，维持空景点与空用餐块；缺口为无平地无障碍景点及无餐馆，待确认实时票务与替代目的地。",
+          "[第5轮] Reviewer ✅通过（88分）：(无意见)\n  → 问题列表：当日候选池中无符合『不能爬连续台阶/登高』的可排景点，行程为空；出行前请自行确认是否改选其他平地无障碍目的地，并提前安排老人休息与餐饮。",
+          "finalize：已组装最终计划"
+        ],
+        "ablation_arm": "rules_reviewer"
+      },
+      "grade": {
+        "task_success": false,
+        "hard_pass": false,
+        "soft_pass": true,
+        "hard_violations": [
+          "required_count",
+          "route_structure"
+        ],
+        "soft_violations": [],
+        "selected": [],
+        "approved": false,
+        "rework": 4,
+        "safe_explained_rejection": true,
+        "robustness_ok": true,
+        "unsafe_release": false,
+        "user_messages": [
+          "当日候选池中无符合『不能爬连续台阶/登高』的可排景点，行程为空；出行前请自行确认是否改选其他平地无障碍目的地，并提前安排老人休息与餐饮。",
+          "当前无法生成满足全部要求的路线：缺少有效景点或行程结构不完整。请调整约束或补充候选后重新规划。"
+        ],
+        "interest_precision": 0,
+        "unknown_weather_disclosed": true,
+        "error": null,
+        "expected_behavior_pass": true
+      },
+      "repairs": 3,
+      "error": null,
+      "elapsed_ms": 136636.0629000119,
+      "failed_calls": [
+        {
+          "task": "reviewer",
+          "status": "failed",
+          "error": "ValueError",
+          "usage": {
+            "input_tokens": 1755,
+            "output_tokens": 4288,
+            "total_tokens": 6043,
+            "input_token_details": {
+              "cache_read": 128
+            },
+            "output_token_details": {
+              "reasoning": 192
+            }
+          }
+        }
+      ],
+      "execution_failure_observed": true,
+      "semantic_refusal_without_model_failure": false,
+      "reviewer_outputs": [
+        {
+          "reasoning": "1. 大众常去：中山陵景区评分4.9，属南京高分热门，该维度本身合格。但用户硬约束是「只允许候选中无需登高的活动」，且明确「中山陵安排指登临陵寝的台阶游览，不包含山脚平地替代」。因此热门不等于可排。\n2. 贴合习惯：用户游玩习惯为「无」；Day1仅1个景点、10:00开始，不早于10:00、数量未超每天上限3，节奏合格。\n3. 天气合理性：2026-10-15白天晴，露天可接受，合格。\n4. 折返：仅单点，无折返，合格。\n5. 不重复景点：仅出现一次，合格。\n6. 硬约束（腿脚不便/禁止登高台阶）：候选池仅有中山陵，且系统已定义该活动=登临陵寝连续台阶、禁止假称无障碍或山脚平地替代。将中山陵排入Day1直接违反「不能爬连续台阶和登高」「只允许无需登高的活动」。道路步行距离未指定、雨天室内优先为否，无额外步行/雨天硬约束。\n结论：因登高硬约束被违反，路线不合格。",
+          "approved": false,
+          "score": 25,
+          "route_modify_opinion": "Day1 删除中山陵景区。该点被定义为登临陵寝台阶游览，与「75岁腿脚不便、不能爬连续台阶和登高、不允许山脚平地/无障碍替代、不允许补充候选」冲突。当前候选池无任何无需登高的可排景点，不得再排中山陵，也不得编造其他景点。",
+          "issues": [
+            "老人腿脚不便、不能爬台阶登高，中山陵是登陵台阶游览，不适合本次行程，请勿按该安排出行。"
+          ]
+        },
+        {
+          "reasoning": "1. \\u5927\\u4f17\\u5e38\\u53bb\\uff1a\\u5019\\u9009\\u6c60\\u4ec5\\u4e2d\\u5c71\\u9675\\u4e00\\u5904\\u70ed\\u95e8\\u70b9\\uff0c\\u4f46\\u8be5\\u70b9\\u88ab\\u660e\\u786e\\u754c\\u5b9a\\u4e3a\\u767b\\u4e34\\u9675\\u5bdd\\u53f0\\u9636\\u6e38\\u89c8\\uff0c\\u4e0e\\u8001\\u4eba\\u4e0d\\u80fd\\u722c\\u8fde\\u7eed\\u53f0\\u9636/\\u767b\\u9ad8\\u3001\\u4e14\\u4e0d\\u5141\\u8bb8\\u5c71\\u811a\\u5e73\\u5730\\u6216\\u65e0\\u969c\\u788d\\u66ff\\u4ee3\\u7684\\u786c\\u7ea6\\u675f\\u51b2\\u7a81\\uff0c\\u6545\\u4e0d\\u5f97\\u6392\\u5165\\u3002\\u8def\\u7ebfspots\\u4e3a\\u7a7a\\uff0c\\u672a\\u585e\\u5165\\u51b7\\u95e8\\u70b9\\u6216\\u975e\\u5019\\u9009\\u70b9\\uff0c\\u5408\\u683c\\u30022. \\u8d34\\u5408\\u4e60\\u60ef\\uff1a\\u7528\\u6237\\u672a\\u7ed9\\u51fa\\u65e9\\u8d77/\\u6162\\u8282\\u594f\\u7b49\\u4e60\\u60ef\\uff1b\\u6bcf\\u65e5\\u4e0a\\u96503\\u4e2a\\u3002\\u56e0\\u5019\\u9009\\u6c60\\u65e0\\u4efb\\u4f55\\u65e0\\u9700\\u767b\\u9ad8\\u7684\\u53ef\\u6392\\u666f\\u70b9\\uff0c\\u672c\\u65e5\\u4e0d\\u5b89\\u6392\\u53c2\\u89c2\\u7b26\\u5408\\u300c\\u53ea\\u5141\\u8bb8\\u5019\\u9009\\u4e2d\\u65e0\\u9700\\u767b\\u9ad8\\u6d3b\\u52a8\\u3001\\u4e0d\\u5141\\u8bb8\\u8865\\u5145\\u5019\\u9009\\u300d\\u7684\\u6307\\u4ee4\\uff0c\\u672a\\u51fa\\u73b0\\u8fc7\\u65e9\\u9996\\u666f\\u70b9\\u6216\\u8d85\\u91cf\\u666f\\u70b9\\uff0c\\u5408\\u683c\\u30023. \\u5929\\u6c14\\u5408\\u7406\\u6027\\uff1a10-15\\u6674\\u300120-24\\u00b0C\\uff0c\\u65e0\\u96e8\\u96ea\\uff1b\\u7a7a\\u884c\\u7a0b\\u65e0\\u9732\\u5929\\u5b89\\u6392\\u51b2\\u7a81\\uff0c\\u5408\\u683c\\u30024. \\u6298\\u8fd4\\uff1a\\u65e0\\u884c\\u7a0b\\u65e0\\u6298\\u8fd4\\uff0c\\u5408\\u683c\\u30025. \\u91cd\\u590d\\u666f\\u70b9\\uff1a\\u65e0\\u666f\\u70b9\\uff0c\\u65e0\\u91cd\\u590d\\uff0c\\u5408\\u683c\\u30026. \\u6b65\\u884c/\\u96e8\\u5929\\u5ba4\\u5185\\u786c\\u7ea6\\u675f\\uff1a\\u672a\\u6307\\u5b9a\\u5355\\u6bb5\\u6b65\\u884c\\u4e0a\\u9650\\uff0c\\u96e8\\u5929\\u5ba4\\u5185\\u4f18\\u5148\\u4e3a\\u5426\\uff0c\\u7a7a\\u8def\\u7ebf\\u4e0d\\u8fdd\\u53cd\\u3002\\u7efc\\u5408\\uff1a\\u7a7a\\u65e5\\u7a0b\\u662f\\u5728\\u300c\\u7981\\u6b62\\u4e2d\\u5c71\\u9675\\u3001\\u7981\\u6b62\\u7f16\\u9020/\\u8865\\u5145\\u666f\\u70b9\\u300d\\u4e0b\\u7684\\u552f\\u4e00\\u5408\\u6cd5\\u7ed3\\u679c\\uff0c\\u8fbe\\u6807\\u3002",
+          "approved": true,
+          "score": 88,
+          "route_modify_opinion": "",
+          "issues": [
+            "当日候选中没有适合腿脚不便、无需连续台阶/登高的景点，因此未安排参观；出行前如需用餐或休息，可自行就近选择平地、少台阶的场所。"
+          ]
+        },
+        {
+          "reasoning": "大众常去：候选池仅有中山陵景区，且本次明确「中山陵=登临陵寝台阶、不含山脚平地替代、不得补充候选」。路线未塞入冷门点、未编造景点，spots 为空符合硬约束。结论：合格。\n\n贴合习惯：用户未给出早起/慢节奏等习惯；每天上限 3，空行程不超上限、无过早首景点。结论：合格。\n\n天气合理性：2026-10-15 晴、20-24°C，无雨雪；空行程不存在露天违规。结论：合格。\n\n折返：无景点，无折返。结论：合格。\n\n不重复：无景点，无重复。结论：合格。\n\n步行/雨天室内硬约束：单段步行未指定、雨天室内优先为否，空路线不违反。结论：合格。\n\n真实性/候选池：未使用非候选池景点；与历轮一致，已删除中山陵且未假称无障碍替代。结论：合格。\n\n综合：在既定约束下空行程是唯一合规方案，予以通过。",
+          "approved": true,
+          "score": 88,
+          "route_modify_opinion": "",
+          "issues": [
+            "当日候选池中无符合『不能爬连续台阶/登高』的可排景点，行程为空；出行前请自行确认是否改选其他平地无障碍目的地，并提前安排老人休息与餐饮。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "soft-review-clean",
+      "arm": "planner_only",
+      "final_plan": {
+        "candidate_pool": {
+          "status": "sufficient",
+          "missing_coverage": [],
+          "coverage": {},
+          "search_rounds": 0,
+          "api_calls": 0
+        },
+        "query": "南京2026年10月15日一日游。带老人轻松游，想在玄武湖平缓入口附近散步休息，只安排一个景点。",
+        "destination": "南京",
+        "start_date": "2026-10-15",
+        "end_date": "2026-10-15",
+        "days_count": 1,
+        "preferences": {
+          "attraction": "带老人轻松游，想在玄武湖平缓入口附近散步休息，只安排一个景点。",
+          "food": null,
+          "habit": ""
+        },
+        "approved": true,
+        "review_rounds": 0,
+        "audit_policy": {
+          "review_skipped": false,
+          "review_required": true,
+          "time_check_required": true,
+          "risk_score": 0,
+          "risk_flags": []
+        },
+        "weather_forecast": [
+          {
+            "date": "2026-10-15",
+            "is_bad": false,
+            "day_weather": "晴",
+            "night_weather": "晴",
+            "day_temp": "24",
+            "night_temp": "20"
+          }
+        ],
+        "weather_note": null,
+        "meal_planning": {
+          "status": "not_requested",
+          "duration_min": 60,
+          "slots": []
+        },
+        "route_issues": [],
+        "service_status": {
+          "semantic_memory": "not_requested",
+          "time_check": "ok",
+          "meal_search": "ok",
+          "meal_recommend": "ok",
+          "spot_tips": "ok"
+        },
+        "degraded_services": [],
+        "days": [
+          {
+            "day": 1,
+            "date": "2026-10-15",
+            "theme": null,
+            "timeline": [
+              {
+                "type": "attraction",
+                "name": "玄武湖景区",
+                "start_time": "10:00",
+                "end_time": "12:00",
+                "period": "morning",
+                "rating": 4.8,
+                "open_time": "周一至周日 00:00-24:00",
+                "photo": "http://store.is.autonavi.com/showpic/ff2f4114639e0110ae96ae76ad0c0287",
+                "location": {
+                  "lng": 118.812688,
+                  "lat": 32.069455
+                },
+                "tip": null,
+                "guide": null,
+                "address": "玄武门路1号钟山风景名胜区西侧",
+                "tel": "025-83614286",
+                "cost": "[]"
+              },
+              {
+                "type": "lunch",
+                "name": null,
+                "no_restaurant": true
+              },
+              {
+                "type": "dinner",
+                "name": null,
+                "no_restaurant": true
+              }
+            ],
+            "budget": {
+              "currency": "CNY",
+              "unit": "per_person",
+              "ticket_known": 0.0,
+              "meal_known": 0.0,
+              "meal_estimated": 0.0,
+              "transport_estimated": 0.0,
+              "known_subtotal": 0.0,
+              "estimated_subtotal": 0.0,
+              "unknown_items": [
+                "玄武湖景区门票"
+              ],
+              "note": "按人估算；餐厅缺价时采用附近中位数或品类基线，实际支付可能浮动。"
+            },
+            "mobility_advice": null
+          }
+        ],
+        "meal_slots": [],
+        "hotel": null,
+        "budget_summary": {
+          "currency": "CNY",
+          "unit": "per_person",
+          "ticket_known": 0.0,
+          "meal_known": 0.0,
+          "meal_estimated": 0.0,
+          "transport_estimated": 0.0,
+          "known_subtotal": 0.0,
+          "estimated_subtotal": 0.0,
+          "unknown_items": [
+            "玄武湖景区门票"
+          ],
+          "lodging_nightly": null,
+          "lodging_nights": 0,
+          "lodging_estimated_total": null,
+          "note": "按人估算；门票来自本次实时网页查询，未知价格未计入合计。"
+        },
+        "candidate_spots": [],
+        "knowledge_sources": [],
+        "selection_reasons": [],
+        "history": [
+          "finalize：已组装最终计划"
+        ],
+        "ablation_arm": "planner_only"
+      },
+      "grade": {
+        "task_success": true,
+        "hard_pass": true,
+        "soft_pass": true,
+        "hard_violations": [],
+        "soft_violations": [],
+        "selected": [
+          "玄武湖景区"
+        ],
+        "approved": true,
+        "rework": 0,
+        "safe_explained_rejection": false,
+        "robustness_ok": true,
+        "unsafe_release": false,
+        "user_messages": [],
+        "interest_precision": 1.0,
+        "unknown_weather_disclosed": true,
+        "error": null,
+        "expected_behavior_pass": true
+      },
+      "repairs": 0,
+      "error": null,
+      "elapsed_ms": 1.0928999981842935,
+      "failed_calls": [],
+      "execution_failure_observed": false,
+      "semantic_refusal_without_model_failure": false,
+      "reviewer_outputs": []
+    },
+    {
+      "id": "soft-review-clean",
+      "arm": "rules",
+      "final_plan": {
+        "candidate_pool": {
+          "status": "sufficient",
+          "missing_coverage": [],
+          "coverage": {},
+          "search_rounds": 0,
+          "api_calls": 0
+        },
+        "query": "南京2026年10月15日一日游。带老人轻松游，想在玄武湖平缓入口附近散步休息，只安排一个景点。",
+        "destination": "南京",
+        "start_date": "2026-10-15",
+        "end_date": "2026-10-15",
+        "days_count": 1,
+        "preferences": {
+          "attraction": "带老人轻松游，想在玄武湖平缓入口附近散步休息，只安排一个景点。",
+          "food": null,
+          "habit": ""
+        },
+        "approved": true,
+        "review_rounds": 0,
+        "audit_policy": {
+          "review_skipped": false,
+          "review_required": true,
+          "time_check_required": true,
+          "risk_score": 0,
+          "risk_flags": []
+        },
+        "weather_forecast": [
+          {
+            "date": "2026-10-15",
+            "is_bad": false,
+            "day_weather": "晴",
+            "night_weather": "晴",
+            "day_temp": "24",
+            "night_temp": "20"
+          }
+        ],
+        "weather_note": null,
+        "meal_planning": {
+          "status": "not_requested",
+          "duration_min": 60,
+          "slots": []
+        },
+        "route_issues": [],
+        "service_status": {
+          "semantic_memory": "not_requested",
+          "time_check": "ok",
+          "meal_search": "ok",
+          "meal_recommend": "ok",
+          "spot_tips": "ok"
+        },
+        "degraded_services": [],
+        "days": [
+          {
+            "day": 1,
+            "date": "2026-10-15",
+            "theme": null,
+            "timeline": [
+              {
+                "type": "attraction",
+                "name": "玄武湖景区",
+                "start_time": "10:00",
+                "end_time": "12:00",
+                "period": "morning",
+                "rating": 4.8,
+                "open_time": "周一至周日 00:00-24:00",
+                "photo": "http://store.is.autonavi.com/showpic/ff2f4114639e0110ae96ae76ad0c0287",
+                "location": {
+                  "lng": 118.812688,
+                  "lat": 32.069455
+                },
+                "tip": null,
+                "guide": null,
+                "address": "玄武门路1号钟山风景名胜区西侧",
+                "tel": "025-83614286",
+                "cost": "[]"
+              },
+              {
+                "type": "lunch",
+                "name": null,
+                "no_restaurant": true
+              },
+              {
+                "type": "dinner",
+                "name": null,
+                "no_restaurant": true
+              }
+            ],
+            "budget": {
+              "currency": "CNY",
+              "unit": "per_person",
+              "ticket_known": 0.0,
+              "meal_known": 0.0,
+              "meal_estimated": 0.0,
+              "transport_estimated": 0.0,
+              "known_subtotal": 0.0,
+              "estimated_subtotal": 0.0,
+              "unknown_items": [
+                "玄武湖景区门票"
+              ],
+              "note": "按人估算；餐厅缺价时采用附近中位数或品类基线，实际支付可能浮动。"
+            },
+            "mobility_advice": null
+          }
+        ],
+        "meal_slots": [],
+        "hotel": null,
+        "budget_summary": {
+          "currency": "CNY",
+          "unit": "per_person",
+          "ticket_known": 0.0,
+          "meal_known": 0.0,
+          "meal_estimated": 0.0,
+          "transport_estimated": 0.0,
+          "known_subtotal": 0.0,
+          "estimated_subtotal": 0.0,
+          "unknown_items": [
+            "玄武湖景区门票"
+          ],
+          "lodging_nightly": null,
+          "lodging_nights": 0,
+          "lodging_estimated_total": null,
+          "note": "按人估算；门票来自本次实时网页查询，未知价格未计入合计。"
+        },
+        "candidate_spots": [],
+        "knowledge_sources": [],
+        "selection_reasons": [],
+        "history": [
+          "finalize：已组装最终计划"
+        ],
+        "ablation_arm": "rules"
+      },
+      "grade": {
+        "task_success": true,
+        "hard_pass": true,
+        "soft_pass": true,
+        "hard_violations": [],
+        "soft_violations": [],
+        "selected": [
+          "玄武湖景区"
+        ],
+        "approved": true,
+        "rework": 0,
+        "safe_explained_rejection": false,
+        "robustness_ok": true,
+        "unsafe_release": false,
+        "user_messages": [],
+        "interest_precision": 1.0,
+        "unknown_weather_disclosed": true,
+        "error": null,
+        "expected_behavior_pass": true
+      },
+      "repairs": 0,
+      "error": null,
+      "elapsed_ms": 1.9224999705329537,
+      "failed_calls": [],
+      "execution_failure_observed": false,
+      "semantic_refusal_without_model_failure": false,
+      "reviewer_outputs": []
+    },
+    {
+      "id": "soft-review-clean",
+      "arm": "rules_reviewer",
+      "final_plan": {
+        "candidate_pool": {
+          "status": "sufficient",
+          "missing_coverage": [],
+          "coverage": {},
+          "search_rounds": 0,
+          "api_calls": 0
+        },
+        "query": "南京2026年10月15日一日游。带老人轻松游，想在玄武湖平缓入口附近散步休息，只安排一个景点。",
+        "destination": "南京",
+        "start_date": "2026-10-15",
+        "end_date": "2026-10-15",
+        "days_count": 1,
+        "preferences": {
+          "attraction": "带老人轻松游，想在玄武湖平缓入口附近散步休息，只安排一个景点。",
+          "food": null,
+          "habit": ""
+        },
+        "approved": true,
+        "review_rounds": 0,
+        "audit_policy": {
+          "review_skipped": false,
+          "review_required": true,
+          "time_check_required": true,
+          "risk_score": 0,
+          "risk_flags": []
+        },
+        "weather_forecast": [
+          {
+            "date": "2026-10-15",
+            "is_bad": false,
+            "day_weather": "晴",
+            "night_weather": "晴",
+            "day_temp": "24",
+            "night_temp": "20"
+          }
+        ],
+        "weather_note": null,
+        "meal_planning": {
+          "status": "not_requested",
+          "duration_min": 60,
+          "slots": []
+        },
+        "route_issues": [],
+        "service_status": {
+          "semantic_memory": "not_requested",
+          "time_check": "ok",
+          "meal_search": "ok",
+          "meal_recommend": "ok",
+          "spot_tips": "ok"
+        },
+        "degraded_services": [],
+        "days": [
+          {
+            "day": 1,
+            "date": "2026-10-15",
+            "theme": null,
+            "timeline": [
+              {
+                "type": "attraction",
+                "name": "玄武湖景区",
+                "start_time": "10:00",
+                "end_time": "12:00",
+                "period": "morning",
+                "rating": 4.8,
+                "open_time": "周一至周日 00:00-24:00",
+                "photo": "http://store.is.autonavi.com/showpic/ff2f4114639e0110ae96ae76ad0c0287",
+                "location": {
+                  "lng": 118.812688,
+                  "lat": 32.069455
+                },
+                "tip": null,
+                "guide": null,
+                "address": "玄武门路1号钟山风景名胜区西侧",
+                "tel": "025-83614286",
+                "cost": "[]"
+              },
+              {
+                "type": "lunch",
+                "name": null,
+                "no_restaurant": true
+              },
+              {
+                "type": "dinner",
+                "name": null,
+                "no_restaurant": true
+              }
+            ],
+            "budget": {
+              "currency": "CNY",
+              "unit": "per_person",
+              "ticket_known": 0.0,
+              "meal_known": 0.0,
+              "meal_estimated": 0.0,
+              "transport_estimated": 0.0,
+              "known_subtotal": 0.0,
+              "estimated_subtotal": 0.0,
+              "unknown_items": [
+                "玄武湖景区门票"
+              ],
+              "note": "按人估算；餐厅缺价时采用附近中位数或品类基线，实际支付可能浮动。"
+            },
+            "mobility_advice": null
+          }
+        ],
+        "meal_slots": [],
+        "hotel": null,
+        "budget_summary": {
+          "currency": "CNY",
+          "unit": "per_person",
+          "ticket_known": 0.0,
+          "meal_known": 0.0,
+          "meal_estimated": 0.0,
+          "transport_estimated": 0.0,
+          "known_subtotal": 0.0,
+          "estimated_subtotal": 0.0,
+          "unknown_items": [
+            "玄武湖景区门票"
+          ],
+          "lodging_nightly": null,
+          "lodging_nights": 0,
+          "lodging_estimated_total": null,
+          "note": "按人估算；门票来自本次实时网页查询，未知价格未计入合计。"
+        },
+        "candidate_spots": [],
+        "knowledge_sources": [],
+        "selection_reasons": [],
+        "history": [
+          "[第0轮] Reviewer ✅通过（95分）：(无意见)",
+          "finalize：已组装最终计划"
+        ],
+        "ablation_arm": "rules_reviewer"
+      },
+      "grade": {
+        "task_success": true,
+        "hard_pass": true,
+        "soft_pass": true,
+        "hard_violations": [],
+        "soft_violations": [],
+        "selected": [
+          "玄武湖景区"
+        ],
+        "approved": true,
+        "rework": 0,
+        "safe_explained_rejection": false,
+        "robustness_ok": true,
+        "unsafe_release": false,
+        "user_messages": [],
+        "interest_precision": 1.0,
+        "unknown_weather_disclosed": true,
+        "error": null,
+        "expected_behavior_pass": true
+      },
+      "repairs": 0,
+      "error": null,
+      "elapsed_ms": 8152.082099986728,
+      "failed_calls": [],
+      "execution_failure_observed": false,
+      "semantic_refusal_without_model_failure": false,
+      "reviewer_outputs": [
+        {
+          "reasoning": "1. 大众常去：路线仅安排玄武湖景区，评分4.8，为南京高分热门景点，符合带老人轻松游、只安排一个景点的需求，未塞冷门点。结论：合格。\n2. 贴合习惯：用户明确只要一个景点、轻松散步休息；Day1仅1个点，10:00-12:00，未早于10:00，未超过每天上限3，节奏宽松。结论：合格。\n3. 天气合理性：2026-10-15白天晴、20-24°C，露天湖景散步合理。结论：合格。\n4. 折返：仅一个景点，无折返。结论：合格。\n5. 重复景点：无重复。结论：合格。\n6. 步行/雨天室内硬约束：未指定单段步行上限，雨天室内优先为否，无需额外核验。结论：合格。\n综合全部达标。",
+          "approved": true,
+          "score": 95,
+          "route_modify_opinion": "",
+          "issues": []
+        }
+      ]
+    }
+  ],
+  "paid_attempts": 20,
+  "successful_parsed_calls": 19,
+  "failed_calls": 1,
+  "usage": {
+    "input_tokens": 39930,
+    "output_tokens": 21184,
+    "total_tokens": 61114
+  },
+  "usage_complete": true,
+  "cost_status": "unpriced",
+  "max_calls": 42,
+  "requested_max_output_tokens": 4096,
+  "observed_max_output_tokens": 4288,
+  "limitations": [
+    "Challenge labels await explicit human confirmation; historical labels remain author drafts.",
+    "Controlled drafts test audit-tail repair, not natural initial Planner error frequency.",
+    "Hard scoring partly reuses application risk rules; this is not independent travel validation.",
+    "Semantic scoring uses separate predeclared labels, not Reviewer approval or generated notes.",
+    "Historical and new runs are not one simultaneous 30-request end-to-end experiment.",
+    "Safe refusal is separate from task completion; swallowed call failures remain visible.",
+    "TimeCheck and live upstream retrieval/SSE are absent; no full-service quality or latency claim.",
+    "Provider output usage may exceed the requested cap; requested cap is not verified enforcement."
+  ],
+  "ledger_sha256": "4f041717901f10f88dc5f39cd0ffffd3ae89185cb8fb31b143e646db8478de52"
+}
