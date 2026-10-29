@@ -1,0 +1,1495 @@
+[
+  {
+    "id": "named-1-1",
+    "group": "named",
+    "city": "南京",
+    "query": "南京一日游，想去“南京博物院”",
+    "days": 1,
+    "base": [
+      {
+        "name": "中国科举博物馆(江南贡院)",
+        "rating": 4.7,
+        "location": {
+          "lng": 118.790669,
+          "lat": 32.020795
+        },
+        "adname": "秦淮区",
+        "indoor": true
+      },
+      {
+        "name": "不老村",
+        "rating": 4.7,
+        "location": {
+          "lng": 118.612204,
+          "lat": 32.092398
+        },
+        "adname": "浦口区",
+        "indoor": false
+      },
+      {
+        "name": "古鸡鸣寺",
+        "rating": 4.8,
+        "location": {
+          "lng": 118.795246,
+          "lat": 32.061061
+        },
+        "adname": "玄武区",
+        "indoor": false
+      },
+      {
+        "name": "莲花广场",
+        "rating": 4.5,
+        "location": {
+          "lng": 118.794126,
+          "lat": 32.074187
+        },
+        "adname": "玄武区",
+        "indoor": false
+      }
+    ],
+    "required_names": [
+      "南京博物院"
+    ],
+    "min_count": 4,
+    "min_indoor": 0,
+    "response_mode": "normal"
+  },
+  {
+    "id": "named-1-2",
+    "group": "named",
+    "city": "南京",
+    "query": "南京一日游，想去“南京地质博物馆”，想去“南京市博物馆”",
+    "days": 1,
+    "base": [
+      {
+        "name": "中国科举博物馆(江南贡院)",
+        "rating": 4.7,
+        "location": {
+          "lng": 118.790669,
+          "lat": 32.020795
+        },
+        "adname": "秦淮区",
+        "indoor": true
+      },
+      {
+        "name": "不老村",
+        "rating": 4.7,
+        "location": {
+          "lng": 118.612204,
+          "lat": 32.092398
+        },
+        "adname": "浦口区",
+        "indoor": false
+      },
+      {
+        "name": "古鸡鸣寺",
+        "rating": 4.8,
+        "location": {
+          "lng": 118.795246,
+          "lat": 32.061061
+        },
+        "adname": "玄武区",
+        "indoor": false
+      },
+      {
+        "name": "莲花广场",
+        "rating": 4.5,
+        "location": {
+          "lng": 118.794126,
+          "lat": 32.074187
+        },
+        "adname": "玄武区",
+        "indoor": false
+      }
+    ],
+    "required_names": [
+      "南京地质博物馆",
+      "南京市博物馆"
+    ],
+    "min_count": 4,
+    "min_indoor": 0,
+    "response_mode": "normal"
+  },
+  {
+    "id": "named-1-3",
+    "group": "named",
+    "city": "南京",
+    "query": "南京一日游，想去“江宁织造博物馆”",
+    "days": 1,
+    "base": [
+      {
+        "name": "中国科举博物馆(江南贡院)",
+        "rating": 4.7,
+        "location": {
+          "lng": 118.790669,
+          "lat": 32.020795
+        },
+        "adname": "秦淮区",
+        "indoor": true
+      },
+      {
+        "name": "不老村",
+        "rating": 4.7,
+        "location": {
+          "lng": 118.612204,
+          "lat": 32.092398
+        },
+        "adname": "浦口区",
+        "indoor": false
+      },
+      {
+        "name": "古鸡鸣寺",
+        "rating": 4.8,
+        "location": {
+          "lng": 118.795246,
+          "lat": 32.061061
+        },
+        "adname": "玄武区",
+        "indoor": false
+      },
+      {
+        "name": "莲花广场",
+        "rating": 4.5,
+        "location": {
+          "lng": 118.794126,
+          "lat": 32.074187
+        },
+        "adname": "玄武区",
+        "indoor": false
+      }
+    ],
+    "required_names": [
+      "江宁织造博物馆"
+    ],
+    "min_count": 4,
+    "min_indoor": 0,
+    "response_mode": "normal"
+  },
+  {
+    "id": "indoor-1-1",
+    "group": "indoor",
+    "city": "南京",
+    "query": "南京雨天游，室内优先",
+    "days": 1,
+    "base": [
+      {
+        "name": "不老村",
+        "rating": 4.7,
+        "location": {
+          "lng": 118.612204,
+          "lat": 32.092398
+        },
+        "adname": "浦口区",
+        "indoor": false
+      },
+      {
+        "name": "古鸡鸣寺",
+        "rating": 4.8,
+        "location": {
+          "lng": 118.795246,
+          "lat": 32.061061
+        },
+        "adname": "玄武区",
+        "indoor": false
+      },
+      {
+        "name": "莲花广场",
+        "rating": 4.5,
+        "location": {
+          "lng": 118.794126,
+          "lat": 32.074187
+        },
+        "adname": "玄武区",
+        "indoor": false
+      },
+      {
+        "name": "玄武湖景区",
+        "rating": 4.8,
+        "location": {
+          "lng": 118.812688,
+          "lat": 32.069455
+        },
+        "adname": "玄武区",
+        "indoor": false
+      }
+    ],
+    "required_names": [],
+    "min_count": 4,
+    "min_indoor": 3,
+    "rain": true,
+    "response_mode": "normal"
+  },
+  {
+    "id": "indoor-1-2",
+    "group": "indoor",
+    "city": "南京",
+    "query": "南京只去室内",
+    "days": 1,
+    "base": [
+      {
+        "name": "中国科举博物馆(江南贡院)",
+        "rating": 4.7,
+        "location": {
+          "lng": 118.790669,
+          "lat": 32.020795
+        },
+        "adname": "秦淮区",
+        "indoor": true
+      },
+      {
+        "name": "不老村",
+        "rating": 4.7,
+        "location": {
+          "lng": 118.612204,
+          "lat": 32.092398
+        },
+        "adname": "浦口区",
+        "indoor": false
+      },
+      {
+        "name": "古鸡鸣寺",
+        "rating": 4.8,
+        "location": {
+          "lng": 118.795246,
+          "lat": 32.061061
+        },
+        "adname": "玄武区",
+        "indoor": false
+      },
+      {
+        "name": "莲花广场",
+        "rating": 4.5,
+        "location": {
+          "lng": 118.794126,
+          "lat": 32.074187
+        },
+        "adname": "玄武区",
+        "indoor": false
+      }
+    ],
+    "required_names": [],
+    "min_count": 4,
+    "min_indoor": 4,
+    "rain": true,
+    "response_mode": "normal"
+  },
+  {
+    "id": "indoor-1-3",
+    "group": "indoor",
+    "city": "南京",
+    "query": "南京雨天游，室内优先",
+    "days": 2,
+    "base": [
+      {
+        "name": "中国科举博物馆(江南贡院)",
+        "rating": 4.7,
+        "location": {
+          "lng": 118.790669,
+          "lat": 32.020795
+        },
+        "adname": "秦淮区",
+        "indoor": true
+      },
+      {
+        "name": "不老村",
+        "rating": 4.7,
+        "location": {
+          "lng": 118.612204,
+          "lat": 32.092398
+        },
+        "adname": "浦口区",
+        "indoor": false
+      },
+      {
+        "name": "古鸡鸣寺",
+        "rating": 4.8,
+        "location": {
+          "lng": 118.795246,
+          "lat": 32.061061
+        },
+        "adname": "玄武区",
+        "indoor": false
+      },
+      {
+        "name": "莲花广场",
+        "rating": 4.5,
+        "location": {
+          "lng": 118.794126,
+          "lat": 32.074187
+        },
+        "adname": "玄武区",
+        "indoor": false
+      },
+      {
+        "name": "玄武湖景区",
+        "rating": 4.8,
+        "location": {
+          "lng": 118.812688,
+          "lat": 32.069455
+        },
+        "adname": "玄武区",
+        "indoor": false
+      },
+      {
+        "name": "水墨大埝旅游区",
+        "rating": 4.6,
+        "location": {
+          "lng": 118.594334,
+          "lat": 32.122989
+        },
+        "adname": "浦口区",
+        "indoor": false
+      }
+    ],
+    "required_names": [],
+    "min_count": 6,
+    "min_indoor": 3,
+    "rain": true,
+    "response_mode": "normal"
+  },
+  {
+    "id": "named-2-1",
+    "group": "named",
+    "city": "上海",
+    "query": "上海一日游，想去“上海博物馆(人民广场馆)”",
+    "days": 1,
+    "base": [
+      {
+        "name": "上海失恋博物馆",
+        "rating": 4.6,
+        "location": {
+          "lng": 121.483583,
+          "lat": 31.236683
+        },
+        "adname": "黄浦区",
+        "indoor": true
+      },
+      {
+        "name": "上海朱家角古镇旅游区",
+        "rating": 4.7,
+        "location": {
+          "lng": 121.050518,
+          "lat": 31.114306
+        },
+        "adname": "青浦区",
+        "indoor": false
+      },
+      {
+        "name": "淀山湖风景区",
+        "rating": 4.7,
+        "location": {
+          "lng": 121.009195,
+          "lat": 31.131111
+        },
+        "adname": "青浦区",
+        "indoor": false
+      },
+      {
+        "name": "上海城隍庙",
+        "rating": 4.8,
+        "location": {
+          "lng": 121.492466,
+          "lat": 31.225879
+        },
+        "adname": "黄浦区",
+        "indoor": false
+      }
+    ],
+    "required_names": [
+      "上海博物馆(人民广场馆)"
+    ],
+    "min_count": 4,
+    "min_indoor": 0,
+    "response_mode": "normal"
+  },
+  {
+    "id": "named-2-2",
+    "group": "named",
+    "city": "上海",
+    "query": "上海一日游，想去“上海自然博物馆”，想去“上海邮政博物馆”",
+    "days": 1,
+    "base": [
+      {
+        "name": "上海失恋博物馆",
+        "rating": 4.6,
+        "location": {
+          "lng": 121.483583,
+          "lat": 31.236683
+        },
+        "adname": "黄浦区",
+        "indoor": true
+      },
+      {
+        "name": "上海朱家角古镇旅游区",
+        "rating": 4.7,
+        "location": {
+          "lng": 121.050518,
+          "lat": 31.114306
+        },
+        "adname": "青浦区",
+        "indoor": false
+      },
+      {
+        "name": "淀山湖风景区",
+        "rating": 4.7,
+        "location": {
+          "lng": 121.009195,
+          "lat": 31.131111
+        },
+        "adname": "青浦区",
+        "indoor": false
+      },
+      {
+        "name": "上海城隍庙",
+        "rating": 4.8,
+        "location": {
+          "lng": 121.492466,
+          "lat": 31.225879
+        },
+        "adname": "黄浦区",
+        "indoor": false
+      }
+    ],
+    "required_names": [
+      "上海自然博物馆",
+      "上海邮政博物馆"
+    ],
+    "min_count": 4,
+    "min_indoor": 0,
+    "response_mode": "normal"
+  },
+  {
+    "id": "named-2-3",
+    "group": "named",
+    "city": "上海",
+    "query": "上海一日游，想去“中国证券博物馆”",
+    "days": 1,
+    "base": [
+      {
+        "name": "上海失恋博物馆",
+        "rating": 4.6,
+        "location": {
+          "lng": 121.483583,
+          "lat": 31.236683
+        },
+        "adname": "黄浦区",
+        "indoor": true
+      },
+      {
+        "name": "上海朱家角古镇旅游区",
+        "rating": 4.7,
+        "location": {
+          "lng": 121.050518,
+          "lat": 31.114306
+        },
+        "adname": "青浦区",
+        "indoor": false
+      },
+      {
+        "name": "淀山湖风景区",
+        "rating": 4.7,
+        "location": {
+          "lng": 121.009195,
+          "lat": 31.131111
+        },
+        "adname": "青浦区",
+        "indoor": false
+      },
+      {
+        "name": "上海城隍庙",
+        "rating": 4.8,
+        "location": {
+          "lng": 121.492466,
+          "lat": 31.225879
+        },
+        "adname": "黄浦区",
+        "indoor": false
+      }
+    ],
+    "required_names": [
+      "中国证券博物馆"
+    ],
+    "min_count": 4,
+    "min_indoor": 0,
+    "response_mode": "normal"
+  },
+  {
+    "id": "indoor-2-1",
+    "group": "indoor",
+    "city": "上海",
+    "query": "上海雨天游，室内优先",
+    "days": 1,
+    "base": [
+      {
+        "name": "上海朱家角古镇旅游区",
+        "rating": 4.7,
+        "location": {
+          "lng": 121.050518,
+          "lat": 31.114306
+        },
+        "adname": "青浦区",
+        "indoor": false
+      },
+      {
+        "name": "淀山湖风景区",
+        "rating": 4.7,
+        "location": {
+          "lng": 121.009195,
+          "lat": 31.131111
+        },
+        "adname": "青浦区",
+        "indoor": false
+      },
+      {
+        "name": "上海城隍庙",
+        "rating": 4.8,
+        "location": {
+          "lng": 121.492466,
+          "lat": 31.225879
+        },
+        "adname": "黄浦区",
+        "indoor": false
+      },
+      {
+        "name": "上海动物园",
+        "rating": 4.8,
+        "location": {
+          "lng": 121.363009,
+          "lat": 31.193277
+        },
+        "adname": "长宁区",
+        "indoor": false
+      }
+    ],
+    "required_names": [],
+    "min_count": 4,
+    "min_indoor": 3,
+    "rain": true,
+    "response_mode": "normal"
+  },
+  {
+    "id": "indoor-2-2",
+    "group": "indoor",
+    "city": "上海",
+    "query": "上海只去室内",
+    "days": 1,
+    "base": [
+      {
+        "name": "上海失恋博物馆",
+        "rating": 4.6,
+        "location": {
+          "lng": 121.483583,
+          "lat": 31.236683
+        },
+        "adname": "黄浦区",
+        "indoor": true
+      },
+      {
+        "name": "上海朱家角古镇旅游区",
+        "rating": 4.7,
+        "location": {
+          "lng": 121.050518,
+          "lat": 31.114306
+        },
+        "adname": "青浦区",
+        "indoor": false
+      },
+      {
+        "name": "淀山湖风景区",
+        "rating": 4.7,
+        "location": {
+          "lng": 121.009195,
+          "lat": 31.131111
+        },
+        "adname": "青浦区",
+        "indoor": false
+      },
+      {
+        "name": "上海城隍庙",
+        "rating": 4.8,
+        "location": {
+          "lng": 121.492466,
+          "lat": 31.225879
+        },
+        "adname": "黄浦区",
+        "indoor": false
+      }
+    ],
+    "required_names": [],
+    "min_count": 4,
+    "min_indoor": 4,
+    "rain": true,
+    "response_mode": "normal"
+  },
+  {
+    "id": "indoor-2-3",
+    "group": "indoor",
+    "city": "上海",
+    "query": "上海雨天游，室内优先",
+    "days": 2,
+    "base": [
+      {
+        "name": "上海失恋博物馆",
+        "rating": 4.6,
+        "location": {
+          "lng": 121.483583,
+          "lat": 31.236683
+        },
+        "adname": "黄浦区",
+        "indoor": true
+      },
+      {
+        "name": "上海朱家角古镇旅游区",
+        "rating": 4.7,
+        "location": {
+          "lng": 121.050518,
+          "lat": 31.114306
+        },
+        "adname": "青浦区",
+        "indoor": false
+      },
+      {
+        "name": "淀山湖风景区",
+        "rating": 4.7,
+        "location": {
+          "lng": 121.009195,
+          "lat": 31.131111
+        },
+        "adname": "青浦区",
+        "indoor": false
+      },
+      {
+        "name": "上海城隍庙",
+        "rating": 4.8,
+        "location": {
+          "lng": 121.492466,
+          "lat": 31.225879
+        },
+        "adname": "黄浦区",
+        "indoor": false
+      },
+      {
+        "name": "上海动物园",
+        "rating": 4.8,
+        "location": {
+          "lng": 121.363009,
+          "lat": 31.193277
+        },
+        "adname": "长宁区",
+        "indoor": false
+      },
+      {
+        "name": "上海欢乐谷",
+        "rating": 4.8,
+        "location": {
+          "lng": 121.214778,
+          "lat": 31.09607
+        },
+        "adname": "松江区",
+        "indoor": false
+      }
+    ],
+    "required_names": [],
+    "min_count": 6,
+    "min_indoor": 3,
+    "rain": true,
+    "response_mode": "normal"
+  },
+  {
+    "id": "named-3-1",
+    "group": "named",
+    "city": "三亚",
+    "query": "三亚一日游，想去“三亚山海贝文化博物馆”",
+    "days": 1,
+    "base": [
+      {
+        "name": "三亚千古情景区",
+        "rating": 4.7,
+        "location": {
+          "lng": 109.530925,
+          "lat": 18.291009
+        },
+        "adname": "吉阳区",
+        "indoor": true
+      },
+      {
+        "name": "三亚凤凰岭海誓山盟景区",
+        "rating": 4.6,
+        "location": {
+          "lng": 109.545812,
+          "lat": 18.256983
+        },
+        "adname": "吉阳区",
+        "indoor": false
+      },
+      {
+        "name": "海月广场",
+        "rating": 4.7,
+        "location": {
+          "lng": 109.494467,
+          "lat": 18.259085
+        },
+        "adname": "天涯区",
+        "indoor": false
+      },
+      {
+        "name": "南山大小洞天旅游区",
+        "rating": 4.7,
+        "location": {
+          "lng": 109.158067,
+          "lat": 18.30089
+        },
+        "adname": "崖州区",
+        "indoor": false
+      }
+    ],
+    "required_names": [
+      "三亚山海贝文化博物馆"
+    ],
+    "min_count": 4,
+    "min_indoor": 0,
+    "response_mode": "normal"
+  },
+  {
+    "id": "named-3-2",
+    "group": "named",
+    "city": "三亚",
+    "query": "三亚一日游，想去“三亚李是亨黄花梨博物馆”，想去“海南京润珍珠博物馆”",
+    "days": 1,
+    "base": [
+      {
+        "name": "三亚千古情景区",
+        "rating": 4.7,
+        "location": {
+          "lng": 109.530925,
+          "lat": 18.291009
+        },
+        "adname": "吉阳区",
+        "indoor": true
+      },
+      {
+        "name": "三亚凤凰岭海誓山盟景区",
+        "rating": 4.6,
+        "location": {
+          "lng": 109.545812,
+          "lat": 18.256983
+        },
+        "adname": "吉阳区",
+        "indoor": false
+      },
+      {
+        "name": "海月广场",
+        "rating": 4.7,
+        "location": {
+          "lng": 109.494467,
+          "lat": 18.259085
+        },
+        "adname": "天涯区",
+        "indoor": false
+      },
+      {
+        "name": "南山大小洞天旅游区",
+        "rating": 4.7,
+        "location": {
+          "lng": 109.158067,
+          "lat": 18.30089
+        },
+        "adname": "崖州区",
+        "indoor": false
+      }
+    ],
+    "required_names": [
+      "三亚李是亨黄花梨博物馆",
+      "海南京润珍珠博物馆"
+    ],
+    "min_count": 4,
+    "min_indoor": 0,
+    "response_mode": "normal"
+  },
+  {
+    "id": "named-3-3",
+    "group": "named",
+    "city": "三亚",
+    "query": "三亚一日游，想去“绿盾高性能系统门窗”",
+    "days": 1,
+    "base": [
+      {
+        "name": "三亚千古情景区",
+        "rating": 4.7,
+        "location": {
+          "lng": 109.530925,
+          "lat": 18.291009
+        },
+        "adname": "吉阳区",
+        "indoor": true
+      },
+      {
+        "name": "三亚凤凰岭海誓山盟景区",
+        "rating": 4.6,
+        "location": {
+          "lng": 109.545812,
+          "lat": 18.256983
+        },
+        "adname": "吉阳区",
+        "indoor": false
+      },
+      {
+        "name": "海月广场",
+        "rating": 4.7,
+        "location": {
+          "lng": 109.494467,
+          "lat": 18.259085
+        },
+        "adname": "天涯区",
+        "indoor": false
+      },
+      {
+        "name": "南山大小洞天旅游区",
+        "rating": 4.7,
+        "location": {
+          "lng": 109.158067,
+          "lat": 18.30089
+        },
+        "adname": "崖州区",
+        "indoor": false
+      }
+    ],
+    "required_names": [
+      "绿盾高性能系统门窗"
+    ],
+    "min_count": 4,
+    "min_indoor": 0,
+    "response_mode": "normal"
+  },
+  {
+    "id": "indoor-3-1",
+    "group": "indoor",
+    "city": "三亚",
+    "query": "三亚雨天游，室内优先",
+    "days": 1,
+    "base": [
+      {
+        "name": "三亚凤凰岭海誓山盟景区",
+        "rating": 4.6,
+        "location": {
+          "lng": 109.545812,
+          "lat": 18.256983
+        },
+        "adname": "吉阳区",
+        "indoor": false
+      },
+      {
+        "name": "海月广场",
+        "rating": 4.7,
+        "location": {
+          "lng": 109.494467,
+          "lat": 18.259085
+        },
+        "adname": "天涯区",
+        "indoor": false
+      },
+      {
+        "name": "南山大小洞天旅游区",
+        "rating": 4.7,
+        "location": {
+          "lng": 109.158067,
+          "lat": 18.30089
+        },
+        "adname": "崖州区",
+        "indoor": false
+      },
+      {
+        "name": "亚龙湾海滩",
+        "rating": 4.8,
+        "location": {
+          "lng": 109.646004,
+          "lat": 18.229188
+        },
+        "adname": "吉阳区",
+        "indoor": false
+      }
+    ],
+    "required_names": [],
+    "min_count": 4,
+    "min_indoor": 3,
+    "rain": true,
+    "response_mode": "normal"
+  },
+  {
+    "id": "indoor-3-2",
+    "group": "indoor",
+    "city": "三亚",
+    "query": "三亚只去室内",
+    "days": 1,
+    "base": [
+      {
+        "name": "三亚千古情景区",
+        "rating": 4.7,
+        "location": {
+          "lng": 109.530925,
+          "lat": 18.291009
+        },
+        "adname": "吉阳区",
+        "indoor": true
+      },
+      {
+        "name": "三亚凤凰岭海誓山盟景区",
+        "rating": 4.6,
+        "location": {
+          "lng": 109.545812,
+          "lat": 18.256983
+        },
+        "adname": "吉阳区",
+        "indoor": false
+      },
+      {
+        "name": "海月广场",
+        "rating": 4.7,
+        "location": {
+          "lng": 109.494467,
+          "lat": 18.259085
+        },
+        "adname": "天涯区",
+        "indoor": false
+      },
+      {
+        "name": "南山大小洞天旅游区",
+        "rating": 4.7,
+        "location": {
+          "lng": 109.158067,
+          "lat": 18.30089
+        },
+        "adname": "崖州区",
+        "indoor": false
+      }
+    ],
+    "required_names": [],
+    "min_count": 4,
+    "min_indoor": 4,
+    "rain": true,
+    "response_mode": "normal"
+  },
+  {
+    "id": "indoor-3-3",
+    "group": "indoor",
+    "city": "三亚",
+    "query": "三亚雨天游，室内优先",
+    "days": 2,
+    "base": [
+      {
+        "name": "三亚千古情景区",
+        "rating": 4.7,
+        "location": {
+          "lng": 109.530925,
+          "lat": 18.291009
+        },
+        "adname": "吉阳区",
+        "indoor": true
+      },
+      {
+        "name": "三亚凤凰岭海誓山盟景区",
+        "rating": 4.6,
+        "location": {
+          "lng": 109.545812,
+          "lat": 18.256983
+        },
+        "adname": "吉阳区",
+        "indoor": false
+      },
+      {
+        "name": "海月广场",
+        "rating": 4.7,
+        "location": {
+          "lng": 109.494467,
+          "lat": 18.259085
+        },
+        "adname": "天涯区",
+        "indoor": false
+      },
+      {
+        "name": "南山大小洞天旅游区",
+        "rating": 4.7,
+        "location": {
+          "lng": 109.158067,
+          "lat": 18.30089
+        },
+        "adname": "崖州区",
+        "indoor": false
+      },
+      {
+        "name": "亚龙湾海滩",
+        "rating": 4.8,
+        "location": {
+          "lng": 109.646004,
+          "lat": 18.229188
+        },
+        "adname": "吉阳区",
+        "indoor": false
+      },
+      {
+        "name": "三亚西岛海洋文化旅游区",
+        "rating": 4.8,
+        "location": {
+          "lng": 109.373711,
+          "lat": 18.237774
+        },
+        "adname": "天涯区",
+        "indoor": false
+      }
+    ],
+    "required_names": [],
+    "min_count": 6,
+    "min_indoor": 3,
+    "rain": true,
+    "response_mode": "normal"
+  },
+  {
+    "id": "count-1",
+    "group": "count",
+    "city": "南京",
+    "query": "南京历史与自然结合，候选去重筛选后数量不足，需要补充",
+    "days": 1,
+    "base": [
+      {
+        "name": "中国科举博物馆(江南贡院)",
+        "rating": 4.7,
+        "location": {
+          "lng": 118.790669,
+          "lat": 32.020795
+        },
+        "adname": "秦淮区",
+        "indoor": true
+      }
+    ],
+    "required_names": [],
+    "min_count": 4,
+    "min_indoor": 0,
+    "response_mode": "normal"
+  },
+  {
+    "id": "count-2",
+    "group": "count",
+    "city": "上海",
+    "query": "上海历史与自然结合，候选去重筛选后数量不足，需要补充",
+    "days": 1,
+    "base": [
+      {
+        "name": "上海失恋博物馆",
+        "rating": 4.6,
+        "location": {
+          "lng": 121.483583,
+          "lat": 31.236683
+        },
+        "adname": "黄浦区",
+        "indoor": true
+      },
+      {
+        "name": "上海朱家角古镇旅游区",
+        "rating": 4.7,
+        "location": {
+          "lng": 121.050518,
+          "lat": 31.114306
+        },
+        "adname": "青浦区",
+        "indoor": false
+      }
+    ],
+    "required_names": [],
+    "min_count": 4,
+    "min_indoor": 0,
+    "response_mode": "duplicates"
+  },
+  {
+    "id": "count-3",
+    "group": "count",
+    "city": "三亚",
+    "query": "三亚历史与自然结合，候选去重筛选后数量不足，需要补充",
+    "days": 2,
+    "base": [
+      {
+        "name": "三亚千古情景区",
+        "rating": 4.7,
+        "location": {
+          "lng": 109.530925,
+          "lat": 18.291009
+        },
+        "adname": "吉阳区",
+        "indoor": true
+      },
+      {
+        "name": "三亚凤凰岭海誓山盟景区",
+        "rating": 4.6,
+        "location": {
+          "lng": 109.545812,
+          "lat": 18.256983
+        },
+        "adname": "吉阳区",
+        "indoor": false
+      }
+    ],
+    "required_names": [],
+    "min_count": 6,
+    "min_indoor": 0,
+    "response_mode": "normal"
+  },
+  {
+    "id": "count-4",
+    "group": "count",
+    "city": "南京",
+    "query": "南京历史与自然结合，候选去重筛选后数量不足，需要补充",
+    "days": 2,
+    "base": [
+      {
+        "name": "中国科举博物馆(江南贡院)",
+        "rating": 4.7,
+        "location": {
+          "lng": 118.790669,
+          "lat": 32.020795
+        },
+        "adname": "秦淮区",
+        "indoor": true
+      },
+      {
+        "name": "不老村",
+        "rating": 4.7,
+        "location": {
+          "lng": 118.612204,
+          "lat": 32.092398
+        },
+        "adname": "浦口区",
+        "indoor": false
+      },
+      {
+        "name": "古鸡鸣寺",
+        "rating": 4.8,
+        "location": {
+          "lng": 118.795246,
+          "lat": 32.061061
+        },
+        "adname": "玄武区",
+        "indoor": false
+      }
+    ],
+    "required_names": [],
+    "min_count": 6,
+    "min_indoor": 0,
+    "response_mode": "normal"
+  },
+  {
+    "id": "count-5",
+    "group": "count",
+    "city": "上海",
+    "query": "上海历史与自然结合，候选去重筛选后数量不足，需要补充",
+    "days": 1,
+    "base": [
+      {
+        "name": "上海失恋博物馆",
+        "rating": 4.6,
+        "location": {
+          "lng": 121.483583,
+          "lat": 31.236683
+        },
+        "adname": "黄浦区",
+        "indoor": true
+      },
+      {
+        "name": "上海朱家角古镇旅游区",
+        "rating": 4.7,
+        "location": {
+          "lng": 121.050518,
+          "lat": 31.114306
+        },
+        "adname": "青浦区",
+        "indoor": false
+      },
+      {
+        "name": "淀山湖风景区",
+        "rating": 4.7,
+        "location": {
+          "lng": 121.009195,
+          "lat": 31.131111
+        },
+        "adname": "青浦区",
+        "indoor": false
+      }
+    ],
+    "required_names": [],
+    "min_count": 4,
+    "min_indoor": 0,
+    "response_mode": "duplicates"
+  },
+  {
+    "id": "nonexistent-repeat",
+    "group": "boundary",
+    "city": "南京",
+    "query": "想去“霍格沃茨魔法学校”",
+    "days": 1,
+    "base": [
+      {
+        "name": "不老村",
+        "rating": 4.7,
+        "location": {
+          "lng": 118.612204,
+          "lat": 32.092398
+        },
+        "adname": "浦口区",
+        "indoor": false
+      },
+      {
+        "name": "古鸡鸣寺",
+        "rating": 4.8,
+        "location": {
+          "lng": 118.795246,
+          "lat": 32.061061
+        },
+        "adname": "玄武区",
+        "indoor": false
+      },
+      {
+        "name": "莲花广场",
+        "rating": 4.5,
+        "location": {
+          "lng": 118.794126,
+          "lat": 32.074187
+        },
+        "adname": "玄武区",
+        "indoor": false
+      },
+      {
+        "name": "玄武湖景区",
+        "rating": 4.8,
+        "location": {
+          "lng": 118.812688,
+          "lat": 32.069455
+        },
+        "adname": "玄武区",
+        "indoor": false
+      }
+    ],
+    "required_names": [
+      "霍格沃茨魔法学校"
+    ],
+    "min_count": 4,
+    "min_indoor": 0,
+    "initial_api_calls": 0,
+    "response_mode": "empty"
+  },
+  {
+    "id": "near-name-reject",
+    "group": "boundary",
+    "city": "南京",
+    "query": "想去“南京博物院魔法分馆”",
+    "days": 1,
+    "base": [
+      {
+        "name": "不老村",
+        "rating": 4.7,
+        "location": {
+          "lng": 118.612204,
+          "lat": 32.092398
+        },
+        "adname": "浦口区",
+        "indoor": false
+      },
+      {
+        "name": "古鸡鸣寺",
+        "rating": 4.8,
+        "location": {
+          "lng": 118.795246,
+          "lat": 32.061061
+        },
+        "adname": "玄武区",
+        "indoor": false
+      },
+      {
+        "name": "莲花广场",
+        "rating": 4.5,
+        "location": {
+          "lng": 118.794126,
+          "lat": 32.074187
+        },
+        "adname": "玄武区",
+        "indoor": false
+      },
+      {
+        "name": "玄武湖景区",
+        "rating": 4.8,
+        "location": {
+          "lng": 118.812688,
+          "lat": 32.069455
+        },
+        "adname": "玄武区",
+        "indoor": false
+      }
+    ],
+    "required_names": [
+      "南京博物院魔法分馆"
+    ],
+    "min_count": 4,
+    "min_indoor": 0,
+    "initial_api_calls": 0,
+    "response_mode": "near_name"
+  },
+  {
+    "id": "round-limit",
+    "group": "boundary",
+    "city": "南京",
+    "query": "雨天只去室内",
+    "days": 1,
+    "base": [
+      {
+        "name": "不老村",
+        "rating": 4.7,
+        "location": {
+          "lng": 118.612204,
+          "lat": 32.092398
+        },
+        "adname": "浦口区",
+        "indoor": false
+      },
+      {
+        "name": "古鸡鸣寺",
+        "rating": 4.8,
+        "location": {
+          "lng": 118.795246,
+          "lat": 32.061061
+        },
+        "adname": "玄武区",
+        "indoor": false
+      },
+      {
+        "name": "莲花广场",
+        "rating": 4.5,
+        "location": {
+          "lng": 118.794126,
+          "lat": 32.074187
+        },
+        "adname": "玄武区",
+        "indoor": false
+      },
+      {
+        "name": "玄武湖景区",
+        "rating": 4.8,
+        "location": {
+          "lng": 118.812688,
+          "lat": 32.069455
+        },
+        "adname": "玄武区",
+        "indoor": false
+      }
+    ],
+    "required_names": [],
+    "min_count": 4,
+    "min_indoor": 4,
+    "initial_api_calls": 0,
+    "response_mode": "empty"
+  },
+  {
+    "id": "retry-budget",
+    "group": "boundary",
+    "city": "南京",
+    "query": "只去室内",
+    "days": 1,
+    "base": [
+      {
+        "name": "不老村",
+        "rating": 4.7,
+        "location": {
+          "lng": 118.612204,
+          "lat": 32.092398
+        },
+        "adname": "浦口区",
+        "indoor": false
+      },
+      {
+        "name": "古鸡鸣寺",
+        "rating": 4.8,
+        "location": {
+          "lng": 118.795246,
+          "lat": 32.061061
+        },
+        "adname": "玄武区",
+        "indoor": false
+      },
+      {
+        "name": "莲花广场",
+        "rating": 4.5,
+        "location": {
+          "lng": 118.794126,
+          "lat": 32.074187
+        },
+        "adname": "玄武区",
+        "indoor": false
+      },
+      {
+        "name": "玄武湖景区",
+        "rating": 4.8,
+        "location": {
+          "lng": 118.812688,
+          "lat": 32.069455
+        },
+        "adname": "玄武区",
+        "indoor": false
+      }
+    ],
+    "required_names": [],
+    "min_count": 4,
+    "min_indoor": 4,
+    "initial_api_calls": 0,
+    "response_mode": "timeout"
+  },
+  {
+    "id": "shared-budget",
+    "group": "boundary",
+    "city": "南京",
+    "query": "只去室内",
+    "days": 1,
+    "base": [
+      {
+        "name": "不老村",
+        "rating": 4.7,
+        "location": {
+          "lng": 118.612204,
+          "lat": 32.092398
+        },
+        "adname": "浦口区",
+        "indoor": false
+      },
+      {
+        "name": "古鸡鸣寺",
+        "rating": 4.8,
+        "location": {
+          "lng": 118.795246,
+          "lat": 32.061061
+        },
+        "adname": "玄武区",
+        "indoor": false
+      },
+      {
+        "name": "莲花广场",
+        "rating": 4.5,
+        "location": {
+          "lng": 118.794126,
+          "lat": 32.074187
+        },
+        "adname": "玄武区",
+        "indoor": false
+      },
+      {
+        "name": "玄武湖景区",
+        "rating": 4.8,
+        "location": {
+          "lng": 118.812688,
+          "lat": 32.069455
+        },
+        "adname": "玄武区",
+        "indoor": false
+      }
+    ],
+    "required_names": [],
+    "min_count": 4,
+    "min_indoor": 4,
+    "initial_api_calls": 3,
+    "response_mode": "timeout"
+  }
+]

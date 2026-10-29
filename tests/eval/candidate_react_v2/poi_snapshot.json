@@ -1,0 +1,1630 @@
+{
+  "version": "candidate-react-controlled-v2",
+  "sources": [
+    {
+      "path": "tests/eval/fixtures/nanjing-3d-sunny-history.json",
+      "sha256": "48f1bf06a67490e7b20bc67f0daae53baa339d8d1de070c1f2cbe0d844985861",
+      "kind": "normalized_bootstrap",
+      "provenance": {
+        "poi_source": "AMap Web Service Place Text API v3",
+        "poi_captured_at": "2026-09-14T15:04:00.960324+00:00",
+        "poi_query_channels": [
+          "必去景点",
+          "热门景区",
+          "博物馆"
+        ],
+        "poi_rating_threshold": 4.5,
+        "weather_source": "synthetic frozen evaluation scenario",
+        "indoor_label_source": "deterministic name-keyword heuristic"
+      }
+    },
+    {
+      "path": "data/post_train/candidate_pool_live_v1/南京-博物馆.json",
+      "sha256": "59127ff2b835696a6c913f0666a31ef6f2432e391528ccfaabc86e6ef71f3ac9",
+      "kind": "raw_amap_capture",
+      "captured_at": "2026-10-24T12:40:48.431222+00:00",
+      "query": "博物馆",
+      "types": "140100"
+    },
+    {
+      "path": "tests/eval/fixtures/shanghai-3d-sunny-history.json",
+      "sha256": "f00bf594fdb21bf091d4063fbf074bd31140d20f542a2d274ffd53f0b9409da5",
+      "kind": "normalized_bootstrap",
+      "provenance": {
+        "poi_source": "AMap Web Service Place Text API v3",
+        "poi_captured_at": "2026-09-14T15:04:00.960324+00:00",
+        "poi_query_channels": [
+          "必去景点",
+          "热门景区",
+          "博物馆"
+        ],
+        "poi_rating_threshold": 4.5,
+        "weather_source": "synthetic frozen evaluation scenario",
+        "indoor_label_source": "deterministic name-keyword heuristic"
+      }
+    },
+    {
+      "path": "data/post_train/candidate_pool_live_v1/上海-博物馆.json",
+      "sha256": "75eca2555b6478ec0bbe68b3a3d56d3f5a5370158aedddf544926ea21fa1f40a",
+      "kind": "raw_amap_capture",
+      "captured_at": "2026-10-24T12:40:48.431222+00:00",
+      "query": "博物馆",
+      "types": "140100"
+    },
+    {
+      "path": "tests/eval/fixtures/sanya-3d-sunny-nature.json",
+      "sha256": "91977c583e52d178369d9747ebabbfc0e2f7156ab412001553b9dfecf8c9c255",
+      "kind": "normalized_bootstrap",
+      "provenance": {
+        "poi_source": "AMap Web Service Place Text API v3",
+        "poi_captured_at": "2026-09-14T15:04:00.960324+00:00",
+        "poi_query_channels": [
+          "必去景点",
+          "热门景区",
+          "博物馆"
+        ],
+        "poi_rating_threshold": 4.5,
+        "weather_source": "synthetic frozen evaluation scenario",
+        "indoor_label_source": "deterministic name-keyword heuristic"
+      }
+    },
+    {
+      "path": "data/post_train/candidate_pool_live_v1/三亚-博物馆.json",
+      "sha256": "bb5e420bb6bace9793afb2aab07e8ee074e2664ca9763e114efb0b91e4e15001",
+      "kind": "raw_amap_capture",
+      "captured_at": "2026-10-24T12:40:48.431222+00:00",
+      "query": "博物馆",
+      "types": "140100"
+    }
+  ],
+  "cities": {
+    "南京": {
+      "bootstrap": [
+        {
+          "name": "不老村",
+          "rating": 4.7,
+          "location": {
+            "lng": 118.612204,
+            "lat": 32.092398
+          },
+          "adname": "浦口区",
+          "indoor": false
+        },
+        {
+          "name": "中国科举博物馆(江南贡院)",
+          "rating": 4.7,
+          "location": {
+            "lng": 118.790669,
+            "lat": 32.020795
+          },
+          "adname": "秦淮区",
+          "indoor": true
+        },
+        {
+          "name": "古鸡鸣寺",
+          "rating": 4.8,
+          "location": {
+            "lng": 118.795246,
+            "lat": 32.061061
+          },
+          "adname": "玄武区",
+          "indoor": false
+        },
+        {
+          "name": "莲花广场",
+          "rating": 4.5,
+          "location": {
+            "lng": 118.794126,
+            "lat": 32.074187
+          },
+          "adname": "玄武区",
+          "indoor": false
+        },
+        {
+          "name": "玄武湖景区",
+          "rating": 4.8,
+          "location": {
+            "lng": 118.812688,
+            "lat": 32.069455
+          },
+          "adname": "玄武区",
+          "indoor": false
+        },
+        {
+          "name": "水墨大埝旅游区",
+          "rating": 4.6,
+          "location": {
+            "lng": 118.594334,
+            "lat": 32.122989
+          },
+          "adname": "浦口区",
+          "indoor": false
+        },
+        {
+          "name": "中山陵景区",
+          "rating": 4.9,
+          "location": {
+            "lng": 118.854097,
+            "lat": 32.054508
+          },
+          "adname": "玄武区",
+          "indoor": false
+        },
+        {
+          "name": "总统府",
+          "rating": 4.9,
+          "location": {
+            "lng": 118.797398,
+            "lat": 32.044228
+          },
+          "adname": "玄武区",
+          "indoor": true
+        },
+        {
+          "name": "江豚落日音乐广场",
+          "rating": 4.5,
+          "location": {
+            "lng": 118.657173,
+            "lat": 31.967938
+          },
+          "adname": "雨花台区",
+          "indoor": false
+        },
+        {
+          "name": "南京夫子庙",
+          "rating": 4.8,
+          "location": {
+            "lng": 118.788899,
+            "lat": 32.02066
+          },
+          "adname": "秦淮区",
+          "indoor": false
+        },
+        {
+          "name": "江苏江宁汤山方山国家地质公园博物馆",
+          "rating": 4.5,
+          "location": {
+            "lng": 119.040524,
+            "lat": 32.055581
+          },
+          "adname": "江宁区",
+          "indoor": true
+        },
+        {
+          "name": "南京牛首山文化旅游区",
+          "rating": 4.7,
+          "location": {
+            "lng": 118.74415,
+            "lat": 31.903309
+          },
+          "adname": "江宁区",
+          "indoor": false
+        },
+        {
+          "name": "南京欢乐谷",
+          "rating": 4.7,
+          "location": {
+            "lng": 118.998553,
+            "lat": 32.163841
+          },
+          "adname": "栖霞区",
+          "indoor": false
+        },
+        {
+          "name": "南京长江大桥",
+          "rating": 4.7,
+          "location": {
+            "lng": 118.738835,
+            "lat": 32.116067
+          },
+          "adname": "浦口区",
+          "indoor": false
+        }
+      ],
+      "museum_rows": [
+        {
+          "type": "科教文化服务;博物馆;博物馆",
+          "typecode": "140100",
+          "adname": "玄武区",
+          "id": "B001907TGR",
+          "cityname": "南京市",
+          "name": "南京博物院",
+          "biz_ext": {
+            "cost": [],
+            "opentime2": "周一 闭馆(法定节假日除外)；周二至周日 09:00-17:00开放(16:00停止入园)",
+            "rating": "4.9",
+            "open_time": "09:00-17:00"
+          },
+          "location": "118.825064,32.040802"
+        },
+        {
+          "type": "科教文化服务;博物馆;博物馆",
+          "typecode": "140100",
+          "adname": "玄武区",
+          "id": "B0019135C5",
+          "cityname": "南京市",
+          "name": "六朝博物馆",
+          "biz_ext": {
+            "cost": [],
+            "opentime2": "周二至周日 09:00-17:30",
+            "rating": "4.7",
+            "open_time": "09:00-17:30"
+          },
+          "location": "118.799124,32.042840"
+        },
+        {
+          "type": "科教文化服务;博物馆;博物馆",
+          "typecode": "140100",
+          "adname": "玄武区",
+          "id": "B00190BD4M",
+          "cityname": "南京市",
+          "name": "南京地质博物馆",
+          "biz_ext": {
+            "cost": [],
+            "opentime2": "周三至周五:09:30-16:30(16:00停止入馆),周六至周日:09:00-16:30(16:00停止入馆)；周一、周二闭馆,法定节假日开放时间另行通知；节假日营业时间以官方通知为准",
+            "rating": "4.7",
+            "open_time": []
+          },
+          "location": "118.807343,32.044617"
+        },
+        {
+          "type": "科教文化服务;博物馆;博物馆",
+          "typecode": "140100",
+          "adname": "秦淮区",
+          "id": "B00190B8ZD",
+          "cityname": "南京市",
+          "name": "南京市博物馆",
+          "biz_ext": {
+            "cost": [],
+            "opentime2": "周二至周日 09:00-18:00开放（17:00停止入园）；周一 闭馆（国家法定节假日正常开放）；具体开放时间以官方通知为准",
+            "rating": "4.7",
+            "open_time": []
+          },
+          "location": "118.775450,32.034552"
+        },
+        {
+          "type": "科教文化服务;博物馆;博物馆",
+          "typecode": "140100",
+          "adname": "玄武区",
+          "id": "B001911KPA",
+          "cityname": "南京市",
+          "name": "江宁织造博物馆",
+          "biz_ext": {
+            "cost": [],
+            "opentime2": "周二至周日09:00-17:30(17:00停止入馆),周一闭馆（法定节假日正常开放） 5月18日国际博物馆日9:00-17:30开放(17:30停止入馆),(数据来源:江苏省文旅厅公共服务平台苏心游)",
+            "rating": "4.6",
+            "open_time": []
+          },
+          "location": "118.794071,32.042136"
+        },
+        {
+          "type": "科教文化服务;博物馆;博物馆",
+          "typecode": "140100",
+          "adname": "玄武区",
+          "id": "B0K2JNZED0",
+          "cityname": "南京市",
+          "name": "德基艺术博物馆(德基广场二期店)",
+          "biz_ext": {
+            "cost": [],
+            "opentime2": "周一至周日 10:00-24:00 最晚进入23:30；夜场20点后入园。",
+            "rating": "4.7",
+            "open_time": "10:00-24:00"
+          },
+          "location": "118.785075,32.044875"
+        },
+        {
+          "type": "科教文化服务;博物馆;博物馆",
+          "typecode": "140100",
+          "adname": "鼓楼区",
+          "id": "B0H0AUU9GE",
+          "cityname": "南京市",
+          "name": "南京消防博物馆",
+          "biz_ext": {
+            "cost": [],
+            "opentime2": "周五至周日:09:00-11:30,14:30-17:00；节假日营业时间以官方通知为准",
+            "rating": "4.4",
+            "open_time": []
+          },
+          "location": "118.781303,32.058081"
+        },
+        {
+          "type": "科教文化服务;博物馆;博物馆",
+          "typecode": "140100",
+          "adname": "秦淮区",
+          "id": "B0FFMC8III",
+          "cityname": "南京市",
+          "name": "南京中国科举博物馆南馆",
+          "biz_ext": {
+            "cost": [],
+            "opentime2": "周一至周日 09:00-21:00",
+            "rating": "4.7",
+            "open_time": "09:00-21:00"
+          },
+          "location": "118.790630,32.020440"
+        },
+        {
+          "type": "科教文化服务;博物馆;博物馆",
+          "typecode": "140100",
+          "adname": "玄武区",
+          "id": "B00190BS7S",
+          "cityname": "南京市",
+          "name": "明孝陵博物馆",
+          "biz_ext": {
+            "cost": [],
+            "opentime2": "周二-周日 09:00-17:00开放（16:30停止入园）；周一 不开放；5月18日 09:00-17:00开放（16:30停止入园）；清明节,劳动节,端午节,中秋节,国庆节 09:00-17:00开放（16:30停止入园）；具体开放时间以官方通知为准",
+            "rating": "4.6",
+            "open_time": []
+          },
+          "location": "118.843185,32.044904"
+        },
+        {
+          "type": "科教文化服务;博物馆;博物馆",
+          "typecode": "140100",
+          "adname": "玄武区",
+          "id": "B0FFLMQVCL",
+          "cityname": "南京市",
+          "name": "南京紫金山昆虫博物馆",
+          "biz_ext": {
+            "cost": [],
+            "opentime2": "周一至周日 09:00-17:30",
+            "rating": "4.6",
+            "open_time": "09:00-17:30"
+          },
+          "location": "118.844025,32.052086"
+        },
+        {
+          "type": "科教文化服务;博物馆;博物馆",
+          "typecode": "140100",
+          "adname": "秦淮区",
+          "id": "B0019067DD",
+          "cityname": "南京市",
+          "name": "南京市民俗博物馆",
+          "biz_ext": {
+            "cost": [],
+            "opentime2": "01-01至06-17 周一 全天关闭；01-01至09-23 周二至周四,周日 09:00-17:30 最晚进入17:00；01-01至09-23 周五至周六 09:00-21:00 最晚进入20:30；06-18至08-31 周一 09:00-17:30 最晚进入17:00；09-01至09-23 周一 全天关闭；09-24至09-24 周一至周日 09:00-21:00 最晚进入20:30；09-25至09-26 周一至周日 08:30-21:00 最晚进入20:30；09-27至09-27 周一至周日 08:30-18:00 最晚进入17:30；09-28至09-30 周一 全天关闭；09-28至09-30 周二至周四,周日 09:00-17:30 最晚进入17:00；09-28至09-30 周五至周六 09:00-21:00 最晚进入20:30；10-01至10-06 周一至周日 08:30-21:00 最晚进入20:30；10-07至10-07 周一至周日 08:30-18:00 最晚进入17:30；10-08至12-31 周一 全天关闭；10-08至12-31 周二至周四,周日 09:00-17:30 最晚进入17:00；10-08至12-31 周五至周六 09:00-21:00 最晚进入20:30；日场09:00-17:30（17:00停止售票），夜场:周五周六17:00-21:00（20:30停止售票） 节假日日场08:30-18:00（17:30停止售票），夜场:周五周六17:30-21:00（20:30停止售票）",
+            "rating": "4.5",
+            "open_time": []
+          },
+          "location": "118.7817,32.025849"
+        },
+        {
+          "type": "科教文化服务;博物馆;博物馆",
+          "typecode": "140100",
+          "adname": "玄武区",
+          "id": "B0MARD4FFK",
+          "cityname": "南京市",
+          "name": "大行宫见博物馆",
+          "biz_ext": {
+            "cost": [],
+            "opentime2": "周二至周日 10:00-18:00",
+            "rating": "4.3",
+            "open_time": "10:00-18:00"
+          },
+          "location": "118.796980,32.041222"
+        },
+        {
+          "type": "科教文化服务;博物馆;博物馆",
+          "typecode": "140100",
+          "adname": "秦淮区",
+          "id": "B0H3XR19VD",
+          "cityname": "南京市",
+          "name": "南京城墙博物馆",
+          "biz_ext": {
+            "cost": [],
+            "opentime2": "周二至周日 09:00-17:00 最晚进入16:30",
+            "rating": "4.7",
+            "open_time": "09:00-17:00"
+          },
+          "location": "118.783016,32.012551"
+        },
+        {
+          "type": "科教文化服务;博物馆;博物馆",
+          "typecode": "140100",
+          "adname": "鼓楼区",
+          "id": "B00190B5M3",
+          "cityname": "南京市",
+          "name": "南京大学(鼓楼校区)校史博物馆",
+          "biz_ext": {
+            "cost": [],
+            "opentime2": "周一至周六 08:30-17:30",
+            "rating": "4.0",
+            "open_time": "08:30-17:30"
+          },
+          "location": "118.781320,32.054677"
+        },
+        {
+          "type": "科教文化服务;博物馆;博物馆",
+          "typecode": "140100",
+          "adname": "建邺区",
+          "id": "B00190682O",
+          "cityname": "南京市",
+          "name": "中国南京云锦博物馆",
+          "biz_ext": {
+            "cost": [],
+            "opentime2": "周一至周日 09:00-18:00",
+            "rating": "4.6",
+            "open_time": "09:00-18:00"
+          },
+          "location": "118.744814,32.036390"
+        },
+        {
+          "type": "科教文化服务;博物馆;博物馆",
+          "typecode": "140100",
+          "adname": "秦淮区",
+          "id": "B00190AONY",
+          "cityname": "南京市",
+          "name": "太平天国历史博物馆",
+          "biz_ext": {
+            "cost": [],
+            "opentime2": "周一 不开放；周二-周日 08:30-21:00开放（20:30停止入园）平日:日场 08:30-17:30(17:00停止售票)； 节假日:日场 08:30-18:30(17:30停止售票)；夜场 17:30-21:00(20:30停止售票)；具体开放时间以官方通知为准",
+            "rating": "4.5",
+            "open_time": []
+          },
+          "location": "118.785134,32.020271"
+        },
+        {
+          "type": "科教文化服务;博物馆;博物馆",
+          "typecode": "140100",
+          "adname": "秦淮区",
+          "id": "B0M6Z51JVK",
+          "cityname": "南京市",
+          "name": "灰色博物馆",
+          "biz_ext": {
+            "cost": [],
+            "opentime2": "周一至周日 10:00-22:00",
+            "rating": "4.1",
+            "open_time": "10:00-22:00"
+          },
+          "location": "118.785790,32.022369"
+        },
+        {
+          "type": "科教文化服务;博物馆;博物馆",
+          "typecode": "140100",
+          "adname": "玄武区",
+          "id": "B0MBX5YHUW",
+          "cityname": "南京市",
+          "name": "江苏警察博物馆",
+          "biz_ext": {
+            "cost": [],
+            "opentime2": "周二至周日 09:00-17:00,节假日以官方通知为准",
+            "rating": "4.0",
+            "open_time": []
+          },
+          "location": "118.796361,32.043074"
+        },
+        {
+          "type": "科教文化服务;博物馆;博物馆",
+          "typecode": "140100",
+          "adname": "玄武区",
+          "id": "B0L0ZMDO8Q",
+          "cityname": "南京市",
+          "name": "德基艺术博物馆花花世界艺术馆",
+          "biz_ext": {
+            "cost": [],
+            "opentime2": "周一至周日 00:00-24:00",
+            "rating": [],
+            "open_time": "24小时营业"
+          },
+          "location": "118.784564,32.044451"
+        },
+        {
+          "type": "科教文化服务;博物馆;博物馆",
+          "typecode": "140100",
+          "adname": "秦淮区",
+          "id": "B0FFHN5SWB",
+          "cityname": "南京市",
+          "name": "南京中国科举博物馆北馆",
+          "biz_ext": {
+            "cost": [],
+            "opentime2": "冬令时:09:00-21:00；夏令时:09:00-21:30",
+            "rating": "4.4",
+            "open_time": []
+          },
+          "location": "118.790677,32.021284"
+        },
+        {
+          "type": "科教文化服务;博物馆;博物馆",
+          "typecode": "140100",
+          "adname": "玄武区",
+          "id": "B0FFG2HOZ7",
+          "cityname": "南京市",
+          "name": "特展馆-16展厅",
+          "biz_ext": {
+            "cost": [],
+            "opentime2": "周一至周日 10:00-21:00",
+            "rating": "4.2",
+            "open_time": "10:00-21:00"
+          },
+          "location": "118.824697,32.042082"
+        },
+        {
+          "type": "科教文化服务;博物馆;博物馆",
+          "typecode": "140100",
+          "adname": "秦淮区",
+          "id": "B0MG1MRYVC",
+          "cityname": "南京市",
+          "name": "童寯纪念馆",
+          "biz_ext": {
+            "cost": [],
+            "opentime2": [],
+            "rating": "4.0",
+            "open_time": []
+          },
+          "location": "118.795225,32.036725"
+        },
+        {
+          "type": "科教文化服务;博物馆;博物馆",
+          "typecode": "140100",
+          "adname": "玄武区",
+          "id": "B0L24SOHJ9",
+          "cityname": "南京市",
+          "name": "励志社博物馆",
+          "biz_ext": {
+            "cost": [],
+            "opentime2": "周一至周日 09:00-17:00",
+            "rating": "4.0",
+            "open_time": "09:00-17:00"
+          },
+          "location": "118.811673,32.040526"
+        },
+        {
+          "type": "科教文化服务;科技馆;科技馆|科教文化服务;博物馆;博物馆|科教文化服务;图书馆;图书馆",
+          "typecode": "140600|140100|140500",
+          "adname": "秦淮区",
+          "id": "B0FFHFNSP1",
+          "cityname": "南京市",
+          "name": "南京航空航天大学(明故宫校区)航空航天馆",
+          "biz_ext": {
+            "cost": [],
+            "opentime2": "周一至周日 00:00-24:00",
+            "rating": "4.4",
+            "open_time": "24小时营业"
+          },
+          "location": "118.821802,32.035747"
+        },
+        {
+          "type": "科教文化服务;博物馆;博物馆",
+          "typecode": "140100",
+          "adname": "玄武区",
+          "id": "B0HRLC2FV9",
+          "cityname": "南京市",
+          "name": "南京近代建筑博物馆",
+          "biz_ext": {
+            "cost": [],
+            "opentime2": "全年 周一 全天不开放；全年 周三 13:00–16:30开放 最晚进入16:00；全年 周二, 周四–周日 10:00–12:00,13:00–16:30开放 最晚进入16:00；元旦节,春节,清明节,劳动节,端午节,中秋节,国庆节 10:00–16:30开放",
+            "rating": "4.0",
+            "open_time": []
+          },
+          "location": "118.793965,32.045442"
+        }
+      ]
+    },
+    "上海": {
+      "bootstrap": [
+        {
+          "name": "上海朱家角古镇旅游区",
+          "rating": 4.7,
+          "location": {
+            "lng": 121.050518,
+            "lat": 31.114306
+          },
+          "adname": "青浦区",
+          "indoor": false
+        },
+        {
+          "name": "淀山湖风景区",
+          "rating": 4.7,
+          "location": {
+            "lng": 121.009195,
+            "lat": 31.131111
+          },
+          "adname": "青浦区",
+          "indoor": false
+        },
+        {
+          "name": "上海失恋博物馆",
+          "rating": 4.6,
+          "location": {
+            "lng": 121.483583,
+            "lat": 31.236683
+          },
+          "adname": "黄浦区",
+          "indoor": true
+        },
+        {
+          "name": "上海城隍庙",
+          "rating": 4.8,
+          "location": {
+            "lng": 121.492466,
+            "lat": 31.225879
+          },
+          "adname": "黄浦区",
+          "indoor": false
+        },
+        {
+          "name": "上海动物园",
+          "rating": 4.8,
+          "location": {
+            "lng": 121.363009,
+            "lat": 31.193277
+          },
+          "adname": "长宁区",
+          "indoor": false
+        },
+        {
+          "name": "上海欢乐谷",
+          "rating": 4.8,
+          "location": {
+            "lng": 121.214778,
+            "lat": 31.09607
+          },
+          "adname": "松江区",
+          "indoor": false
+        },
+        {
+          "name": "上海迪士尼度假区",
+          "rating": 4.9,
+          "location": {
+            "lng": 121.667003,
+            "lat": 31.141447
+          },
+          "adname": "浦东新区",
+          "indoor": false
+        },
+        {
+          "name": "上海植物园",
+          "rating": 4.7,
+          "location": {
+            "lng": 121.444271,
+            "lat": 31.147478
+          },
+          "adname": "徐汇区",
+          "indoor": false
+        },
+        {
+          "name": "上海海昌海洋公园",
+          "rating": 4.7,
+          "location": {
+            "lng": 121.905695,
+            "lat": 30.912653
+          },
+          "adname": "浦东新区",
+          "indoor": false
+        },
+        {
+          "name": "上海长风海洋世界",
+          "rating": 4.5,
+          "location": {
+            "lng": 121.396998,
+            "lat": 31.225042
+          },
+          "adname": "普陀区",
+          "indoor": false
+        },
+        {
+          "name": "上海海洋水族馆",
+          "rating": 4.7,
+          "location": {
+            "lng": 121.501894,
+            "lat": 31.240777
+          },
+          "adname": "浦东新区",
+          "indoor": true
+        },
+        {
+          "name": "金山城市沙滩",
+          "rating": 4.5,
+          "location": {
+            "lng": 121.351801,
+            "lat": 30.710884
+          },
+          "adname": "金山区",
+          "indoor": false
+        },
+        {
+          "name": "上海野生动物园",
+          "rating": 4.8,
+          "location": {
+            "lng": 121.721793,
+            "lat": 31.055337
+          },
+          "adname": "浦东新区",
+          "indoor": false
+        },
+        {
+          "name": "新场古镇",
+          "rating": 4.7,
+          "location": {
+            "lng": 121.646758,
+            "lat": 31.024851
+          },
+          "adname": "浦东新区",
+          "indoor": false
+        },
+        {
+          "name": "七宝古镇",
+          "rating": 4.7,
+          "location": {
+            "lng": 121.355927,
+            "lat": 31.153315
+          },
+          "adname": "闵行区",
+          "indoor": false
+        },
+        {
+          "name": "碧海金沙",
+          "rating": 4.5,
+          "location": {
+            "lng": 121.551519,
+            "lat": 30.819573
+          },
+          "adname": "奉贤区",
+          "indoor": false
+        },
+        {
+          "name": "上海豫园",
+          "rating": 4.8,
+          "location": {
+            "lng": 121.492497,
+            "lat": 31.227714
+          },
+          "adname": "黄浦区",
+          "indoor": false
+        }
+      ],
+      "museum_rows": [
+        {
+          "type": "科教文化服务;博物馆;博物馆",
+          "typecode": "140100",
+          "adname": "黄浦区",
+          "id": "B001535BBC",
+          "cityname": "上海市",
+          "name": "上海博物馆(人民广场馆)",
+          "biz_ext": {
+            "cost": [],
+            "opentime2": "周二至周四,周日 09:00-17:00；周五至周六 09:00-21:00",
+            "rating": "4.7",
+            "open_time": "09:00-21:00"
+          },
+          "location": "121.475480,31.228231"
+        },
+        {
+          "type": "科教文化服务;博物馆;博物馆",
+          "typecode": "140100",
+          "adname": "黄浦区",
+          "id": "B0FFI2885X",
+          "cityname": "上海市",
+          "name": "上海市历史博物馆",
+          "biz_ext": {
+            "cost": [],
+            "opentime2": "全年 周二–周日 09:00–17:00开放 最晚进入16:00；全年 周一 全天不开放；元旦节,春节,清明节,劳动节,端午节,中秋节,国庆节 09:00–17:00开放 最晚进入16:00；具体营业状态以当天开放情况为准",
+            "rating": "4.7",
+            "open_time": []
+          },
+          "location": "121.470891,31.230594"
+        },
+        {
+          "type": "科教文化服务;博物馆;博物馆",
+          "typecode": "140100",
+          "adname": "静安区",
+          "id": "B00156NVZG",
+          "cityname": "上海市",
+          "name": "上海自然博物馆",
+          "biz_ext": {
+            "cost": [],
+            "opentime2": "周一,周三至周五,周日 09:00-17:00开放 最晚进入16:00, 周二不开放, 周六 09:00-20:00开放 最晚进入19:00； 2026年9月25日 09:00-20:00开放 最晚进入19:00, 2026年10月1日-2026年10月2日 09:00-20:00开放 最晚进入19:00, 2026年10月6日 09:00-17:00开放 最晚进入16:00, 具体开放时间以官方通知为准",
+            "rating": "4.8",
+            "open_time": []
+          },
+          "location": "121.462672,31.235021"
+        },
+        {
+          "type": "科教文化服务;博物馆;博物馆",
+          "typecode": "140100",
+          "adname": "虹口区",
+          "id": "B00155F9RW",
+          "cityname": "上海市",
+          "name": "上海邮政博物馆",
+          "biz_ext": {
+            "cost": [],
+            "opentime2": "周三至周四,周六至周日 09:00-17:00 最晚进入16:00 周一至周二,周五 全天不开放；2月16日-2月19日 与 2月23日 全天不开放；2月20日-2月22日 周一至周日 09:00-17:00 最晚进入16:00；国定假另行通知；具体开放时间以官方通知为准",
+            "rating": "4.7",
+            "open_time": []
+          },
+          "location": "121.484749,31.244286"
+        },
+        {
+          "type": "科教文化服务;博物馆;博物馆",
+          "typecode": "140100",
+          "adname": "虹口区",
+          "id": "B0FFK2KA0K",
+          "cityname": "上海市",
+          "name": "中国证券博物馆",
+          "biz_ext": {
+            "cost": [],
+            "opentime2": "周二至周日:09:30-16:00(15:30停止入馆),每周一闭馆,国家法定节假日除外",
+            "rating": "4.7",
+            "open_time": "09:30-16:00"
+          },
+          "location": "121.490941,31.244246"
+        },
+        {
+          "type": "科教文化服务;博物馆;博物馆",
+          "typecode": "140100",
+          "adname": "黄浦区",
+          "id": "B0HRMZI3IU",
+          "cityname": "上海市",
+          "name": "上海体育博物馆",
+          "biz_ext": {
+            "cost": [],
+            "opentime2": "周二至周日 09:30-16:30(16:00停止入馆),周一正常闭馆(法定节假日除外)",
+            "rating": "4.6",
+            "open_time": "09:30-16:30"
+          },
+          "location": "121.471965,31.233853"
+        },
+        {
+          "type": "科教文化服务;博物馆;博物馆",
+          "typecode": "140100",
+          "adname": "黄浦区",
+          "id": "B001575WDA",
+          "cityname": "上海市",
+          "name": "上海世博会博物馆",
+          "biz_ext": {
+            "cost": [],
+            "opentime2": "周一全天关闭(法定节假日除外),周二至周日 09:00-17:00(16:15停止进入)",
+            "rating": "4.8",
+            "open_time": "09:00-17:00"
+          },
+          "location": "121.482161,31.194391"
+        },
+        {
+          "type": "科教文化服务;博物馆;博物馆",
+          "typecode": "140100",
+          "adname": "黄浦区",
+          "id": "B00156F7CP",
+          "cityname": "上海市",
+          "name": "上海当代艺术博物馆",
+          "biz_ext": {
+            "cost": [],
+            "opentime2": "全年 周二–周日 11:00–19:00开放 最晚进入18:00；全年 周一 全天不开放；元旦节,春节,清明节,劳动节,端午节,中秋节,国庆节 11:00–19:00开放 最晚进入18:00；周一闭馆，国定节假日正常开放。",
+            "rating": "4.7",
+            "open_time": []
+          },
+          "location": "121.498406,31.201041"
+        },
+        {
+          "type": "科教文化服务;博物馆;博物馆",
+          "typecode": "140100",
+          "adname": "徐汇区",
+          "id": "B0015118DB",
+          "cityname": "上海市",
+          "name": "上海公安博物馆",
+          "biz_ext": {
+            "cost": [],
+            "opentime2": "周一 全天关闭；周二至周日 09:00-16:30 最晚进入16:00；国定假另行通知",
+            "rating": "4.7",
+            "open_time": "09:00-16:30"
+          },
+          "location": "121.468314,31.198348"
+        },
+        {
+          "type": "科教文化服务;博物馆;博物馆",
+          "typecode": "140100",
+          "adname": "徐汇区",
+          "id": "B00155LL5X",
+          "cityname": "上海市",
+          "name": "上海工艺美术博物馆",
+          "biz_ext": {
+            "cost": [],
+            "opentime2": "周二至周日 09:00-11:30,13:00-16:30 最晚进入16:00；国定假日及其他特殊安排另行通告。",
+            "rating": "4.6",
+            "open_time": []
+          },
+          "location": "121.454495,31.210087"
+        },
+        {
+          "type": "科教文化服务;博物馆;博物馆",
+          "typecode": "140100",
+          "adname": "黄浦区",
+          "id": "B0MRCCS1WB",
+          "cityname": "上海市",
+          "name": "Paradox Museum悖论博物馆(外滩店)",
+          "biz_ext": {
+            "cost": [],
+            "opentime2": [],
+            "rating": "4.3",
+            "open_time": []
+          },
+          "location": "121.487072,31.237744"
+        },
+        {
+          "type": "科教文化服务;博物馆;博物馆",
+          "typecode": "140100",
+          "adname": "静安区",
+          "id": "B001540296",
+          "cityname": "上海市",
+          "name": "上海铁路博物馆",
+          "biz_ext": {
+            "cost": [],
+            "opentime2": "周二至周日 09:00-11:30,13:30-16:30 最晚进入16:00；16:00停止售票与入场",
+            "rating": "4.5",
+            "open_time": "09:00-11:30 13:30-16:30"
+          },
+          "location": "121.476228,31.250035"
+        },
+        {
+          "type": "科教文化服务;博物馆;博物馆",
+          "typecode": "140100",
+          "adname": "浦东新区",
+          "id": "B00155IUI9",
+          "cityname": "上海市",
+          "name": "上海震旦博物馆",
+          "biz_ext": {
+            "cost": [],
+            "opentime2": "周一 全天关闭；周二至周四,周六至周日 10:00-17:00 最晚进入16:30；周五 10:00-21:00 最晚进入20:30",
+            "rating": "4.6",
+            "open_time": []
+          },
+          "location": "121.499404,31.234825"
+        },
+        {
+          "type": "科教文化服务;博物馆;博物馆",
+          "typecode": "140100",
+          "adname": "虹口区",
+          "id": "B0MUTZKNXG",
+          "cityname": "上海市",
+          "name": "上海生命奥秘博物馆",
+          "biz_ext": {
+            "cost": [],
+            "opentime2": "周一至周日 10:00-21:30",
+            "rating": "4.3",
+            "open_time": "10:00-21:30"
+          },
+          "location": "121.486537,31.246204"
+        },
+        {
+          "type": "科教文化服务;博物馆;博物馆",
+          "typecode": "140100",
+          "adname": "黄浦区",
+          "id": "B0JAXS5ONF",
+          "cityname": "上海市",
+          "name": "上海潜艇展览馆(中国航海博物馆黄浦分馆)",
+          "biz_ext": {
+            "cost": [],
+            "opentime2": "周二至周四 09:30-16:00；周五至周日 09:30-17:00；周一 全天不开放（法定节假日除外）；7月11日-7月12日 全天不开放；具体开放时间以官方通知为准",
+            "rating": "4.7",
+            "open_time": []
+          },
+          "location": "121.488654,31.194212"
+        },
+        {
+          "type": "科教文化服务;博物馆;博物馆",
+          "typecode": "140100",
+          "adname": "黄浦区",
+          "id": "B00155QL13",
+          "cityname": "上海市",
+          "name": "上海琉璃艺术博物馆",
+          "biz_ext": {
+            "cost": [],
+            "opentime2": "周二至周日 10:00-17:00,节假日以官方通知为准",
+            "rating": "4.5",
+            "open_time": []
+          },
+          "location": "121.470292,31.207795"
+        },
+        {
+          "type": "科教文化服务;博物馆;博物馆",
+          "typecode": "140100",
+          "adname": "黄浦区",
+          "id": "B0FFGLW6WA",
+          "cityname": "上海市",
+          "name": "上海市银行博物馆",
+          "biz_ext": {
+            "cost": [],
+            "opentime2": "周二09:30-16:30；周四09:30-16:30；周六09:30-16:30",
+            "rating": "4.4",
+            "open_time": "09:30-16:30"
+          },
+          "location": "121.476332,31.216427"
+        },
+        {
+          "type": "科教文化服务;博物馆;博物馆",
+          "typecode": "140100",
+          "adname": "普陀区",
+          "id": "B00155KN2Y",
+          "cityname": "上海市",
+          "name": "上海纺织博物馆",
+          "biz_ext": {
+            "cost": [],
+            "opentime2": "1/1-12/31 周二–周日 09:30–16:00开放；01/01-12/31 周一 全天不开放；端午节 09:30–16:00开放；春节 全天不开放",
+            "rating": "4.5",
+            "open_time": []
+          },
+          "location": "121.446120,31.246903"
+        },
+        {
+          "type": "科教文化服务;博物馆;博物馆",
+          "typecode": "140100",
+          "adname": "黄浦区",
+          "id": "B00156N2WU",
+          "cityname": "上海市",
+          "name": "上海民政博物馆",
+          "biz_ext": {
+            "cost": [],
+            "opentime2": "周二至周日 09:00-16:00；节假日营业时间以官方通知为准",
+            "rating": "4.1",
+            "open_time": []
+          },
+          "location": "121.495446,31.210331"
+        },
+        {
+          "type": "科教文化服务;博物馆;博物馆",
+          "typecode": "140100",
+          "adname": "黄浦区",
+          "id": "B0FFIW090Q",
+          "cityname": "上海市",
+          "name": "国际乒联博物馆",
+          "biz_ext": {
+            "cost": [],
+            "opentime2": "01-01至02-14 周一 全天关闭；01-01至02-14 周二至周日 09:00-17:00 最晚进入16:00；02-18至10-04 周一 全天关闭；02-18至10-04 周二至周日 09:00-17:00 最晚进入16:00；10-05至10-05 周一至周日 09:00-17:00 最晚进入16:00；10-06至12-31 周一 全天关闭；10-06至12-31 周二至周日 09:00-17:00 最晚进入16:00",
+            "rating": "4.7",
+            "open_time": "09:00-17:00 09:00-17:00 09:00-17:00 09:00-17:00"
+          },
+          "location": "121.481237,31.193284"
+        },
+        {
+          "type": "科教文化服务;博物馆;博物馆",
+          "typecode": "140100",
+          "adname": "浦东新区",
+          "id": "B0FFFS5P4U",
+          "cityname": "上海市",
+          "name": "上海观复博物馆",
+          "biz_ext": {
+            "cost": [],
+            "opentime2": "周一至周日 10:00-18:00",
+            "rating": "4.5",
+            "open_time": "10:00-18:00"
+          },
+          "location": "121.505708,31.233591"
+        },
+        {
+          "type": "科教文化服务;博物馆;博物馆",
+          "typecode": "140100",
+          "adname": "浦东新区",
+          "id": "B00155L9WI",
+          "cityname": "上海市",
+          "name": "上海美术馆(中华艺术宫)",
+          "biz_ext": {
+            "cost": [],
+            "opentime2": "1/1-12/31 周二–周日 10:00–18:00开放 最晚进入17:00；1/1-12/31 周一 全天不开放；元旦节,春节,清明节,劳动节,端午节,中秋节,国庆节 10:00–18:00开放 最晚进入17:00",
+            "rating": "4.7",
+            "open_time": []
+          },
+          "location": "121.494740,31.184338"
+        },
+        {
+          "type": "科教文化服务;博物馆;博物馆",
+          "typecode": "140100",
+          "adname": "黄浦区",
+          "id": "B00155QGZS",
+          "cityname": "上海市",
+          "name": "上海电信博物馆",
+          "biz_ext": {
+            "cost": [],
+            "opentime2": "周一至周日 09:00-17:00",
+            "rating": "4.2",
+            "open_time": "09:00-17:00"
+          },
+          "location": "121.490800,31.233330"
+        },
+        {
+          "type": "科教文化服务;博物馆;博物馆",
+          "typecode": "140100",
+          "adname": "徐汇区",
+          "id": "B00155HO84",
+          "cityname": "上海市",
+          "name": "中国科学院上海昆虫博物馆",
+          "biz_ext": {
+            "cost": [],
+            "opentime2": "周一至周日 09:00-16:30 最晚进入16:00",
+            "rating": "4.5",
+            "open_time": "09:00-16:30"
+          },
+          "location": "121.455224,31.193578"
+        },
+        {
+          "type": "科教文化服务;博物馆;博物馆",
+          "typecode": "140100",
+          "adname": "浦东新区",
+          "id": "B0FFIFP90V",
+          "cityname": "上海市",
+          "name": "上海博物馆(东馆)",
+          "biz_ext": {
+            "cost": [],
+            "opentime2": "全年 周一, 周三–周日 10:00–18:00开放 最晚进入17:00；全年 周二 全天不开放；元旦节,春节,清明节,劳动节,端午节,中秋节,国庆节 10:00–18:00开放 最晚进入17:00",
+            "rating": "4.8",
+            "open_time": []
+          },
+          "location": "121.538745,31.219913"
+        }
+      ]
+    },
+    "三亚": {
+      "bootstrap": [
+        {
+          "name": "三亚凤凰岭海誓山盟景区",
+          "rating": 4.6,
+          "location": {
+            "lng": 109.545812,
+            "lat": 18.256983
+          },
+          "adname": "吉阳区",
+          "indoor": false
+        },
+        {
+          "name": "海月广场",
+          "rating": 4.7,
+          "location": {
+            "lng": 109.494467,
+            "lat": 18.259085
+          },
+          "adname": "天涯区",
+          "indoor": false
+        },
+        {
+          "name": "南山大小洞天旅游区",
+          "rating": 4.7,
+          "location": {
+            "lng": 109.158067,
+            "lat": 18.30089
+          },
+          "adname": "崖州区",
+          "indoor": false
+        },
+        {
+          "name": "亚龙湾海滩",
+          "rating": 4.8,
+          "location": {
+            "lng": 109.646004,
+            "lat": 18.229188
+          },
+          "adname": "吉阳区",
+          "indoor": false
+        },
+        {
+          "name": "三亚千古情景区",
+          "rating": 4.7,
+          "location": {
+            "lng": 109.530925,
+            "lat": 18.291009
+          },
+          "adname": "吉阳区",
+          "indoor": true
+        },
+        {
+          "name": "三亚西岛海洋文化旅游区",
+          "rating": 4.8,
+          "location": {
+            "lng": 109.373711,
+            "lat": 18.237774
+          },
+          "adname": "天涯区",
+          "indoor": false
+        },
+        {
+          "name": "亚特兰蒂斯失落的空间水族馆",
+          "rating": 4.7,
+          "location": {
+            "lng": 109.7437,
+            "lat": 18.356474
+          },
+          "adname": "海棠区",
+          "indoor": true
+        },
+        {
+          "name": "三亚南山文化旅游区",
+          "rating": 4.7,
+          "location": {
+            "lng": 109.208349,
+            "lat": 18.298366
+          },
+          "adname": "崖州区",
+          "indoor": false
+        },
+        {
+          "name": "南山文化旅游区南山海上观音",
+          "rating": 4.8,
+          "location": {
+            "lng": 109.212558,
+            "lat": 18.290676
+          },
+          "adname": "崖州区",
+          "indoor": false
+        },
+        {
+          "name": "三亚塔赫跳伞官方旗舰店",
+          "rating": 4.8,
+          "location": {
+            "lng": 109.758685,
+            "lat": 18.384566
+          },
+          "adname": "海棠区",
+          "indoor": false
+        },
+        {
+          "name": "天涯海角游览区",
+          "rating": 4.8,
+          "location": {
+            "lng": 109.348143,
+            "lat": 18.294988
+          },
+          "adname": "天涯区",
+          "indoor": false
+        },
+        {
+          "name": "椰梦长廊",
+          "rating": 4.9,
+          "location": {
+            "lng": 109.475754,
+            "lat": 18.274342
+          },
+          "adname": "天涯区",
+          "indoor": false
+        },
+        {
+          "name": "蜈支洲岛旅游风景区",
+          "rating": 4.8,
+          "location": {
+            "lng": 109.765947,
+            "lat": 18.310381
+          },
+          "adname": "海棠区",
+          "indoor": false
+        },
+        {
+          "name": "后海村",
+          "rating": 4.7,
+          "location": {
+            "lng": 109.72963,
+            "lat": 18.272223
+          },
+          "adname": "海棠区",
+          "indoor": false
+        },
+        {
+          "name": "亚龙湾国家旅游度假区",
+          "rating": 4.8,
+          "location": {
+            "lng": 109.649664,
+            "lat": 18.235582
+          },
+          "adname": "吉阳区",
+          "indoor": false
+        },
+        {
+          "name": "三亚·中交凤凰岛",
+          "rating": 4.6,
+          "location": {
+            "lng": 109.493908,
+            "lat": 18.240317
+          },
+          "adname": "天涯区",
+          "indoor": false
+        },
+        {
+          "name": "鹿回头风景区",
+          "rating": 4.8,
+          "location": {
+            "lng": 109.50131,
+            "lat": 18.225639
+          },
+          "adname": "吉阳区",
+          "indoor": false
+        },
+        {
+          "name": "崖州湾海滩",
+          "rating": 4.7,
+          "location": {
+            "lng": 109.150344,
+            "lat": 18.330973
+          },
+          "adname": "崖州区",
+          "indoor": false
+        },
+        {
+          "name": "海棠广场",
+          "rating": 4.7,
+          "location": {
+            "lng": 109.731944,
+            "lat": 18.316091
+          },
+          "adname": "海棠区",
+          "indoor": false
+        },
+        {
+          "name": "小东海",
+          "rating": 4.7,
+          "location": {
+            "lng": 109.502296,
+            "lat": 18.208582
+          },
+          "adname": "吉阳区",
+          "indoor": false
+        },
+        {
+          "name": "三角梅科博园",
+          "rating": 4.7,
+          "location": {
+            "lng": 109.177727,
+            "lat": 18.327072
+          },
+          "adname": "崖州区",
+          "indoor": false
+        },
+        {
+          "name": "海棠河生态公园",
+          "rating": 4.6,
+          "location": {
+            "lng": 109.740958,
+            "lat": 18.357606
+          },
+          "adname": "海棠区",
+          "indoor": false
+        },
+        {
+          "name": "崖州古城",
+          "rating": 4.6,
+          "location": {
+            "lng": 109.166017,
+            "lat": 18.370693
+          },
+          "adname": "崖州区",
+          "indoor": false
+        },
+        {
+          "name": "亚龙湾风景区-天下第一湾",
+          "rating": 4.7,
+          "location": {
+            "lng": 109.644393,
+            "lat": 18.229835
+          },
+          "adname": "吉阳区",
+          "indoor": false
+        },
+        {
+          "name": "三亚湾",
+          "rating": 4.8,
+          "location": {
+            "lng": 109.435993,
+            "lat": 18.287329
+          },
+          "adname": "天涯区",
+          "indoor": false
+        },
+        {
+          "name": "大东海旅游区(暂停开放)",
+          "rating": 4.9,
+          "location": {
+            "lng": 109.522212,
+            "lat": 18.22082
+          },
+          "adname": "吉阳区",
+          "indoor": false
+        },
+        {
+          "name": "临春岭森林公园(暂停开放)",
+          "rating": 4.7,
+          "location": {
+            "lng": 109.526536,
+            "lat": 18.260389
+          },
+          "adname": "吉阳区",
+          "indoor": false
+        },
+        {
+          "name": "红树林生态公园",
+          "rating": 4.5,
+          "location": {
+            "lng": 109.523182,
+            "lat": 18.271294
+          },
+          "adname": "吉阳区",
+          "indoor": false
+        },
+        {
+          "name": "天涯小镇",
+          "rating": 4.8,
+          "location": {
+            "lng": 109.332659,
+            "lat": 18.303548
+          },
+          "adname": "天涯区",
+          "indoor": false
+        }
+      ],
+      "museum_rows": [
+        {
+          "type": "科教文化服务;博物馆;博物馆",
+          "typecode": "140100",
+          "adname": "吉阳区",
+          "id": "B0K6CH1XVB",
+          "cityname": "三亚市",
+          "name": "三亚山海贝文化博物馆",
+          "biz_ext": {
+            "cost": [],
+            "opentime2": "周二至周日 09:00-17:30",
+            "rating": "4.6",
+            "open_time": "09:00-17:30"
+          },
+          "location": "109.569645,18.257552"
+        },
+        {
+          "type": "科教文化服务;博物馆;博物馆",
+          "typecode": "140100",
+          "adname": "吉阳区",
+          "id": "B0IKMCHZHI",
+          "cityname": "三亚市",
+          "name": "三亚恐龙博物馆",
+          "biz_ext": {
+            "cost": [],
+            "opentime2": "周一至周日:10:00-19:00(18:30停止检票入园)",
+            "rating": "4.4",
+            "open_time": "10:00-19:00"
+          },
+          "location": "109.489875,18.295325"
+        },
+        {
+          "type": "政府机构及社会团体;社会团体;行业协会|科教文化服务;博物馆;博物馆",
+          "typecode": "130407|140100",
+          "adname": "天涯区",
+          "id": "B0LGYS3C6P",
+          "cityname": "三亚市",
+          "name": "三亚李是亨黄花梨博物馆",
+          "biz_ext": {
+            "cost": [],
+            "opentime2": "周一至周日 08:00-18:00",
+            "rating": [],
+            "open_time": "08:00-18:00"
+          },
+          "location": "109.490468,18.269135"
+        },
+        {
+          "type": "科教文化服务;博物馆;博物馆",
+          "typecode": "140100",
+          "adname": "天涯区",
+          "id": "B03830101S",
+          "cityname": "三亚市",
+          "name": "海南京润珍珠博物馆",
+          "biz_ext": {
+            "cost": [],
+            "opentime2": "周一至周日 08:30-17:30 10-01至10-07 周一至周日 08:30-17:30",
+            "rating": "4.3",
+            "open_time": "08:30-17:30 08:30-17:30"
+          },
+          "location": "109.440131,18.301290"
+        },
+        {
+          "type": "科教文化服务;博物馆;博物馆",
+          "typecode": "140100",
+          "adname": "吉阳区",
+          "id": "B0L0F54M3W",
+          "cityname": "三亚市",
+          "name": "绿盾高性能系统门窗",
+          "biz_ext": {
+            "cost": [],
+            "opentime2": "周一至周日 09:00-18:00",
+            "rating": "3.3",
+            "open_time": "09:00-18:00"
+          },
+          "location": "109.499745,18.304192"
+        },
+        {
+          "type": "科教文化服务;博物馆;博物馆",
+          "typecode": "140100",
+          "adname": "吉阳区",
+          "id": "B0M60GLAZD",
+          "cityname": "三亚市",
+          "name": "三亚千古情景区-爱情博物馆",
+          "biz_ext": {
+            "cost": [],
+            "opentime2": [],
+            "rating": "3.3",
+            "open_time": []
+          },
+          "location": "109.531165,18.291026"
+        },
+        {
+          "type": "科教文化服务;博物馆;博物馆",
+          "typecode": "140100",
+          "adname": "崖州区",
+          "id": "B0IA6UE7AK",
+          "cityname": "三亚市",
+          "name": "三亚南山非遗博物馆",
+          "biz_ext": {
+            "cost": [],
+            "opentime2": "周一至周日 08:00-17:00",
+            "rating": "4.1",
+            "open_time": "08:00-17:00"
+          },
+          "location": "109.206206,18.296029"
+        },
+        {
+          "type": "科教文化服务;博物馆;博物馆",
+          "typecode": "140100",
+          "adname": "崖州区",
+          "id": "B0FFFR6GBA",
+          "cityname": "三亚市",
+          "name": "三亚自然博物馆",
+          "biz_ext": {
+            "cost": [],
+            "opentime2": "周一至周日 09:00-17:00",
+            "rating": "4.1",
+            "open_time": "09:00-17:00"
+          },
+          "location": "109.154416,18.302974"
+        },
+        {
+          "type": "科教文化服务;博物馆;博物馆",
+          "typecode": "140100",
+          "adname": "崖州区",
+          "id": "B0LKOSFZDJ",
+          "cityname": "三亚市",
+          "name": "中国门窗博物馆三亚分馆",
+          "biz_ext": {
+            "cost": [],
+            "opentime2": "周一至周日 09:00-17:00",
+            "rating": "3.3",
+            "open_time": "09:00-17:00"
+          },
+          "location": "109.168152,18.326009"
+        },
+        {
+          "type": "科教文化服务;博物馆;博物馆",
+          "typecode": "140100",
+          "adname": "吉阳区",
+          "id": "B0K3XM02O4",
+          "cityname": "三亚市",
+          "name": "三亚市博物馆(建设中)",
+          "biz_ext": {
+            "cost": [],
+            "opentime2": "周一至周日 09:00-21:00",
+            "rating": "3.7",
+            "open_time": "09:00-21:00"
+          },
+          "location": "109.496646,18.300371"
+        },
+        {
+          "type": "科教文化服务;博物馆;博物馆",
+          "typecode": "140100",
+          "adname": "吉阳区",
+          "id": "B0FFIBQS8Y",
+          "cityname": "三亚市",
+          "name": "南海文化博物馆",
+          "biz_ext": {
+            "cost": [],
+            "opentime2": "周一至周五 08:00-11:40，15:00-18:00",
+            "rating": "3.7",
+            "open_time": []
+          },
+          "location": "109.533769,18.311829"
+        },
+        {
+          "type": "科教文化服务;博物馆;博物馆",
+          "typecode": "140100",
+          "adname": "崖州区",
+          "id": "B0JK1DKDZU",
+          "cityname": "三亚市",
+          "name": "南繁博物馆(建设中)",
+          "biz_ext": {
+            "cost": [],
+            "opentime2": "周二至周日 09:00-17:00 最晚进入16:30",
+            "rating": "3.7",
+            "open_time": "09:00-17:00"
+          },
+          "location": "109.165725,18.347725"
+        }
+      ]
+    }
+  }
+}
