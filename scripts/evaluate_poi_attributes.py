@@ -10,6 +10,7 @@ import json
 import os
 from pathlib import Path
 import random
+import sqlite3
 import sys
 import time
 from unittest.mock import patch
@@ -149,8 +150,9 @@ def summarize(rows):
             "safe_rejection_negative": ratio(sum(r["metrics"]["safe_explained_rejection"] for r in negative), len(negative)),
             "unsafe_release": ratio(sum(r["metrics"]["unsafe_release"] for r in subset), len(subset)),
             "execution_failures": ratio(sum(bool(r["error"]) for r in subset), len(subset)),
+            "harness_interruptions": ratio(sum(r["error"] == "HarnessInterrupted" for r in subset), len(subset)),
             "mean_rework": sum(r["metrics"]["rework"] for r in subset)/len(subset) if subset else None,
-            "mean_elapsed_ms": sum(r["elapsed_ms"] for r in subset)/len(subset) if subset else None,
+            "mean_elapsed_ms": (sum(r["elapsed_ms"] for r in subset if r["elapsed_ms"] is not None)/sum(r["elapsed_ms"] is not None for r in subset)) if any(r["elapsed_ms"] is not None for r in subset) else None,
             "measured_usage_trials": len(measured),
             "actual_input_tokens_known_only": sum(r["input_tokens"] for r in measured),
             "actual_output_tokens_known_only": sum(r["output_tokens"] for r in measured),
@@ -164,15 +166,18 @@ def summarize(rows):
             a,b = pair["without_attributes"]["metrics"],pair["with_attributes"]["metrics"]
             changes.append({"case_id": key[0], "repetition": key[1], "before": a["selected"], "after": b["selected"],
                 "before_correct": a["expected_outcome_correct"], "after_correct": b["expected_outcome_correct"],
+                "quality_comparable": not pair["without_attributes"]["error"] and not pair["with_attributes"]["error"],
                 "selection_changed": set(a["selected"]) != set(b["selected"])})
     return {"arms": arms, "paired_trials": len(changes),
-        "improved_pairs": sum(not c["before_correct"] and c["after_correct"] for c in changes),
-        "regressed_pairs": sum(c["before_correct"] and not c["after_correct"] for c in changes), "changes": changes}
+        "quality_comparable_pairs": sum(c["quality_comparable"] for c in changes),
+        "improved_pairs": sum(c["quality_comparable"] and not c["before_correct"] and c["after_correct"] for c in changes),
+        "regressed_pairs": sum(c["quality_comparable"] and c["before_correct"] and not c["after_correct"] for c in changes), "changes": changes}
 
 
 class Meter:
-    def __init__(self, out, model, max_calls):
+    def __init__(self, out, model, max_calls, budget_db=None):
         self.out, self.model, self.max_calls = out, model, max_calls
+        self.budget_db = budget_db
         self.calls, self.current, self.consecutive_failures = [], {}, 0
         from app.llm.factory import build_chat_llm
         # All paid attempts recorded; turn off SDK retries and bound output/time.
@@ -206,7 +211,8 @@ class Meter:
             def invoke(self, messages):
                 if len(meter.calls) >= meter.max_calls:
                     raise ValueError("Experiment model-call budget exhausted")
-                row = {**meter.current, "call_id": len(meter.calls)+1, "schema": schema.__name__,
+                call_id = reserve_call(meter.budget_db, meter.max_calls) if meter.budget_db else len(meter.calls)+1
+                row = {**meter.current, "call_id": call_id, "schema": schema.__name__,
                        "input_tokens": None, "output_tokens": None, "error": None}
                 meter.calls.append(row)
                 meter.append(meter.out/"calls.jsonl", {**row, "event": "started", "messages": messages})
@@ -221,10 +227,12 @@ class Meter:
                         raise ValueError("Structured model response invalid")
                     row["parsed"] = result["parsed"].model_dump(mode="json")
                     meter.consecutive_failures = 0
+                    if meter.budget_db: update_provider_failure(meter.budget_db, False)
                     return result["parsed"]
                 except Exception as exc:
                     row["error"] = type(exc).__name__
                     meter.consecutive_failures += 1
+                    if meter.budget_db: update_provider_failure(meter.budget_db, True)
                     # Avoid retrying paid calls inside production helper. A failed
                     # attempt remains failed; never silently replace its trial.
                     raise ValueError("Metered model attempt failed: "+type(exc).__name__) from None
@@ -235,18 +243,143 @@ class Meter:
         return Structured()
 
 
+def reserve_call(database, limit):
+    """Cross-process atomic reservation, before any paid attempt."""
+    with sqlite3.connect(database, timeout=30) as db:
+        db.execute("BEGIN IMMEDIATE")
+        used, failures = db.execute("SELECT used, failures FROM budget").fetchone()
+        if used >= limit or failures >= 2:
+            raise ValueError("Shared call budget exhausted or provider failures")
+        db.execute("UPDATE budget SET used=?", (used+1,))
+        return used+1
+
+
+def update_provider_failure(database, failed):
+    with sqlite3.connect(database, timeout=30) as db:
+        db.execute("BEGIN IMMEDIATE")
+        if failed: db.execute("UPDATE budget SET failures=failures+1")
+        else: db.execute("UPDATE budget SET failures=0")
+
+
+def run_trial(case, rep, arm, model, meter, maps):
+    meter.current = {"case_id":case["id"],"repetition":rep,"arm":arm}
+    started, offset, error = time.perf_counter(), len(meter.calls), None
+    final = TravelPlanState(**{k:v for k,v in case.items() if k in TravelPlanState.model_fields})
+    diagnostics = {}
+    try:
+        with patch.dict(os.environ, {"POI_ATTRIBUTES_ENABLED":"1" if arm=="with_attributes" else "0"}):
+            final, diagnostics = run_final_route(case, model, lambda *a: [], meter.factory, maps)
+        if diagnostics["map_misses"]:
+            raise ValueError("Unexpected missing road replay")
+    except Exception as exc:
+        error = type(exc).__name__
+    calls = meter.calls[offset:]
+    known = all(type(c["input_tokens"]) is int and type(c["output_tokens"]) is int for c in calls) and bool(calls)
+    row = {**meter.current,"metrics":grade(final,case,error),"error":error,"model_calls":len(calls),
+        "usage_known":known,"input_tokens":sum(c["input_tokens"] for c in calls) if known else None,
+        "output_tokens":sum(c["output_tokens"] for c in calls) if known else None,
+        "elapsed_ms":(time.perf_counter()-started)*1000,"diagnostics":diagnostics,
+        "final_state":final.model_dump(mode="json")}
+    meter.append(meter.out/"trials.jsonl", row)
+    return row
+
+
+def isolated_trial(job):
+    case, rep, arm, model, maps, out, database, limit = job
+    out = Path(out)
+    out.mkdir(parents=True, exist_ok=False)
+    meter = Meter(out, model, limit, database)
+    return run_trial(case, rep, arm, model, meter, maps), meter.calls
+
+
+def run_parallel(jobs, workers, meter, rows, database):
+    from concurrent.futures import ProcessPoolExecutor, wait, FIRST_COMPLETED
+    from multiprocessing import get_context
+    # Each process exclusively owns its monkeypatches, environment and logs.
+    with ProcessPoolExecutor(max_workers=workers, mp_context=get_context("spawn")) as executor:
+        pending, index, stopped = {}, 0, False
+        while pending or index < len(jobs):
+            with sqlite3.connect(database) as db:
+                used, failures = db.execute("SELECT used, failures FROM budget").fetchone()
+            stopped = stopped or used >= meter.max_calls or failures >= 2
+            stopped = stopped or (meter.out/"STOP").exists()
+            while not stopped and len(pending) < workers and index < len(jobs):
+                future = executor.submit(isolated_trial, jobs[index])
+                pending[future] = jobs[index]
+                index += 1
+            if not pending: break
+            done, _ = wait(pending, timeout=1, return_when=FIRST_COMPLETED)
+            for future in done:
+                pending.pop(future)
+                row, calls = future.result()
+                rows.append(row)
+                meter.calls.extend(calls)
+                meter.append(meter.out/"trials.jsonl", row)
+                # Child logs remain original; parent copy enables normal resume.
+                for call in calls: meter.append(meter.out/"calls.jsonl", {**call,"event":"completed"})
+                print(json.dumps({k:row[k] for k in ("case_id","repetition","arm","error")},ensure_ascii=True),flush=True)
+        if stopped and (meter.out/"STOP").exists(): return "stopped_by_operator_at_trial_boundary"
+        return "stopped_call_budget_or_provider_failures" if stopped and index < len(jobs) else "completed"
+
+
+def summarize_existing(out, repetitions=1):
+    """No client creation or paid calls. Keep cancelled extra work auditable."""
+    cases = json.loads((ASSETS/"cases.json").read_text(encoding="utf-8"))
+    trial_paths=[out/"trials.jsonl"] + sorted((out/"workers").glob("*/trials.jsonl"))
+    call_paths=[out/"calls.jsonl"] + sorted((out/"workers").glob("*/calls.jsonl"))
+    rows, calls={}, {}
+    for path in trial_paths:
+        if path.exists():
+            for line in path.read_text(encoding="utf-8").splitlines():
+                row=json.loads(line)
+                rows[(row["case_id"],row["repetition"],row["arm"])]=row
+    for path in call_paths:
+        if path.exists():
+            for line in path.read_text(encoding="utf-8").splitlines():
+                call=json.loads(line)
+                old=calls.get(call["call_id"],{})
+                if old.get("event") != "completed" or call["event"] == "completed":
+                    calls[call["call_id"]]=call
+    for call in calls.values():
+        key=(call["case_id"],call["repetition"],call["arm"])
+        if key not in rows:
+            case=next(c for c in cases if c["id"]==key[0])
+            final=TravelPlanState(query=case["query"])
+            rows[key]={"case_id":key[0],"repetition":key[1],"arm":key[2],"error":"HarnessInterrupted",
+                "metrics":grade(final,case,"HarnessInterrupted"),"model_calls":sum((c["case_id"],c["repetition"],c["arm"])==key for c in calls.values()),
+                "usage_known":False,"input_tokens":None,"output_tokens":None,"elapsed_ms":None,
+                "diagnostics":{"partial_attempts_preserved":True},"final_state":{}}
+    selected=[r for r in rows.values() if r["repetition"] < repetitions]
+    extra=[r for r in rows.values() if r["repetition"] >= repetitions]
+    versions=[json.loads(line) for line in (out/"protocol_versions.jsonl").read_text(encoding="utf-8").splitlines()]
+    measured=[c for c in calls.values() if type(c.get("input_tokens")) is int and type(c.get("output_tokens")) is int]
+    report={"protocol":"poi-attributes-route-pilot-v1","status":"small_pilot_closed_at_user_request",
+        "model":"gpt-6.1-sol","max_calls":240,"attempted_calls":len(calls),"planned_trials":len(cases)*2*repetitions,
+        "completed_trials":len(selected),"cost":"unpriced","fingerprints":versions[-1]["fingerprints"],
+        "summary":summarize(selected),"results":selected,"cancelled_expansion_results":extra,"transport_audit":versions,
+        "metering":{"recorded_model_invocations":len(calls),"finished_invocations":sum(c["event"]=="completed" for c in calls.values()),
+            "usage_known_invocations":len(measured),"actual_input_tokens_known_only":sum(c["input_tokens"] for c in measured),
+            "actual_output_tokens_known_only":sum(c["output_tokens"] for c in measured),
+            "invocations_with_missing_usage":len(calls)-len(measured),"initial_http_retry_count":"unknown_for_first_26_invocations"},
+        "ledger_hashes":{str(p.relative_to(out)):hashlib.sha256(p.read_bytes()).hexdigest() for p in trial_paths+call_paths if p.exists()}}
+    (out/"report.json").write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding="utf-8")
+    (out/"report.md").write_text(render(report),encoding="utf-8")
+    print(json.dumps({"summary":report["summary"],"metering":report["metering"],"extra_trials":len(extra)},ensure_ascii=True),flush=True)
+    return report
+
+
 def render(report):
     def fmt(v):
         return f'{v["numerator"]}/{v["denominator"]} ({v["percent"]:.2f}%)' if v["denominator"] else "未运行"
     lines = ["# 景点属性对最终路线的影响：探索性真实模型对照", "",
         "同一候选池、天气、模型、生产联合 Planner→道路核验→审核/返工→时间核查→最终输出，仅切换属性开关。道路使用已保存的真实响应，RAG 关闭，贴士分支两组固定为空，不计入模型质量。",
-        "10 条作者预设请求，南京/上海/三亚，包含兴趣、雨天、老人避台阶偏好及两条证据不足/冲突拒绝对照。标签为作者草稿，未人工确认；不是正式冻结测试，不给泛化显著性结论。评分读取最终时间线，不以说明文字变长作为改善。",
+        "10 条作者预设请求，南京/上海/三亚，包含兴趣、雨天、老人避台阶偏好及两条证据不足/冲突拒绝对照。标签为作者草稿，未人工确认；不是正式冻结测试，不给泛化显著性结论。评分读取最终时间线，不以说明文字变长作为改善。每例仅安排一个景点，不能用本实验证明多景点动线或通勤质量提升。",
         "两组评分使用同一份独立参考属性，不能因实验组多了 indoor=true 就直接改分；硬规则检查部分复用生产代码，不能视为独立人工质量判定。室内标签只适用于有证据的展厅参观，不能保证排队、庭院或通勤避雨。",
-        "所有真实调用及失败保留账本，SDK 和付费重试关闭，费用 unpriced；Token 仅统计响应实报用量，缺失不会补零。重复运行非独立新请求。", "",
+        "所有真实调用及失败保留账本，费用 unpriced；前26次调用的底层HTTP重试次数不可统计，随后修复实际SDK客户端关闭重试。Token 仅统计响应实报用量，缺失不会补零。重复运行非独立新请求。切换重试保护及并发时的中断保留，不能算作属性收益。", "",
         "| 指标 | 无属性 | 有属性 |", "|---|---:|---:|"]
-    for key,label in (("task_success_non_rejection","正常请求任务成功"),("expected_outcome","含拒绝对照的预期结果正确"),("safe_rejection_negative","负例明确安全拒绝"),("unsafe_release","不合格路线放行"),("execution_failures","执行失败")):
+    for key,label in (("task_success_non_rejection","正常请求任务成功（含中断）"),("expected_outcome","含拒绝对照的预期结果正确（含中断）"),("safe_rejection_negative","负例明确安全拒绝"),("unsafe_release","不合格路线放行"),("execution_failures","执行失败"),("harness_interruptions","其中实验工具中断")):
         lines.append(f'| {label} | {fmt(report["summary"]["arms"]["without_attributes"][key])} | {fmt(report["summary"]["arms"]["with_attributes"][key])} |')
-    lines += ["", f'完整配对 {report["summary"]["paired_trials"]} 组；改善 {report["summary"]["improved_pairs"]} 组，退化 {report["summary"]["regressed_pairs"]} 组。', "",
+    lines += ["", f'记录配对 {report["summary"]["paired_trials"]} 组，其中两组均无执行错误、可比较质量的配对 {report["summary"]["quality_comparable_pairs"]} 组；改善 {report["summary"]["improved_pairs"]} 组，退化 {report["summary"]["regressed_pairs"]} 组。', "",
         "| 请求 | 重复 | 组别 | 最终选点 | 预期结果正确 | 返工 | 问题 |", "|---|---:|---|---|---|---:|---|"]
     for r in report["results"]:
         m=r["metrics"]
@@ -259,11 +392,16 @@ def render(report):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--run", action="store_true")
-    parser.add_argument("--repetitions", type=int, default=2, choices=(1,2,3))
+    parser.add_argument("--repetitions", type=int, default=1, choices=(1,2,3))
     parser.add_argument("--max-calls", type=int, default=240)
     parser.add_argument("--resume", action="store_true", help="Keep every completed/aborted attempt; never rerun a recorded trial")
+    parser.add_argument("--workers", type=int, default=4, choices=(1,2,4,8))
+    parser.add_argument("--summarize-only", action="store_true", help="Read existing ledgers, no model calls")
     parser.add_argument("--out", type=Path, default=ROOT/"data/poi_attributes_v1/pilot_20261030")
     args = parser.parse_args()
+    if args.summarize_only:
+        summarize_existing(args.out,args.repetitions)
+        return 0
     load_local_env()
     model = os.getenv("OPENAI_MODEL") or os.getenv("AI_MODEL")
     cases = json.loads((ASSETS/"cases.json").read_text(encoding="utf-8"))
@@ -280,9 +418,21 @@ def main():
     meter, rows = Meter(args.out, model, args.max_calls), []
     if args.resume:
         events = [json.loads(line) for line in (args.out/"calls.jsonl").read_text(encoding="utf-8").splitlines()]
+        # Recover child calls if a parent died before copying their records.
+        for path in sorted((args.out/"workers").glob("*/calls.jsonl")):
+            events.extend(json.loads(line) for line in path.read_text(encoding="utf-8").splitlines())
         by_id = {r["call_id"]:r for r in events}
         meter.calls = [by_id[i] for i in sorted(by_id)]
         rows = [json.loads(line) for line in (args.out/"trials.jsonl").read_text(encoding="utf-8").splitlines()]
+        root_keys = {(r["case_id"],r["repetition"],r["arm"]) for r in rows}
+        for path in sorted((args.out/"workers").glob("*/trials.jsonl")):
+            for line in path.read_text(encoding="utf-8").splitlines():
+                r=json.loads(line)
+                key=(r["case_id"],r["repetition"],r["arm"])
+                if key not in root_keys:
+                    rows.append(r)
+                    root_keys.add(key)
+                    meter.append(args.out/"trials.jsonl",r)
         complete = {(r["case_id"],r["repetition"],r["arm"]) for r in rows}
         interrupted = {}
         for call in meter.calls:
@@ -306,7 +456,22 @@ def main():
         "note":"Initial 26 invocations preceded SDK transport fix; internal HTTP retry counts unavailable. Aborted trial retained, not rerun." if args.resume else "strict transport retry guard active from start"})
     status = "completed"
     try:
+        if args.workers > 1:
+            database = args.out/"call_budget.sqlite3"
+            with sqlite3.connect(database) as db:
+                db.execute("CREATE TABLE IF NOT EXISTS budget (used INTEGER, failures INTEGER)")
+                if not db.execute("SELECT 1 FROM budget").fetchone():
+                    db.execute("INSERT INTO budget VALUES (?,0)",(max((c["call_id"] for c in meter.calls),default=0),))
+            jobs=[]
+            for rep in range(args.repetitions):
+                for case in cases:
+                    for arm in (("without_attributes","with_attributes") if rep%2==0 else ("with_attributes","without_attributes")):
+                        if (case["id"],rep,arm) not in completed:
+                            out=args.out/"workers"/f'{case["id"]}_{rep}_{arm}'
+                            jobs.append((case,rep,arm,model,maps,str(out),str(database),args.max_calls))
+            status=run_parallel(jobs,args.workers,meter,rows,database)
         for rep in range(args.repetitions):
+            if args.workers > 1: break
             for case in cases:
                 arms = ("without_attributes","with_attributes") if rep % 2 == 0 else ("with_attributes","without_attributes")
                 for arm in arms:
@@ -315,27 +480,9 @@ def main():
                     if len(meter.calls) >= args.max_calls or meter.consecutive_failures >= 2:
                         status="stopped_call_budget_or_provider_failures"
                         break
-                    meter.current = {"case_id":case["id"],"repetition":rep,"arm":arm}
-                    started, offset, error = time.perf_counter(), len(meter.calls), None
-                    final = TravelPlanState(**{k:v for k,v in case.items() if k in TravelPlanState.model_fields})
-                    diagnostics = {}
-                    try:
-                        with patch.dict(os.environ, {"POI_ATTRIBUTES_ENABLED":"1" if arm=="with_attributes" else "0"}):
-                            final, diagnostics = run_final_route(case, model, lambda *a: [], meter.factory, maps)
-                        if diagnostics["map_misses"]:
-                            raise ValueError("Unexpected missing road replay")
-                    except Exception as exc:
-                        error = type(exc).__name__
-                    calls = meter.calls[offset:]
-                    known = all(type(c["input_tokens"]) is int and type(c["output_tokens"]) is int for c in calls) and bool(calls)
-                    row = {**meter.current,"metrics":grade(final,case,error),"error":error,"model_calls":len(calls),
-                        "usage_known":known,"input_tokens":sum(c["input_tokens"] for c in calls) if known else None,
-                        "output_tokens":sum(c["output_tokens"] for c in calls) if known else None,
-                        "elapsed_ms":(time.perf_counter()-started)*1000,"diagnostics":diagnostics,
-                        "final_state":final.model_dump(mode="json")}
+                    row = run_trial(case,rep,arm,model,meter,maps)
                     rows.append(row)
-                    meter.append(args.out/"trials.jsonl", row)
-                    print(json.dumps({**meter.current,"correct":row["metrics"]["expected_outcome_correct"],"selected":row["metrics"]["selected"],"calls":len(meter.calls),"error":error},ensure_ascii=True),flush=True)
+                    print(json.dumps({**meter.current,"correct":row["metrics"]["expected_outcome_correct"],"selected":row["metrics"]["selected"],"calls":len(meter.calls),"error":row["error"]},ensure_ascii=True),flush=True)
                 if status!="completed":break
             if status!="completed":break
     except BaseException:
@@ -344,7 +491,7 @@ def main():
     finally:
         report={"protocol":"poi-attributes-route-pilot-v1","status":status,"model":model,"max_calls":args.max_calls,
             "attempted_calls":len(meter.calls),"planned_trials":len(cases)*2*args.repetitions,"completed_trials":len(rows),
-            "cost":"unpriced","fingerprints":binding,"summary":summarize(rows),"results":rows}
+            "cost":"unpriced","workers":args.workers,"fingerprints":binding,"summary":summarize(rows),"results":rows}
         report["transport_audit"] = [json.loads(line) for line in (args.out/"protocol_versions.jsonl").read_text(encoding="utf-8").splitlines()]
         (args.out/"report.json").write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding="utf-8")
         (args.out/"report.md").write_text(render(report),encoding="utf-8")

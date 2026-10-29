@@ -216,3 +216,35 @@ def test_meter_updates_actual_sdk_transports_and_enforces_budget(tmp_path, monke
     with pytest.raises(ValueError, match="budget"):
         runnable.invoke([("human", "test")])
     assert len(meter.calls) == 1
+
+
+def test_concurrent_budget_reservations_are_atomic(tmp_path):
+    from concurrent.futures import ThreadPoolExecutor
+    import sqlite3
+    database = tmp_path/"budget.sqlite3"
+    with sqlite3.connect(database) as db:
+        db.execute("CREATE TABLE budget (used INTEGER, failures INTEGER)")
+        db.execute("INSERT INTO budget VALUES (59,0)")
+    def attempt(_):
+        try: return evaluation.reserve_call(database, 64)
+        except ValueError: return None
+    with ThreadPoolExecutor(max_workers=8) as pool:
+        ids = list(pool.map(attempt, range(20)))
+    assert sorted(i for i in ids if i is not None) == [60,61,62,63,64]
+    evaluation.update_provider_failure(database, True)
+    evaluation.update_provider_failure(database, True)
+    with pytest.raises(ValueError): evaluation.reserve_call(database, 100)
+
+
+def test_interrupted_pair_never_counted_as_attribute_improvement():
+    case = evaluation.build_cases()[0]
+    bad = evaluation.grade(TravelPlanState(query=case["query"]),case,"HarnessInterrupted")
+    good = {**bad,"expected_outcome_correct":True,"task_success":True}
+    common = {"case_id":case["id"],"repetition":0,"usage_known":False,"elapsed_ms":0,"model_calls":1}
+    rows = [{**common,"arm":"without_attributes","metrics":bad,"error":"HarnessInterrupted"},
+            {**common,"arm":"with_attributes","metrics":good,"error":None}]
+    summary = evaluation.summarize(rows)
+    assert summary["paired_trials"] == 1
+    assert summary["quality_comparable_pairs"] == 0
+    assert summary["improved_pairs"] == 0
+    assert summary["arms"]["without_attributes"]["expected_outcome"]["denominator"] == 1
