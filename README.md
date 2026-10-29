@@ -427,6 +427,59 @@ checkpoint 已移除阶段等待与固定 Token 预算模拟，改为读取 **30
 
 详见 [早期检索报告](docs/rag_test_report.md) · [v2 协议](docs/rag_benchmark_v2.md) · [实施记录](docs/rag_benchmark_v2_implementation_report.md) · [最终路线对照](docs/route_interest_evaluation.md)。
 
+## 📊 后训练优化与受控消融评测 (Post-Training & Controlled Ablation)
+
+### 1. 实验背景与严格受控评测协议 (Evaluation Protocol)
+
+本项目对核心 `Joint Planner` 做了四代数据与后训练迭代：`Base → v2 → A/B → C`。目标是提高候选池封闭域忠实度、开放时间与道路转场约束遵守，以及规则反馈后的局部重排能力。
+
+- **评测集与解码**：冻结 50 个场景（45 个可行、5 个不可行）× 3 个共同 seed（1001/1002/1003），每个模型 150 次运行；统一生产 `Joint Planner` 提示词、`TravelRoute` Schema、`temperature=0.3`、`top_p=0.95`。
+- **双模式同源对比**：`Planner-Only` 直接取同一条 `Rules+Rework` 轨迹的 Round 0；`Rules+Rework` 使用冻结确定性 Rubric 错误码反馈，最多额外返工 3 轮，不调用外部 Reviewer API。
+- **推理环境隔离**：模型均合并为完整 BF16 权重，通过本地流式 vLLM 顺序加载；关闭 Prefix Cache、并发为 1，每个模型先做 5 条预热并丢弃。统一记录输出长度、TTFT 和 `TPOT P50`（本地约 17.4 ms/token）。单卡顺序加载不能保证不同模型处于同一物理时刻，因此延迟只作服务级参考。
+- **统计口径**：可行集通过率以 45 个可行场景 × 3 次生成为分母；5 个不可行场景单独统计识别率、合规拒答率和幻觉率。3 个 seed 是重复生成，不是独立训练实验。
+
+### 2. 四代九模型演进与核心结果总表 (Main Results)
+
+下表中的本地模型结果来自同一受控协议。`Rules+Rework` 列是返工后的最终可行集通过率；“闭环 Planner Token”是可行集上该模式所有 Planner 调用的累计 Token。教师模型使用同一冻结集和本地规则评分，但其 Planner 运行在外部 API 上。
+
+| 模型 | Planner-Only 可行集通过率 | Rules+Rework 可行集通过率 | 首轮 `user_time_window` 违约 /135 | 可行集返工挽回率 | All-3-Pass | 闭环 Planner Token | 可行集 P50/P95 延迟 |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| Base | 49.6% | 50.4% | — | 1.5% | 44.4% | 1,118,242 | 12.5s / 32.4s |
+| v2-SFT | 64.4% | 70.4% | — | 16.7% | 64.4% | 877,632 | 7.5s / 23.6s |
+| v2-DPO | 61.5% | 69.6% | — | 21.2% | 64.4% | 893,378 | 7.7s / 24.3s |
+| A-SFT | 39.3% | 46.7% | — | 12.2% | 28.9% | 1,208,416 | 17.0s / 30.3s |
+| A-DPO | 43.0% | 48.9% | — | 10.4% | 33.3% | 1,174,965 | 18.2s / 31.2s |
+| B-SFT | 68.1% | 78.5% | 35 | 32.6% | 68.9% | 807,237 | 7.4s / 24.2s |
+| B-DPO | 71.1% | 76.3% | 34 | 17.9% | 71.1% | 790,063 | 7.2s / 23.9s |
+| **C-SFT** | **83.7%** | **91.9%** | **15** | **50.0%** | **88.9%** | **598,329** | **6.6s / 22.5s** |
+| **C-DPO** | **87.4%** | **91.9%** | **12** | **35.3%** | **91.1%** | **560,897** | **6.6s / 22.4s** |
+| GPT-6.1-sol JSON-mode | 91.1% | 100.0% | — | 100.0% | 100.0% | 1,164,037 | 16.7s / 36.4s |
+
+教师模型延迟包含外部网络、供应商排队与调度，不与本地 vLLM 延迟直接混比；教师模型的输入较长，Token 口径也由供应商返回。早期非同协议教师基准不并入本表。
+
+教师 JSON-mode 结果的不可行集识别率和合规拒答率均为 100%，本地 C-SFT/C-DPO 在当前冻结集上均为 0% 合规拒答率；该差异是当前最明确的剩余能力缺口。
+
+### 3. Data-Centric 迭代归因与关键工程发现 (Key Findings & Ablation Insights)
+
+- **历史脏标签清洗与时间窗突破（B → C）**：静态审计定位到 40 处“严格晚于/早于”边界等号污染，以及 91.2% 的 `:00/:30` 半小时网格偏置。清洗旧数据并补充非整点边界后，首轮 `user_time_window` 违约从 B-DPO 的 34/135 降至 C-DPO 的 12/135，下降 64.7%；C-DPO 可行集首轮通过率达到 87.4%，接近教师模型的 91.1%。C-DPO Planner-Only 平均输出约 334 tokens，教师约 537 tokens；Token 不能直接等同为成本，因为两者供应商和提示长度不同。
+- **单轮 DPO 返工坍缩与多轮修复对齐**：B-DPO 使用的偏好对主要是 Round 0 单轮样本，首轮通过率提升到 71.1%，但返工挽回率由 B-SFT 的 32.6% 降至 17.9%。C 版加入 20 条带规则反馈的 Round 1 修复轨迹及单缺陷扰动负例后，C-DPO 返工挽回率恢复到 35.3%，C-SFT 为 50.0%；两者闭环通过率均为 91.9%，C-DPO 闭环 Planner Token 相比 Base 可行集累计值下降约 49.8%。
+- **反向消融警示（A 系列）**：A 系列在当前协议下首轮仅 39.3%（A-SFT）和 43.0%（A-DPO）。其道路与时间轴联合约束失败更多，返工触发率和闭环 Token 上升，说明数据分布、长度压缩与候选事实对齐比单纯增加训练步骤更关键。
+- **C 的提升是组合效果**：C 同时包含历史标签清洗、非整点边界样本、开放/道路联合约束和多轮修复样本；当前实验不能把提升分别归因到某一项改动。
+
+### 4. 现存局限性与混合架构落地结论 (Limitations & Production Architecture)
+
+- **不可行场景的捷径学习与反馈鸿沟**：当前 5 道不可行题实际上是同一类冲突：每题有 20 个候选，但用户窗口只有 60 分钟，必游单点要求连续 90 分钟。本地微调模型合规拒答率为 0%，教师模型为 100%。静态审计发现，训练集 60 条空路线样本全部集中在 1–3 个候选点的小池子里，模型可能把“拒答”与“小候选池”虚假绑定；本地无解分支 Early Return 只返回抽象英文错误码，缺少“可用 60 分钟 < 要求 90 分钟”的算术证据。
+- **不可行识别率不是充分指标**：本地评分器的关键词识别率存在假阳性，例如“无法据此推断通勤”可能命中“无法”和“90/分钟”等词；必须以“空 `spots`、完整天数结构、准确冲突原因”同时满足作为合规拒答。
+- **评测边界**：这 50 题已用于诊断和数据迭代，虽与训练 Prompt 指纹不交集，但不应再称完全盲测。当前闭环是“生产 Planner + 本地规则反馈”，不等同于线上语义 Reviewer 闭环；评测器增加过可选教师 API 后端，核心判分、返工和聚合逻辑已审计保持一致。
+- **生产落地建议**：`C-DPO` 适合作为本地 7B 主力 `Joint Planner`，负责可行路线的高效生成和局部规则返工；硬性容量、开放窗口、道路可行性和无解判断交由前置确定性可行性检查器（Pre-flight Deterministic Checker）兜底拦截。不要把端到端无解拒答完全交给 7B 模型。
+
+相关证据与资产：
+
+- 受控九模型报告：[controlled_9_model_ablation_report.md](data/post_train/online_holdout50_20261027_v2/controlled-7arm-localrules-20261028/controlled_9_model_ablation_report.md)
+- 教师 JSON-mode 对照：[summary.json](data/post_train/online_holdout50_20261027_v2/teacher-api-localrules-20261028-jsonmode/teacher-gpt-6.1-sol/summary.json)
+- C 版冻结训练集：[c_sft_train.json](data/post_train/c_release_20261028_training/c_sft_train.json) · [c_dpo_train.json](data/post_train/c_release_20261028_training/c_dpo_train.json)
+- 受控评测脚本：[evaluate_controlled_online_holdout.py](scripts/evaluate_controlled_online_holdout.py)
+
 ## 测试与复现
 
 以下检查不需要真实 LLM 或高德调用。
