@@ -39,6 +39,7 @@ def test_route_model_preserves_explicit_primary_override_when_disabled(monkeypat
 
 def test_router_default_provider_matches_factory_default(monkeypatch):
     monkeypatch.delenv("LLM_PROVIDER", raising=False)
+    monkeypatch.delenv("AI_PROVIDER", raising=False)
     monkeypatch.setenv("DEEPSEEK_MODEL", "deepseek-primary")
     monkeypatch.setenv("LLM_ROUTING_ENABLED", "0")
 

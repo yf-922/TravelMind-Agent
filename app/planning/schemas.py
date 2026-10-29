@@ -37,8 +37,8 @@ class SpotPlan(BaseModel):
 
     name: str = Field(description="景点名，必须严格来自候选景点池")
     period: str = Field(description="时段：morning / afternoon / evening")
-    start_time: str = Field(description="开始游玩时间，格式 HH:MM")
-    end_time: str = Field(description="结束游玩时间，格式 HH:MM")
+    start_time: str = Field(pattern=r"^(?:[01]\d|2[0-3]):[0-5]\d$", description="开始游玩时间，格式 HH:MM")
+    end_time: str = Field(pattern=r"^(?:[01]\d|2[0-3]):[0-5]\d$", description="结束游玩时间，格式 HH:MM")
 
 
 class DayRoute(BaseModel):
@@ -57,8 +57,8 @@ class MealSlotPlan(BaseModel):
     day: int = Field(default=1, ge=1, description="第几天")
     meal: str = Field(description="lunch 或 dinner")
     restaurant_name: str = Field(description="餐馆名，必须严格来自餐馆候选池")
-    start_time: str = Field(description="用餐开始时间，格式 HH:MM")
-    end_time: str = Field(description="用餐结束时间，格式 HH:MM")
+    start_time: str = Field(pattern=r"^(?:[01]\d|2[0-3]):[0-5]\d$", description="用餐开始时间，格式 HH:MM")
+    end_time: str = Field(pattern=r"^(?:[01]\d|2[0-3]):[0-5]\d$", description="用餐结束时间，格式 HH:MM")
     duration_min: int = Field(default=60, ge=15, le=240, description="用餐时长，分钟")
     reason: str = Field(default="", description="选择该餐馆的简短理由")
 

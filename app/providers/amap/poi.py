@@ -225,6 +225,8 @@ def poi_to_spot(poi: dict[str, Any]) -> dict[str, Any] | None:
         "address": normalize_address(poi.get("address", "")),
         "tel": str(poi.get("tel") or "").strip() or None,
         "cost": cost_raw or None,
-        "indoor": indoor,
-        "indoor_source": "amap_category_inference" if indoor is not None else "unknown",
+        "indoor": None,
+        "indoor_hint": indoor,
+        "indoor_source": "unknown",
+        "indoor_hint_source": "amap_category_inference" if indoor is not None else "unknown",
     }

@@ -294,7 +294,7 @@ def build_soft_review_cases():
         elif label == 'indoor-pool-conflict':
             case['state']['pois'] = [p for p in case['state']['pois']
                                      if p.get('indoor') is False]
-        expected_hard = []
+        expected_hard = ['heat_exposure_or_unknown_indoor'] if label == 'heat' else []
         if label == 'time-deadlock':
             expected_hard = ['commute_time_conflict']
         elif label == 'indoor-pool-conflict':

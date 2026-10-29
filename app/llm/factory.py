@@ -19,7 +19,9 @@ DEFAULT_PROVIDER = "deepseek"
 def resolve_llm_provider() -> LLMProvider:
     """从环境变量解析 LLM 提供商，默认为 DeepSeek。"""
     load_local_env()
-    provider = os.getenv("LLM_PROVIDER", DEFAULT_PROVIDER).strip().lower()
+    provider = (os.getenv("LLM_PROVIDER") or os.getenv("AI_PROVIDER") or DEFAULT_PROVIDER).strip().lower()
+    if provider == "openai-proxy":
+        provider = "openai"
     if provider not in ("openai", "grok", "deepseek", "doubao"):
         raise ValueError(f"未知的 LLM 提供商：{provider}，支持：openai, grok, deepseek, doubao")
     return provider  # type: ignore

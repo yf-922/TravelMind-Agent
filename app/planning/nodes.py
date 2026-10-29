@@ -1,6 +1,7 @@
 """LangGraph 节点函数：意图识别、景点搜索、规划、评审、时间检查、餐饮搜索、推荐、finalize。"""
 
 from __future__ import annotations
+from app.planning.constraints import contract_text, effective_daily_limit, heat_violations
 
 import json
 import logging
@@ -593,7 +594,7 @@ def _route_risk_flags(state: TravelPlanState) -> list[str]:
     habit_risk = False
     for day in route:
         day_spots = day.get("spots") or []
-        if len(day_spots) > state.max_per_day:
+        if len(day_spots) > effective_daily_limit(state):
             structural_risk = True
         previous_period = -1
         previous_end = -1
@@ -693,6 +694,8 @@ def _route_risk_flags(state: TravelPlanState) -> list[str]:
                         flags.append("commute_time_conflict")
                 except (ValueError, TypeError):
                     flags.append("route_structure")
+    if heat_violations(state, route):
+        flags.append("heat_exposure_or_unknown_indoor")
     flags.extend(_main_meal_risk_flags(state))
     return flags
 
@@ -701,7 +704,7 @@ def route_risk_gate_node(state: TravelPlanState, *, semantic_review: bool = True
     """Escalate only drafts with deterministic evidence of risk."""
     flags = _route_risk_flags(state)
     review_prefixes = (
-        "duplicate_poi", "unknown_poi", "weather_outdoor_conflict",
+        "duplicate_poi", "unknown_poi", "weather_outdoor_conflict", "heat_exposure_or_unknown_indoor",
         "walking_constraint", "long_road_leg", "route_structure",
         "habit_constraint", "user_modification",
         "modification_time_unfulfilled",
@@ -790,6 +793,7 @@ def make_joint_planner_node(model_name: str | None, *, knowledge_lookup=None, ll
         feedback = state.route_modify_opinion or "无"
         old_route = json.dumps(state.route, ensure_ascii=False) if state.route else "无"
         prompt = (
+            contract_text(state) +
             f"用户需求：{state.rewritten_query or state.query}\n"
             f"目的地：{state.destination}；天数：{state.days}；每天景点上限：{state.max_per_day}\n"
             f"景点偏好：{state.attraction_preference or '无'}；用餐偏好：{state.food_preference or '无'}\n"
@@ -1780,6 +1784,7 @@ def _finalize_impl(state: TravelPlanState) -> dict[str, Any]:
         explanations = {
             "route_structure": "缺少有效景点或行程结构不完整",
             "indoor_constraint": "候选景点不能满足仅室内要求",
+            "heat_exposure_or_unknown_indoor": "高温11:00–15:00安排了室外或室内属性未知的景点",
             "opening_time_conflict": "游玩时段与景点开放时间冲突",
             "modification_time_unfulfilled": "路线未满足用户指定的游玩时段",
             "walking_constraint": "步行距离超限或尚未核验",

@@ -228,7 +228,8 @@ def _spot_line(s: dict[str, Any]) -> str:
         coord = f"坐标 {loc['lng']:.4f},{loc['lat']:.4f}"
     else:
         coord = "坐标未知"
-    return f"- {s['name']}（区域 {area}，评分 {rating}，开放 {open_t}，{coord}）"
+    from app.planning.constraints import indoor_description
+    return f"- {s['name']}（区域 {area}，评分 {rating}，开放 {open_t}，{coord}；{indoor_description(s)}）"
 
 
 def format_spots_for_llm(

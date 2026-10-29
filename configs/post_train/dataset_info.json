@@ -1,0 +1,12 @@
+{
+  "travelmind_planner_sft": {
+    "file_name": "data/post_train/travelmind_planner_sft.json",
+    "columns": {
+      "prompt": "conversations"
+    }
+  },
+  "travelmind_planner_dpo": {
+    "file_name": "data/post_train/travelmind_planner_dpo.json",
+    "ranking": true
+  }
+}

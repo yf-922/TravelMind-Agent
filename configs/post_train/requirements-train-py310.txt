@@ -1,0 +1,27 @@
+# Install into a dedicated --system-site-packages venv; reuse torch 2.9.0+cu128.
+# Fetch Linux wheels locally and upload them. Do not alter the inference env.
+llamafactory==0.9.3
+transformers==4.52.4
+tokenizers==0.21.1
+peft==0.15.2
+accelerate==1.7.0
+trl==0.9.6
+datasets==3.6.0
+numpy==1.26.4
+pydantic==2.10.6
+pydantic-core==2.27.2
+huggingface-hub==0.36.0
+gradio==5.31.0
+gradio-client==1.10.1
+omegaconf==2.3.0
+sse-starlette==2.3.6
+av==14.2.0
+fire==0.7.1
+tyro==0.8.14
+antlr4-python3-runtime==4.9.3
+shtab==1.13.0
+docstring-parser==0.18.0
+typeguard==4.4.4
+dill==0.3.8
+multiprocess==0.70.16
+fsspec==2025.3.0

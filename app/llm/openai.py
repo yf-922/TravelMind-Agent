@@ -18,7 +18,18 @@ SchemaT = TypeVar("SchemaT", bound=BaseModel)
 
 
 def resolve_openai_model(model: str | None = None) -> str:
-    return (model or os.getenv("OPENAI_MODEL", DEFAULT_OPENAI_MODEL)).strip()
+    return (model or os.getenv("OPENAI_MODEL") or os.getenv("AI_MODEL") or DEFAULT_OPENAI_MODEL).strip()
+
+
+def resolve_openai_base_url() -> str | None:
+    """Resolve an optional OpenAI-compatible proxy endpoint."""
+    value = (os.getenv("OPENAI_BASE_URL") or os.getenv("AI_BASE_URL") or "").strip()
+    return value.rstrip("/") or None
+
+
+def use_openai_responses_api() -> bool:
+    value = (os.getenv("OPENAI_USE_RESPONSES_API") or "1").strip().lower()
+    return value not in {"0", "false", "no", "off"}
 
 
 def resolve_reasoning_effort() -> str:
@@ -36,7 +47,7 @@ def resolve_reasoning_effort() -> str:
 def build_chat_openai(*, model: str | None = None, temperature: float = 0) -> Any:
     """Create an OpenAI client using the Responses API."""
     load_local_env()
-    api_key = os.getenv("OPENAI_API_KEY", "").strip()
+    api_key = (os.getenv("OPENAI_API_KEY") or os.getenv("AI_API_KEY") or "").strip()
     if not api_key:
         raise RuntimeError("缺少 OPENAI_API_KEY。请在 .env.local 中配置后重试。")
     try:
@@ -49,9 +60,10 @@ def build_chat_openai(*, model: str | None = None, temperature: float = 0) -> An
     return ChatOpenAI(
         model=resolve_openai_model(model),
         api_key=api_key,
+        base_url=resolve_openai_base_url(),
         temperature=temperature,
         reasoning_effort=resolve_reasoning_effort(),
-        use_responses_api=True,
+        use_responses_api=use_openai_responses_api(),
         timeout=120,
         max_retries=2,
         http_client=httpx.Client(proxy=proxy, trust_env=False),

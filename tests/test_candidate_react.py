@@ -175,10 +175,12 @@ def test_real_graph_loop_observes_new_results_and_finishes_after_two_rounds(monk
                            {"candidate_react": "candidate_react", "planner": END})
     result = g.compile().invoke(TravelPlanState(query="喜欢户外", days=1,
         rain_indoor_priority=True, weather_forecast=[{"is_bad": True}]))
-    assert result["candidate_pool_status"] == "ready"
+    # Category-only search results cannot certify indoor safety, even after
+    # the second successful search. The bounded graph must report the gap.
+    assert result["candidate_pool_status"] == "insufficient"
     assert result["candidate_search_round"] == 2 and result["candidate_api_calls"] == 2
     assert "公园0" in observations[1]
-    assert result["candidate_missing_coverage"] == []
+    assert "indoor" in result["candidate_missing_coverage"]
 
 
 def test_unrequested_explicit_tool_action_is_blocked_before_network(monkeypatch):

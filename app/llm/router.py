@@ -47,7 +47,9 @@ class ModelRouter:
     def from_env(cls, primary_model: str | None = None) -> "ModelRouter":
         # Keep this default aligned with factory.DEFAULT_PROVIDER without
         # importing the factory back into the router.
-        provider = os.getenv("LLM_PROVIDER", "deepseek").strip().lower()
+        provider = (os.getenv("LLM_PROVIDER") or os.getenv("AI_PROVIDER") or "deepseek").strip().lower()
+        if provider == "openai-proxy":
+            provider = "openai"
         configured_primary = os.getenv(
             {"grok": "GROK_MODEL", "deepseek": "DEEPSEEK_MODEL",
              "doubao": "DOUBAO_MODEL", "openai": "OPENAI_MODEL"}.get(provider, "OPENAI_MODEL"),
