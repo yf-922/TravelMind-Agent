@@ -620,6 +620,7 @@ Redis 不可用时跳过缓存；Chroma 用户记忆返回 `skipped/degraded` �
 - [部署与观测](docs/production-readiness.md)：健康检查、Token、节点指标和降级。
 - [Supervisor 运行时](docs/supervisor-runtime-progress.md)：私有记忆、角色隔离与协作链路。
 - [Reviewer 真实消融](docs/reviewer_ablation_v2.md)：对照方式、资源和失败归因。
+- [候选池有界 ReAct 离线消融](docs/candidate_react_ablation.md)：28 个受控缺口、固定高德 POI、独立前提评分与去重/预算探针，附逐例 JSON。
 - [RAG 评测协议](docs/rag_benchmark_v2.md)：语料、标注、冻结、指标公式与对照配置。
 - [最终路线兴趣评测](docs/route_interest_evaluation.md)：只用实际选点验证知识是否有效。
 

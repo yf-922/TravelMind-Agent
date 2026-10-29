@@ -1,0 +1,6432 @@
+{
+  "protocol": "candidate-react-controlled-v2",
+  "scope": "post-bootstrap controlled deficits; offline mechanism ablation",
+  "annotation_status": "controlled requirements, not human-verified real-user labels",
+  "config": {
+    "round_limit": 2,
+    "shared_http_limit": 4,
+    "cache": "disabled",
+    "candidate_min_per_day": 2,
+    "min_rating": 4.5,
+    "model": "deterministic_policy_double",
+    "indoor_policy": "production parser: category hints remain unknown"
+  },
+  "environment": {
+    "python": "3.12.8",
+    "langgraph": "1.2.11",
+    "pydantic": "2.13.5"
+  },
+  "fingerprints": {
+    "snapshot": "92ce86aa114ffb2897c4f84070783f7ed64ec2cb0edf48780b4677a2cb72f820",
+    "cases": "a3ae6b8212de5e8756eeb1f03d9aedf5dcbd5e46ac3b9cc453b77d4860af5490",
+    "config": "147c0aae6bc0f73c6959c04974e83010232e52681479235c005ab26c2e1abdc1",
+    "code": {
+      "app/planning/candidate_react.py": "18c50ecf8121c6822cc44636963b8284e506e7c39ad7bc25ce9933c1e4373c3b",
+      "app/planning/schemas.py": "a1c639f2db0ef301706235cb485ab209b1c05209b3c2e7bfef8e0a8b8c83009d",
+      "app/planning/helpers.py": "ae2a3ed6be9c7510b0e8348298a7b005d87851b6a129492d47ce7d282dc1f7e2",
+      "app/providers/amap/poi.py": "51f350a52774ccc446e56c780d7fb1ed63c3546ee85026447002bac3c951a59b",
+      "scripts/evaluate_candidate_react.py": "641f5bcd3532ad868aaeec6927ce52ad4406e23845344d72543ec17044c76b88"
+    }
+  },
+  "summary": {
+    "all_cases": 28,
+    "non_boundary_coverage": {
+      "baseline": {
+        "numerator": 0,
+        "denominator": 23,
+        "percent": 0.0
+      },
+      "bounded_react": {
+        "numerator": 13,
+        "denominator": 23,
+        "percent": 56.52173913043478
+      }
+    },
+    "by_group": {
+      "named": {
+        "baseline": {
+          "numerator": 0,
+          "denominator": 9,
+          "percent": 0.0
+        },
+        "bounded_react": {
+          "numerator": 9,
+          "denominator": 9,
+          "percent": 100.0
+        }
+      },
+      "indoor": {
+        "baseline": {
+          "numerator": 0,
+          "denominator": 9,
+          "percent": 0.0
+        },
+        "bounded_react": {
+          "numerator": 0,
+          "denominator": 9,
+          "percent": 0.0
+        }
+      },
+      "count": {
+        "baseline": {
+          "numerator": 0,
+          "denominator": 5,
+          "percent": 0.0
+        },
+        "bounded_react": {
+          "numerator": 4,
+          "denominator": 5,
+          "percent": 80.0
+        }
+      }
+    },
+    "raw_coverage_including_deliberate_negatives": {
+      "baseline": {
+        "numerator": 0,
+        "denominator": 28,
+        "percent": 0.0
+      },
+      "bounded_react": {
+        "numerator": 13,
+        "denominator": 28,
+        "percent": 46.42857142857143
+      }
+    },
+    "baseline_prerequisite_blocked": {
+      "numerator": 23,
+      "denominator": 23,
+      "percent": 100.0
+    },
+    "after_prerequisite_blocked": {
+      "numerator": 10,
+      "denominator": 23,
+      "percent": 43.47826086956522
+    },
+    "blocker_counts": {
+      "baseline": {
+        "missing_required_poi": 9,
+        "indoor_not_established": 9,
+        "insufficient_count": 5
+      },
+      "bounded_react": {
+        "indoor_not_established": 9,
+        "insufficient_count": 1
+      }
+    },
+    "fixture_limited_cases_even_trusting_hints": [
+      "indoor-3-1",
+      "indoor-3-2",
+      "count-3"
+    ],
+    "optimistically_fixture_satisfiable": {
+      "baseline": {
+        "numerator": 0,
+        "denominator": 20,
+        "percent": 0.0
+      },
+      "bounded_react": {
+        "numerator": 13,
+        "denominator": 20,
+        "percent": 65.0
+      }
+    },
+    "boundary_safe_incomplete": {
+      "numerator": 5,
+      "denominator": 5,
+      "percent": 100.0
+    },
+    "budget_and_round_compliance": {
+      "numerator": 28,
+      "denominator": 28,
+      "percent": 100.0
+    },
+    "fictional_or_near_name_accepted": {
+      "numerator": 0,
+      "denominator": 2,
+      "percent": 0.0
+    },
+    "duplicate_query_blocks": 6,
+    "repeat_query_guard": {
+      "numerator": 6,
+      "denominator": 6,
+      "percent": 100.0
+    },
+    "mean_rounds": 1.6071428571428572,
+    "mean_supplemental_http_attempts": 1.8214285714285714,
+    "total_rounds": 45,
+    "total_supplemental_http_attempts": 51,
+    "max_rounds": 2,
+    "max_total_http_attempts": 4,
+    "execution_failures": {
+      "numerator": 0,
+      "denominator": 28,
+      "percent": 0.0
+    },
+    "hint_only_diagnostic": {
+      "numerator": 20,
+      "denominator": 23,
+      "percent": 86.95652173913044
+    }
+  },
+  "cases": [
+    {
+      "id": "named-1-1",
+      "group": "named",
+      "city": "南京",
+      "query": "南京一日游，想去“南京博物院”",
+      "initial_state_sha256": "696c189a3357029e49972c9f8b98e63273273bfc7363bae923c2a0313496c6e0",
+      "initial_state_unchanged": true,
+      "requirements": {
+        "required_names": [
+          "南京博物院"
+        ],
+        "min_count": 4,
+        "min_indoor": 0
+      },
+      "baseline": {
+        "pass": false,
+        "blockers": [
+          "missing_required_poi"
+        ],
+        "missing_names": [
+          "南京博物院"
+        ],
+        "count": 4,
+        "indoor": 1,
+        "indoor_with_hints": 1,
+        "hint_only_diagnostic_pass": false
+      },
+      "bounded_react": {
+        "pass": true,
+        "blockers": [],
+        "missing_names": [],
+        "count": 5,
+        "indoor": 1,
+        "indoor_with_hints": 2,
+        "hint_only_diagnostic_pass": true
+      },
+      "error": null,
+      "initial_names": [
+        "中国科举博物馆(江南贡院)",
+        "不老村",
+        "古鸡鸣寺",
+        "莲花广场"
+      ],
+      "final_names": [
+        "中国科举博物馆(江南贡院)",
+        "不老村",
+        "古鸡鸣寺",
+        "莲花广场",
+        "南京博物院"
+      ],
+      "status": "ready",
+      "production_missing": [],
+      "rounds": 1,
+      "supplemental_http_attempts": 1,
+      "initial_http_attempts": 0,
+      "total_http_attempts": 1,
+      "stop_reason": "coverage_ready",
+      "trace": [
+        {
+          "action": "search_user_requested_poi",
+          "round": 1,
+          "query_key": "tripagent:candidate:2199f1cab1ea3126de124e38f95461c156840d32a90b6ca9a4c55a55bd517cac",
+          "result_count": 1,
+          "cache_hit": false,
+          "raw_count": 1,
+          "rating_filtered": 0
+        }
+      ],
+      "http": [
+        {
+          "city": "南京",
+          "query": "南京博物院",
+          "types": "",
+          "outcome": "success",
+          "raw_count": 1
+        }
+      ],
+      "observations": [
+        {
+          "query": "南京一日游，想去“南京博物院”",
+          "rewritten_query": null,
+          "preferences": null,
+          "habits": null,
+          "profile": null,
+          "weather": [
+            {
+              "is_bad": false
+            }
+          ],
+          "destination": "南京",
+          "days": 1,
+          "coverage": {
+            "count": 4,
+            "required_count": 4,
+            "indoor": 1,
+            "outdoor": 3,
+            "unknown_type": 0,
+            "requested_count": 1,
+            "requested_hits": 0,
+            "regions": 3,
+            "categories": 0
+          },
+          "missing": [
+            "requested:南京博物院"
+          ],
+          "observed": [],
+          "candidates": [
+            {
+              "name": "中国科举博物馆(江南贡院)",
+              "indoor": true
+            },
+            {
+              "name": "不老村",
+              "indoor": false
+            },
+            {
+              "name": "古鸡鸣寺",
+              "indoor": false
+            },
+            {
+              "name": "莲花广场",
+              "indoor": false
+            }
+          ]
+        }
+      ],
+      "duplicate_blocks": 0,
+      "search_failures": 0,
+      "repeat_opportunities": 0,
+      "optimistic_fixture_upper_bound": {
+        "pass": true,
+        "blockers": [],
+        "missing_names": [],
+        "count": 18,
+        "indoor": 15,
+        "indoor_with_hints": 15,
+        "hint_only_diagnostic_pass": true
+      },
+      "budget_guard_errors": 0,
+      "unique_names": true,
+      "provenance_ok": true,
+      "guard_pass": false
+    },
+    {
+      "id": "named-1-2",
+      "group": "named",
+      "city": "南京",
+      "query": "南京一日游，想去“南京地质博物馆”，想去“南京市博物馆”",
+      "initial_state_sha256": "c3da958081f4844d10e16fd40292ef13b6b38ba2fe408a633ed93822f725b9b5",
+      "initial_state_unchanged": true,
+      "requirements": {
+        "required_names": [
+          "南京地质博物馆",
+          "南京市博物馆"
+        ],
+        "min_count": 4,
+        "min_indoor": 0
+      },
+      "baseline": {
+        "pass": false,
+        "blockers": [
+          "missing_required_poi"
+        ],
+        "missing_names": [
+          "南京地质博物馆",
+          "南京市博物馆"
+        ],
+        "count": 4,
+        "indoor": 1,
+        "indoor_with_hints": 1,
+        "hint_only_diagnostic_pass": false
+      },
+      "bounded_react": {
+        "pass": true,
+        "blockers": [],
+        "missing_names": [],
+        "count": 6,
+        "indoor": 1,
+        "indoor_with_hints": 3,
+        "hint_only_diagnostic_pass": true
+      },
+      "error": null,
+      "initial_names": [
+        "中国科举博物馆(江南贡院)",
+        "不老村",
+        "古鸡鸣寺",
+        "莲花广场"
+      ],
+      "final_names": [
+        "中国科举博物馆(江南贡院)",
+        "不老村",
+        "古鸡鸣寺",
+        "莲花广场",
+        "南京地质博物馆",
+        "南京市博物馆"
+      ],
+      "status": "ready",
+      "production_missing": [],
+      "rounds": 1,
+      "supplemental_http_attempts": 2,
+      "initial_http_attempts": 0,
+      "total_http_attempts": 2,
+      "stop_reason": "coverage_ready",
+      "trace": [
+        {
+          "action": "search_user_requested_poi",
+          "round": 1,
+          "query_key": "tripagent:candidate:71b39f0bf8ed9bcdc24ce8b750afc4e046474f0ae3b2f705c6c7aba7c3b4c390",
+          "result_count": 1,
+          "cache_hit": false,
+          "raw_count": 1,
+          "rating_filtered": 0
+        },
+        {
+          "action": "search_user_requested_poi",
+          "round": 1,
+          "query_key": "tripagent:candidate:4a1918f44e7224e8682326db7b8861bccdcc6d8c31262539676436103abd8206",
+          "result_count": 1,
+          "cache_hit": false,
+          "raw_count": 1,
+          "rating_filtered": 0
+        }
+      ],
+      "http": [
+        {
+          "city": "南京",
+          "query": "南京地质博物馆",
+          "types": "",
+          "outcome": "success",
+          "raw_count": 1
+        },
+        {
+          "city": "南京",
+          "query": "南京市博物馆",
+          "types": "",
+          "outcome": "success",
+          "raw_count": 1
+        }
+      ],
+      "observations": [
+        {
+          "query": "南京一日游，想去“南京地质博物馆”，想去“南京市博物馆”",
+          "rewritten_query": null,
+          "preferences": null,
+          "habits": null,
+          "profile": null,
+          "weather": [
+            {
+              "is_bad": false
+            }
+          ],
+          "destination": "南京",
+          "days": 1,
+          "coverage": {
+            "count": 4,
+            "required_count": 4,
+            "indoor": 1,
+            "outdoor": 3,
+            "unknown_type": 0,
+            "requested_count": 2,
+            "requested_hits": 0,
+            "regions": 3,
+            "categories": 0
+          },
+          "missing": [
+            "requested:南京地质博物馆",
+            "requested:南京市博物馆"
+          ],
+          "observed": [],
+          "candidates": [
+            {
+              "name": "中国科举博物馆(江南贡院)",
+              "indoor": true
+            },
+            {
+              "name": "不老村",
+              "indoor": false
+            },
+            {
+              "name": "古鸡鸣寺",
+              "indoor": false
+            },
+            {
+              "name": "莲花广场",
+              "indoor": false
+            }
+          ]
+        }
+      ],
+      "duplicate_blocks": 0,
+      "search_failures": 0,
+      "repeat_opportunities": 0,
+      "optimistic_fixture_upper_bound": {
+        "pass": true,
+        "blockers": [],
+        "missing_names": [],
+        "count": 18,
+        "indoor": 15,
+        "indoor_with_hints": 15,
+        "hint_only_diagnostic_pass": true
+      },
+      "budget_guard_errors": 0,
+      "unique_names": true,
+      "provenance_ok": true,
+      "guard_pass": false
+    },
+    {
+      "id": "named-1-3",
+      "group": "named",
+      "city": "南京",
+      "query": "南京一日游，想去“江宁织造博物馆”",
+      "initial_state_sha256": "03d9de678d554fbfebda6df95af9ad11050ca0e44048617e8aa49b7dab8482bc",
+      "initial_state_unchanged": true,
+      "requirements": {
+        "required_names": [
+          "江宁织造博物馆"
+        ],
+        "min_count": 4,
+        "min_indoor": 0
+      },
+      "baseline": {
+        "pass": false,
+        "blockers": [
+          "missing_required_poi"
+        ],
+        "missing_names": [
+          "江宁织造博物馆"
+        ],
+        "count": 4,
+        "indoor": 1,
+        "indoor_with_hints": 1,
+        "hint_only_diagnostic_pass": false
+      },
+      "bounded_react": {
+        "pass": true,
+        "blockers": [],
+        "missing_names": [],
+        "count": 5,
+        "indoor": 1,
+        "indoor_with_hints": 2,
+        "hint_only_diagnostic_pass": true
+      },
+      "error": null,
+      "initial_names": [
+        "中国科举博物馆(江南贡院)",
+        "不老村",
+        "古鸡鸣寺",
+        "莲花广场"
+      ],
+      "final_names": [
+        "中国科举博物馆(江南贡院)",
+        "不老村",
+        "古鸡鸣寺",
+        "莲花广场",
+        "江宁织造博物馆"
+      ],
+      "status": "ready",
+      "production_missing": [],
+      "rounds": 1,
+      "supplemental_http_attempts": 1,
+      "initial_http_attempts": 0,
+      "total_http_attempts": 1,
+      "stop_reason": "coverage_ready",
+      "trace": [
+        {
+          "action": "search_user_requested_poi",
+          "round": 1,
+          "query_key": "tripagent:candidate:27c1f85a60ec4b2a85d5b9e7c18d57525457a346641a7f57a936d4013ea77eb2",
+          "result_count": 1,
+          "cache_hit": false,
+          "raw_count": 1,
+          "rating_filtered": 0
+        }
+      ],
+      "http": [
+        {
+          "city": "南京",
+          "query": "江宁织造博物馆",
+          "types": "",
+          "outcome": "success",
+          "raw_count": 1
+        }
+      ],
+      "observations": [
+        {
+          "query": "南京一日游，想去“江宁织造博物馆”",
+          "rewritten_query": null,
+          "preferences": null,
+          "habits": null,
+          "profile": null,
+          "weather": [
+            {
+              "is_bad": false
+            }
+          ],
+          "destination": "南京",
+          "days": 1,
+          "coverage": {
+            "count": 4,
+            "required_count": 4,
+            "indoor": 1,
+            "outdoor": 3,
+            "unknown_type": 0,
+            "requested_count": 1,
+            "requested_hits": 0,
+            "regions": 3,
+            "categories": 0
+          },
+          "missing": [
+            "requested:江宁织造博物馆"
+          ],
+          "observed": [],
+          "candidates": [
+            {
+              "name": "中国科举博物馆(江南贡院)",
+              "indoor": true
+            },
+            {
+              "name": "不老村",
+              "indoor": false
+            },
+            {
+              "name": "古鸡鸣寺",
+              "indoor": false
+            },
+            {
+              "name": "莲花广场",
+              "indoor": false
+            }
+          ]
+        }
+      ],
+      "duplicate_blocks": 0,
+      "search_failures": 0,
+      "repeat_opportunities": 0,
+      "optimistic_fixture_upper_bound": {
+        "pass": true,
+        "blockers": [],
+        "missing_names": [],
+        "count": 18,
+        "indoor": 15,
+        "indoor_with_hints": 15,
+        "hint_only_diagnostic_pass": true
+      },
+      "budget_guard_errors": 0,
+      "unique_names": true,
+      "provenance_ok": true,
+      "guard_pass": false
+    },
+    {
+      "id": "indoor-1-1",
+      "group": "indoor",
+      "city": "南京",
+      "query": "南京雨天游，室内优先",
+      "initial_state_sha256": "58c19bd76a62ab50939ca026191c693e45e7e40ee643e1155d5ad29ab0811e8f",
+      "initial_state_unchanged": true,
+      "requirements": {
+        "required_names": [],
+        "min_count": 4,
+        "min_indoor": 3
+      },
+      "baseline": {
+        "pass": false,
+        "blockers": [
+          "indoor_not_established"
+        ],
+        "missing_names": [],
+        "count": 4,
+        "indoor": 0,
+        "indoor_with_hints": 0,
+        "hint_only_diagnostic_pass": false
+      },
+      "bounded_react": {
+        "pass": false,
+        "blockers": [
+          "indoor_not_established"
+        ],
+        "missing_names": [],
+        "count": 18,
+        "indoor": 0,
+        "indoor_with_hints": 14,
+        "hint_only_diagnostic_pass": true
+      },
+      "error": null,
+      "initial_names": [
+        "不老村",
+        "古鸡鸣寺",
+        "莲花广场",
+        "玄武湖景区"
+      ],
+      "final_names": [
+        "不老村",
+        "古鸡鸣寺",
+        "莲花广场",
+        "玄武湖景区",
+        "南京博物院",
+        "六朝博物馆",
+        "南京地质博物馆",
+        "南京市博物馆",
+        "江宁织造博物馆",
+        "德基艺术博物馆(德基广场二期店)",
+        "南京中国科举博物馆南馆",
+        "明孝陵博物馆",
+        "南京紫金山昆虫博物馆",
+        "南京市民俗博物馆",
+        "南京城墙博物馆",
+        "中国南京云锦博物馆",
+        "太平天国历史博物馆",
+        "德基艺术博物馆花花世界艺术馆"
+      ],
+      "status": "insufficient",
+      "production_missing": [
+        "indoor",
+        "diversity"
+      ],
+      "rounds": 2,
+      "supplemental_http_attempts": 2,
+      "initial_http_attempts": 0,
+      "total_http_attempts": 2,
+      "stop_reason": "round_limit",
+      "trace": [
+        {
+          "action": "search_indoor",
+          "round": 1,
+          "query_key": "tripagent:candidate:ec6b00af3149a21661db4912a089bacaf8bf0f24b1b549956d39ad51576022b6",
+          "result_count": 14,
+          "cache_hit": false,
+          "raw_count": 25,
+          "rating_filtered": 11
+        },
+        {
+          "action": "search_indoor",
+          "round": 2,
+          "query_key": "tripagent:candidate:d9978b54ec6c086380136d2df98f208013af73afa3b8e7c015229b77c1feab7f",
+          "result_count": 0,
+          "cache_hit": false,
+          "raw_count": 25,
+          "rating_filtered": 11
+        }
+      ],
+      "http": [
+        {
+          "city": "南京",
+          "query": "博物馆",
+          "types": "140100",
+          "outcome": "success",
+          "raw_count": 25
+        },
+        {
+          "city": "南京",
+          "query": "博物馆 展馆",
+          "types": "140100",
+          "outcome": "success",
+          "raw_count": 25
+        }
+      ],
+      "observations": [
+        {
+          "query": "南京雨天游，室内优先",
+          "rewritten_query": null,
+          "preferences": null,
+          "habits": null,
+          "profile": null,
+          "weather": [
+            {
+              "is_bad": true
+            }
+          ],
+          "destination": "南京",
+          "days": 1,
+          "coverage": {
+            "count": 4,
+            "required_count": 4,
+            "indoor": 0,
+            "outdoor": 4,
+            "unknown_type": 0,
+            "requested_count": 0,
+            "requested_hits": 0,
+            "regions": 2,
+            "categories": 0
+          },
+          "missing": [
+            "indoor",
+            "diversity"
+          ],
+          "observed": [],
+          "candidates": [
+            {
+              "name": "不老村",
+              "indoor": false
+            },
+            {
+              "name": "古鸡鸣寺",
+              "indoor": false
+            },
+            {
+              "name": "莲花广场",
+              "indoor": false
+            },
+            {
+              "name": "玄武湖景区",
+              "indoor": false
+            }
+          ]
+        },
+        {
+          "query": "南京雨天游，室内优先",
+          "rewritten_query": null,
+          "preferences": null,
+          "habits": null,
+          "profile": null,
+          "weather": [
+            {
+              "is_bad": true
+            }
+          ],
+          "destination": "南京",
+          "days": 1,
+          "coverage": {
+            "count": 18,
+            "required_count": 4,
+            "indoor": 0,
+            "outdoor": 4,
+            "unknown_type": 14,
+            "requested_count": 0,
+            "requested_hits": 0,
+            "regions": 4,
+            "categories": 1
+          },
+          "missing": [
+            "indoor",
+            "diversity"
+          ],
+          "observed": [
+            {
+              "action": "search_indoor",
+              "round": 1,
+              "query_key": "tripagent:candidate:ec6b00af3149a21661db4912a089bacaf8bf0f24b1b549956d39ad51576022b6",
+              "result_count": 14,
+              "cache_hit": false,
+              "raw_count": 25,
+              "rating_filtered": 11
+            }
+          ],
+          "candidates": [
+            {
+              "name": "不老村",
+              "indoor": false
+            },
+            {
+              "name": "古鸡鸣寺",
+              "indoor": false
+            },
+            {
+              "name": "莲花广场",
+              "indoor": false
+            },
+            {
+              "name": "玄武湖景区",
+              "indoor": false
+            },
+            {
+              "name": "南京博物院",
+              "indoor": null
+            },
+            {
+              "name": "六朝博物馆",
+              "indoor": null
+            },
+            {
+              "name": "南京地质博物馆",
+              "indoor": null
+            },
+            {
+              "name": "南京市博物馆",
+              "indoor": null
+            },
+            {
+              "name": "江宁织造博物馆",
+              "indoor": null
+            },
+            {
+              "name": "德基艺术博物馆(德基广场二期店)",
+              "indoor": null
+            },
+            {
+              "name": "南京中国科举博物馆南馆",
+              "indoor": null
+            },
+            {
+              "name": "明孝陵博物馆",
+              "indoor": null
+            },
+            {
+              "name": "南京紫金山昆虫博物馆",
+              "indoor": null
+            },
+            {
+              "name": "南京市民俗博物馆",
+              "indoor": null
+            },
+            {
+              "name": "南京城墙博物馆",
+              "indoor": null
+            },
+            {
+              "name": "中国南京云锦博物馆",
+              "indoor": null
+            },
+            {
+              "name": "太平天国历史博物馆",
+              "indoor": null
+            },
+            {
+              "name": "德基艺术博物馆花花世界艺术馆",
+              "indoor": null
+            }
+          ]
+        }
+      ],
+      "duplicate_blocks": 0,
+      "search_failures": 0,
+      "repeat_opportunities": 0,
+      "optimistic_fixture_upper_bound": {
+        "pass": true,
+        "blockers": [],
+        "missing_names": [],
+        "count": 18,
+        "indoor": 14,
+        "indoor_with_hints": 14,
+        "hint_only_diagnostic_pass": true
+      },
+      "budget_guard_errors": 0,
+      "unique_names": true,
+      "provenance_ok": true,
+      "guard_pass": true
+    },
+    {
+      "id": "indoor-1-2",
+      "group": "indoor",
+      "city": "南京",
+      "query": "南京只去室内",
+      "initial_state_sha256": "a26979088f43e40837da940d7ce8ecfbaa67add5bddc15a6274497810c5772e6",
+      "initial_state_unchanged": true,
+      "requirements": {
+        "required_names": [],
+        "min_count": 4,
+        "min_indoor": 4
+      },
+      "baseline": {
+        "pass": false,
+        "blockers": [
+          "indoor_not_established"
+        ],
+        "missing_names": [],
+        "count": 4,
+        "indoor": 1,
+        "indoor_with_hints": 1,
+        "hint_only_diagnostic_pass": false
+      },
+      "bounded_react": {
+        "pass": false,
+        "blockers": [
+          "indoor_not_established"
+        ],
+        "missing_names": [],
+        "count": 18,
+        "indoor": 1,
+        "indoor_with_hints": 15,
+        "hint_only_diagnostic_pass": true
+      },
+      "error": null,
+      "initial_names": [
+        "中国科举博物馆(江南贡院)",
+        "不老村",
+        "古鸡鸣寺",
+        "莲花广场"
+      ],
+      "final_names": [
+        "中国科举博物馆(江南贡院)",
+        "不老村",
+        "古鸡鸣寺",
+        "莲花广场",
+        "南京博物院",
+        "六朝博物馆",
+        "南京地质博物馆",
+        "南京市博物馆",
+        "江宁织造博物馆",
+        "德基艺术博物馆(德基广场二期店)",
+        "南京中国科举博物馆南馆",
+        "明孝陵博物馆",
+        "南京紫金山昆虫博物馆",
+        "南京市民俗博物馆",
+        "南京城墙博物馆",
+        "中国南京云锦博物馆",
+        "太平天国历史博物馆",
+        "德基艺术博物馆花花世界艺术馆"
+      ],
+      "status": "insufficient",
+      "production_missing": [
+        "indoor"
+      ],
+      "rounds": 2,
+      "supplemental_http_attempts": 2,
+      "initial_http_attempts": 0,
+      "total_http_attempts": 2,
+      "stop_reason": "round_limit",
+      "trace": [
+        {
+          "action": "search_indoor",
+          "round": 1,
+          "query_key": "tripagent:candidate:ec6b00af3149a21661db4912a089bacaf8bf0f24b1b549956d39ad51576022b6",
+          "result_count": 14,
+          "cache_hit": false,
+          "raw_count": 25,
+          "rating_filtered": 11
+        },
+        {
+          "action": "search_indoor",
+          "round": 2,
+          "query_key": "tripagent:candidate:d9978b54ec6c086380136d2df98f208013af73afa3b8e7c015229b77c1feab7f",
+          "result_count": 0,
+          "cache_hit": false,
+          "raw_count": 25,
+          "rating_filtered": 11
+        }
+      ],
+      "http": [
+        {
+          "city": "南京",
+          "query": "博物馆",
+          "types": "140100",
+          "outcome": "success",
+          "raw_count": 25
+        },
+        {
+          "city": "南京",
+          "query": "博物馆 展馆",
+          "types": "140100",
+          "outcome": "success",
+          "raw_count": 25
+        }
+      ],
+      "observations": [
+        {
+          "query": "南京只去室内",
+          "rewritten_query": null,
+          "preferences": null,
+          "habits": null,
+          "profile": null,
+          "weather": [
+            {
+              "is_bad": true
+            }
+          ],
+          "destination": "南京",
+          "days": 1,
+          "coverage": {
+            "count": 4,
+            "required_count": 4,
+            "indoor": 1,
+            "outdoor": 3,
+            "unknown_type": 0,
+            "requested_count": 0,
+            "requested_hits": 0,
+            "regions": 3,
+            "categories": 0
+          },
+          "missing": [
+            "indoor"
+          ],
+          "observed": [],
+          "candidates": [
+            {
+              "name": "中国科举博物馆(江南贡院)",
+              "indoor": true
+            },
+            {
+              "name": "不老村",
+              "indoor": false
+            },
+            {
+              "name": "古鸡鸣寺",
+              "indoor": false
+            },
+            {
+              "name": "莲花广场",
+              "indoor": false
+            }
+          ]
+        },
+        {
+          "query": "南京只去室内",
+          "rewritten_query": null,
+          "preferences": null,
+          "habits": null,
+          "profile": null,
+          "weather": [
+            {
+              "is_bad": true
+            }
+          ],
+          "destination": "南京",
+          "days": 1,
+          "coverage": {
+            "count": 18,
+            "required_count": 4,
+            "indoor": 1,
+            "outdoor": 3,
+            "unknown_type": 14,
+            "requested_count": 0,
+            "requested_hits": 0,
+            "regions": 4,
+            "categories": 1
+          },
+          "missing": [
+            "indoor"
+          ],
+          "observed": [
+            {
+              "action": "search_indoor",
+              "round": 1,
+              "query_key": "tripagent:candidate:ec6b00af3149a21661db4912a089bacaf8bf0f24b1b549956d39ad51576022b6",
+              "result_count": 14,
+              "cache_hit": false,
+              "raw_count": 25,
+              "rating_filtered": 11
+            }
+          ],
+          "candidates": [
+            {
+              "name": "中国科举博物馆(江南贡院)",
+              "indoor": true
+            },
+            {
+              "name": "不老村",
+              "indoor": false
+            },
+            {
+              "name": "古鸡鸣寺",
+              "indoor": false
+            },
+            {
+              "name": "莲花广场",
+              "indoor": false
+            },
+            {
+              "name": "南京博物院",
+              "indoor": null
+            },
+            {
+              "name": "六朝博物馆",
+              "indoor": null
+            },
+            {
+              "name": "南京地质博物馆",
+              "indoor": null
+            },
+            {
+              "name": "南京市博物馆",
+              "indoor": null
+            },
+            {
+              "name": "江宁织造博物馆",
+              "indoor": null
+            },
+            {
+              "name": "德基艺术博物馆(德基广场二期店)",
+              "indoor": null
+            },
+            {
+              "name": "南京中国科举博物馆南馆",
+              "indoor": null
+            },
+            {
+              "name": "明孝陵博物馆",
+              "indoor": null
+            },
+            {
+              "name": "南京紫金山昆虫博物馆",
+              "indoor": null
+            },
+            {
+              "name": "南京市民俗博物馆",
+              "indoor": null
+            },
+            {
+              "name": "南京城墙博物馆",
+              "indoor": null
+            },
+            {
+              "name": "中国南京云锦博物馆",
+              "indoor": null
+            },
+            {
+              "name": "太平天国历史博物馆",
+              "indoor": null
+            },
+            {
+              "name": "德基艺术博物馆花花世界艺术馆",
+              "indoor": null
+            }
+          ]
+        }
+      ],
+      "duplicate_blocks": 0,
+      "search_failures": 0,
+      "repeat_opportunities": 0,
+      "optimistic_fixture_upper_bound": {
+        "pass": true,
+        "blockers": [],
+        "missing_names": [],
+        "count": 18,
+        "indoor": 15,
+        "indoor_with_hints": 15,
+        "hint_only_diagnostic_pass": true
+      },
+      "budget_guard_errors": 0,
+      "unique_names": true,
+      "provenance_ok": true,
+      "guard_pass": true
+    },
+    {
+      "id": "indoor-1-3",
+      "group": "indoor",
+      "city": "南京",
+      "query": "南京雨天游，室内优先",
+      "initial_state_sha256": "61e7ed756c37964a086b6174bc0f52ec1f013cf3a639f431137b61f1252235e3",
+      "initial_state_unchanged": true,
+      "requirements": {
+        "required_names": [],
+        "min_count": 6,
+        "min_indoor": 3
+      },
+      "baseline": {
+        "pass": false,
+        "blockers": [
+          "indoor_not_established"
+        ],
+        "missing_names": [],
+        "count": 6,
+        "indoor": 1,
+        "indoor_with_hints": 1,
+        "hint_only_diagnostic_pass": false
+      },
+      "bounded_react": {
+        "pass": false,
+        "blockers": [
+          "indoor_not_established"
+        ],
+        "missing_names": [],
+        "count": 20,
+        "indoor": 1,
+        "indoor_with_hints": 15,
+        "hint_only_diagnostic_pass": true
+      },
+      "error": null,
+      "initial_names": [
+        "中国科举博物馆(江南贡院)",
+        "不老村",
+        "古鸡鸣寺",
+        "莲花广场",
+        "玄武湖景区",
+        "水墨大埝旅游区"
+      ],
+      "final_names": [
+        "中国科举博物馆(江南贡院)",
+        "不老村",
+        "古鸡鸣寺",
+        "莲花广场",
+        "玄武湖景区",
+        "水墨大埝旅游区",
+        "南京博物院",
+        "六朝博物馆",
+        "南京地质博物馆",
+        "南京市博物馆",
+        "江宁织造博物馆",
+        "德基艺术博物馆(德基广场二期店)",
+        "南京中国科举博物馆南馆",
+        "明孝陵博物馆",
+        "南京紫金山昆虫博物馆",
+        "南京市民俗博物馆",
+        "南京城墙博物馆",
+        "中国南京云锦博物馆",
+        "太平天国历史博物馆",
+        "德基艺术博物馆花花世界艺术馆"
+      ],
+      "status": "insufficient",
+      "production_missing": [
+        "indoor"
+      ],
+      "rounds": 2,
+      "supplemental_http_attempts": 2,
+      "initial_http_attempts": 0,
+      "total_http_attempts": 2,
+      "stop_reason": "round_limit",
+      "trace": [
+        {
+          "action": "search_indoor",
+          "round": 1,
+          "query_key": "tripagent:candidate:ec6b00af3149a21661db4912a089bacaf8bf0f24b1b549956d39ad51576022b6",
+          "result_count": 14,
+          "cache_hit": false,
+          "raw_count": 25,
+          "rating_filtered": 11
+        },
+        {
+          "action": "search_indoor",
+          "round": 2,
+          "query_key": "tripagent:candidate:d9978b54ec6c086380136d2df98f208013af73afa3b8e7c015229b77c1feab7f",
+          "result_count": 0,
+          "cache_hit": false,
+          "raw_count": 25,
+          "rating_filtered": 11
+        }
+      ],
+      "http": [
+        {
+          "city": "南京",
+          "query": "博物馆",
+          "types": "140100",
+          "outcome": "success",
+          "raw_count": 25
+        },
+        {
+          "city": "南京",
+          "query": "博物馆 展馆",
+          "types": "140100",
+          "outcome": "success",
+          "raw_count": 25
+        }
+      ],
+      "observations": [
+        {
+          "query": "南京雨天游，室内优先",
+          "rewritten_query": null,
+          "preferences": null,
+          "habits": null,
+          "profile": null,
+          "weather": [
+            {
+              "is_bad": true
+            }
+          ],
+          "destination": "南京",
+          "days": 2,
+          "coverage": {
+            "count": 6,
+            "required_count": 6,
+            "indoor": 1,
+            "outdoor": 5,
+            "unknown_type": 0,
+            "requested_count": 0,
+            "requested_hits": 0,
+            "regions": 3,
+            "categories": 0
+          },
+          "missing": [
+            "indoor"
+          ],
+          "observed": [],
+          "candidates": [
+            {
+              "name": "中国科举博物馆(江南贡院)",
+              "indoor": true
+            },
+            {
+              "name": "不老村",
+              "indoor": false
+            },
+            {
+              "name": "古鸡鸣寺",
+              "indoor": false
+            },
+            {
+              "name": "莲花广场",
+              "indoor": false
+            },
+            {
+              "name": "玄武湖景区",
+              "indoor": false
+            },
+            {
+              "name": "水墨大埝旅游区",
+              "indoor": false
+            }
+          ]
+        },
+        {
+          "query": "南京雨天游，室内优先",
+          "rewritten_query": null,
+          "preferences": null,
+          "habits": null,
+          "profile": null,
+          "weather": [
+            {
+              "is_bad": true
+            }
+          ],
+          "destination": "南京",
+          "days": 2,
+          "coverage": {
+            "count": 20,
+            "required_count": 6,
+            "indoor": 1,
+            "outdoor": 5,
+            "unknown_type": 14,
+            "requested_count": 0,
+            "requested_hits": 0,
+            "regions": 4,
+            "categories": 1
+          },
+          "missing": [
+            "indoor"
+          ],
+          "observed": [
+            {
+              "action": "search_indoor",
+              "round": 1,
+              "query_key": "tripagent:candidate:ec6b00af3149a21661db4912a089bacaf8bf0f24b1b549956d39ad51576022b6",
+              "result_count": 14,
+              "cache_hit": false,
+              "raw_count": 25,
+              "rating_filtered": 11
+            }
+          ],
+          "candidates": [
+            {
+              "name": "中国科举博物馆(江南贡院)",
+              "indoor": true
+            },
+            {
+              "name": "不老村",
+              "indoor": false
+            },
+            {
+              "name": "古鸡鸣寺",
+              "indoor": false
+            },
+            {
+              "name": "莲花广场",
+              "indoor": false
+            },
+            {
+              "name": "玄武湖景区",
+              "indoor": false
+            },
+            {
+              "name": "水墨大埝旅游区",
+              "indoor": false
+            },
+            {
+              "name": "南京博物院",
+              "indoor": null
+            },
+            {
+              "name": "六朝博物馆",
+              "indoor": null
+            },
+            {
+              "name": "南京地质博物馆",
+              "indoor": null
+            },
+            {
+              "name": "南京市博物馆",
+              "indoor": null
+            },
+            {
+              "name": "江宁织造博物馆",
+              "indoor": null
+            },
+            {
+              "name": "德基艺术博物馆(德基广场二期店)",
+              "indoor": null
+            },
+            {
+              "name": "南京中国科举博物馆南馆",
+              "indoor": null
+            },
+            {
+              "name": "明孝陵博物馆",
+              "indoor": null
+            },
+            {
+              "name": "南京紫金山昆虫博物馆",
+              "indoor": null
+            },
+            {
+              "name": "南京市民俗博物馆",
+              "indoor": null
+            },
+            {
+              "name": "南京城墙博物馆",
+              "indoor": null
+            },
+            {
+              "name": "中国南京云锦博物馆",
+              "indoor": null
+            },
+            {
+              "name": "太平天国历史博物馆",
+              "indoor": null
+            },
+            {
+              "name": "德基艺术博物馆花花世界艺术馆",
+              "indoor": null
+            }
+          ]
+        }
+      ],
+      "duplicate_blocks": 0,
+      "search_failures": 0,
+      "repeat_opportunities": 0,
+      "optimistic_fixture_upper_bound": {
+        "pass": true,
+        "blockers": [],
+        "missing_names": [],
+        "count": 20,
+        "indoor": 15,
+        "indoor_with_hints": 15,
+        "hint_only_diagnostic_pass": true
+      },
+      "budget_guard_errors": 0,
+      "unique_names": true,
+      "provenance_ok": true,
+      "guard_pass": true
+    },
+    {
+      "id": "named-2-1",
+      "group": "named",
+      "city": "上海",
+      "query": "上海一日游，想去“上海博物馆(人民广场馆)”",
+      "initial_state_sha256": "a8e3065ea84bca66ae421ba14fb0ac84f0765d27cab3b7ca41d82658bc1cb9f6",
+      "initial_state_unchanged": true,
+      "requirements": {
+        "required_names": [
+          "上海博物馆(人民广场馆)"
+        ],
+        "min_count": 4,
+        "min_indoor": 0
+      },
+      "baseline": {
+        "pass": false,
+        "blockers": [
+          "missing_required_poi"
+        ],
+        "missing_names": [
+          "上海博物馆(人民广场馆)"
+        ],
+        "count": 4,
+        "indoor": 1,
+        "indoor_with_hints": 1,
+        "hint_only_diagnostic_pass": false
+      },
+      "bounded_react": {
+        "pass": true,
+        "blockers": [],
+        "missing_names": [],
+        "count": 5,
+        "indoor": 1,
+        "indoor_with_hints": 2,
+        "hint_only_diagnostic_pass": true
+      },
+      "error": null,
+      "initial_names": [
+        "上海失恋博物馆",
+        "上海朱家角古镇旅游区",
+        "淀山湖风景区",
+        "上海城隍庙"
+      ],
+      "final_names": [
+        "上海失恋博物馆",
+        "上海朱家角古镇旅游区",
+        "淀山湖风景区",
+        "上海城隍庙",
+        "上海博物馆(人民广场馆)"
+      ],
+      "status": "ready",
+      "production_missing": [],
+      "rounds": 1,
+      "supplemental_http_attempts": 1,
+      "initial_http_attempts": 0,
+      "total_http_attempts": 1,
+      "stop_reason": "coverage_ready",
+      "trace": [
+        {
+          "action": "search_user_requested_poi",
+          "round": 1,
+          "query_key": "tripagent:candidate:1cfdcd0a136d5b4c320253825349e11c587614bf8a86ba2e65ede966c4535dd1",
+          "result_count": 1,
+          "cache_hit": false,
+          "raw_count": 1,
+          "rating_filtered": 0
+        }
+      ],
+      "http": [
+        {
+          "city": "上海",
+          "query": "上海博物馆(人民广场馆)",
+          "types": "",
+          "outcome": "success",
+          "raw_count": 1
+        }
+      ],
+      "observations": [
+        {
+          "query": "上海一日游，想去“上海博物馆(人民广场馆)”",
+          "rewritten_query": null,
+          "preferences": null,
+          "habits": null,
+          "profile": null,
+          "weather": [
+            {
+              "is_bad": false
+            }
+          ],
+          "destination": "上海",
+          "days": 1,
+          "coverage": {
+            "count": 4,
+            "required_count": 4,
+            "indoor": 1,
+            "outdoor": 3,
+            "unknown_type": 0,
+            "requested_count": 1,
+            "requested_hits": 0,
+            "regions": 2,
+            "categories": 0
+          },
+          "missing": [
+            "requested:上海博物馆(人民广场馆)"
+          ],
+          "observed": [],
+          "candidates": [
+            {
+              "name": "上海失恋博物馆",
+              "indoor": true
+            },
+            {
+              "name": "上海朱家角古镇旅游区",
+              "indoor": false
+            },
+            {
+              "name": "淀山湖风景区",
+              "indoor": false
+            },
+            {
+              "name": "上海城隍庙",
+              "indoor": false
+            }
+          ]
+        }
+      ],
+      "duplicate_blocks": 0,
+      "search_failures": 0,
+      "repeat_opportunities": 0,
+      "optimistic_fixture_upper_bound": {
+        "pass": true,
+        "blockers": [],
+        "missing_names": [],
+        "count": 24,
+        "indoor": 21,
+        "indoor_with_hints": 21,
+        "hint_only_diagnostic_pass": true
+      },
+      "budget_guard_errors": 0,
+      "unique_names": true,
+      "provenance_ok": true,
+      "guard_pass": false
+    },
+    {
+      "id": "named-2-2",
+      "group": "named",
+      "city": "上海",
+      "query": "上海一日游，想去“上海自然博物馆”，想去“上海邮政博物馆”",
+      "initial_state_sha256": "bbaba3301e4450b134810cafcd712bf0436757efc31a6a346df787c54c4de6d4",
+      "initial_state_unchanged": true,
+      "requirements": {
+        "required_names": [
+          "上海自然博物馆",
+          "上海邮政博物馆"
+        ],
+        "min_count": 4,
+        "min_indoor": 0
+      },
+      "baseline": {
+        "pass": false,
+        "blockers": [
+          "missing_required_poi"
+        ],
+        "missing_names": [
+          "上海自然博物馆",
+          "上海邮政博物馆"
+        ],
+        "count": 4,
+        "indoor": 1,
+        "indoor_with_hints": 1,
+        "hint_only_diagnostic_pass": false
+      },
+      "bounded_react": {
+        "pass": true,
+        "blockers": [],
+        "missing_names": [],
+        "count": 6,
+        "indoor": 1,
+        "indoor_with_hints": 3,
+        "hint_only_diagnostic_pass": true
+      },
+      "error": null,
+      "initial_names": [
+        "上海失恋博物馆",
+        "上海朱家角古镇旅游区",
+        "淀山湖风景区",
+        "上海城隍庙"
+      ],
+      "final_names": [
+        "上海失恋博物馆",
+        "上海朱家角古镇旅游区",
+        "淀山湖风景区",
+        "上海城隍庙",
+        "上海自然博物馆",
+        "上海邮政博物馆"
+      ],
+      "status": "ready",
+      "production_missing": [],
+      "rounds": 1,
+      "supplemental_http_attempts": 2,
+      "initial_http_attempts": 0,
+      "total_http_attempts": 2,
+      "stop_reason": "coverage_ready",
+      "trace": [
+        {
+          "action": "search_user_requested_poi",
+          "round": 1,
+          "query_key": "tripagent:candidate:ebee68c1ff31713204522975573aa2f7750e57f34e33c5ee494b996ae1531ede",
+          "result_count": 1,
+          "cache_hit": false,
+          "raw_count": 1,
+          "rating_filtered": 0
+        },
+        {
+          "action": "search_user_requested_poi",
+          "round": 1,
+          "query_key": "tripagent:candidate:6e49d07795aee8b825e5b66608e116b6b502ebbb0487e18dc20b306224ee941b",
+          "result_count": 1,
+          "cache_hit": false,
+          "raw_count": 1,
+          "rating_filtered": 0
+        }
+      ],
+      "http": [
+        {
+          "city": "上海",
+          "query": "上海自然博物馆",
+          "types": "",
+          "outcome": "success",
+          "raw_count": 1
+        },
+        {
+          "city": "上海",
+          "query": "上海邮政博物馆",
+          "types": "",
+          "outcome": "success",
+          "raw_count": 1
+        }
+      ],
+      "observations": [
+        {
+          "query": "上海一日游，想去“上海自然博物馆”，想去“上海邮政博物馆”",
+          "rewritten_query": null,
+          "preferences": null,
+          "habits": null,
+          "profile": null,
+          "weather": [
+            {
+              "is_bad": false
+            }
+          ],
+          "destination": "上海",
+          "days": 1,
+          "coverage": {
+            "count": 4,
+            "required_count": 4,
+            "indoor": 1,
+            "outdoor": 3,
+            "unknown_type": 0,
+            "requested_count": 2,
+            "requested_hits": 0,
+            "regions": 2,
+            "categories": 0
+          },
+          "missing": [
+            "requested:上海自然博物馆",
+            "requested:上海邮政博物馆"
+          ],
+          "observed": [],
+          "candidates": [
+            {
+              "name": "上海失恋博物馆",
+              "indoor": true
+            },
+            {
+              "name": "上海朱家角古镇旅游区",
+              "indoor": false
+            },
+            {
+              "name": "淀山湖风景区",
+              "indoor": false
+            },
+            {
+              "name": "上海城隍庙",
+              "indoor": false
+            }
+          ]
+        }
+      ],
+      "duplicate_blocks": 0,
+      "search_failures": 0,
+      "repeat_opportunities": 0,
+      "optimistic_fixture_upper_bound": {
+        "pass": true,
+        "blockers": [],
+        "missing_names": [],
+        "count": 24,
+        "indoor": 21,
+        "indoor_with_hints": 21,
+        "hint_only_diagnostic_pass": true
+      },
+      "budget_guard_errors": 0,
+      "unique_names": true,
+      "provenance_ok": true,
+      "guard_pass": false
+    },
+    {
+      "id": "named-2-3",
+      "group": "named",
+      "city": "上海",
+      "query": "上海一日游，想去“中国证券博物馆”",
+      "initial_state_sha256": "5e06d0336933b808c733a9a7db101730fd1cb98ed5e72cf853177e183a36d118",
+      "initial_state_unchanged": true,
+      "requirements": {
+        "required_names": [
+          "中国证券博物馆"
+        ],
+        "min_count": 4,
+        "min_indoor": 0
+      },
+      "baseline": {
+        "pass": false,
+        "blockers": [
+          "missing_required_poi"
+        ],
+        "missing_names": [
+          "中国证券博物馆"
+        ],
+        "count": 4,
+        "indoor": 1,
+        "indoor_with_hints": 1,
+        "hint_only_diagnostic_pass": false
+      },
+      "bounded_react": {
+        "pass": true,
+        "blockers": [],
+        "missing_names": [],
+        "count": 5,
+        "indoor": 1,
+        "indoor_with_hints": 2,
+        "hint_only_diagnostic_pass": true
+      },
+      "error": null,
+      "initial_names": [
+        "上海失恋博物馆",
+        "上海朱家角古镇旅游区",
+        "淀山湖风景区",
+        "上海城隍庙"
+      ],
+      "final_names": [
+        "上海失恋博物馆",
+        "上海朱家角古镇旅游区",
+        "淀山湖风景区",
+        "上海城隍庙",
+        "中国证券博物馆"
+      ],
+      "status": "ready",
+      "production_missing": [],
+      "rounds": 1,
+      "supplemental_http_attempts": 1,
+      "initial_http_attempts": 0,
+      "total_http_attempts": 1,
+      "stop_reason": "coverage_ready",
+      "trace": [
+        {
+          "action": "search_user_requested_poi",
+          "round": 1,
+          "query_key": "tripagent:candidate:63d085c39104281330de7002c34906c14cb3c44fdcd96f22f01787d48888a0ae",
+          "result_count": 1,
+          "cache_hit": false,
+          "raw_count": 1,
+          "rating_filtered": 0
+        }
+      ],
+      "http": [
+        {
+          "city": "上海",
+          "query": "中国证券博物馆",
+          "types": "",
+          "outcome": "success",
+          "raw_count": 1
+        }
+      ],
+      "observations": [
+        {
+          "query": "上海一日游，想去“中国证券博物馆”",
+          "rewritten_query": null,
+          "preferences": null,
+          "habits": null,
+          "profile": null,
+          "weather": [
+            {
+              "is_bad": false
+            }
+          ],
+          "destination": "上海",
+          "days": 1,
+          "coverage": {
+            "count": 4,
+            "required_count": 4,
+            "indoor": 1,
+            "outdoor": 3,
+            "unknown_type": 0,
+            "requested_count": 1,
+            "requested_hits": 0,
+            "regions": 2,
+            "categories": 0
+          },
+          "missing": [
+            "requested:中国证券博物馆"
+          ],
+          "observed": [],
+          "candidates": [
+            {
+              "name": "上海失恋博物馆",
+              "indoor": true
+            },
+            {
+              "name": "上海朱家角古镇旅游区",
+              "indoor": false
+            },
+            {
+              "name": "淀山湖风景区",
+              "indoor": false
+            },
+            {
+              "name": "上海城隍庙",
+              "indoor": false
+            }
+          ]
+        }
+      ],
+      "duplicate_blocks": 0,
+      "search_failures": 0,
+      "repeat_opportunities": 0,
+      "optimistic_fixture_upper_bound": {
+        "pass": true,
+        "blockers": [],
+        "missing_names": [],
+        "count": 24,
+        "indoor": 21,
+        "indoor_with_hints": 21,
+        "hint_only_diagnostic_pass": true
+      },
+      "budget_guard_errors": 0,
+      "unique_names": true,
+      "provenance_ok": true,
+      "guard_pass": false
+    },
+    {
+      "id": "indoor-2-1",
+      "group": "indoor",
+      "city": "上海",
+      "query": "上海雨天游，室内优先",
+      "initial_state_sha256": "57ff6294243558aeb8296fa05151aebd19053ea655a2444bf094d9176c560244",
+      "initial_state_unchanged": true,
+      "requirements": {
+        "required_names": [],
+        "min_count": 4,
+        "min_indoor": 3
+      },
+      "baseline": {
+        "pass": false,
+        "blockers": [
+          "indoor_not_established"
+        ],
+        "missing_names": [],
+        "count": 4,
+        "indoor": 0,
+        "indoor_with_hints": 0,
+        "hint_only_diagnostic_pass": false
+      },
+      "bounded_react": {
+        "pass": false,
+        "blockers": [
+          "indoor_not_established"
+        ],
+        "missing_names": [],
+        "count": 24,
+        "indoor": 0,
+        "indoor_with_hints": 20,
+        "hint_only_diagnostic_pass": true
+      },
+      "error": null,
+      "initial_names": [
+        "上海朱家角古镇旅游区",
+        "淀山湖风景区",
+        "上海城隍庙",
+        "上海动物园"
+      ],
+      "final_names": [
+        "上海朱家角古镇旅游区",
+        "淀山湖风景区",
+        "上海城隍庙",
+        "上海动物园",
+        "上海博物馆(人民广场馆)",
+        "上海市历史博物馆",
+        "上海自然博物馆",
+        "上海邮政博物馆",
+        "中国证券博物馆",
+        "上海体育博物馆",
+        "上海世博会博物馆",
+        "上海当代艺术博物馆",
+        "上海公安博物馆",
+        "上海工艺美术博物馆",
+        "上海铁路博物馆",
+        "上海震旦博物馆",
+        "上海潜艇展览馆(中国航海博物馆黄浦分馆)",
+        "上海琉璃艺术博物馆",
+        "上海纺织博物馆",
+        "国际乒联博物馆",
+        "上海观复博物馆",
+        "上海美术馆(中华艺术宫)",
+        "中国科学院上海昆虫博物馆",
+        "上海博物馆(东馆)"
+      ],
+      "status": "insufficient",
+      "production_missing": [
+        "indoor",
+        "diversity"
+      ],
+      "rounds": 2,
+      "supplemental_http_attempts": 2,
+      "initial_http_attempts": 0,
+      "total_http_attempts": 2,
+      "stop_reason": "round_limit",
+      "trace": [
+        {
+          "action": "search_indoor",
+          "round": 1,
+          "query_key": "tripagent:candidate:57c5581d48eb2cdb1f1086cdf199e3804f2d04b9ef073b09f26a1e3a43236176",
+          "result_count": 20,
+          "cache_hit": false,
+          "raw_count": 25,
+          "rating_filtered": 5
+        },
+        {
+          "action": "search_indoor",
+          "round": 2,
+          "query_key": "tripagent:candidate:5ea011de2263e6d134903ca42b75c8dca679e23232781b1727c14ba673e8915f",
+          "result_count": 0,
+          "cache_hit": false,
+          "raw_count": 25,
+          "rating_filtered": 5
+        }
+      ],
+      "http": [
+        {
+          "city": "上海",
+          "query": "博物馆",
+          "types": "140100",
+          "outcome": "success",
+          "raw_count": 25
+        },
+        {
+          "city": "上海",
+          "query": "博物馆 展馆",
+          "types": "140100",
+          "outcome": "success",
+          "raw_count": 25
+        }
+      ],
+      "observations": [
+        {
+          "query": "上海雨天游，室内优先",
+          "rewritten_query": null,
+          "preferences": null,
+          "habits": null,
+          "profile": null,
+          "weather": [
+            {
+              "is_bad": true
+            }
+          ],
+          "destination": "上海",
+          "days": 1,
+          "coverage": {
+            "count": 4,
+            "required_count": 4,
+            "indoor": 0,
+            "outdoor": 4,
+            "unknown_type": 0,
+            "requested_count": 0,
+            "requested_hits": 0,
+            "regions": 3,
+            "categories": 0
+          },
+          "missing": [
+            "indoor",
+            "diversity"
+          ],
+          "observed": [],
+          "candidates": [
+            {
+              "name": "上海朱家角古镇旅游区",
+              "indoor": false
+            },
+            {
+              "name": "淀山湖风景区",
+              "indoor": false
+            },
+            {
+              "name": "上海城隍庙",
+              "indoor": false
+            },
+            {
+              "name": "上海动物园",
+              "indoor": false
+            }
+          ]
+        },
+        {
+          "query": "上海雨天游，室内优先",
+          "rewritten_query": null,
+          "preferences": null,
+          "habits": null,
+          "profile": null,
+          "weather": [
+            {
+              "is_bad": true
+            }
+          ],
+          "destination": "上海",
+          "days": 1,
+          "coverage": {
+            "count": 24,
+            "required_count": 4,
+            "indoor": 0,
+            "outdoor": 4,
+            "unknown_type": 20,
+            "requested_count": 0,
+            "requested_hits": 0,
+            "regions": 8,
+            "categories": 1
+          },
+          "missing": [
+            "indoor",
+            "diversity"
+          ],
+          "observed": [
+            {
+              "action": "search_indoor",
+              "round": 1,
+              "query_key": "tripagent:candidate:57c5581d48eb2cdb1f1086cdf199e3804f2d04b9ef073b09f26a1e3a43236176",
+              "result_count": 20,
+              "cache_hit": false,
+              "raw_count": 25,
+              "rating_filtered": 5
+            }
+          ],
+          "candidates": [
+            {
+              "name": "上海朱家角古镇旅游区",
+              "indoor": false
+            },
+            {
+              "name": "淀山湖风景区",
+              "indoor": false
+            },
+            {
+              "name": "上海城隍庙",
+              "indoor": false
+            },
+            {
+              "name": "上海动物园",
+              "indoor": false
+            },
+            {
+              "name": "上海博物馆(人民广场馆)",
+              "indoor": null
+            },
+            {
+              "name": "上海市历史博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海自然博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海邮政博物馆",
+              "indoor": null
+            },
+            {
+              "name": "中国证券博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海体育博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海世博会博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海当代艺术博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海公安博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海工艺美术博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海铁路博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海震旦博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海潜艇展览馆(中国航海博物馆黄浦分馆)",
+              "indoor": null
+            },
+            {
+              "name": "上海琉璃艺术博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海纺织博物馆",
+              "indoor": null
+            },
+            {
+              "name": "国际乒联博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海观复博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海美术馆(中华艺术宫)",
+              "indoor": null
+            },
+            {
+              "name": "中国科学院上海昆虫博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海博物馆(东馆)",
+              "indoor": null
+            }
+          ]
+        }
+      ],
+      "duplicate_blocks": 0,
+      "search_failures": 0,
+      "repeat_opportunities": 0,
+      "optimistic_fixture_upper_bound": {
+        "pass": true,
+        "blockers": [],
+        "missing_names": [],
+        "count": 24,
+        "indoor": 20,
+        "indoor_with_hints": 20,
+        "hint_only_diagnostic_pass": true
+      },
+      "budget_guard_errors": 0,
+      "unique_names": true,
+      "provenance_ok": true,
+      "guard_pass": true
+    },
+    {
+      "id": "indoor-2-2",
+      "group": "indoor",
+      "city": "上海",
+      "query": "上海只去室内",
+      "initial_state_sha256": "0f41bb4877c85ae2af7ed996f8eb1feee754a1be8824b7d5dac2a8c02fc219a6",
+      "initial_state_unchanged": true,
+      "requirements": {
+        "required_names": [],
+        "min_count": 4,
+        "min_indoor": 4
+      },
+      "baseline": {
+        "pass": false,
+        "blockers": [
+          "indoor_not_established"
+        ],
+        "missing_names": [],
+        "count": 4,
+        "indoor": 1,
+        "indoor_with_hints": 1,
+        "hint_only_diagnostic_pass": false
+      },
+      "bounded_react": {
+        "pass": false,
+        "blockers": [
+          "indoor_not_established"
+        ],
+        "missing_names": [],
+        "count": 24,
+        "indoor": 1,
+        "indoor_with_hints": 21,
+        "hint_only_diagnostic_pass": true
+      },
+      "error": null,
+      "initial_names": [
+        "上海失恋博物馆",
+        "上海朱家角古镇旅游区",
+        "淀山湖风景区",
+        "上海城隍庙"
+      ],
+      "final_names": [
+        "上海失恋博物馆",
+        "上海朱家角古镇旅游区",
+        "淀山湖风景区",
+        "上海城隍庙",
+        "上海博物馆(人民广场馆)",
+        "上海市历史博物馆",
+        "上海自然博物馆",
+        "上海邮政博物馆",
+        "中国证券博物馆",
+        "上海体育博物馆",
+        "上海世博会博物馆",
+        "上海当代艺术博物馆",
+        "上海公安博物馆",
+        "上海工艺美术博物馆",
+        "上海铁路博物馆",
+        "上海震旦博物馆",
+        "上海潜艇展览馆(中国航海博物馆黄浦分馆)",
+        "上海琉璃艺术博物馆",
+        "上海纺织博物馆",
+        "国际乒联博物馆",
+        "上海观复博物馆",
+        "上海美术馆(中华艺术宫)",
+        "中国科学院上海昆虫博物馆",
+        "上海博物馆(东馆)"
+      ],
+      "status": "insufficient",
+      "production_missing": [
+        "indoor"
+      ],
+      "rounds": 2,
+      "supplemental_http_attempts": 2,
+      "initial_http_attempts": 0,
+      "total_http_attempts": 2,
+      "stop_reason": "round_limit",
+      "trace": [
+        {
+          "action": "search_indoor",
+          "round": 1,
+          "query_key": "tripagent:candidate:57c5581d48eb2cdb1f1086cdf199e3804f2d04b9ef073b09f26a1e3a43236176",
+          "result_count": 20,
+          "cache_hit": false,
+          "raw_count": 25,
+          "rating_filtered": 5
+        },
+        {
+          "action": "search_indoor",
+          "round": 2,
+          "query_key": "tripagent:candidate:5ea011de2263e6d134903ca42b75c8dca679e23232781b1727c14ba673e8915f",
+          "result_count": 0,
+          "cache_hit": false,
+          "raw_count": 25,
+          "rating_filtered": 5
+        }
+      ],
+      "http": [
+        {
+          "city": "上海",
+          "query": "博物馆",
+          "types": "140100",
+          "outcome": "success",
+          "raw_count": 25
+        },
+        {
+          "city": "上海",
+          "query": "博物馆 展馆",
+          "types": "140100",
+          "outcome": "success",
+          "raw_count": 25
+        }
+      ],
+      "observations": [
+        {
+          "query": "上海只去室内",
+          "rewritten_query": null,
+          "preferences": null,
+          "habits": null,
+          "profile": null,
+          "weather": [
+            {
+              "is_bad": true
+            }
+          ],
+          "destination": "上海",
+          "days": 1,
+          "coverage": {
+            "count": 4,
+            "required_count": 4,
+            "indoor": 1,
+            "outdoor": 3,
+            "unknown_type": 0,
+            "requested_count": 0,
+            "requested_hits": 0,
+            "regions": 2,
+            "categories": 0
+          },
+          "missing": [
+            "indoor"
+          ],
+          "observed": [],
+          "candidates": [
+            {
+              "name": "上海失恋博物馆",
+              "indoor": true
+            },
+            {
+              "name": "上海朱家角古镇旅游区",
+              "indoor": false
+            },
+            {
+              "name": "淀山湖风景区",
+              "indoor": false
+            },
+            {
+              "name": "上海城隍庙",
+              "indoor": false
+            }
+          ]
+        },
+        {
+          "query": "上海只去室内",
+          "rewritten_query": null,
+          "preferences": null,
+          "habits": null,
+          "profile": null,
+          "weather": [
+            {
+              "is_bad": true
+            }
+          ],
+          "destination": "上海",
+          "days": 1,
+          "coverage": {
+            "count": 24,
+            "required_count": 4,
+            "indoor": 1,
+            "outdoor": 3,
+            "unknown_type": 20,
+            "requested_count": 0,
+            "requested_hits": 0,
+            "regions": 7,
+            "categories": 1
+          },
+          "missing": [
+            "indoor"
+          ],
+          "observed": [
+            {
+              "action": "search_indoor",
+              "round": 1,
+              "query_key": "tripagent:candidate:57c5581d48eb2cdb1f1086cdf199e3804f2d04b9ef073b09f26a1e3a43236176",
+              "result_count": 20,
+              "cache_hit": false,
+              "raw_count": 25,
+              "rating_filtered": 5
+            }
+          ],
+          "candidates": [
+            {
+              "name": "上海失恋博物馆",
+              "indoor": true
+            },
+            {
+              "name": "上海朱家角古镇旅游区",
+              "indoor": false
+            },
+            {
+              "name": "淀山湖风景区",
+              "indoor": false
+            },
+            {
+              "name": "上海城隍庙",
+              "indoor": false
+            },
+            {
+              "name": "上海博物馆(人民广场馆)",
+              "indoor": null
+            },
+            {
+              "name": "上海市历史博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海自然博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海邮政博物馆",
+              "indoor": null
+            },
+            {
+              "name": "中国证券博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海体育博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海世博会博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海当代艺术博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海公安博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海工艺美术博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海铁路博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海震旦博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海潜艇展览馆(中国航海博物馆黄浦分馆)",
+              "indoor": null
+            },
+            {
+              "name": "上海琉璃艺术博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海纺织博物馆",
+              "indoor": null
+            },
+            {
+              "name": "国际乒联博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海观复博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海美术馆(中华艺术宫)",
+              "indoor": null
+            },
+            {
+              "name": "中国科学院上海昆虫博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海博物馆(东馆)",
+              "indoor": null
+            }
+          ]
+        }
+      ],
+      "duplicate_blocks": 0,
+      "search_failures": 0,
+      "repeat_opportunities": 0,
+      "optimistic_fixture_upper_bound": {
+        "pass": true,
+        "blockers": [],
+        "missing_names": [],
+        "count": 24,
+        "indoor": 21,
+        "indoor_with_hints": 21,
+        "hint_only_diagnostic_pass": true
+      },
+      "budget_guard_errors": 0,
+      "unique_names": true,
+      "provenance_ok": true,
+      "guard_pass": true
+    },
+    {
+      "id": "indoor-2-3",
+      "group": "indoor",
+      "city": "上海",
+      "query": "上海雨天游，室内优先",
+      "initial_state_sha256": "9811db601319602e930e58b1de0d49979c70b2825d634bcd02db83a7c4aab8e9",
+      "initial_state_unchanged": true,
+      "requirements": {
+        "required_names": [],
+        "min_count": 6,
+        "min_indoor": 3
+      },
+      "baseline": {
+        "pass": false,
+        "blockers": [
+          "indoor_not_established"
+        ],
+        "missing_names": [],
+        "count": 6,
+        "indoor": 1,
+        "indoor_with_hints": 1,
+        "hint_only_diagnostic_pass": false
+      },
+      "bounded_react": {
+        "pass": false,
+        "blockers": [
+          "indoor_not_established"
+        ],
+        "missing_names": [],
+        "count": 26,
+        "indoor": 1,
+        "indoor_with_hints": 21,
+        "hint_only_diagnostic_pass": true
+      },
+      "error": null,
+      "initial_names": [
+        "上海失恋博物馆",
+        "上海朱家角古镇旅游区",
+        "淀山湖风景区",
+        "上海城隍庙",
+        "上海动物园",
+        "上海欢乐谷"
+      ],
+      "final_names": [
+        "上海失恋博物馆",
+        "上海朱家角古镇旅游区",
+        "淀山湖风景区",
+        "上海城隍庙",
+        "上海动物园",
+        "上海欢乐谷",
+        "上海博物馆(人民广场馆)",
+        "上海市历史博物馆",
+        "上海自然博物馆",
+        "上海邮政博物馆",
+        "中国证券博物馆",
+        "上海体育博物馆",
+        "上海世博会博物馆",
+        "上海当代艺术博物馆",
+        "上海公安博物馆",
+        "上海工艺美术博物馆",
+        "上海铁路博物馆",
+        "上海震旦博物馆",
+        "上海潜艇展览馆(中国航海博物馆黄浦分馆)",
+        "上海琉璃艺术博物馆",
+        "上海纺织博物馆",
+        "国际乒联博物馆",
+        "上海观复博物馆",
+        "上海美术馆(中华艺术宫)",
+        "中国科学院上海昆虫博物馆",
+        "上海博物馆(东馆)"
+      ],
+      "status": "insufficient",
+      "production_missing": [
+        "indoor"
+      ],
+      "rounds": 2,
+      "supplemental_http_attempts": 2,
+      "initial_http_attempts": 0,
+      "total_http_attempts": 2,
+      "stop_reason": "round_limit",
+      "trace": [
+        {
+          "action": "search_indoor",
+          "round": 1,
+          "query_key": "tripagent:candidate:57c5581d48eb2cdb1f1086cdf199e3804f2d04b9ef073b09f26a1e3a43236176",
+          "result_count": 20,
+          "cache_hit": false,
+          "raw_count": 25,
+          "rating_filtered": 5
+        },
+        {
+          "action": "search_indoor",
+          "round": 2,
+          "query_key": "tripagent:candidate:5ea011de2263e6d134903ca42b75c8dca679e23232781b1727c14ba673e8915f",
+          "result_count": 0,
+          "cache_hit": false,
+          "raw_count": 25,
+          "rating_filtered": 5
+        }
+      ],
+      "http": [
+        {
+          "city": "上海",
+          "query": "博物馆",
+          "types": "140100",
+          "outcome": "success",
+          "raw_count": 25
+        },
+        {
+          "city": "上海",
+          "query": "博物馆 展馆",
+          "types": "140100",
+          "outcome": "success",
+          "raw_count": 25
+        }
+      ],
+      "observations": [
+        {
+          "query": "上海雨天游，室内优先",
+          "rewritten_query": null,
+          "preferences": null,
+          "habits": null,
+          "profile": null,
+          "weather": [
+            {
+              "is_bad": true
+            }
+          ],
+          "destination": "上海",
+          "days": 2,
+          "coverage": {
+            "count": 6,
+            "required_count": 6,
+            "indoor": 1,
+            "outdoor": 5,
+            "unknown_type": 0,
+            "requested_count": 0,
+            "requested_hits": 0,
+            "regions": 4,
+            "categories": 0
+          },
+          "missing": [
+            "indoor"
+          ],
+          "observed": [],
+          "candidates": [
+            {
+              "name": "上海失恋博物馆",
+              "indoor": true
+            },
+            {
+              "name": "上海朱家角古镇旅游区",
+              "indoor": false
+            },
+            {
+              "name": "淀山湖风景区",
+              "indoor": false
+            },
+            {
+              "name": "上海城隍庙",
+              "indoor": false
+            },
+            {
+              "name": "上海动物园",
+              "indoor": false
+            },
+            {
+              "name": "上海欢乐谷",
+              "indoor": false
+            }
+          ]
+        },
+        {
+          "query": "上海雨天游，室内优先",
+          "rewritten_query": null,
+          "preferences": null,
+          "habits": null,
+          "profile": null,
+          "weather": [
+            {
+              "is_bad": true
+            }
+          ],
+          "destination": "上海",
+          "days": 2,
+          "coverage": {
+            "count": 26,
+            "required_count": 6,
+            "indoor": 1,
+            "outdoor": 5,
+            "unknown_type": 20,
+            "requested_count": 0,
+            "requested_hits": 0,
+            "regions": 9,
+            "categories": 1
+          },
+          "missing": [
+            "indoor"
+          ],
+          "observed": [
+            {
+              "action": "search_indoor",
+              "round": 1,
+              "query_key": "tripagent:candidate:57c5581d48eb2cdb1f1086cdf199e3804f2d04b9ef073b09f26a1e3a43236176",
+              "result_count": 20,
+              "cache_hit": false,
+              "raw_count": 25,
+              "rating_filtered": 5
+            }
+          ],
+          "candidates": [
+            {
+              "name": "上海失恋博物馆",
+              "indoor": true
+            },
+            {
+              "name": "上海朱家角古镇旅游区",
+              "indoor": false
+            },
+            {
+              "name": "淀山湖风景区",
+              "indoor": false
+            },
+            {
+              "name": "上海城隍庙",
+              "indoor": false
+            },
+            {
+              "name": "上海动物园",
+              "indoor": false
+            },
+            {
+              "name": "上海欢乐谷",
+              "indoor": false
+            },
+            {
+              "name": "上海博物馆(人民广场馆)",
+              "indoor": null
+            },
+            {
+              "name": "上海市历史博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海自然博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海邮政博物馆",
+              "indoor": null
+            },
+            {
+              "name": "中国证券博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海体育博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海世博会博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海当代艺术博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海公安博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海工艺美术博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海铁路博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海震旦博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海潜艇展览馆(中国航海博物馆黄浦分馆)",
+              "indoor": null
+            },
+            {
+              "name": "上海琉璃艺术博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海纺织博物馆",
+              "indoor": null
+            },
+            {
+              "name": "国际乒联博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海观复博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海美术馆(中华艺术宫)",
+              "indoor": null
+            },
+            {
+              "name": "中国科学院上海昆虫博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海博物馆(东馆)",
+              "indoor": null
+            }
+          ]
+        }
+      ],
+      "duplicate_blocks": 0,
+      "search_failures": 0,
+      "repeat_opportunities": 0,
+      "optimistic_fixture_upper_bound": {
+        "pass": true,
+        "blockers": [],
+        "missing_names": [],
+        "count": 26,
+        "indoor": 21,
+        "indoor_with_hints": 21,
+        "hint_only_diagnostic_pass": true
+      },
+      "budget_guard_errors": 0,
+      "unique_names": true,
+      "provenance_ok": true,
+      "guard_pass": true
+    },
+    {
+      "id": "named-3-1",
+      "group": "named",
+      "city": "三亚",
+      "query": "三亚一日游，想去“三亚山海贝文化博物馆”",
+      "initial_state_sha256": "c8be96d5b82aa6bda28d44c7b97b21fe9d5a45759edf7995fddd55964e24f2cf",
+      "initial_state_unchanged": true,
+      "requirements": {
+        "required_names": [
+          "三亚山海贝文化博物馆"
+        ],
+        "min_count": 4,
+        "min_indoor": 0
+      },
+      "baseline": {
+        "pass": false,
+        "blockers": [
+          "missing_required_poi"
+        ],
+        "missing_names": [
+          "三亚山海贝文化博物馆"
+        ],
+        "count": 4,
+        "indoor": 1,
+        "indoor_with_hints": 1,
+        "hint_only_diagnostic_pass": false
+      },
+      "bounded_react": {
+        "pass": true,
+        "blockers": [],
+        "missing_names": [],
+        "count": 5,
+        "indoor": 1,
+        "indoor_with_hints": 2,
+        "hint_only_diagnostic_pass": true
+      },
+      "error": null,
+      "initial_names": [
+        "三亚千古情景区",
+        "三亚凤凰岭海誓山盟景区",
+        "海月广场",
+        "南山大小洞天旅游区"
+      ],
+      "final_names": [
+        "三亚千古情景区",
+        "三亚凤凰岭海誓山盟景区",
+        "海月广场",
+        "南山大小洞天旅游区",
+        "三亚山海贝文化博物馆"
+      ],
+      "status": "ready",
+      "production_missing": [],
+      "rounds": 1,
+      "supplemental_http_attempts": 1,
+      "initial_http_attempts": 0,
+      "total_http_attempts": 1,
+      "stop_reason": "coverage_ready",
+      "trace": [
+        {
+          "action": "search_user_requested_poi",
+          "round": 1,
+          "query_key": "tripagent:candidate:a98d3e55847052982ac7058e0876e02aa9f6d71d1e421cd2ccb42dc9fed0959a",
+          "result_count": 1,
+          "cache_hit": false,
+          "raw_count": 1,
+          "rating_filtered": 0
+        }
+      ],
+      "http": [
+        {
+          "city": "三亚",
+          "query": "三亚山海贝文化博物馆",
+          "types": "",
+          "outcome": "success",
+          "raw_count": 1
+        }
+      ],
+      "observations": [
+        {
+          "query": "三亚一日游，想去“三亚山海贝文化博物馆”",
+          "rewritten_query": null,
+          "preferences": null,
+          "habits": null,
+          "profile": null,
+          "weather": [
+            {
+              "is_bad": false
+            }
+          ],
+          "destination": "三亚",
+          "days": 1,
+          "coverage": {
+            "count": 4,
+            "required_count": 4,
+            "indoor": 1,
+            "outdoor": 3,
+            "unknown_type": 0,
+            "requested_count": 1,
+            "requested_hits": 0,
+            "regions": 3,
+            "categories": 0
+          },
+          "missing": [
+            "requested:三亚山海贝文化博物馆"
+          ],
+          "observed": [],
+          "candidates": [
+            {
+              "name": "三亚千古情景区",
+              "indoor": true
+            },
+            {
+              "name": "三亚凤凰岭海誓山盟景区",
+              "indoor": false
+            },
+            {
+              "name": "海月广场",
+              "indoor": false
+            },
+            {
+              "name": "南山大小洞天旅游区",
+              "indoor": false
+            }
+          ]
+        }
+      ],
+      "duplicate_blocks": 0,
+      "search_failures": 0,
+      "repeat_opportunities": 0,
+      "optimistic_fixture_upper_bound": {
+        "pass": true,
+        "blockers": [],
+        "missing_names": [],
+        "count": 6,
+        "indoor": 3,
+        "indoor_with_hints": 3,
+        "hint_only_diagnostic_pass": true
+      },
+      "budget_guard_errors": 0,
+      "unique_names": true,
+      "provenance_ok": true,
+      "guard_pass": false
+    },
+    {
+      "id": "named-3-2",
+      "group": "named",
+      "city": "三亚",
+      "query": "三亚一日游，想去“三亚李是亨黄花梨博物馆”，想去“海南京润珍珠博物馆”",
+      "initial_state_sha256": "73e145204ebd50957c4f6930a303d704763fdd20c5bb7322fee0024cb1d02fe1",
+      "initial_state_unchanged": true,
+      "requirements": {
+        "required_names": [
+          "三亚李是亨黄花梨博物馆",
+          "海南京润珍珠博物馆"
+        ],
+        "min_count": 4,
+        "min_indoor": 0
+      },
+      "baseline": {
+        "pass": false,
+        "blockers": [
+          "missing_required_poi"
+        ],
+        "missing_names": [
+          "三亚李是亨黄花梨博物馆",
+          "海南京润珍珠博物馆"
+        ],
+        "count": 4,
+        "indoor": 1,
+        "indoor_with_hints": 1,
+        "hint_only_diagnostic_pass": false
+      },
+      "bounded_react": {
+        "pass": true,
+        "blockers": [],
+        "missing_names": [],
+        "count": 6,
+        "indoor": 1,
+        "indoor_with_hints": 3,
+        "hint_only_diagnostic_pass": true
+      },
+      "error": null,
+      "initial_names": [
+        "三亚千古情景区",
+        "三亚凤凰岭海誓山盟景区",
+        "海月广场",
+        "南山大小洞天旅游区"
+      ],
+      "final_names": [
+        "三亚千古情景区",
+        "三亚凤凰岭海誓山盟景区",
+        "海月广场",
+        "南山大小洞天旅游区",
+        "三亚李是亨黄花梨博物馆",
+        "海南京润珍珠博物馆"
+      ],
+      "status": "ready",
+      "production_missing": [],
+      "rounds": 1,
+      "supplemental_http_attempts": 2,
+      "initial_http_attempts": 0,
+      "total_http_attempts": 2,
+      "stop_reason": "coverage_ready",
+      "trace": [
+        {
+          "action": "search_user_requested_poi",
+          "round": 1,
+          "query_key": "tripagent:candidate:c1fc502da161a758cd4366e46d60bb28626ddccab1a696bb4dc24b80e076ac59",
+          "result_count": 1,
+          "cache_hit": false,
+          "raw_count": 1,
+          "rating_filtered": 0
+        },
+        {
+          "action": "search_user_requested_poi",
+          "round": 1,
+          "query_key": "tripagent:candidate:17c41afaa6fa1b4ca6a3e9c5a784be590325668cb90300f374158b2697e2d354",
+          "result_count": 1,
+          "cache_hit": false,
+          "raw_count": 1,
+          "rating_filtered": 0
+        }
+      ],
+      "http": [
+        {
+          "city": "三亚",
+          "query": "三亚李是亨黄花梨博物馆",
+          "types": "",
+          "outcome": "success",
+          "raw_count": 1
+        },
+        {
+          "city": "三亚",
+          "query": "海南京润珍珠博物馆",
+          "types": "",
+          "outcome": "success",
+          "raw_count": 1
+        }
+      ],
+      "observations": [
+        {
+          "query": "三亚一日游，想去“三亚李是亨黄花梨博物馆”，想去“海南京润珍珠博物馆”",
+          "rewritten_query": null,
+          "preferences": null,
+          "habits": null,
+          "profile": null,
+          "weather": [
+            {
+              "is_bad": false
+            }
+          ],
+          "destination": "三亚",
+          "days": 1,
+          "coverage": {
+            "count": 4,
+            "required_count": 4,
+            "indoor": 1,
+            "outdoor": 3,
+            "unknown_type": 0,
+            "requested_count": 2,
+            "requested_hits": 0,
+            "regions": 3,
+            "categories": 0
+          },
+          "missing": [
+            "requested:三亚李是亨黄花梨博物馆",
+            "requested:海南京润珍珠博物馆"
+          ],
+          "observed": [],
+          "candidates": [
+            {
+              "name": "三亚千古情景区",
+              "indoor": true
+            },
+            {
+              "name": "三亚凤凰岭海誓山盟景区",
+              "indoor": false
+            },
+            {
+              "name": "海月广场",
+              "indoor": false
+            },
+            {
+              "name": "南山大小洞天旅游区",
+              "indoor": false
+            }
+          ]
+        }
+      ],
+      "duplicate_blocks": 0,
+      "search_failures": 0,
+      "repeat_opportunities": 0,
+      "optimistic_fixture_upper_bound": {
+        "pass": true,
+        "blockers": [],
+        "missing_names": [],
+        "count": 7,
+        "indoor": 4,
+        "indoor_with_hints": 4,
+        "hint_only_diagnostic_pass": true
+      },
+      "budget_guard_errors": 0,
+      "unique_names": true,
+      "provenance_ok": true,
+      "guard_pass": false
+    },
+    {
+      "id": "named-3-3",
+      "group": "named",
+      "city": "三亚",
+      "query": "三亚一日游，想去“绿盾高性能系统门窗”",
+      "initial_state_sha256": "72f4a7e71dc815abbeb65d91f315db8952f9d5cadffec2e607b9a17a7048ae6b",
+      "initial_state_unchanged": true,
+      "requirements": {
+        "required_names": [
+          "绿盾高性能系统门窗"
+        ],
+        "min_count": 4,
+        "min_indoor": 0
+      },
+      "baseline": {
+        "pass": false,
+        "blockers": [
+          "missing_required_poi"
+        ],
+        "missing_names": [
+          "绿盾高性能系统门窗"
+        ],
+        "count": 4,
+        "indoor": 1,
+        "indoor_with_hints": 1,
+        "hint_only_diagnostic_pass": false
+      },
+      "bounded_react": {
+        "pass": true,
+        "blockers": [],
+        "missing_names": [],
+        "count": 5,
+        "indoor": 1,
+        "indoor_with_hints": 2,
+        "hint_only_diagnostic_pass": true
+      },
+      "error": null,
+      "initial_names": [
+        "三亚千古情景区",
+        "三亚凤凰岭海誓山盟景区",
+        "海月广场",
+        "南山大小洞天旅游区"
+      ],
+      "final_names": [
+        "三亚千古情景区",
+        "三亚凤凰岭海誓山盟景区",
+        "海月广场",
+        "南山大小洞天旅游区",
+        "绿盾高性能系统门窗"
+      ],
+      "status": "ready",
+      "production_missing": [],
+      "rounds": 1,
+      "supplemental_http_attempts": 1,
+      "initial_http_attempts": 0,
+      "total_http_attempts": 1,
+      "stop_reason": "coverage_ready",
+      "trace": [
+        {
+          "action": "search_user_requested_poi",
+          "round": 1,
+          "query_key": "tripagent:candidate:255a1a591a5f70eb186c093922cd0c46ee27e47cd2524d2eea944d91bf7cb7ea",
+          "result_count": 1,
+          "cache_hit": false,
+          "raw_count": 1,
+          "rating_filtered": 0
+        }
+      ],
+      "http": [
+        {
+          "city": "三亚",
+          "query": "绿盾高性能系统门窗",
+          "types": "",
+          "outcome": "success",
+          "raw_count": 1
+        }
+      ],
+      "observations": [
+        {
+          "query": "三亚一日游，想去“绿盾高性能系统门窗”",
+          "rewritten_query": null,
+          "preferences": null,
+          "habits": null,
+          "profile": null,
+          "weather": [
+            {
+              "is_bad": false
+            }
+          ],
+          "destination": "三亚",
+          "days": 1,
+          "coverage": {
+            "count": 4,
+            "required_count": 4,
+            "indoor": 1,
+            "outdoor": 3,
+            "unknown_type": 0,
+            "requested_count": 1,
+            "requested_hits": 0,
+            "regions": 3,
+            "categories": 0
+          },
+          "missing": [
+            "requested:绿盾高性能系统门窗"
+          ],
+          "observed": [],
+          "candidates": [
+            {
+              "name": "三亚千古情景区",
+              "indoor": true
+            },
+            {
+              "name": "三亚凤凰岭海誓山盟景区",
+              "indoor": false
+            },
+            {
+              "name": "海月广场",
+              "indoor": false
+            },
+            {
+              "name": "南山大小洞天旅游区",
+              "indoor": false
+            }
+          ]
+        }
+      ],
+      "duplicate_blocks": 0,
+      "search_failures": 0,
+      "repeat_opportunities": 0,
+      "optimistic_fixture_upper_bound": {
+        "pass": true,
+        "blockers": [],
+        "missing_names": [],
+        "count": 7,
+        "indoor": 4,
+        "indoor_with_hints": 4,
+        "hint_only_diagnostic_pass": true
+      },
+      "budget_guard_errors": 0,
+      "unique_names": true,
+      "provenance_ok": true,
+      "guard_pass": false
+    },
+    {
+      "id": "indoor-3-1",
+      "group": "indoor",
+      "city": "三亚",
+      "query": "三亚雨天游，室内优先",
+      "initial_state_sha256": "9797e7366c2de6383f912209ab0ad0cedea0f5a1a1799ac0c005ef9adcd023a5",
+      "initial_state_unchanged": true,
+      "requirements": {
+        "required_names": [],
+        "min_count": 4,
+        "min_indoor": 3
+      },
+      "baseline": {
+        "pass": false,
+        "blockers": [
+          "indoor_not_established"
+        ],
+        "missing_names": [],
+        "count": 4,
+        "indoor": 0,
+        "indoor_with_hints": 0,
+        "hint_only_diagnostic_pass": false
+      },
+      "bounded_react": {
+        "pass": false,
+        "blockers": [
+          "indoor_not_established"
+        ],
+        "missing_names": [],
+        "count": 6,
+        "indoor": 0,
+        "indoor_with_hints": 2,
+        "hint_only_diagnostic_pass": false
+      },
+      "error": null,
+      "initial_names": [
+        "三亚凤凰岭海誓山盟景区",
+        "海月广场",
+        "南山大小洞天旅游区",
+        "亚龙湾海滩"
+      ],
+      "final_names": [
+        "三亚凤凰岭海誓山盟景区",
+        "海月广场",
+        "南山大小洞天旅游区",
+        "亚龙湾海滩",
+        "三亚山海贝文化博物馆",
+        "三亚李是亨黄花梨博物馆"
+      ],
+      "status": "insufficient",
+      "production_missing": [
+        "indoor",
+        "diversity"
+      ],
+      "rounds": 2,
+      "supplemental_http_attempts": 2,
+      "initial_http_attempts": 0,
+      "total_http_attempts": 2,
+      "stop_reason": "round_limit",
+      "trace": [
+        {
+          "action": "search_indoor",
+          "round": 1,
+          "query_key": "tripagent:candidate:fc77456f33e77823341c6d6014b0e4a11268f2cb143717171fa9069804389374",
+          "result_count": 2,
+          "cache_hit": false,
+          "raw_count": 12,
+          "rating_filtered": 10
+        },
+        {
+          "action": "search_indoor",
+          "round": 2,
+          "query_key": "tripagent:candidate:fa760c57bb6a813baa498b82831050d910077b9ab49283df09335a5488f1d7c8",
+          "result_count": 0,
+          "cache_hit": false,
+          "raw_count": 12,
+          "rating_filtered": 10
+        }
+      ],
+      "http": [
+        {
+          "city": "三亚",
+          "query": "博物馆",
+          "types": "140100",
+          "outcome": "success",
+          "raw_count": 12
+        },
+        {
+          "city": "三亚",
+          "query": "博物馆 展馆",
+          "types": "140100",
+          "outcome": "success",
+          "raw_count": 12
+        }
+      ],
+      "observations": [
+        {
+          "query": "三亚雨天游，室内优先",
+          "rewritten_query": null,
+          "preferences": null,
+          "habits": null,
+          "profile": null,
+          "weather": [
+            {
+              "is_bad": true
+            }
+          ],
+          "destination": "三亚",
+          "days": 1,
+          "coverage": {
+            "count": 4,
+            "required_count": 4,
+            "indoor": 0,
+            "outdoor": 4,
+            "unknown_type": 0,
+            "requested_count": 0,
+            "requested_hits": 0,
+            "regions": 3,
+            "categories": 0
+          },
+          "missing": [
+            "indoor",
+            "diversity"
+          ],
+          "observed": [],
+          "candidates": [
+            {
+              "name": "三亚凤凰岭海誓山盟景区",
+              "indoor": false
+            },
+            {
+              "name": "海月广场",
+              "indoor": false
+            },
+            {
+              "name": "南山大小洞天旅游区",
+              "indoor": false
+            },
+            {
+              "name": "亚龙湾海滩",
+              "indoor": false
+            }
+          ]
+        },
+        {
+          "query": "三亚雨天游，室内优先",
+          "rewritten_query": null,
+          "preferences": null,
+          "habits": null,
+          "profile": null,
+          "weather": [
+            {
+              "is_bad": true
+            }
+          ],
+          "destination": "三亚",
+          "days": 1,
+          "coverage": {
+            "count": 6,
+            "required_count": 4,
+            "indoor": 0,
+            "outdoor": 4,
+            "unknown_type": 2,
+            "requested_count": 0,
+            "requested_hits": 0,
+            "regions": 3,
+            "categories": 2
+          },
+          "missing": [
+            "indoor",
+            "diversity"
+          ],
+          "observed": [
+            {
+              "action": "search_indoor",
+              "round": 1,
+              "query_key": "tripagent:candidate:fc77456f33e77823341c6d6014b0e4a11268f2cb143717171fa9069804389374",
+              "result_count": 2,
+              "cache_hit": false,
+              "raw_count": 12,
+              "rating_filtered": 10
+            }
+          ],
+          "candidates": [
+            {
+              "name": "三亚凤凰岭海誓山盟景区",
+              "indoor": false
+            },
+            {
+              "name": "海月广场",
+              "indoor": false
+            },
+            {
+              "name": "南山大小洞天旅游区",
+              "indoor": false
+            },
+            {
+              "name": "亚龙湾海滩",
+              "indoor": false
+            },
+            {
+              "name": "三亚山海贝文化博物馆",
+              "indoor": null
+            },
+            {
+              "name": "三亚李是亨黄花梨博物馆",
+              "indoor": null
+            }
+          ]
+        }
+      ],
+      "duplicate_blocks": 0,
+      "search_failures": 0,
+      "repeat_opportunities": 0,
+      "optimistic_fixture_upper_bound": {
+        "pass": false,
+        "blockers": [
+          "indoor_not_established"
+        ],
+        "missing_names": [],
+        "count": 6,
+        "indoor": 2,
+        "indoor_with_hints": 2,
+        "hint_only_diagnostic_pass": false
+      },
+      "budget_guard_errors": 0,
+      "unique_names": true,
+      "provenance_ok": true,
+      "guard_pass": true
+    },
+    {
+      "id": "indoor-3-2",
+      "group": "indoor",
+      "city": "三亚",
+      "query": "三亚只去室内",
+      "initial_state_sha256": "00ac9f5c8caa3c85d6bca59acb6d5491b2ca904dfbdd963284c43599b7f049e9",
+      "initial_state_unchanged": true,
+      "requirements": {
+        "required_names": [],
+        "min_count": 4,
+        "min_indoor": 4
+      },
+      "baseline": {
+        "pass": false,
+        "blockers": [
+          "indoor_not_established"
+        ],
+        "missing_names": [],
+        "count": 4,
+        "indoor": 1,
+        "indoor_with_hints": 1,
+        "hint_only_diagnostic_pass": false
+      },
+      "bounded_react": {
+        "pass": false,
+        "blockers": [
+          "indoor_not_established"
+        ],
+        "missing_names": [],
+        "count": 6,
+        "indoor": 1,
+        "indoor_with_hints": 3,
+        "hint_only_diagnostic_pass": false
+      },
+      "error": null,
+      "initial_names": [
+        "三亚千古情景区",
+        "三亚凤凰岭海誓山盟景区",
+        "海月广场",
+        "南山大小洞天旅游区"
+      ],
+      "final_names": [
+        "三亚千古情景区",
+        "三亚凤凰岭海誓山盟景区",
+        "海月广场",
+        "南山大小洞天旅游区",
+        "三亚山海贝文化博物馆",
+        "三亚李是亨黄花梨博物馆"
+      ],
+      "status": "insufficient",
+      "production_missing": [
+        "indoor"
+      ],
+      "rounds": 2,
+      "supplemental_http_attempts": 2,
+      "initial_http_attempts": 0,
+      "total_http_attempts": 2,
+      "stop_reason": "round_limit",
+      "trace": [
+        {
+          "action": "search_indoor",
+          "round": 1,
+          "query_key": "tripagent:candidate:fc77456f33e77823341c6d6014b0e4a11268f2cb143717171fa9069804389374",
+          "result_count": 2,
+          "cache_hit": false,
+          "raw_count": 12,
+          "rating_filtered": 10
+        },
+        {
+          "action": "search_indoor",
+          "round": 2,
+          "query_key": "tripagent:candidate:fa760c57bb6a813baa498b82831050d910077b9ab49283df09335a5488f1d7c8",
+          "result_count": 0,
+          "cache_hit": false,
+          "raw_count": 12,
+          "rating_filtered": 10
+        }
+      ],
+      "http": [
+        {
+          "city": "三亚",
+          "query": "博物馆",
+          "types": "140100",
+          "outcome": "success",
+          "raw_count": 12
+        },
+        {
+          "city": "三亚",
+          "query": "博物馆 展馆",
+          "types": "140100",
+          "outcome": "success",
+          "raw_count": 12
+        }
+      ],
+      "observations": [
+        {
+          "query": "三亚只去室内",
+          "rewritten_query": null,
+          "preferences": null,
+          "habits": null,
+          "profile": null,
+          "weather": [
+            {
+              "is_bad": true
+            }
+          ],
+          "destination": "三亚",
+          "days": 1,
+          "coverage": {
+            "count": 4,
+            "required_count": 4,
+            "indoor": 1,
+            "outdoor": 3,
+            "unknown_type": 0,
+            "requested_count": 0,
+            "requested_hits": 0,
+            "regions": 3,
+            "categories": 0
+          },
+          "missing": [
+            "indoor"
+          ],
+          "observed": [],
+          "candidates": [
+            {
+              "name": "三亚千古情景区",
+              "indoor": true
+            },
+            {
+              "name": "三亚凤凰岭海誓山盟景区",
+              "indoor": false
+            },
+            {
+              "name": "海月广场",
+              "indoor": false
+            },
+            {
+              "name": "南山大小洞天旅游区",
+              "indoor": false
+            }
+          ]
+        },
+        {
+          "query": "三亚只去室内",
+          "rewritten_query": null,
+          "preferences": null,
+          "habits": null,
+          "profile": null,
+          "weather": [
+            {
+              "is_bad": true
+            }
+          ],
+          "destination": "三亚",
+          "days": 1,
+          "coverage": {
+            "count": 6,
+            "required_count": 4,
+            "indoor": 1,
+            "outdoor": 3,
+            "unknown_type": 2,
+            "requested_count": 0,
+            "requested_hits": 0,
+            "regions": 3,
+            "categories": 2
+          },
+          "missing": [
+            "indoor"
+          ],
+          "observed": [
+            {
+              "action": "search_indoor",
+              "round": 1,
+              "query_key": "tripagent:candidate:fc77456f33e77823341c6d6014b0e4a11268f2cb143717171fa9069804389374",
+              "result_count": 2,
+              "cache_hit": false,
+              "raw_count": 12,
+              "rating_filtered": 10
+            }
+          ],
+          "candidates": [
+            {
+              "name": "三亚千古情景区",
+              "indoor": true
+            },
+            {
+              "name": "三亚凤凰岭海誓山盟景区",
+              "indoor": false
+            },
+            {
+              "name": "海月广场",
+              "indoor": false
+            },
+            {
+              "name": "南山大小洞天旅游区",
+              "indoor": false
+            },
+            {
+              "name": "三亚山海贝文化博物馆",
+              "indoor": null
+            },
+            {
+              "name": "三亚李是亨黄花梨博物馆",
+              "indoor": null
+            }
+          ]
+        }
+      ],
+      "duplicate_blocks": 0,
+      "search_failures": 0,
+      "repeat_opportunities": 0,
+      "optimistic_fixture_upper_bound": {
+        "pass": false,
+        "blockers": [
+          "indoor_not_established"
+        ],
+        "missing_names": [],
+        "count": 6,
+        "indoor": 3,
+        "indoor_with_hints": 3,
+        "hint_only_diagnostic_pass": false
+      },
+      "budget_guard_errors": 0,
+      "unique_names": true,
+      "provenance_ok": true,
+      "guard_pass": true
+    },
+    {
+      "id": "indoor-3-3",
+      "group": "indoor",
+      "city": "三亚",
+      "query": "三亚雨天游，室内优先",
+      "initial_state_sha256": "9994b6478845aed833d980604579b679cb085ec5567c51be1084a428f7b31e20",
+      "initial_state_unchanged": true,
+      "requirements": {
+        "required_names": [],
+        "min_count": 6,
+        "min_indoor": 3
+      },
+      "baseline": {
+        "pass": false,
+        "blockers": [
+          "indoor_not_established"
+        ],
+        "missing_names": [],
+        "count": 6,
+        "indoor": 1,
+        "indoor_with_hints": 1,
+        "hint_only_diagnostic_pass": false
+      },
+      "bounded_react": {
+        "pass": false,
+        "blockers": [
+          "indoor_not_established"
+        ],
+        "missing_names": [],
+        "count": 8,
+        "indoor": 1,
+        "indoor_with_hints": 3,
+        "hint_only_diagnostic_pass": true
+      },
+      "error": null,
+      "initial_names": [
+        "三亚千古情景区",
+        "三亚凤凰岭海誓山盟景区",
+        "海月广场",
+        "南山大小洞天旅游区",
+        "亚龙湾海滩",
+        "三亚西岛海洋文化旅游区"
+      ],
+      "final_names": [
+        "三亚千古情景区",
+        "三亚凤凰岭海誓山盟景区",
+        "海月广场",
+        "南山大小洞天旅游区",
+        "亚龙湾海滩",
+        "三亚西岛海洋文化旅游区",
+        "三亚山海贝文化博物馆",
+        "三亚李是亨黄花梨博物馆"
+      ],
+      "status": "insufficient",
+      "production_missing": [
+        "indoor"
+      ],
+      "rounds": 2,
+      "supplemental_http_attempts": 2,
+      "initial_http_attempts": 0,
+      "total_http_attempts": 2,
+      "stop_reason": "round_limit",
+      "trace": [
+        {
+          "action": "search_indoor",
+          "round": 1,
+          "query_key": "tripagent:candidate:fc77456f33e77823341c6d6014b0e4a11268f2cb143717171fa9069804389374",
+          "result_count": 2,
+          "cache_hit": false,
+          "raw_count": 12,
+          "rating_filtered": 10
+        },
+        {
+          "action": "search_indoor",
+          "round": 2,
+          "query_key": "tripagent:candidate:fa760c57bb6a813baa498b82831050d910077b9ab49283df09335a5488f1d7c8",
+          "result_count": 0,
+          "cache_hit": false,
+          "raw_count": 12,
+          "rating_filtered": 10
+        }
+      ],
+      "http": [
+        {
+          "city": "三亚",
+          "query": "博物馆",
+          "types": "140100",
+          "outcome": "success",
+          "raw_count": 12
+        },
+        {
+          "city": "三亚",
+          "query": "博物馆 展馆",
+          "types": "140100",
+          "outcome": "success",
+          "raw_count": 12
+        }
+      ],
+      "observations": [
+        {
+          "query": "三亚雨天游，室内优先",
+          "rewritten_query": null,
+          "preferences": null,
+          "habits": null,
+          "profile": null,
+          "weather": [
+            {
+              "is_bad": true
+            }
+          ],
+          "destination": "三亚",
+          "days": 2,
+          "coverage": {
+            "count": 6,
+            "required_count": 6,
+            "indoor": 1,
+            "outdoor": 5,
+            "unknown_type": 0,
+            "requested_count": 0,
+            "requested_hits": 0,
+            "regions": 3,
+            "categories": 0
+          },
+          "missing": [
+            "indoor"
+          ],
+          "observed": [],
+          "candidates": [
+            {
+              "name": "三亚千古情景区",
+              "indoor": true
+            },
+            {
+              "name": "三亚凤凰岭海誓山盟景区",
+              "indoor": false
+            },
+            {
+              "name": "海月广场",
+              "indoor": false
+            },
+            {
+              "name": "南山大小洞天旅游区",
+              "indoor": false
+            },
+            {
+              "name": "亚龙湾海滩",
+              "indoor": false
+            },
+            {
+              "name": "三亚西岛海洋文化旅游区",
+              "indoor": false
+            }
+          ]
+        },
+        {
+          "query": "三亚雨天游，室内优先",
+          "rewritten_query": null,
+          "preferences": null,
+          "habits": null,
+          "profile": null,
+          "weather": [
+            {
+              "is_bad": true
+            }
+          ],
+          "destination": "三亚",
+          "days": 2,
+          "coverage": {
+            "count": 8,
+            "required_count": 6,
+            "indoor": 1,
+            "outdoor": 5,
+            "unknown_type": 2,
+            "requested_count": 0,
+            "requested_hits": 0,
+            "regions": 3,
+            "categories": 2
+          },
+          "missing": [
+            "indoor"
+          ],
+          "observed": [
+            {
+              "action": "search_indoor",
+              "round": 1,
+              "query_key": "tripagent:candidate:fc77456f33e77823341c6d6014b0e4a11268f2cb143717171fa9069804389374",
+              "result_count": 2,
+              "cache_hit": false,
+              "raw_count": 12,
+              "rating_filtered": 10
+            }
+          ],
+          "candidates": [
+            {
+              "name": "三亚千古情景区",
+              "indoor": true
+            },
+            {
+              "name": "三亚凤凰岭海誓山盟景区",
+              "indoor": false
+            },
+            {
+              "name": "海月广场",
+              "indoor": false
+            },
+            {
+              "name": "南山大小洞天旅游区",
+              "indoor": false
+            },
+            {
+              "name": "亚龙湾海滩",
+              "indoor": false
+            },
+            {
+              "name": "三亚西岛海洋文化旅游区",
+              "indoor": false
+            },
+            {
+              "name": "三亚山海贝文化博物馆",
+              "indoor": null
+            },
+            {
+              "name": "三亚李是亨黄花梨博物馆",
+              "indoor": null
+            }
+          ]
+        }
+      ],
+      "duplicate_blocks": 0,
+      "search_failures": 0,
+      "repeat_opportunities": 0,
+      "optimistic_fixture_upper_bound": {
+        "pass": true,
+        "blockers": [],
+        "missing_names": [],
+        "count": 8,
+        "indoor": 3,
+        "indoor_with_hints": 3,
+        "hint_only_diagnostic_pass": true
+      },
+      "budget_guard_errors": 0,
+      "unique_names": true,
+      "provenance_ok": true,
+      "guard_pass": true
+    },
+    {
+      "id": "count-1",
+      "group": "count",
+      "city": "南京",
+      "query": "南京历史与自然结合，候选去重筛选后数量不足，需要补充",
+      "initial_state_sha256": "425688f5d144a7775ea46aee2e8e4e198b8c21e5b6ecb6d470ef3ecf661e95f1",
+      "initial_state_unchanged": true,
+      "requirements": {
+        "required_names": [],
+        "min_count": 4,
+        "min_indoor": 0
+      },
+      "baseline": {
+        "pass": false,
+        "blockers": [
+          "insufficient_count"
+        ],
+        "missing_names": [],
+        "count": 1,
+        "indoor": 1,
+        "indoor_with_hints": 1,
+        "hint_only_diagnostic_pass": false
+      },
+      "bounded_react": {
+        "pass": true,
+        "blockers": [],
+        "missing_names": [],
+        "count": 15,
+        "indoor": 1,
+        "indoor_with_hints": 15,
+        "hint_only_diagnostic_pass": true
+      },
+      "error": null,
+      "initial_names": [
+        "中国科举博物馆(江南贡院)"
+      ],
+      "final_names": [
+        "中国科举博物馆(江南贡院)",
+        "南京博物院",
+        "六朝博物馆",
+        "南京地质博物馆",
+        "南京市博物馆",
+        "江宁织造博物馆",
+        "德基艺术博物馆(德基广场二期店)",
+        "南京中国科举博物馆南馆",
+        "明孝陵博物馆",
+        "南京紫金山昆虫博物馆",
+        "南京市民俗博物馆",
+        "南京城墙博物馆",
+        "中国南京云锦博物馆",
+        "太平天国历史博物馆",
+        "德基艺术博物馆花花世界艺术馆"
+      ],
+      "status": "insufficient",
+      "production_missing": [
+        "outdoor",
+        "diversity"
+      ],
+      "rounds": 2,
+      "supplemental_http_attempts": 2,
+      "initial_http_attempts": 0,
+      "total_http_attempts": 2,
+      "stop_reason": "round_limit",
+      "trace": [
+        {
+          "action": "search_indoor",
+          "round": 1,
+          "query_key": "tripagent:candidate:ec6b00af3149a21661db4912a089bacaf8bf0f24b1b549956d39ad51576022b6",
+          "result_count": 14,
+          "cache_hit": false,
+          "raw_count": 25,
+          "rating_filtered": 11
+        },
+        {
+          "action": "search_indoor",
+          "round": 2,
+          "query_key": "tripagent:candidate:d9978b54ec6c086380136d2df98f208013af73afa3b8e7c015229b77c1feab7f",
+          "result_count": 0,
+          "cache_hit": false,
+          "raw_count": 25,
+          "rating_filtered": 11
+        }
+      ],
+      "http": [
+        {
+          "city": "南京",
+          "query": "博物馆",
+          "types": "140100",
+          "outcome": "success",
+          "raw_count": 25
+        },
+        {
+          "city": "南京",
+          "query": "博物馆 展馆",
+          "types": "140100",
+          "outcome": "success",
+          "raw_count": 25
+        }
+      ],
+      "observations": [
+        {
+          "query": "南京历史与自然结合，候选去重筛选后数量不足，需要补充",
+          "rewritten_query": null,
+          "preferences": null,
+          "habits": null,
+          "profile": null,
+          "weather": [
+            {
+              "is_bad": false
+            }
+          ],
+          "destination": "南京",
+          "days": 1,
+          "coverage": {
+            "count": 1,
+            "required_count": 4,
+            "indoor": 1,
+            "outdoor": 0,
+            "unknown_type": 0,
+            "requested_count": 0,
+            "requested_hits": 0,
+            "regions": 1,
+            "categories": 0
+          },
+          "missing": [
+            "count",
+            "outdoor"
+          ],
+          "observed": [],
+          "candidates": [
+            {
+              "name": "中国科举博物馆(江南贡院)",
+              "indoor": true
+            }
+          ]
+        },
+        {
+          "query": "南京历史与自然结合，候选去重筛选后数量不足，需要补充",
+          "rewritten_query": null,
+          "preferences": null,
+          "habits": null,
+          "profile": null,
+          "weather": [
+            {
+              "is_bad": false
+            }
+          ],
+          "destination": "南京",
+          "days": 1,
+          "coverage": {
+            "count": 15,
+            "required_count": 4,
+            "indoor": 1,
+            "outdoor": 0,
+            "unknown_type": 14,
+            "requested_count": 0,
+            "requested_hits": 0,
+            "regions": 3,
+            "categories": 1
+          },
+          "missing": [
+            "outdoor",
+            "diversity"
+          ],
+          "observed": [
+            {
+              "action": "search_indoor",
+              "round": 1,
+              "query_key": "tripagent:candidate:ec6b00af3149a21661db4912a089bacaf8bf0f24b1b549956d39ad51576022b6",
+              "result_count": 14,
+              "cache_hit": false,
+              "raw_count": 25,
+              "rating_filtered": 11
+            }
+          ],
+          "candidates": [
+            {
+              "name": "中国科举博物馆(江南贡院)",
+              "indoor": true
+            },
+            {
+              "name": "南京博物院",
+              "indoor": null
+            },
+            {
+              "name": "六朝博物馆",
+              "indoor": null
+            },
+            {
+              "name": "南京地质博物馆",
+              "indoor": null
+            },
+            {
+              "name": "南京市博物馆",
+              "indoor": null
+            },
+            {
+              "name": "江宁织造博物馆",
+              "indoor": null
+            },
+            {
+              "name": "德基艺术博物馆(德基广场二期店)",
+              "indoor": null
+            },
+            {
+              "name": "南京中国科举博物馆南馆",
+              "indoor": null
+            },
+            {
+              "name": "明孝陵博物馆",
+              "indoor": null
+            },
+            {
+              "name": "南京紫金山昆虫博物馆",
+              "indoor": null
+            },
+            {
+              "name": "南京市民俗博物馆",
+              "indoor": null
+            },
+            {
+              "name": "南京城墙博物馆",
+              "indoor": null
+            },
+            {
+              "name": "中国南京云锦博物馆",
+              "indoor": null
+            },
+            {
+              "name": "太平天国历史博物馆",
+              "indoor": null
+            },
+            {
+              "name": "德基艺术博物馆花花世界艺术馆",
+              "indoor": null
+            }
+          ]
+        }
+      ],
+      "duplicate_blocks": 0,
+      "search_failures": 0,
+      "repeat_opportunities": 0,
+      "optimistic_fixture_upper_bound": {
+        "pass": true,
+        "blockers": [],
+        "missing_names": [],
+        "count": 15,
+        "indoor": 15,
+        "indoor_with_hints": 15,
+        "hint_only_diagnostic_pass": true
+      },
+      "budget_guard_errors": 0,
+      "unique_names": true,
+      "provenance_ok": true,
+      "guard_pass": false
+    },
+    {
+      "id": "count-2",
+      "group": "count",
+      "city": "上海",
+      "query": "上海历史与自然结合，候选去重筛选后数量不足，需要补充",
+      "initial_state_sha256": "2f12ddcb46943e54a090b8cb2c87c2ce01d8351c8a50fdc6f74153b68818ec98",
+      "initial_state_unchanged": true,
+      "requirements": {
+        "required_names": [],
+        "min_count": 4,
+        "min_indoor": 0
+      },
+      "baseline": {
+        "pass": false,
+        "blockers": [
+          "insufficient_count"
+        ],
+        "missing_names": [],
+        "count": 2,
+        "indoor": 1,
+        "indoor_with_hints": 1,
+        "hint_only_diagnostic_pass": false
+      },
+      "bounded_react": {
+        "pass": true,
+        "blockers": [],
+        "missing_names": [],
+        "count": 22,
+        "indoor": 1,
+        "indoor_with_hints": 21,
+        "hint_only_diagnostic_pass": true
+      },
+      "error": null,
+      "initial_names": [
+        "上海失恋博物馆",
+        "上海朱家角古镇旅游区"
+      ],
+      "final_names": [
+        "上海失恋博物馆",
+        "上海朱家角古镇旅游区",
+        "上海博物馆(人民广场馆)",
+        "上海市历史博物馆",
+        "上海自然博物馆",
+        "上海邮政博物馆",
+        "中国证券博物馆",
+        "上海体育博物馆",
+        "上海世博会博物馆",
+        "上海当代艺术博物馆",
+        "上海公安博物馆",
+        "上海工艺美术博物馆",
+        "上海铁路博物馆",
+        "上海震旦博物馆",
+        "上海潜艇展览馆(中国航海博物馆黄浦分馆)",
+        "上海琉璃艺术博物馆",
+        "上海纺织博物馆",
+        "国际乒联博物馆",
+        "上海观复博物馆",
+        "上海美术馆(中华艺术宫)",
+        "中国科学院上海昆虫博物馆",
+        "上海博物馆(东馆)"
+      ],
+      "status": "insufficient",
+      "production_missing": [
+        "outdoor"
+      ],
+      "rounds": 2,
+      "supplemental_http_attempts": 2,
+      "initial_http_attempts": 0,
+      "total_http_attempts": 2,
+      "stop_reason": "round_limit",
+      "trace": [
+        {
+          "action": "search_indoor",
+          "round": 1,
+          "query_key": "tripagent:candidate:57c5581d48eb2cdb1f1086cdf199e3804f2d04b9ef073b09f26a1e3a43236176",
+          "result_count": 20,
+          "cache_hit": false,
+          "raw_count": 29,
+          "rating_filtered": 5
+        },
+        {
+          "action": "search_indoor",
+          "round": 2,
+          "query_key": "tripagent:candidate:5ea011de2263e6d134903ca42b75c8dca679e23232781b1727c14ba673e8915f",
+          "result_count": 0,
+          "cache_hit": false,
+          "raw_count": 29,
+          "rating_filtered": 5
+        }
+      ],
+      "http": [
+        {
+          "city": "上海",
+          "query": "博物馆",
+          "types": "140100",
+          "outcome": "success",
+          "raw_count": 29
+        },
+        {
+          "city": "上海",
+          "query": "博物馆 展馆",
+          "types": "140100",
+          "outcome": "success",
+          "raw_count": 29
+        }
+      ],
+      "observations": [
+        {
+          "query": "上海历史与自然结合，候选去重筛选后数量不足，需要补充",
+          "rewritten_query": null,
+          "preferences": null,
+          "habits": null,
+          "profile": null,
+          "weather": [
+            {
+              "is_bad": false
+            }
+          ],
+          "destination": "上海",
+          "days": 1,
+          "coverage": {
+            "count": 2,
+            "required_count": 4,
+            "indoor": 1,
+            "outdoor": 1,
+            "unknown_type": 0,
+            "requested_count": 0,
+            "requested_hits": 0,
+            "regions": 2,
+            "categories": 0
+          },
+          "missing": [
+            "count",
+            "outdoor"
+          ],
+          "observed": [],
+          "candidates": [
+            {
+              "name": "上海失恋博物馆",
+              "indoor": true
+            },
+            {
+              "name": "上海朱家角古镇旅游区",
+              "indoor": false
+            }
+          ]
+        },
+        {
+          "query": "上海历史与自然结合，候选去重筛选后数量不足，需要补充",
+          "rewritten_query": null,
+          "preferences": null,
+          "habits": null,
+          "profile": null,
+          "weather": [
+            {
+              "is_bad": false
+            }
+          ],
+          "destination": "上海",
+          "days": 1,
+          "coverage": {
+            "count": 22,
+            "required_count": 4,
+            "indoor": 1,
+            "outdoor": 1,
+            "unknown_type": 20,
+            "requested_count": 0,
+            "requested_hits": 0,
+            "regions": 7,
+            "categories": 1
+          },
+          "missing": [
+            "outdoor"
+          ],
+          "observed": [
+            {
+              "action": "search_indoor",
+              "round": 1,
+              "query_key": "tripagent:candidate:57c5581d48eb2cdb1f1086cdf199e3804f2d04b9ef073b09f26a1e3a43236176",
+              "result_count": 20,
+              "cache_hit": false,
+              "raw_count": 29,
+              "rating_filtered": 5
+            }
+          ],
+          "candidates": [
+            {
+              "name": "上海失恋博物馆",
+              "indoor": true
+            },
+            {
+              "name": "上海朱家角古镇旅游区",
+              "indoor": false
+            },
+            {
+              "name": "上海博物馆(人民广场馆)",
+              "indoor": null
+            },
+            {
+              "name": "上海市历史博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海自然博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海邮政博物馆",
+              "indoor": null
+            },
+            {
+              "name": "中国证券博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海体育博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海世博会博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海当代艺术博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海公安博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海工艺美术博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海铁路博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海震旦博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海潜艇展览馆(中国航海博物馆黄浦分馆)",
+              "indoor": null
+            },
+            {
+              "name": "上海琉璃艺术博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海纺织博物馆",
+              "indoor": null
+            },
+            {
+              "name": "国际乒联博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海观复博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海美术馆(中华艺术宫)",
+              "indoor": null
+            },
+            {
+              "name": "中国科学院上海昆虫博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海博物馆(东馆)",
+              "indoor": null
+            }
+          ]
+        }
+      ],
+      "duplicate_blocks": 0,
+      "search_failures": 0,
+      "repeat_opportunities": 0,
+      "optimistic_fixture_upper_bound": {
+        "pass": true,
+        "blockers": [],
+        "missing_names": [],
+        "count": 22,
+        "indoor": 21,
+        "indoor_with_hints": 21,
+        "hint_only_diagnostic_pass": true
+      },
+      "budget_guard_errors": 0,
+      "unique_names": true,
+      "provenance_ok": true,
+      "guard_pass": false
+    },
+    {
+      "id": "count-3",
+      "group": "count",
+      "city": "三亚",
+      "query": "三亚历史与自然结合，候选去重筛选后数量不足，需要补充",
+      "initial_state_sha256": "631611d3634eafba242baecf3d5b05be7a6ad7eae13d4794a7fe940045f634a4",
+      "initial_state_unchanged": true,
+      "requirements": {
+        "required_names": [],
+        "min_count": 6,
+        "min_indoor": 0
+      },
+      "baseline": {
+        "pass": false,
+        "blockers": [
+          "insufficient_count"
+        ],
+        "missing_names": [],
+        "count": 2,
+        "indoor": 1,
+        "indoor_with_hints": 1,
+        "hint_only_diagnostic_pass": false
+      },
+      "bounded_react": {
+        "pass": false,
+        "blockers": [
+          "insufficient_count"
+        ],
+        "missing_names": [],
+        "count": 4,
+        "indoor": 1,
+        "indoor_with_hints": 3,
+        "hint_only_diagnostic_pass": false
+      },
+      "error": null,
+      "initial_names": [
+        "三亚千古情景区",
+        "三亚凤凰岭海誓山盟景区"
+      ],
+      "final_names": [
+        "三亚千古情景区",
+        "三亚凤凰岭海誓山盟景区",
+        "三亚山海贝文化博物馆",
+        "三亚李是亨黄花梨博物馆"
+      ],
+      "status": "insufficient",
+      "production_missing": [
+        "count",
+        "outdoor"
+      ],
+      "rounds": 2,
+      "supplemental_http_attempts": 2,
+      "initial_http_attempts": 0,
+      "total_http_attempts": 2,
+      "stop_reason": "round_limit",
+      "trace": [
+        {
+          "action": "search_indoor",
+          "round": 1,
+          "query_key": "tripagent:candidate:fc77456f33e77823341c6d6014b0e4a11268f2cb143717171fa9069804389374",
+          "result_count": 2,
+          "cache_hit": false,
+          "raw_count": 12,
+          "rating_filtered": 10
+        },
+        {
+          "action": "search_indoor",
+          "round": 2,
+          "query_key": "tripagent:candidate:fa760c57bb6a813baa498b82831050d910077b9ab49283df09335a5488f1d7c8",
+          "result_count": 0,
+          "cache_hit": false,
+          "raw_count": 12,
+          "rating_filtered": 10
+        }
+      ],
+      "http": [
+        {
+          "city": "三亚",
+          "query": "博物馆",
+          "types": "140100",
+          "outcome": "success",
+          "raw_count": 12
+        },
+        {
+          "city": "三亚",
+          "query": "博物馆 展馆",
+          "types": "140100",
+          "outcome": "success",
+          "raw_count": 12
+        }
+      ],
+      "observations": [
+        {
+          "query": "三亚历史与自然结合，候选去重筛选后数量不足，需要补充",
+          "rewritten_query": null,
+          "preferences": null,
+          "habits": null,
+          "profile": null,
+          "weather": [
+            {
+              "is_bad": false
+            }
+          ],
+          "destination": "三亚",
+          "days": 2,
+          "coverage": {
+            "count": 2,
+            "required_count": 6,
+            "indoor": 1,
+            "outdoor": 1,
+            "unknown_type": 0,
+            "requested_count": 0,
+            "requested_hits": 0,
+            "regions": 1,
+            "categories": 0
+          },
+          "missing": [
+            "count",
+            "outdoor"
+          ],
+          "observed": [],
+          "candidates": [
+            {
+              "name": "三亚千古情景区",
+              "indoor": true
+            },
+            {
+              "name": "三亚凤凰岭海誓山盟景区",
+              "indoor": false
+            }
+          ]
+        },
+        {
+          "query": "三亚历史与自然结合，候选去重筛选后数量不足，需要补充",
+          "rewritten_query": null,
+          "preferences": null,
+          "habits": null,
+          "profile": null,
+          "weather": [
+            {
+              "is_bad": false
+            }
+          ],
+          "destination": "三亚",
+          "days": 2,
+          "coverage": {
+            "count": 4,
+            "required_count": 6,
+            "indoor": 1,
+            "outdoor": 1,
+            "unknown_type": 2,
+            "requested_count": 0,
+            "requested_hits": 0,
+            "regions": 2,
+            "categories": 2
+          },
+          "missing": [
+            "count",
+            "outdoor"
+          ],
+          "observed": [
+            {
+              "action": "search_indoor",
+              "round": 1,
+              "query_key": "tripagent:candidate:fc77456f33e77823341c6d6014b0e4a11268f2cb143717171fa9069804389374",
+              "result_count": 2,
+              "cache_hit": false,
+              "raw_count": 12,
+              "rating_filtered": 10
+            }
+          ],
+          "candidates": [
+            {
+              "name": "三亚千古情景区",
+              "indoor": true
+            },
+            {
+              "name": "三亚凤凰岭海誓山盟景区",
+              "indoor": false
+            },
+            {
+              "name": "三亚山海贝文化博物馆",
+              "indoor": null
+            },
+            {
+              "name": "三亚李是亨黄花梨博物馆",
+              "indoor": null
+            }
+          ]
+        }
+      ],
+      "duplicate_blocks": 0,
+      "search_failures": 0,
+      "repeat_opportunities": 0,
+      "optimistic_fixture_upper_bound": {
+        "pass": false,
+        "blockers": [
+          "insufficient_count"
+        ],
+        "missing_names": [],
+        "count": 4,
+        "indoor": 3,
+        "indoor_with_hints": 3,
+        "hint_only_diagnostic_pass": false
+      },
+      "budget_guard_errors": 0,
+      "unique_names": true,
+      "provenance_ok": true,
+      "guard_pass": true
+    },
+    {
+      "id": "count-4",
+      "group": "count",
+      "city": "南京",
+      "query": "南京历史与自然结合，候选去重筛选后数量不足，需要补充",
+      "initial_state_sha256": "3a625f080496ac622dba2f7adc266fcdaadf00b21446c288173fd430e8601783",
+      "initial_state_unchanged": true,
+      "requirements": {
+        "required_names": [],
+        "min_count": 6,
+        "min_indoor": 0
+      },
+      "baseline": {
+        "pass": false,
+        "blockers": [
+          "insufficient_count"
+        ],
+        "missing_names": [],
+        "count": 3,
+        "indoor": 1,
+        "indoor_with_hints": 1,
+        "hint_only_diagnostic_pass": false
+      },
+      "bounded_react": {
+        "pass": true,
+        "blockers": [],
+        "missing_names": [],
+        "count": 17,
+        "indoor": 1,
+        "indoor_with_hints": 15,
+        "hint_only_diagnostic_pass": true
+      },
+      "error": null,
+      "initial_names": [
+        "中国科举博物馆(江南贡院)",
+        "不老村",
+        "古鸡鸣寺"
+      ],
+      "final_names": [
+        "中国科举博物馆(江南贡院)",
+        "不老村",
+        "古鸡鸣寺",
+        "南京博物院",
+        "六朝博物馆",
+        "南京地质博物馆",
+        "南京市博物馆",
+        "江宁织造博物馆",
+        "德基艺术博物馆(德基广场二期店)",
+        "南京中国科举博物馆南馆",
+        "明孝陵博物馆",
+        "南京紫金山昆虫博物馆",
+        "南京市民俗博物馆",
+        "南京城墙博物馆",
+        "中国南京云锦博物馆",
+        "太平天国历史博物馆",
+        "德基艺术博物馆花花世界艺术馆"
+      ],
+      "status": "insufficient",
+      "production_missing": [
+        "outdoor"
+      ],
+      "rounds": 2,
+      "supplemental_http_attempts": 2,
+      "initial_http_attempts": 0,
+      "total_http_attempts": 2,
+      "stop_reason": "round_limit",
+      "trace": [
+        {
+          "action": "search_indoor",
+          "round": 1,
+          "query_key": "tripagent:candidate:ec6b00af3149a21661db4912a089bacaf8bf0f24b1b549956d39ad51576022b6",
+          "result_count": 14,
+          "cache_hit": false,
+          "raw_count": 25,
+          "rating_filtered": 11
+        },
+        {
+          "action": "search_indoor",
+          "round": 2,
+          "query_key": "tripagent:candidate:d9978b54ec6c086380136d2df98f208013af73afa3b8e7c015229b77c1feab7f",
+          "result_count": 0,
+          "cache_hit": false,
+          "raw_count": 25,
+          "rating_filtered": 11
+        }
+      ],
+      "http": [
+        {
+          "city": "南京",
+          "query": "博物馆",
+          "types": "140100",
+          "outcome": "success",
+          "raw_count": 25
+        },
+        {
+          "city": "南京",
+          "query": "博物馆 展馆",
+          "types": "140100",
+          "outcome": "success",
+          "raw_count": 25
+        }
+      ],
+      "observations": [
+        {
+          "query": "南京历史与自然结合，候选去重筛选后数量不足，需要补充",
+          "rewritten_query": null,
+          "preferences": null,
+          "habits": null,
+          "profile": null,
+          "weather": [
+            {
+              "is_bad": false
+            }
+          ],
+          "destination": "南京",
+          "days": 2,
+          "coverage": {
+            "count": 3,
+            "required_count": 6,
+            "indoor": 1,
+            "outdoor": 2,
+            "unknown_type": 0,
+            "requested_count": 0,
+            "requested_hits": 0,
+            "regions": 3,
+            "categories": 0
+          },
+          "missing": [
+            "count",
+            "outdoor"
+          ],
+          "observed": [],
+          "candidates": [
+            {
+              "name": "中国科举博物馆(江南贡院)",
+              "indoor": true
+            },
+            {
+              "name": "不老村",
+              "indoor": false
+            },
+            {
+              "name": "古鸡鸣寺",
+              "indoor": false
+            }
+          ]
+        },
+        {
+          "query": "南京历史与自然结合，候选去重筛选后数量不足，需要补充",
+          "rewritten_query": null,
+          "preferences": null,
+          "habits": null,
+          "profile": null,
+          "weather": [
+            {
+              "is_bad": false
+            }
+          ],
+          "destination": "南京",
+          "days": 2,
+          "coverage": {
+            "count": 17,
+            "required_count": 6,
+            "indoor": 1,
+            "outdoor": 2,
+            "unknown_type": 14,
+            "requested_count": 0,
+            "requested_hits": 0,
+            "regions": 4,
+            "categories": 1
+          },
+          "missing": [
+            "outdoor"
+          ],
+          "observed": [
+            {
+              "action": "search_indoor",
+              "round": 1,
+              "query_key": "tripagent:candidate:ec6b00af3149a21661db4912a089bacaf8bf0f24b1b549956d39ad51576022b6",
+              "result_count": 14,
+              "cache_hit": false,
+              "raw_count": 25,
+              "rating_filtered": 11
+            }
+          ],
+          "candidates": [
+            {
+              "name": "中国科举博物馆(江南贡院)",
+              "indoor": true
+            },
+            {
+              "name": "不老村",
+              "indoor": false
+            },
+            {
+              "name": "古鸡鸣寺",
+              "indoor": false
+            },
+            {
+              "name": "南京博物院",
+              "indoor": null
+            },
+            {
+              "name": "六朝博物馆",
+              "indoor": null
+            },
+            {
+              "name": "南京地质博物馆",
+              "indoor": null
+            },
+            {
+              "name": "南京市博物馆",
+              "indoor": null
+            },
+            {
+              "name": "江宁织造博物馆",
+              "indoor": null
+            },
+            {
+              "name": "德基艺术博物馆(德基广场二期店)",
+              "indoor": null
+            },
+            {
+              "name": "南京中国科举博物馆南馆",
+              "indoor": null
+            },
+            {
+              "name": "明孝陵博物馆",
+              "indoor": null
+            },
+            {
+              "name": "南京紫金山昆虫博物馆",
+              "indoor": null
+            },
+            {
+              "name": "南京市民俗博物馆",
+              "indoor": null
+            },
+            {
+              "name": "南京城墙博物馆",
+              "indoor": null
+            },
+            {
+              "name": "中国南京云锦博物馆",
+              "indoor": null
+            },
+            {
+              "name": "太平天国历史博物馆",
+              "indoor": null
+            },
+            {
+              "name": "德基艺术博物馆花花世界艺术馆",
+              "indoor": null
+            }
+          ]
+        }
+      ],
+      "duplicate_blocks": 0,
+      "search_failures": 0,
+      "repeat_opportunities": 0,
+      "optimistic_fixture_upper_bound": {
+        "pass": true,
+        "blockers": [],
+        "missing_names": [],
+        "count": 17,
+        "indoor": 15,
+        "indoor_with_hints": 15,
+        "hint_only_diagnostic_pass": true
+      },
+      "budget_guard_errors": 0,
+      "unique_names": true,
+      "provenance_ok": true,
+      "guard_pass": false
+    },
+    {
+      "id": "count-5",
+      "group": "count",
+      "city": "上海",
+      "query": "上海历史与自然结合，候选去重筛选后数量不足，需要补充",
+      "initial_state_sha256": "23aa4af7691376041bd1c208d90c1cd67fa0f7764a3b891315ff5c2fd3e5072c",
+      "initial_state_unchanged": true,
+      "requirements": {
+        "required_names": [],
+        "min_count": 4,
+        "min_indoor": 0
+      },
+      "baseline": {
+        "pass": false,
+        "blockers": [
+          "insufficient_count"
+        ],
+        "missing_names": [],
+        "count": 3,
+        "indoor": 1,
+        "indoor_with_hints": 1,
+        "hint_only_diagnostic_pass": false
+      },
+      "bounded_react": {
+        "pass": true,
+        "blockers": [],
+        "missing_names": [],
+        "count": 23,
+        "indoor": 1,
+        "indoor_with_hints": 21,
+        "hint_only_diagnostic_pass": true
+      },
+      "error": null,
+      "initial_names": [
+        "上海失恋博物馆",
+        "上海朱家角古镇旅游区",
+        "淀山湖风景区"
+      ],
+      "final_names": [
+        "上海失恋博物馆",
+        "上海朱家角古镇旅游区",
+        "淀山湖风景区",
+        "上海博物馆(人民广场馆)",
+        "上海市历史博物馆",
+        "上海自然博物馆",
+        "上海邮政博物馆",
+        "中国证券博物馆",
+        "上海体育博物馆",
+        "上海世博会博物馆",
+        "上海当代艺术博物馆",
+        "上海公安博物馆",
+        "上海工艺美术博物馆",
+        "上海铁路博物馆",
+        "上海震旦博物馆",
+        "上海潜艇展览馆(中国航海博物馆黄浦分馆)",
+        "上海琉璃艺术博物馆",
+        "上海纺织博物馆",
+        "国际乒联博物馆",
+        "上海观复博物馆",
+        "上海美术馆(中华艺术宫)",
+        "中国科学院上海昆虫博物馆",
+        "上海博物馆(东馆)"
+      ],
+      "status": "insufficient",
+      "production_missing": [
+        "outdoor"
+      ],
+      "rounds": 2,
+      "supplemental_http_attempts": 2,
+      "initial_http_attempts": 0,
+      "total_http_attempts": 2,
+      "stop_reason": "round_limit",
+      "trace": [
+        {
+          "action": "search_indoor",
+          "round": 1,
+          "query_key": "tripagent:candidate:57c5581d48eb2cdb1f1086cdf199e3804f2d04b9ef073b09f26a1e3a43236176",
+          "result_count": 20,
+          "cache_hit": false,
+          "raw_count": 29,
+          "rating_filtered": 5
+        },
+        {
+          "action": "search_indoor",
+          "round": 2,
+          "query_key": "tripagent:candidate:5ea011de2263e6d134903ca42b75c8dca679e23232781b1727c14ba673e8915f",
+          "result_count": 0,
+          "cache_hit": false,
+          "raw_count": 29,
+          "rating_filtered": 5
+        }
+      ],
+      "http": [
+        {
+          "city": "上海",
+          "query": "博物馆",
+          "types": "140100",
+          "outcome": "success",
+          "raw_count": 29
+        },
+        {
+          "city": "上海",
+          "query": "博物馆 展馆",
+          "types": "140100",
+          "outcome": "success",
+          "raw_count": 29
+        }
+      ],
+      "observations": [
+        {
+          "query": "上海历史与自然结合，候选去重筛选后数量不足，需要补充",
+          "rewritten_query": null,
+          "preferences": null,
+          "habits": null,
+          "profile": null,
+          "weather": [
+            {
+              "is_bad": false
+            }
+          ],
+          "destination": "上海",
+          "days": 1,
+          "coverage": {
+            "count": 3,
+            "required_count": 4,
+            "indoor": 1,
+            "outdoor": 2,
+            "unknown_type": 0,
+            "requested_count": 0,
+            "requested_hits": 0,
+            "regions": 2,
+            "categories": 0
+          },
+          "missing": [
+            "count",
+            "outdoor"
+          ],
+          "observed": [],
+          "candidates": [
+            {
+              "name": "上海失恋博物馆",
+              "indoor": true
+            },
+            {
+              "name": "上海朱家角古镇旅游区",
+              "indoor": false
+            },
+            {
+              "name": "淀山湖风景区",
+              "indoor": false
+            }
+          ]
+        },
+        {
+          "query": "上海历史与自然结合，候选去重筛选后数量不足，需要补充",
+          "rewritten_query": null,
+          "preferences": null,
+          "habits": null,
+          "profile": null,
+          "weather": [
+            {
+              "is_bad": false
+            }
+          ],
+          "destination": "上海",
+          "days": 1,
+          "coverage": {
+            "count": 23,
+            "required_count": 4,
+            "indoor": 1,
+            "outdoor": 2,
+            "unknown_type": 20,
+            "requested_count": 0,
+            "requested_hits": 0,
+            "regions": 7,
+            "categories": 1
+          },
+          "missing": [
+            "outdoor"
+          ],
+          "observed": [
+            {
+              "action": "search_indoor",
+              "round": 1,
+              "query_key": "tripagent:candidate:57c5581d48eb2cdb1f1086cdf199e3804f2d04b9ef073b09f26a1e3a43236176",
+              "result_count": 20,
+              "cache_hit": false,
+              "raw_count": 29,
+              "rating_filtered": 5
+            }
+          ],
+          "candidates": [
+            {
+              "name": "上海失恋博物馆",
+              "indoor": true
+            },
+            {
+              "name": "上海朱家角古镇旅游区",
+              "indoor": false
+            },
+            {
+              "name": "淀山湖风景区",
+              "indoor": false
+            },
+            {
+              "name": "上海博物馆(人民广场馆)",
+              "indoor": null
+            },
+            {
+              "name": "上海市历史博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海自然博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海邮政博物馆",
+              "indoor": null
+            },
+            {
+              "name": "中国证券博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海体育博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海世博会博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海当代艺术博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海公安博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海工艺美术博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海铁路博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海震旦博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海潜艇展览馆(中国航海博物馆黄浦分馆)",
+              "indoor": null
+            },
+            {
+              "name": "上海琉璃艺术博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海纺织博物馆",
+              "indoor": null
+            },
+            {
+              "name": "国际乒联博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海观复博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海美术馆(中华艺术宫)",
+              "indoor": null
+            },
+            {
+              "name": "中国科学院上海昆虫博物馆",
+              "indoor": null
+            },
+            {
+              "name": "上海博物馆(东馆)",
+              "indoor": null
+            }
+          ]
+        }
+      ],
+      "duplicate_blocks": 0,
+      "search_failures": 0,
+      "repeat_opportunities": 0,
+      "optimistic_fixture_upper_bound": {
+        "pass": true,
+        "blockers": [],
+        "missing_names": [],
+        "count": 23,
+        "indoor": 21,
+        "indoor_with_hints": 21,
+        "hint_only_diagnostic_pass": true
+      },
+      "budget_guard_errors": 0,
+      "unique_names": true,
+      "provenance_ok": true,
+      "guard_pass": false
+    },
+    {
+      "id": "nonexistent-repeat",
+      "group": "boundary",
+      "city": "南京",
+      "query": "想去“霍格沃茨魔法学校”",
+      "initial_state_sha256": "d7706e7c371a5c82fad88e61294aa589280812e6aa67add51f146adf486add90",
+      "initial_state_unchanged": true,
+      "requirements": {
+        "required_names": [
+          "霍格沃茨魔法学校"
+        ],
+        "min_count": 4,
+        "min_indoor": 0
+      },
+      "baseline": {
+        "pass": false,
+        "blockers": [
+          "missing_required_poi"
+        ],
+        "missing_names": [
+          "霍格沃茨魔法学校"
+        ],
+        "count": 4,
+        "indoor": 0,
+        "indoor_with_hints": 0,
+        "hint_only_diagnostic_pass": false
+      },
+      "bounded_react": {
+        "pass": false,
+        "blockers": [
+          "missing_required_poi"
+        ],
+        "missing_names": [
+          "霍格沃茨魔法学校"
+        ],
+        "count": 4,
+        "indoor": 0,
+        "indoor_with_hints": 0,
+        "hint_only_diagnostic_pass": false
+      },
+      "error": null,
+      "initial_names": [
+        "不老村",
+        "古鸡鸣寺",
+        "莲花广场",
+        "玄武湖景区"
+      ],
+      "final_names": [
+        "不老村",
+        "古鸡鸣寺",
+        "莲花广场",
+        "玄武湖景区"
+      ],
+      "status": "insufficient",
+      "production_missing": [
+        "requested:霍格沃茨魔法学校",
+        "diversity"
+      ],
+      "rounds": 2,
+      "supplemental_http_attempts": 1,
+      "initial_http_attempts": 0,
+      "total_http_attempts": 1,
+      "stop_reason": "round_limit",
+      "trace": [
+        {
+          "action": "search_user_requested_poi",
+          "round": 1,
+          "query_key": "tripagent:candidate:613dfba11e16d13d8ad5ebdb690e10b4e50f4b8854ee08cd73cd9c0d403e711d",
+          "result_count": 0,
+          "cache_hit": false,
+          "raw_count": 0,
+          "rating_filtered": 0
+        },
+        {
+          "action": "search_user_requested_poi",
+          "error_code": "REPEATED_QUERY"
+        },
+        {
+          "action": "search_user_requested_poi",
+          "error_code": "REPEATED_QUERY"
+        },
+        {
+          "action": "search_user_requested_poi",
+          "error_code": "REPEATED_QUERY"
+        }
+      ],
+      "http": [
+        {
+          "city": "南京",
+          "query": "霍格沃茨魔法学校",
+          "types": "",
+          "outcome": "success",
+          "raw_count": 0
+        }
+      ],
+      "observations": [
+        {
+          "query": "想去“霍格沃茨魔法学校”",
+          "rewritten_query": null,
+          "preferences": null,
+          "habits": null,
+          "profile": null,
+          "weather": [
+            {
+              "is_bad": false
+            }
+          ],
+          "destination": "南京",
+          "days": 1,
+          "coverage": {
+            "count": 4,
+            "required_count": 4,
+            "indoor": 0,
+            "outdoor": 4,
+            "unknown_type": 0,
+            "requested_count": 1,
+            "requested_hits": 0,
+            "regions": 2,
+            "categories": 0
+          },
+          "missing": [
+            "requested:霍格沃茨魔法学校",
+            "diversity"
+          ],
+          "observed": [],
+          "candidates": [
+            {
+              "name": "不老村",
+              "indoor": false
+            },
+            {
+              "name": "古鸡鸣寺",
+              "indoor": false
+            },
+            {
+              "name": "莲花广场",
+              "indoor": false
+            },
+            {
+              "name": "玄武湖景区",
+              "indoor": false
+            }
+          ]
+        },
+        {
+          "query": "想去“霍格沃茨魔法学校”",
+          "rewritten_query": null,
+          "preferences": null,
+          "habits": null,
+          "profile": null,
+          "weather": [
+            {
+              "is_bad": false
+            }
+          ],
+          "destination": "南京",
+          "days": 1,
+          "coverage": {
+            "count": 4,
+            "required_count": 4,
+            "indoor": 0,
+            "outdoor": 4,
+            "unknown_type": 0,
+            "requested_count": 1,
+            "requested_hits": 0,
+            "regions": 2,
+            "categories": 0
+          },
+          "missing": [
+            "requested:霍格沃茨魔法学校",
+            "diversity"
+          ],
+          "observed": [
+            {
+              "action": "search_user_requested_poi",
+              "round": 1,
+              "query_key": "tripagent:candidate:613dfba11e16d13d8ad5ebdb690e10b4e50f4b8854ee08cd73cd9c0d403e711d",
+              "result_count": 0,
+              "cache_hit": false,
+              "raw_count": 0,
+              "rating_filtered": 0
+            },
+            {
+              "action": "search_user_requested_poi",
+              "error_code": "REPEATED_QUERY"
+            }
+          ],
+          "candidates": [
+            {
+              "name": "不老村",
+              "indoor": false
+            },
+            {
+              "name": "古鸡鸣寺",
+              "indoor": false
+            },
+            {
+              "name": "莲花广场",
+              "indoor": false
+            },
+            {
+              "name": "玄武湖景区",
+              "indoor": false
+            }
+          ]
+        }
+      ],
+      "duplicate_blocks": 3,
+      "search_failures": 0,
+      "repeat_opportunities": 3,
+      "optimistic_fixture_upper_bound": {
+        "pass": false,
+        "blockers": [
+          "missing_required_poi"
+        ],
+        "missing_names": [
+          "霍格沃茨魔法学校"
+        ],
+        "count": 18,
+        "indoor": 14,
+        "indoor_with_hints": 14,
+        "hint_only_diagnostic_pass": false
+      },
+      "budget_guard_errors": 0,
+      "unique_names": true,
+      "provenance_ok": true,
+      "guard_pass": true
+    },
+    {
+      "id": "near-name-reject",
+      "group": "boundary",
+      "city": "南京",
+      "query": "想去“南京博物院魔法分馆”",
+      "initial_state_sha256": "a2cfbe60642ee7f088c2a848970826453dda9885b70e713ab75be78d5a918ed1",
+      "initial_state_unchanged": true,
+      "requirements": {
+        "required_names": [
+          "南京博物院魔法分馆"
+        ],
+        "min_count": 4,
+        "min_indoor": 0
+      },
+      "baseline": {
+        "pass": false,
+        "blockers": [
+          "missing_required_poi"
+        ],
+        "missing_names": [
+          "南京博物院魔法分馆"
+        ],
+        "count": 4,
+        "indoor": 0,
+        "indoor_with_hints": 0,
+        "hint_only_diagnostic_pass": false
+      },
+      "bounded_react": {
+        "pass": false,
+        "blockers": [
+          "missing_required_poi"
+        ],
+        "missing_names": [
+          "南京博物院魔法分馆"
+        ],
+        "count": 4,
+        "indoor": 0,
+        "indoor_with_hints": 0,
+        "hint_only_diagnostic_pass": false
+      },
+      "error": null,
+      "initial_names": [
+        "不老村",
+        "古鸡鸣寺",
+        "莲花广场",
+        "玄武湖景区"
+      ],
+      "final_names": [
+        "不老村",
+        "古鸡鸣寺",
+        "莲花广场",
+        "玄武湖景区"
+      ],
+      "status": "insufficient",
+      "production_missing": [
+        "requested:南京博物院魔法分馆",
+        "diversity"
+      ],
+      "rounds": 2,
+      "supplemental_http_attempts": 1,
+      "initial_http_attempts": 0,
+      "total_http_attempts": 1,
+      "stop_reason": "round_limit",
+      "trace": [
+        {
+          "action": "search_user_requested_poi",
+          "round": 1,
+          "query_key": "tripagent:candidate:fe7dde5f5f90e82138905359ea98097eb05dc84fcc87c4580bb1a85c8de66b66",
+          "result_count": 0,
+          "cache_hit": false,
+          "raw_count": 1,
+          "rating_filtered": 0
+        },
+        {
+          "action": "search_user_requested_poi",
+          "error_code": "REPEATED_QUERY"
+        },
+        {
+          "action": "search_user_requested_poi",
+          "error_code": "REPEATED_QUERY"
+        },
+        {
+          "action": "search_user_requested_poi",
+          "error_code": "REPEATED_QUERY"
+        }
+      ],
+      "http": [
+        {
+          "city": "南京",
+          "query": "南京博物院魔法分馆",
+          "types": "",
+          "outcome": "success",
+          "raw_count": 1
+        }
+      ],
+      "observations": [
+        {
+          "query": "想去“南京博物院魔法分馆”",
+          "rewritten_query": null,
+          "preferences": null,
+          "habits": null,
+          "profile": null,
+          "weather": [
+            {
+              "is_bad": false
+            }
+          ],
+          "destination": "南京",
+          "days": 1,
+          "coverage": {
+            "count": 4,
+            "required_count": 4,
+            "indoor": 0,
+            "outdoor": 4,
+            "unknown_type": 0,
+            "requested_count": 1,
+            "requested_hits": 0,
+            "regions": 2,
+            "categories": 0
+          },
+          "missing": [
+            "requested:南京博物院魔法分馆",
+            "diversity"
+          ],
+          "observed": [],
+          "candidates": [
+            {
+              "name": "不老村",
+              "indoor": false
+            },
+            {
+              "name": "古鸡鸣寺",
+              "indoor": false
+            },
+            {
+              "name": "莲花广场",
+              "indoor": false
+            },
+            {
+              "name": "玄武湖景区",
+              "indoor": false
+            }
+          ]
+        },
+        {
+          "query": "想去“南京博物院魔法分馆”",
+          "rewritten_query": null,
+          "preferences": null,
+          "habits": null,
+          "profile": null,
+          "weather": [
+            {
+              "is_bad": false
+            }
+          ],
+          "destination": "南京",
+          "days": 1,
+          "coverage": {
+            "count": 4,
+            "required_count": 4,
+            "indoor": 0,
+            "outdoor": 4,
+            "unknown_type": 0,
+            "requested_count": 1,
+            "requested_hits": 0,
+            "regions": 2,
+            "categories": 0
+          },
+          "missing": [
+            "requested:南京博物院魔法分馆",
+            "diversity"
+          ],
+          "observed": [
+            {
+              "action": "search_user_requested_poi",
+              "round": 1,
+              "query_key": "tripagent:candidate:fe7dde5f5f90e82138905359ea98097eb05dc84fcc87c4580bb1a85c8de66b66",
+              "result_count": 0,
+              "cache_hit": false,
+              "raw_count": 1,
+              "rating_filtered": 0
+            },
+            {
+              "action": "search_user_requested_poi",
+              "error_code": "REPEATED_QUERY"
+            }
+          ],
+          "candidates": [
+            {
+              "name": "不老村",
+              "indoor": false
+            },
+            {
+              "name": "古鸡鸣寺",
+              "indoor": false
+            },
+            {
+              "name": "莲花广场",
+              "indoor": false
+            },
+            {
+              "name": "玄武湖景区",
+              "indoor": false
+            }
+          ]
+        }
+      ],
+      "duplicate_blocks": 3,
+      "search_failures": 0,
+      "repeat_opportunities": 3,
+      "optimistic_fixture_upper_bound": {
+        "pass": false,
+        "blockers": [
+          "missing_required_poi"
+        ],
+        "missing_names": [
+          "南京博物院魔法分馆"
+        ],
+        "count": 18,
+        "indoor": 14,
+        "indoor_with_hints": 14,
+        "hint_only_diagnostic_pass": false
+      },
+      "budget_guard_errors": 0,
+      "unique_names": true,
+      "provenance_ok": true,
+      "guard_pass": true
+    },
+    {
+      "id": "round-limit",
+      "group": "boundary",
+      "city": "南京",
+      "query": "雨天只去室内",
+      "initial_state_sha256": "67b9219c6b487c99f4cafede7144a0767f9a4ad017c7a566b019aff8bc95b710",
+      "initial_state_unchanged": true,
+      "requirements": {
+        "required_names": [],
+        "min_count": 4,
+        "min_indoor": 4
+      },
+      "baseline": {
+        "pass": false,
+        "blockers": [
+          "indoor_not_established"
+        ],
+        "missing_names": [],
+        "count": 4,
+        "indoor": 0,
+        "indoor_with_hints": 0,
+        "hint_only_diagnostic_pass": false
+      },
+      "bounded_react": {
+        "pass": false,
+        "blockers": [
+          "indoor_not_established"
+        ],
+        "missing_names": [],
+        "count": 4,
+        "indoor": 0,
+        "indoor_with_hints": 0,
+        "hint_only_diagnostic_pass": false
+      },
+      "error": null,
+      "initial_names": [
+        "不老村",
+        "古鸡鸣寺",
+        "莲花广场",
+        "玄武湖景区"
+      ],
+      "final_names": [
+        "不老村",
+        "古鸡鸣寺",
+        "莲花广场",
+        "玄武湖景区"
+      ],
+      "status": "insufficient",
+      "production_missing": [
+        "indoor"
+      ],
+      "rounds": 2,
+      "supplemental_http_attempts": 4,
+      "initial_http_attempts": 0,
+      "total_http_attempts": 4,
+      "stop_reason": "shared_http_budget_exhausted",
+      "trace": [
+        {
+          "action": "search_indoor",
+          "round": 1,
+          "query_key": "tripagent:candidate:ec6b00af3149a21661db4912a089bacaf8bf0f24b1b549956d39ad51576022b6",
+          "result_count": 0,
+          "cache_hit": false,
+          "raw_count": 0,
+          "rating_filtered": 0
+        },
+        {
+          "action": "search_indoor",
+          "round": 1,
+          "query_key": "tripagent:candidate:0f52ec7e012f55256de37e6058ea2b60363a01437f0a6ec9b74ca3edf8d41197",
+          "result_count": 0,
+          "cache_hit": false,
+          "raw_count": 0,
+          "rating_filtered": 0
+        },
+        {
+          "action": "search_indoor",
+          "round": 2,
+          "query_key": "tripagent:candidate:640cb233a0ea7f1335b6b6d86e6a2edbc8a2d7ede4634d926da4b3c1e9939a41",
+          "result_count": 0,
+          "cache_hit": false,
+          "raw_count": 0,
+          "rating_filtered": 0
+        },
+        {
+          "action": "search_indoor",
+          "round": 2,
+          "query_key": "tripagent:candidate:4aee631a876b0917da5536493ebe35548f98f00356a8343c274224f8caf5cb26",
+          "result_count": 0,
+          "cache_hit": false,
+          "raw_count": 0,
+          "rating_filtered": 0
+        }
+      ],
+      "http": [
+        {
+          "city": "南京",
+          "query": "博物馆",
+          "types": "140100",
+          "outcome": "success",
+          "raw_count": 0
+        },
+        {
+          "city": "南京",
+          "query": "美术馆",
+          "types": "140100",
+          "outcome": "success",
+          "raw_count": 0
+        },
+        {
+          "city": "南京",
+          "query": "展览馆",
+          "types": "140100",
+          "outcome": "success",
+          "raw_count": 0
+        },
+        {
+          "city": "南京",
+          "query": "科技馆",
+          "types": "140100",
+          "outcome": "success",
+          "raw_count": 0
+        }
+      ],
+      "observations": [
+        {
+          "query": "雨天只去室内",
+          "rewritten_query": null,
+          "preferences": null,
+          "habits": null,
+          "profile": null,
+          "weather": [
+            {
+              "is_bad": false
+            }
+          ],
+          "destination": "南京",
+          "days": 1,
+          "coverage": {
+            "count": 4,
+            "required_count": 4,
+            "indoor": 0,
+            "outdoor": 4,
+            "unknown_type": 0,
+            "requested_count": 0,
+            "requested_hits": 0,
+            "regions": 2,
+            "categories": 0
+          },
+          "missing": [
+            "indoor"
+          ],
+          "observed": [],
+          "candidates": [
+            {
+              "name": "不老村",
+              "indoor": false
+            },
+            {
+              "name": "古鸡鸣寺",
+              "indoor": false
+            },
+            {
+              "name": "莲花广场",
+              "indoor": false
+            },
+            {
+              "name": "玄武湖景区",
+              "indoor": false
+            }
+          ]
+        },
+        {
+          "query": "雨天只去室内",
+          "rewritten_query": null,
+          "preferences": null,
+          "habits": null,
+          "profile": null,
+          "weather": [
+            {
+              "is_bad": false
+            }
+          ],
+          "destination": "南京",
+          "days": 1,
+          "coverage": {
+            "count": 4,
+            "required_count": 4,
+            "indoor": 0,
+            "outdoor": 4,
+            "unknown_type": 0,
+            "requested_count": 0,
+            "requested_hits": 0,
+            "regions": 2,
+            "categories": 0
+          },
+          "missing": [
+            "indoor"
+          ],
+          "observed": [
+            {
+              "action": "search_indoor",
+              "round": 1,
+              "query_key": "tripagent:candidate:ec6b00af3149a21661db4912a089bacaf8bf0f24b1b549956d39ad51576022b6",
+              "result_count": 0,
+              "cache_hit": false,
+              "raw_count": 0,
+              "rating_filtered": 0
+            },
+            {
+              "action": "search_indoor",
+              "round": 1,
+              "query_key": "tripagent:candidate:0f52ec7e012f55256de37e6058ea2b60363a01437f0a6ec9b74ca3edf8d41197",
+              "result_count": 0,
+              "cache_hit": false,
+              "raw_count": 0,
+              "rating_filtered": 0
+            }
+          ],
+          "candidates": [
+            {
+              "name": "不老村",
+              "indoor": false
+            },
+            {
+              "name": "古鸡鸣寺",
+              "indoor": false
+            },
+            {
+              "name": "莲花广场",
+              "indoor": false
+            },
+            {
+              "name": "玄武湖景区",
+              "indoor": false
+            }
+          ]
+        }
+      ],
+      "duplicate_blocks": 0,
+      "search_failures": 0,
+      "repeat_opportunities": 0,
+      "optimistic_fixture_upper_bound": {
+        "pass": true,
+        "blockers": [],
+        "missing_names": [],
+        "count": 18,
+        "indoor": 14,
+        "indoor_with_hints": 14,
+        "hint_only_diagnostic_pass": true
+      },
+      "budget_guard_errors": 0,
+      "unique_names": true,
+      "provenance_ok": true,
+      "guard_pass": true
+    },
+    {
+      "id": "retry-budget",
+      "group": "boundary",
+      "city": "南京",
+      "query": "只去室内",
+      "initial_state_sha256": "6e8b3eeebd51312e86585237c754a11f1c611dea820377844a1f898fc80613ef",
+      "initial_state_unchanged": true,
+      "requirements": {
+        "required_names": [],
+        "min_count": 4,
+        "min_indoor": 4
+      },
+      "baseline": {
+        "pass": false,
+        "blockers": [
+          "indoor_not_established"
+        ],
+        "missing_names": [],
+        "count": 4,
+        "indoor": 0,
+        "indoor_with_hints": 0,
+        "hint_only_diagnostic_pass": false
+      },
+      "bounded_react": {
+        "pass": false,
+        "blockers": [
+          "indoor_not_established"
+        ],
+        "missing_names": [],
+        "count": 4,
+        "indoor": 0,
+        "indoor_with_hints": 0,
+        "hint_only_diagnostic_pass": false
+      },
+      "error": null,
+      "initial_names": [
+        "不老村",
+        "古鸡鸣寺",
+        "莲花广场",
+        "玄武湖景区"
+      ],
+      "final_names": [
+        "不老村",
+        "古鸡鸣寺",
+        "莲花广场",
+        "玄武湖景区"
+      ],
+      "status": "insufficient",
+      "production_missing": [
+        "indoor"
+      ],
+      "rounds": 1,
+      "supplemental_http_attempts": 4,
+      "initial_http_attempts": 0,
+      "total_http_attempts": 4,
+      "stop_reason": "shared_http_budget_exhausted",
+      "trace": [
+        {
+          "action": "search_indoor",
+          "round": 1,
+          "query_key": "tripagent:candidate:ec6b00af3149a21661db4912a089bacaf8bf0f24b1b549956d39ad51576022b6",
+          "result_count": 0,
+          "cache_hit": false,
+          "error_code": "SEARCH_FAILED"
+        },
+        {
+          "action": "search_indoor",
+          "round": 1,
+          "query_key": "tripagent:candidate:0f52ec7e012f55256de37e6058ea2b60363a01437f0a6ec9b74ca3edf8d41197",
+          "result_count": 0,
+          "cache_hit": false,
+          "error_code": "SEARCH_FAILED"
+        }
+      ],
+      "http": [
+        {
+          "city": "南京",
+          "query": "博物馆",
+          "types": "140100",
+          "outcome": "injected_timeout"
+        },
+        {
+          "city": "南京",
+          "query": "博物馆",
+          "types": "140100",
+          "outcome": "injected_timeout"
+        },
+        {
+          "city": "南京",
+          "query": "美术馆",
+          "types": "140100",
+          "outcome": "injected_timeout"
+        },
+        {
+          "city": "南京",
+          "query": "美术馆",
+          "types": "140100",
+          "outcome": "injected_timeout"
+        }
+      ],
+      "observations": [
+        {
+          "query": "只去室内",
+          "rewritten_query": null,
+          "preferences": null,
+          "habits": null,
+          "profile": null,
+          "weather": [
+            {
+              "is_bad": false
+            }
+          ],
+          "destination": "南京",
+          "days": 1,
+          "coverage": {
+            "count": 4,
+            "required_count": 4,
+            "indoor": 0,
+            "outdoor": 4,
+            "unknown_type": 0,
+            "requested_count": 0,
+            "requested_hits": 0,
+            "regions": 2,
+            "categories": 0
+          },
+          "missing": [
+            "indoor"
+          ],
+          "observed": [],
+          "candidates": [
+            {
+              "name": "不老村",
+              "indoor": false
+            },
+            {
+              "name": "古鸡鸣寺",
+              "indoor": false
+            },
+            {
+              "name": "莲花广场",
+              "indoor": false
+            },
+            {
+              "name": "玄武湖景区",
+              "indoor": false
+            }
+          ]
+        }
+      ],
+      "duplicate_blocks": 0,
+      "search_failures": 2,
+      "repeat_opportunities": 0,
+      "optimistic_fixture_upper_bound": {
+        "pass": true,
+        "blockers": [],
+        "missing_names": [],
+        "count": 18,
+        "indoor": 14,
+        "indoor_with_hints": 14,
+        "hint_only_diagnostic_pass": true
+      },
+      "budget_guard_errors": 0,
+      "unique_names": true,
+      "provenance_ok": true,
+      "guard_pass": true
+    },
+    {
+      "id": "shared-budget",
+      "group": "boundary",
+      "city": "南京",
+      "query": "只去室内",
+      "initial_state_sha256": "e06dee5390aeaecde5b8869f6465d81f61706f0a0191bd0a3d17071c138dd200",
+      "initial_state_unchanged": true,
+      "requirements": {
+        "required_names": [],
+        "min_count": 4,
+        "min_indoor": 4
+      },
+      "baseline": {
+        "pass": false,
+        "blockers": [
+          "indoor_not_established"
+        ],
+        "missing_names": [],
+        "count": 4,
+        "indoor": 0,
+        "indoor_with_hints": 0,
+        "hint_only_diagnostic_pass": false
+      },
+      "bounded_react": {
+        "pass": false,
+        "blockers": [
+          "indoor_not_established"
+        ],
+        "missing_names": [],
+        "count": 4,
+        "indoor": 0,
+        "indoor_with_hints": 0,
+        "hint_only_diagnostic_pass": false
+      },
+      "error": null,
+      "initial_names": [
+        "不老村",
+        "古鸡鸣寺",
+        "莲花广场",
+        "玄武湖景区"
+      ],
+      "final_names": [
+        "不老村",
+        "古鸡鸣寺",
+        "莲花广场",
+        "玄武湖景区"
+      ],
+      "status": "insufficient",
+      "production_missing": [
+        "indoor"
+      ],
+      "rounds": 1,
+      "supplemental_http_attempts": 1,
+      "initial_http_attempts": 3,
+      "total_http_attempts": 4,
+      "stop_reason": "shared_http_budget_exhausted",
+      "trace": [
+        {
+          "action": "search_indoor",
+          "round": 1,
+          "query_key": "tripagent:candidate:ec6b00af3149a21661db4912a089bacaf8bf0f24b1b549956d39ad51576022b6",
+          "result_count": 0,
+          "cache_hit": false,
+          "error_code": "BUDGET_EXHAUSTED"
+        },
+        {
+          "action": "search_indoor",
+          "round": 1,
+          "query_key": "tripagent:candidate:0f52ec7e012f55256de37e6058ea2b60363a01437f0a6ec9b74ca3edf8d41197",
+          "result_count": 0,
+          "cache_hit": false,
+          "error_code": "BUDGET_EXHAUSTED"
+        }
+      ],
+      "http": [
+        {
+          "city": "南京",
+          "query": "博物馆",
+          "types": "140100",
+          "outcome": "injected_timeout"
+        }
+      ],
+      "observations": [
+        {
+          "query": "只去室内",
+          "rewritten_query": null,
+          "preferences": null,
+          "habits": null,
+          "profile": null,
+          "weather": [
+            {
+              "is_bad": false
+            }
+          ],
+          "destination": "南京",
+          "days": 1,
+          "coverage": {
+            "count": 4,
+            "required_count": 4,
+            "indoor": 0,
+            "outdoor": 4,
+            "unknown_type": 0,
+            "requested_count": 0,
+            "requested_hits": 0,
+            "regions": 2,
+            "categories": 0
+          },
+          "missing": [
+            "indoor"
+          ],
+          "observed": [],
+          "candidates": [
+            {
+              "name": "不老村",
+              "indoor": false
+            },
+            {
+              "name": "古鸡鸣寺",
+              "indoor": false
+            },
+            {
+              "name": "莲花广场",
+              "indoor": false
+            },
+            {
+              "name": "玄武湖景区",
+              "indoor": false
+            }
+          ]
+        }
+      ],
+      "duplicate_blocks": 0,
+      "search_failures": 0,
+      "repeat_opportunities": 0,
+      "optimistic_fixture_upper_bound": {
+        "pass": true,
+        "blockers": [],
+        "missing_names": [],
+        "count": 18,
+        "indoor": 14,
+        "indoor_with_hints": 14,
+        "hint_only_diagnostic_pass": true
+      },
+      "budget_guard_errors": 2,
+      "unique_names": true,
+      "provenance_ok": true,
+      "guard_pass": true
+    }
+  ]
+}
