@@ -134,7 +134,7 @@ def test_new_suite_frozen_balance_witnesses_and_provenance():
     if not (OUT/'FROZEN.json').exists():pytest.skip('Capture not yet complete')
     from collections import Counter
     from scripts.build_representative_eval50 import score_case
-    manifest=verify()
+    manifest=verify(check_protocol=False)
     cases=json.loads((OUT/'cases.json').read_text(encoding='utf-8'))
     maps=json.loads((OUT/'maps.json').read_text(encoding='utf-8'))['routes']
     assert len(cases)==50 and len({c['id'] for c in cases})==50

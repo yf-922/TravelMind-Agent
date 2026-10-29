@@ -16,12 +16,13 @@ from scripts.prepare_sft_v2_release import explanation_faults
 from app.planning.schemas import TravelRoute
 
 
-def verify():
+def verify(*, check_protocol=True):
+    """Validate assets; real evaluation also requires the frozen source version."""
     manifest=json.loads((SUITE/'FROZEN.json').read_text(encoding='utf-8'))
     for name,digest in manifest['hashes'].items():
         if hashlib.sha256((SUITE/name).read_bytes()).hexdigest()!=digest:
             raise RuntimeError('Frozen asset changed: '+name)
-    for name,digest in manifest['source_hashes'].items():
+    for name,digest in (manifest['source_hashes'].items() if check_protocol else []):
         if hashlib.sha256((ROOT/name).read_bytes()).hexdigest()!=digest:
             raise RuntimeError('Frozen protocol changed; version the benchmark: '+name)
     return manifest

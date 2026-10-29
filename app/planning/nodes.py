@@ -771,6 +771,10 @@ def make_joint_planner_node(model_name: str | None, *, knowledge_lookup=None, ll
         TravelRoute, model=model_name, temperature=0.3, task_type="joint_planner"
     )
     def planner(state: TravelPlanState) -> dict[str, Any]:
+        from app.planning.poi_attributes import enrich_pois
+        # Also refresh restored checkpoints. Reviewer and gate receive the same
+        # overlay via the returned state, never a prompt-only hidden attribute.
+        state = state.model_copy(update={"pois": enrich_pois(state.pois, state.destination or "")})
         rag_sources = []
         try:
             rag_sources = (knowledge_lookup or search_planning_knowledge)(
@@ -821,7 +825,7 @@ def make_joint_planner_node(model_name: str | None, *, knowledge_lookup=None, ll
         except ValueError as exc:
             # Never release the previous draft after a failed repair.
             logger.warning("[joint_planner] invalid structured output (%s)", type(exc).__name__)
-            return {"route": [], "meal_slots": [], "selection_reasons": [], "rag_sources": [],
+            return {"pois": state.pois, "route": [], "meal_slots": [], "selection_reasons": [], "rag_sources": [],
                     "approved": False, "review_round": state.max_review_rounds + 1,
                     "time_check_round": state.max_time_check_rounds, "time_check_done": True,
                     "reviewer_issues": ["规划模型返回格式无效，本次未生成可用路线，请重新提交请求。"],
@@ -865,6 +869,7 @@ def make_joint_planner_node(model_name: str | None, *, knowledge_lookup=None, ll
         if removed_duplicates:
             note += f"；移除重复景点时间块 {removed_duplicates} 个（仍需校验剩余路线）"
         return {
+            "pois": state.pois,
             "route": route,
             "meal_slots": slots,
             "rag_sources": rag_sources,
@@ -2108,6 +2113,8 @@ def _finalize_impl(state: TravelPlanState) -> dict[str, Any]:
     final_plan["knowledge_sources"] = list(state.rag_sources or [])
     selected_names = {s.get("name") for d in state.route for s in d.get("spots", [])}
     final_plan["selection_reasons"] = [r for r in state.selection_reasons if r.get("name") in selected_names]
+    final_plan["poi_attributes"] = {p["name"]: p["planning_attributes"] for p in state.pois
+                                    if p.get("name") in selected_names and p.get("planning_attributes")}
 
     history = state.history + ["finalize：已组装最终计划"]
     # 规划过程日志随 plan 一起落库，历史详情页回看时可还原完整规划过程

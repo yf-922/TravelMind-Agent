@@ -13,6 +13,7 @@ from app.core.cache import POI_TTL, get_cached, set_cached
 from app.llm.factory import build_structured_llm
 from app.planning.helpers import amap_key, extract_explicit_place_requests, invoke_structured
 from app.planning.schemas import TravelPlanState
+from app.planning.poi_attributes import enrich_pois
 from app.providers.amap.poi import poi_to_spot, search_city_pois
 
 
@@ -78,9 +79,12 @@ def baseline_actions(state: TravelPlanState) -> list[dict]:
 
 def make_candidate_react_node(model_name=None):
     def decide(state: TravelPlanState):
+        # Refresh initial/checkpoint pools before deciding whether a gap exists;
+        # a verified indoor visit need not cause another category search.
+        state = state.model_copy(update={"pois": enrich_pois(state.pois, state.destination or "")})
         stats, missing = coverage(state)
         if not missing:
-            return {"candidate_search_actions": [{"action": "stop"}]}
+            return {"pois": state.pois, "candidate_search_actions": [{"action": "stop"}]}
         try:
             llm = build_structured_llm(CandidateDecision, model=model_name, temperature=0, task_type="candidate_react")
             result = invoke_structured(llm, [
@@ -98,10 +102,10 @@ def make_candidate_react_node(model_name=None):
         except Exception:
             # Discard model output. A server-defined category query remains
             # safe even when the model times out, particularly for empty pools.
-            return {"candidate_search_actions": baseline_actions(state) if not state.pois else [{"action": "stop"}],
+            return {"pois": state.pois, "candidate_search_actions": baseline_actions(state) if not state.pois else [{"action": "stop"}],
                     "candidate_pool_status": "insufficient",
                     "candidate_search_trace": state.candidate_search_trace + [{"error_code": "DECISION_FAILED"}]}
-        return {"candidate_search_actions": actions}
+        return {"pois": state.pois, "candidate_search_actions": actions}
     return decide
 
 
@@ -174,6 +178,7 @@ def candidate_search_node(state: TravelPlanState):
         except Exception as exc:
             record["error_code"] = "BUDGET_EXHAUSTED" if "budget_exhausted" in str(exc) else "SEARCH_FAILED"
         trace.append(record)
+    pool = enrich_pois(pool, state.destination or "")
     return {"pois": pool, "candidate_search_round": state.candidate_search_round + 1,
             "candidate_api_calls": state.candidate_api_calls + budget["used"], "candidate_search_trace": trace}
 

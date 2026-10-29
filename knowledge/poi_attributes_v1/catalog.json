@@ -1,0 +1,464 @@
+{
+  "version": "poi-attributes-v1",
+  "policy": "evidence_scoped_author_draft_not_human_gold",
+  "records": [
+    {
+      "id": "poiattr-a20361d74970",
+      "city": "南京",
+      "names": [
+        "南京博物院"
+      ],
+      "poi_id": null,
+      "location": {
+        "lng": 118.825064,
+        "lat": 32.040802
+      },
+      "environment": "indoor_main",
+      "environment_evidence": {
+        "snapshot": "knowledge/poi_attributes_v1/snapshots/njmuseum_notes.txt",
+        "sha256": "dd0e463542a4d1e5e353d4678936abe768ad4aa25c60323936036965a20162b7",
+        "url": "https://www.njmuseum.com/api/visit/notes",
+        "collected_at": "2026-10-08",
+        "quote": "展厅和指定区域内禁止"
+      },
+      "scope": "仅限馆内展厅参观；不含院内室外区域、排队及通勤",
+      "themes": [
+        {
+          "value": "常设基本陈列与文物专题展览",
+          "evidence": {
+            "snapshot": "knowledge/poi_attributes_v1/snapshots/njmuseum_notes.txt",
+            "sha256": "dd0e463542a4d1e5e353d4678936abe768ad4aa25c60323936036965a20162b7",
+            "url": "https://www.njmuseum.com/api/visit/notes",
+            "collected_at": "2026-10-08",
+            "quote": "除常设的基本陈列和以院藏文物为主的专题展览免费开放外"
+          }
+        }
+      ],
+      "cautions": [],
+      "max_age_days": 180,
+      "review_status": "author_extracted_quote_checked"
+    },
+    {
+      "id": "poiattr-fdd83a631662",
+      "city": "南京",
+      "names": [
+        "中国科举博物馆(江南贡院)"
+      ],
+      "poi_id": null,
+      "location": {
+        "lng": 118.790669,
+        "lat": 32.020795
+      },
+      "environment": "mixed",
+      "environment_evidence": {
+        "snapshot": "knowledge/route_interest_v1/snapshots/interest_2ef5a854aa78999d.txt",
+        "sha256": "f586ebeb54c768b39c875366b20dd7af8fb51f2ccd8db6d07a4b9217b23afc07",
+        "url": "https://www.njlyw.cn/websitenew/web/ScenicDetail?m=173&c=QH&i=1280",
+        "collected_at": "2026-10-08",
+        "quote": "作为室外实景展示"
+      },
+      "scope": "官方历史介绍涉及地下展馆及室外展示规划，不能据此认证当前整馆纯室内，具体参观范围需实时核实",
+      "themes": [
+        {
+          "value": "科举制度与教育史",
+          "evidence": {
+            "snapshot": "knowledge/route_interest_v1/snapshots/interest_2ef5a854aa78999d.txt",
+            "sha256": "f586ebeb54c768b39c875366b20dd7af8fb51f2ccd8db6d07a4b9217b23afc07",
+            "url": "https://www.njlyw.cn/websitenew/web/ScenicDetail?m=173&c=QH&i=1280",
+            "collected_at": "2026-10-08",
+            "quote": "科举制度自隋创立、唐完备、宋改革、元中落、明鼎盛至清灭亡，历时逾千年"
+          }
+        }
+      ],
+      "cautions": [
+        {
+          "value": "历史介绍涉及室外实景展示规划，不证明当前已开放；地下展馆不能代表整个景区",
+          "evidence": {
+            "snapshot": "knowledge/route_interest_v1/snapshots/interest_2ef5a854aa78999d.txt",
+            "sha256": "f586ebeb54c768b39c875366b20dd7af8fb51f2ccd8db6d07a4b9217b23afc07",
+            "url": "https://www.njlyw.cn/websitenew/web/ScenicDetail?m=173&c=QH&i=1280",
+            "collected_at": "2026-10-08",
+            "quote": "明远楼两侧将恢复206 间科举考棚（为江南贡院盛期20600 余间考棚的百分之一），作为室外实景展示，参观者可以看到科举考生百态千姿，并在现代科技手段帮助下实现身临其境的观感效果。 清朝末年，历经1300 年的"
+          }
+        }
+      ],
+      "max_age_days": 180,
+      "review_status": "author_extracted_quote_checked"
+    },
+    {
+      "id": "poiattr-d563e6810cd4",
+      "city": "南京",
+      "names": [
+        "玄武湖景区"
+      ],
+      "poi_id": null,
+      "location": {
+        "lng": 118.812688,
+        "lat": 32.069455
+      },
+      "environment": "outdoor_main",
+      "environment_evidence": {
+        "snapshot": "knowledge/route_interest_v1/snapshots/interest_b4c5aa40346c042a.txt",
+        "sha256": "485953f0626d9033e3f784459b3323e0c64a55c17df96a432370c317e8d695ed",
+        "url": "https://www.xuanwuhu.net/mhls/mhls1.aspx",
+        "collected_at": "2026-10-08",
+        "quote": "皇家园林湖泊"
+      },
+      "scope": "湖泊与园林游览，不保证沿线全程有遮蔽",
+      "themes": [
+        {
+          "value": "湖泊园林与历史景观",
+          "evidence": {
+            "snapshot": "knowledge/route_interest_v1/snapshots/interest_b4c5aa40346c042a.txt",
+            "sha256": "485953f0626d9033e3f784459b3323e0c64a55c17df96a432370c317e8d695ed",
+            "url": "https://www.xuanwuhu.net/mhls/mhls1.aspx",
+            "collected_at": "2026-10-08",
+            "quote": "六朝时期为皇家园林湖泊"
+          }
+        }
+      ],
+      "cautions": [],
+      "max_age_days": 180,
+      "review_status": "author_extracted_quote_checked"
+    },
+    {
+      "id": "poiattr-9ec771ef91ad",
+      "city": "南京",
+      "names": [
+        "中山陵景区"
+      ],
+      "poi_id": null,
+      "location": {
+        "lng": 118.854097,
+        "lat": 32.054508
+      },
+      "environment": "unknown",
+      "environment_evidence": null,
+      "scope": "仅有陵墓历史证据，尚无整条参观路线的室内外或无障碍核验",
+      "themes": [
+        {
+          "value": "近代历史与孙中山纪念",
+          "evidence": {
+            "snapshot": "knowledge/route_interest_v1/snapshots/interest_e38fe23cef511c22.txt",
+            "sha256": "d5997dca1516150e83d5eba68d6f3970e5799af9523b7b3e15eb39f006c8f4a0",
+            "url": "https://www.njlyw.cn/websitenew/web/ScenicDetail?m=173&c=XW&i=545",
+            "collected_at": "2026-10-08",
+            "quote": "中山陵位于钟山中茅峰南麓，是伟大的民主革命先行者孙中山先生的陵墓"
+          }
+        }
+      ],
+      "cautions": [],
+      "max_age_days": 180,
+      "review_status": "author_extracted_quote_checked"
+    },
+    {
+      "id": "poiattr-60783e1ff015",
+      "city": "南京",
+      "names": [
+        "总统府"
+      ],
+      "poi_id": null,
+      "location": {
+        "lng": 118.797398,
+        "lat": 32.044228
+      },
+      "environment": "unknown",
+      "environment_evidence": null,
+      "scope": "历史主题已知；庭院与建筑的游览范围、台阶条件尚未核实",
+      "themes": [
+        {
+          "value": "孙中山与南京临时政府",
+          "evidence": {
+            "snapshot": "knowledge/route_interest_v1/snapshots/interest_bcd0981a9c64dc89.txt",
+            "sha256": "bb3dd0b5d3d1fef15caf3c8f0ceea549e8c835fe855e2d51178b9b6f7244ad5e",
+            "url": "https://www.njztf.cn/",
+            "collected_at": "2026-10-08",
+            "quote": "孙中山与南京临时政府"
+          }
+        }
+      ],
+      "cautions": [],
+      "max_age_days": 180,
+      "review_status": "author_extracted_quote_checked"
+    },
+    {
+      "id": "poiattr-cbf71ab1cfbc",
+      "city": "上海",
+      "names": [
+        "上海自然博物馆"
+      ],
+      "poi_id": null,
+      "location": {
+        "lng": 121.462672,
+        "lat": 31.235021
+      },
+      "environment": "indoor_main",
+      "environment_evidence": {
+        "snapshot": "knowledge/poi_attributes_v1/snapshots/live_0.txt",
+        "sha256": "4b802dae15e7cd182a37cc7e06b94b891c1e945489a99b9152d81e5ee680bdc5",
+        "url": "https://www.snhm.org.cn/gywm/bwgjj.htm",
+        "collected_at": "2026-10-30",
+        "quote": "展览教育服务面积32,200 平方米"
+      },
+      "scope": "仅馆内常设展区、展厅；不含中心景观区、绿化屋面、排队及通勤",
+      "themes": [
+        {
+          "value": "生命演化、标本与自然科学",
+          "evidence": {
+            "snapshot": "knowledge/poi_attributes_v1/snapshots/live_0.txt",
+            "sha256": "4b802dae15e7cd182a37cc7e06b94b891c1e945489a99b9152d81e5ee680bdc5",
+            "url": "https://www.snhm.org.cn/gywm/bwgjj.htm",
+            "collected_at": "2026-10-30",
+            "quote": "展示陈列了来自七大洲的11000余件标本模型"
+          }
+        }
+      ],
+      "cautions": [
+        {
+          "value": "中心景观与绿化屋面不属于本次室内属性的适用范围",
+          "evidence": {
+            "snapshot": "knowledge/poi_attributes_v1/snapshots/live_0.txt",
+            "sha256": "4b802dae15e7cd182a37cc7e06b94b891c1e945489a99b9152d81e5ee680bdc5",
+            "url": "https://www.snhm.org.cn/gywm/bwgjj.htm",
+            "collected_at": "2026-10-30",
+            "quote": "中心景观区的160多种植物呈岛状分布"
+          }
+        }
+      ],
+      "max_age_days": 180,
+      "review_status": "author_extracted_quote_checked"
+    },
+    {
+      "id": "poiattr-0449b68b9efd",
+      "city": "上海",
+      "names": [
+        "上海海洋水族馆"
+      ],
+      "poi_id": null,
+      "location": {
+        "lng": 121.501894,
+        "lat": 31.240777
+      },
+      "environment": "indoor_main",
+      "environment_evidence": {
+        "snapshot": "knowledge/poi_attributes_v1/snapshots/live_2.txt",
+        "sha256": "9e14b5d15ca86f4c8113090f92b7063d7d447449bf9e3a77e793014790bc3d22",
+        "url": "https://www.sh-aquarium.com/About/index.aspx",
+        "collected_at": "2026-10-30",
+        "quote": "主辅楼两幢建筑呈大小金字塔型，建筑面积20500平方米"
+      },
+      "scope": "仅建筑内部主题展区与海底隧道，不含入口排队及通勤",
+      "themes": [
+        {
+          "value": "水生生物与海洋科普",
+          "evidence": {
+            "snapshot": "knowledge/poi_attributes_v1/snapshots/live_3.txt",
+            "sha256": "329f74698237ad8975a71aa7a86c09899f424dec036e62f7d5fb87066a657385",
+            "url": "https://www.sh-aquarium.com/index.aspx",
+            "collected_at": "2026-10-30",
+            "quote": "全球唯一设 有 独立中国展区来展示中国特有水生生物的水族馆"
+          }
+        }
+      ],
+      "cautions": [
+        {
+          "value": "采用单向游览动线",
+          "evidence": {
+            "snapshot": "knowledge/poi_attributes_v1/snapshots/live_1.txt",
+            "sha256": "fbd823edcce7b46fa97fcefde31b16991593984678f5d4a37f84e6bfbe4969a6",
+            "url": "https://www.sh-aquarium.com/FrequentlyAskedQuestions/index.aspx?lcid=13",
+            "collected_at": "2026-10-30",
+            "quote": "本馆是单向游览"
+          }
+        }
+      ],
+      "max_age_days": 180,
+      "review_status": "author_extracted_quote_checked"
+    },
+    {
+      "id": "poiattr-b54848c681f8",
+      "city": "上海",
+      "names": [
+        "上海豫园"
+      ],
+      "poi_id": null,
+      "location": {
+        "lng": 121.492497,
+        "lat": 31.227714
+      },
+      "environment": "mixed",
+      "environment_evidence": {
+        "snapshot": "knowledge/route_interest_v1/snapshots/interest_5b79ac56d84575c5.txt",
+        "sha256": "a042296d5482857051dd82107b505799989542fab026cbd3a1328f96a4db1ff7",
+        "url": "https://www.yugarden.com.cn/page/articleView/index.html",
+        "collected_at": "2026-10-08",
+        "quote": "古典园林内步道不平，台阶、石桥、坡道、池塘、假山、山洞、低矮树杈、苔藓等区域较多"
+      },
+      "scope": "古典园林与建筑混合，不能作为全程室内或已核实无障碍场馆",
+      "themes": [
+        {
+          "value": "古典园林",
+          "evidence": {
+            "snapshot": "knowledge/route_interest_v1/snapshots/interest_5b79ac56d84575c5.txt",
+            "sha256": "a042296d5482857051dd82107b505799989542fab026cbd3a1328f96a4db1ff7",
+            "url": "https://www.yugarden.com.cn/page/articleView/index.html",
+            "collected_at": "2026-10-08",
+            "quote": "古典园林内步道不平"
+          }
+        }
+      ],
+      "cautions": [
+        {
+          "value": "步道不平且有台阶、石桥、坡道；不能保证全程无台阶",
+          "evidence": {
+            "snapshot": "knowledge/route_interest_v1/snapshots/interest_5b79ac56d84575c5.txt",
+            "sha256": "a042296d5482857051dd82107b505799989542fab026cbd3a1328f96a4db1ff7",
+            "url": "https://www.yugarden.com.cn/page/articleView/index.html",
+            "collected_at": "2026-10-08",
+            "quote": "古典园林内步道不平，台阶、石桥、坡道、池塘、假山、山洞、低矮树杈、苔藓等区域较多"
+          }
+        }
+      ],
+      "max_age_days": 180,
+      "review_status": "author_extracted_quote_checked"
+    },
+    {
+      "id": "poiattr-f24867e68e97",
+      "city": "三亚",
+      "names": [
+        "天涯海角游览区"
+      ],
+      "poi_id": null,
+      "location": {
+        "lng": 109.348143,
+        "lat": 18.294988
+      },
+      "environment": "outdoor_main",
+      "environment_evidence": {
+        "snapshot": "knowledge/route_interest_v1/snapshots/interest_493b6e346dac06d7.txt",
+        "sha256": "9541dff54986b71feaa00fe9254a968bd41518ffe343e58f51f7082434906e4b",
+        "url": "https://www.aitianya.cn/",
+        "collected_at": "2026-10-08",
+        "quote": "陆地面积10.4平方公里，海域面积6平方公里"
+      },
+      "scope": "海滨与奇石观景；不保证遮阳或全程避雨",
+      "themes": [
+        {
+          "value": "海滨自然景观与摩崖石刻",
+          "evidence": {
+            "snapshot": "knowledge/route_interest_v1/snapshots/interest_493b6e346dac06d7.txt",
+            "sha256": "9541dff54986b71feaa00fe9254a968bd41518ffe343e58f51f7082434906e4b",
+            "url": "https://www.aitianya.cn/",
+            "collected_at": "2026-10-08",
+            "quote": "热带自然海滨风光"
+          }
+        }
+      ],
+      "cautions": [],
+      "max_age_days": 180,
+      "review_status": "author_extracted_quote_checked"
+    },
+    {
+      "id": "poiattr-e9af4c48af5e",
+      "city": "三亚",
+      "names": [
+        "三亚西岛海洋文化旅游区"
+      ],
+      "poi_id": null,
+      "location": {
+        "lng": 109.373711,
+        "lat": 18.237774
+      },
+      "environment": "outdoor_main",
+      "environment_evidence": {
+        "snapshot": "knowledge/route_interest_v1/snapshots/interest_29f816a87be08528.txt",
+        "sha256": "f897bc84074616da2682f9348ac06e62b2c3e1719a50768e4a6ee8396060fb4b",
+        "url": "https://www.visitsanya.com/zh/destination/%e8%a5%bf%e5%b2%9b",
+        "collected_at": "2026-10-08",
+        "quote": "岛上有原住民渔村、咖啡馆、海景民宿、艺术墙与完整的海岛生态"
+      },
+      "scope": "海岛与渔村游览，不将个别咖啡馆视为整岛室内覆盖",
+      "themes": [
+        {
+          "value": "渔村生活与海岛生态",
+          "evidence": {
+            "snapshot": "knowledge/route_interest_v1/snapshots/interest_29f816a87be08528.txt",
+            "sha256": "f897bc84074616da2682f9348ac06e62b2c3e1719a50768e4a6ee8396060fb4b",
+            "url": "https://www.visitsanya.com/zh/destination/%e8%a5%bf%e5%b2%9b",
+            "collected_at": "2026-10-08",
+            "quote": "岛上有原住民渔村、咖啡馆、海景民宿、艺术墙与完整的海岛生态"
+          }
+        }
+      ],
+      "cautions": [],
+      "max_age_days": 180,
+      "review_status": "author_extracted_quote_checked"
+    },
+    {
+      "id": "poiattr-c16844cbc059",
+      "city": "三亚",
+      "names": [
+        "鹿回头风景区"
+      ],
+      "poi_id": null,
+      "location": {
+        "lng": 109.50131,
+        "lat": 18.225639
+      },
+      "environment": "outdoor_main",
+      "environment_evidence": {
+        "snapshot": "knowledge/route_interest_v1/snapshots/interest_939e4045f8981f6a.txt",
+        "sha256": "f50f199251a5bd598e75ac747c69c239d1c523a1570a863065a76b6293069498",
+        "url": "https://www.visitsanya.com/zh/destination/%e9%b9%bf%e5%9b%9e%e5%a4%b4%e9%a3%8e%e6%99%af%e5%8c%ba",
+        "collected_at": "2026-10-08",
+        "quote": "城市山顶公园"
+      },
+      "scope": "山顶公园游览；不推断无障碍或固定体力等级",
+      "themes": [
+        {
+          "value": "山顶公园与黎族文化传说",
+          "evidence": {
+            "snapshot": "knowledge/route_interest_v1/snapshots/interest_939e4045f8981f6a.txt",
+            "sha256": "f50f199251a5bd598e75ac747c69c239d1c523a1570a863065a76b6293069498",
+            "url": "https://www.visitsanya.com/zh/destination/%e9%b9%bf%e5%9b%9e%e5%a4%b4%e9%a3%8e%e6%99%af%e5%8c%ba",
+            "collected_at": "2026-10-08",
+            "quote": "因黎族爱情传说而得名，是三亚最知名的城市山顶公园之一"
+          }
+        }
+      ],
+      "cautions": [],
+      "max_age_days": 180,
+      "review_status": "author_extracted_quote_checked"
+    },
+    {
+      "id": "poiattr-404cb6b4e7da",
+      "city": "三亚",
+      "names": [
+        "南山大小洞天旅游区"
+      ],
+      "poi_id": null,
+      "location": {
+        "lng": 109.158067,
+        "lat": 18.30089
+      },
+      "environment": "unknown",
+      "environment_evidence": null,
+      "scope": "包含自然博物馆不代表整个景区室内；各部分范围仍需核实",
+      "themes": [
+        {
+          "value": "自然博物馆、旅拍与摩崖石刻",
+          "evidence": {
+            "snapshot": "knowledge/route_interest_v1/snapshots/interest_f463160d936a96b9.txt",
+            "sha256": "c0a78b54f31b1b55aef6dec6bc8c83bd17c25d2d2533db3f738c1fda3d17fb51",
+            "url": "https://www.sanyapark.com/",
+            "collected_at": "2026-10-08",
+            "quote": "寻踪自然博物馆 漫游旅拍基地 摩崖石刻"
+          }
+        }
+      ],
+      "cautions": [],
+      "max_age_days": 180,
+      "review_status": "author_extracted_quote_checked"
+    }
+  ]
+}

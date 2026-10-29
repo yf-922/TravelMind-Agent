@@ -217,6 +217,7 @@ def poi_to_spot(poi: dict[str, Any]) -> dict[str, Any] | None:
 
     return {
         "name": poi.get("name", ""),
+        "poi_id": str(poi.get("id") or "") or None,
         "rating": rating,
         "open_time": open_time,
         "location": location,

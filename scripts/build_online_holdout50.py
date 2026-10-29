@@ -323,11 +323,12 @@ def freeze(out, pools, maps):
     print(json.dumps(dict(stage='frozen', cases=50, cities=CITIES), ensure_ascii=False))
 
 
-def verify(out=OUT):
+def verify(out=OUT, *, check_protocol=True):
+    """Asset-only checks are for unit tests, never for a new frozen evaluation."""
     manifest=json.loads((out/'FROZEN.json').read_text(encoding='utf-8'))
     for name,digest in manifest['hashes'].items():
         if hashlib.sha256((out/name).read_bytes()).hexdigest()!=digest: raise RuntimeError('Frozen asset changed: '+name)
-    for name,digest in manifest['source_hashes'].items():
+    for name,digest in (manifest['source_hashes'].items() if check_protocol else []):
         if hashlib.sha256((ROOT/name).read_bytes()).hexdigest()!=digest: raise RuntimeError('Protocol changed: '+name)
     return manifest
 

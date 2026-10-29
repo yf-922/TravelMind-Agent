@@ -208,6 +208,8 @@ flowchart TD
 
 知识检索按城市和候选实体过滤，将来源、URL 与采集日期交给 Planner；知识只能用于候选比较，不能新增候选池外地点。票价、余量与临时政策不能由历史快照当作当前事实。
 
+**景点属性实验**：为南京、上海、三亚 12 个景点补充带官方引用的室内外范围、展陈主题及步道注意事项；无法确认的属性保持未知，混合景区不能冒充纯室内。通过 `POI_ATTRIBUTES_ENABLED=1` 显式开启，默认关闭。详见[属性接入与最终路线对照](docs/poi_attributes.md)。
+
 检索实验独立比较关键词、BM25、向量及 RRF 混合召回，使用固定 revision 的中文 BGE；**生产 Chroma 默认 embedding 与该评测配置分开管理**。实验兴趣知识默认关闭，详见 [RAG 评测说明](docs/rag_benchmark_v2.md) 与 [最终选点对照方案](docs/route_interest_evaluation.md)。
 
 ## 快速开始
