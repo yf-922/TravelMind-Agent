@@ -84,7 +84,7 @@ python -m pytest -q
 
 ```json
 {
-  "snapshot": "bd11630edc8f07bb3b90fbdf54ce454b494d223c225130e5a97e3e46ec643858",
+  "snapshot": "9c41307d283ab0498351297ebec37ffa3b00e9e0b900a8fa6f782c12238c50f3",
   "cases": "cf0da58931961dbc8d37d9dccee274dd76d7f2bdb27e0b21d67a9400964022a7",
   "config": "a0cbf03f50900e5b2e2b9ff759c1c1e337ad50e48647ac97e7f3fb7e01c9f3b9",
   "code": {

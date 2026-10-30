@@ -37,3 +37,5 @@ python scripts/evaluate_candidate_react.py
 python scripts/validate_eval_assets.py
 python -m pytest -q
 ```
+
+最终执行结果：配对消融成功；评测资产校验通过；全量 **787 passed，3 条依赖弃用警告，30.79 秒**。
