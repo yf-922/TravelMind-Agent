@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import time
+import math
 import urllib.parse
 from typing import Any
 
@@ -16,6 +17,31 @@ from app.providers.amap.client import (
 )
 
 ATTRACTION_TYPE = "风景名胜"
+
+INDOOR_TYPES = ("博物馆", "美术馆", "科技馆", "展览馆", "图书馆", "纪念馆", "天文馆",
+                "海洋馆", "水族馆", "室内游乐", "剧场", "音乐厅", "购物中心", "商场")
+OUTDOOR_NAMES = ("遗址公园", "森林公园", "广场", "露天", "户外", "外景")
+
+
+def type_indoor(poi):
+    category = str(poi.get("type") or poi.get("category") or "")
+    return not non_tourism_poi(poi) and any(v in category for v in INDOOR_TYPES) and not any(v in str(poi.get("name") or "") for v in OUTDOOR_NAMES)
+
+
+def non_tourism_poi(poi):
+    """Reject clear merchant categories, including obvious misclassified shops.
+
+    A museum about doors is not a door shop; name checks are deliberately narrow.
+    Applies to raw rows and normalized checkpoint candidates alike.
+    """
+    category = str(poi.get("type") or poi.get("category") or "")
+    name = str(poi.get("name") or "")
+    code = str(poi.get("typecode") or "")
+    blocked = any(v in category for v in ("家居建材", "公司企业", "汽车服务", "汽车销售", "医疗保健"))
+    blocked |= code.startswith(("010", "020", "090", "170"))
+    blocked |= "生活服务" in category and any(v in category for v in ("中介", "维修"))
+    blocked |= "博物馆" not in name and any(v in name for v in ("系统门窗", "建材经营", "汽车维修", "房产中介"))
+    return bool(blocked)
 
 
 # ─── 内部辅助 ────────────────────────────────────────────────
@@ -175,15 +201,19 @@ def normalize_address(value: Any) -> str:
     return str(value or "")
 
 
-def poi_to_spot(poi: dict[str, Any]) -> dict[str, Any] | None:
+def poi_to_spot(poi: dict[str, Any], *, allow_non_tourism: bool = False) -> dict[str, Any] | None:
     """把高德景点 POI 原始字段整理成规划用结构。缺坐标返回 None。"""
+    if not isinstance(poi, dict) or (non_tourism_poi(poi) and not allow_non_tourism):
+        return None
     loc_str = poi.get("location", "")
-    if not loc_str or "," not in loc_str:
+    if not isinstance(loc_str, str) or "," not in loc_str:
         return None
     lng, lat = loc_str.split(",", 1)
     try:
         location = {"lng": float(lng), "lat": float(lat)}
     except ValueError:
+        return None
+    if not all(math.isfinite(v) for v in location.values()) or not (-180 <= location["lng"] <= 180 and -90 <= location["lat"] <= 90):
         return None
 
     biz_ext = poi.get("biz_ext") or {}
@@ -209,6 +239,7 @@ def poi_to_spot(poi: dict[str, Any]) -> dict[str, Any] | None:
     if cost_raw.lower() in {"[]", "none", "null", "nan", "inf", "-inf"}:
         cost_raw = ""
     category = str(poi.get("type") or "") + str(poi.get("name") or "")
+    verified_indoor = type_indoor(poi)
     indoor = None
     if any(word in category for word in ("博物馆", "美术馆", "纪念馆", "展览馆", "科技馆", "图书馆")):
         indoor = True
@@ -218,6 +249,8 @@ def poi_to_spot(poi: dict[str, Any]) -> dict[str, Any] | None:
     return {
         "name": poi.get("name", ""),
         "poi_id": str(poi.get("id") or "") or None,
+        "category": str(poi.get("type") or ""),
+        "typecode": str(poi.get("typecode") or ""),
         "rating": rating,
         "open_time": open_time,
         "location": location,
@@ -226,8 +259,9 @@ def poi_to_spot(poi: dict[str, Any]) -> dict[str, Any] | None:
         "address": normalize_address(poi.get("address", "")),
         "tel": str(poi.get("tel") or "").strip() or None,
         "cost": cost_raw or None,
-        "indoor": None,
+        "indoor": True if verified_indoor else None,
         "indoor_hint": indoor,
-        "indoor_source": "unknown",
+        "indoor_source": "amap_type_verified" if verified_indoor else "unknown",
+        "indoor_scope": "高德场馆分类所指的建筑内参观；不包括庭院、排队、通勤；非现场或全程避雨核验" if verified_indoor else None,
         "indoor_hint_source": "amap_category_inference" if indoor is not None else "unknown",
     }

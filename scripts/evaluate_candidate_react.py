@@ -26,7 +26,7 @@ from app.planning import candidate_react as cr
 from app.planning.schemas import TravelPlanState
 from app.providers.amap import poi as provider
 
-ASSETS = ROOT / "tests/eval/candidate_react_v2"
+ASSETS = ROOT / "tests/eval/candidate_react_v3"
 
 
 def digest(value):
@@ -144,21 +144,21 @@ def offline_decision(observation, case):
     Never reads gold pass/fail labels or response rows. Boundary probes deliberately
     repeat or vary queries to challenge server guards.
     """
-    missing = observation["missing"]
-    names = [m.removeprefix("requested:") for m in missing if m.startswith("requested:")]
+    gaps = observation["active_gaps"]
+    names = gaps["missing_named_pois"]
     if names:
         actions = [{"action": "search_user_requested_poi", "query": n} for n in names[:2]]
         if case["id"] in ("nonexistent-repeat", "near-name-reject"):
             actions = actions * 2
     elif case["id"] == "round-limit":
-        r = sum("query_key" in t for t in observation["observed"])
+        r = len(observation["tried_keys"])
         actions = [{"action": "search_indoor", "query": q} for q in
                    (("博物馆", "美术馆") if not r else ("展览馆", "科技馆"))]
     elif case["response_mode"] == "timeout":
         actions = [{"action": "search_indoor", "query": q} for q in ("博物馆", "美术馆")]
     else:
-        already = bool(observation["observed"])
-        actions = [{"action": "search_indoor", "query": "博物馆 展馆" if already else "博物馆"}]
+        already = bool(observation["tried_keys"])
+        actions = [{"action": "search_indoor", "query": "美术馆" if already else "博物馆"}]
     return cr.CandidateDecision.model_validate({"actions": actions})
 
 
@@ -187,7 +187,7 @@ class Replay:
             rows = []
         elif types == "":
             rows = [p for p in self.rows if p["name"] == keyword]
-        elif (types, keyword) in (("140100", "博物馆"), ("140100", "博物馆 展馆")):
+        elif types == "140100" and keyword in cr.INDOOR_QUERIES:
             rows = self.rows
         else:
             self.mapping_errors.append(f"Unmapped query: {keyword}/{types}")
@@ -346,8 +346,8 @@ def evaluate(assets=ASSETS):
     records = [run_pair(c, snapshot) for c in cases]
     config = {"round_limit": 2, "shared_http_limit": 4, "cache": "disabled",
               "candidate_min_per_day": 2, "min_rating": 4.5, "model": "deterministic_policy_double",
-              "indoor_policy": "production parser: category hints remain unknown"}
-    return {"protocol": "candidate-react-controlled-v2", "scope": "post-bootstrap controlled deficits; offline mechanism ablation",
+              "indoor_policy": "type whitelist + outdoor-name veto; scoped amap_type_verified; no LLM labeling"}
+    return {"protocol": "candidate-react-controlled-v3", "scope": "post-bootstrap controlled deficits; offline mechanism ablation",
         "annotation_status": "controlled requirements, not human-verified real-user labels",
         "config": config, "environment": {"python": sys.version.split()[0],
             "langgraph": version("langgraph"), "pydantic": version("pydantic")},
@@ -367,7 +367,7 @@ def markdown(report):
         "28 个主动构造的检索后缺口：9 点名、9 室内、5 数量、5 边界；覆盖南京、上海、三亚。不是随机真实用户样本，不报告置信区间或线上成功率。",
         "两组从完全相同的固定基础候选池出发，Baseline 不补查；实验组运行生产 LangGraph 决策包装器→搜索→校验→条件边。LLM 决策由读取当前缺口的确定性策略替身代替，因此不验证真实 LLM 的工具选择能力。",
         "POI 来自已有真实高德响应快照，保留原名称、ID、坐标、类型与评分。点名查询按同名过滤原始记录，分类查询返回冻结博物馆记录；这是受控 HTTP 响应映射，不是这些具体查询的实测响应或实时高德召回率。空结果、超时、重复行、近名干扰为显式注入。",
-        "基础池来自旧快照，其中室内标签是历史名称启发式。新增 POI 严格走当前生产解析器，分类推断只提供 indoor_hint，不会升级为确定 indoor。室内结果只能在此标签口径内解释，未人工核实。",
+        "v3 保留旧基础池与独立通过标准。新增 POI 通过生产分类白名单取得带范围的 amap_type_verified 标签，室外名称词根否决；标签表示高德建筑场馆分类，不是现场全程避雨证明。旧 v2 资产与报告保留。named-3-3 将误分类的绿盾门窗替换为同一三亚原始快照中的三亚自然博物馆，不更改原始 POI 字段；快照记录 curations。",
         "生产基础检索本身已按请求选择查询词；本实验刻意选取其后仍有缺口的状态，不代表完整基础检索平均表现。4 次 HTTP 是共享预算：多数场景起点为 0（前置开销未录制），另有起点已用 3 次的共享预算探针；报告同时保留初始、补查、总次数，不声称全流程实测最多 4 次。",
         "候选前提独立评分：点名集合全部出现、去重数量达标、明确室内数量达标，三项同时满足才通过。生产 validator 状态另外记录；不执行 Planner，不将前提满足冒充最终路线可规划/成功率。主分母为 23 个非边界受控缺口，不称为全都可满足；其中可能存在固定响应容量不足，另报诊断子集。",
         "无真实 LLM、外网或付费调用；禁用缓存、退避等待。HTTP 重试与预算使用生产 Provider 实现。不存在景点只在受控响应中设为空，不声称现实中同名地点一定不存在。", "",
@@ -388,14 +388,14 @@ def markdown(report):
         lines.append(f'| {r["id"]} | {r["query"]} | {int(r["baseline"]["pass"])}→{int(r["bounded_react"]["pass"])} | {r["rounds"]}/{r["supplemental_http_attempts"]}/{r["initial_http_attempts"]} | {r["status"]}: {", ".join(r["bounded_react"]["blockers"])} |')
     lines += ["", "## 结论与下一步", "",
         "点名补查和数量补查在固定响应下能够修复部分候选前提，证明补查工具链有实际作用；该结果不能证明真实模型每次能选对动作，也不能证明最终行程成功。",
-        "室内组未改善：新增馆类 POI 的 indoor 仍为未知，检索返回不等于取得室内证据。三亚另有评分过滤后响应容量不足。应先补可追溯的室内证据与候选质量诊断，再评估是否需要额外补查策略；本次未修改生产规则以追求更高分。",
+        "室内组由 0/9 提升至 7/9。仍失败的 indoor-3-1、indoor-3-2 与 count-3 受三亚冻结响应中评分过滤后可用候选容量限制。没有降低评分阈值、删除失败请求或伪造额外 POI。",
         "零分基线是选样条件：本集专门挑选基础池存在缺口的状态；不应写成基础检索总体通过率 0%，也不应把 5 条边界的安全退出率当成全系统可靠性。",
-        "本次只新增评测工具、版本化资产、回归测试和报告；生产候选检索实现及默认配置未变。", "",
+        "本次修改生产解析、缺口计算、模型输入和服务端动作约束。该配对只隔离是否执行补查，不能单独归因于提示词或模型智能；没有真实 Token 节省率或最终路线质量数据。", "",
         "## 复现与审计", "", "```powershell",
         "python scripts/evaluate_candidate_react.py",
         "python -m pytest -q tests/test_candidate_react.py tests/test_candidate_react_benchmark.py",
         "python scripts/validate_eval_assets.py", "python -m pytest -q", "```", "",
-        "逐请求 JSON：`docs/candidate_react_ablation.json`，包含两组评分、缺口、候选名称、决策观察、搜索追踪、HTTP 尝试和停止状态。测试与报告均使用版本化快照，复现不依赖被忽略的 data/。没有测量 Token、网络耗时或真实模型质量。", "",
+        "逐请求 JSON：`docs/candidate_react_ablation_v3.json`，包含两组评分、缺口、候选名称、决策观察、搜索追踪、HTTP 尝试和停止状态。测试与报告均使用版本化快照，复现不依赖被忽略的 data/。没有测量 Token、网络耗时或真实模型质量。", "",
         "指纹（SHA256；数据按排序键规范化 JSON）：", "", "```json",
         json.dumps(report["fingerprints"], ensure_ascii=False, indent=2), "```", ""]
     return "\n".join(lines)
@@ -403,8 +403,8 @@ def markdown(report):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--json", type=Path, default=ROOT / "docs/candidate_react_ablation.json")
-    parser.add_argument("--markdown", type=Path, default=ROOT / "docs/candidate_react_ablation.md")
+    parser.add_argument("--json", type=Path, default=ROOT / "docs/candidate_react_ablation_v3.json")
+    parser.add_argument("--markdown", type=Path, default=ROOT / "docs/candidate_react_ablation_v3.md")
     args = parser.parse_args()
     report = evaluate()
     for path, content in ((args.json, json.dumps(report, ensure_ascii=False, indent=2) + "\n"),

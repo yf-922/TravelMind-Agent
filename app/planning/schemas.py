@@ -288,6 +288,9 @@ class TravelPlanState(BaseModel):
     candidate_pool_status: str = "pending"
     candidate_missing_coverage: list[str] = Field(default_factory=list)
     candidate_coverage: dict[str, Any] = Field(default_factory=dict)
+    candidate_active_gaps: dict[str, Any] = Field(default_factory=dict)
+    candidate_tried_query_keys: list[str] = Field(default_factory=list)
+    candidate_force_named_non_tourism: bool = False
     semantic_memory_status: str = "not_requested"
 
     rag_sources: list[dict[str, Any]] = Field(default_factory=list)

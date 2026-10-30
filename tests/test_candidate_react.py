@@ -40,7 +40,9 @@ def test_decision_uses_current_request_memory_weather_and_observations(monkeypat
     result = cr.make_candidate_react_node()(TravelPlanState(query="当前需求", profile_hint="历史记忆",
         weather_forecast=[{"is_bad": True}]))
     assert result["candidate_search_actions"][0]["query"] == "博物馆"
-    assert "当前需求" in captured[0] and "历史记忆" in captured[0] and "is_bad" in captured[0]
+    assert "当前需求" in captured[0] and "历史记忆" not in captured[0]
+    assert '"indoor_shortage": 2' in captured[0]
+    assert '"history_suppressed": true' in captured[0]
 
 
 def test_invalid_model_action_is_replaced_by_server_defined_categories(monkeypatch):
@@ -48,7 +50,7 @@ def test_invalid_model_action_is_replaced_by_server_defined_categories(monkeypat
     monkeypatch.setattr(cr, "invoke_structured", lambda *a, **k: object())
     state = TravelPlanState(query="旅行")
     update = cr.make_candidate_react_node()(state)
-    assert update["candidate_search_actions"] == cr.baseline_actions(state)
+    assert update["candidate_search_actions"] == cr.valid_actions(state,cr.baseline_actions(state))
     assert update["candidate_search_trace"][-1]["error_code"] == "DECISION_FAILED"
 
 
@@ -152,7 +154,7 @@ def test_real_graph_loop_observes_new_results_and_finishes_after_two_rounds(monk
     observations = []
     def invoke(llm, messages, **kwargs):
         observations.append(messages[1][1])
-        action, query = ("search_outdoor", "公园") if len(observations) == 1 else ("search_indoor", "博物馆")
+        action, query = ("search_indoor", "博物馆") if len(observations) == 1 else ("search_outdoor", "公园")
         return cr.CandidateDecision(actions=[cr.CandidateAction(action=action, query=query)])
     monkeypatch.setattr(cr, "invoke_structured", invoke)
     monkeypatch.setattr(cr, "get_cached", lambda key: None)
@@ -175,12 +177,12 @@ def test_real_graph_loop_observes_new_results_and_finishes_after_two_rounds(monk
                            {"candidate_react": "candidate_react", "planner": END})
     result = g.compile().invoke(TravelPlanState(query="喜欢户外", days=1,
         rain_indoor_priority=True, weather_forecast=[{"is_bad": True}]))
-    # Category-only search results cannot certify indoor safety, even after
-    # the second successful search. The bounded graph must report the gap.
+    # Indoor reserve is now satisfied. Outdoor is still an unverified category
+    # hint, so this test must retain the separate outdoor coverage gap.
     assert result["candidate_pool_status"] == "insufficient"
     assert result["candidate_search_round"] == 2 and result["candidate_api_calls"] == 2
-    assert "公园0" in observations[1]
-    assert "indoor" in result["candidate_missing_coverage"]
+    assert "博物馆0" in observations[1]
+    assert "indoor" not in result["candidate_missing_coverage"]
 
 
 def test_unrequested_explicit_tool_action_is_blocked_before_network(monkeypatch):

@@ -49,16 +49,22 @@ INPUTS = {
 }
 
 
+# Shared candidate contracts include safety targets and persisted dedup state.
+for _role in ("attraction_search", "candidate_react", "candidate_search", "candidate_validator"):
+    INPUTS[_role].update({"candidate_active_gaps", "candidate_tried_query_keys", "candidate_force_named_non_tourism",
+        "max_spots", "max_per_day", "days", "candidate_min_per_day", "modification_notes",
+        "weather_forecast", "rain_indoor_priority", "attraction_preference"})
+
 OUTPUTS = {
     "modification_intent": {"attraction_preference", "food_preference", "habit_preference", "modification_search_keywords", "modification_search_status", "history"},
     "candidate_refresh": {"pois", "modification_search_status", "history"},
     "intent": {"destination", "travel_start_date", "travel_end_date", "days", "attraction_preference", "food_preference", "habit_preference", "max_walking_km", "rain_indoor_priority", "missing_fields", "history"},
     "query_rewrite": {"rewritten_query", "attraction_preference", "food_preference", "habit_preference", "history"},
     "weather_search": {"weather_forecast", "weather_note", "history"},
-    "attraction_search": {"pois", "history"},
-    "candidate_react": {"candidate_search_actions", "candidate_pool_status", "candidate_search_trace"},
-    "candidate_search": {"pois", "candidate_search_round", "candidate_api_calls", "candidate_search_trace"},
-    "candidate_validator": {"candidate_coverage", "candidate_missing_coverage", "candidate_pool_status"},
+    "attraction_search": {"pois", "history", "candidate_search_round", "candidate_api_calls", "candidate_search_trace", "candidate_tried_query_keys"},
+    "candidate_react": {"pois", "candidate_search_actions", "candidate_pool_status", "candidate_search_trace"},
+    "candidate_search": {"pois", "candidate_search_round", "candidate_api_calls", "candidate_search_trace", "candidate_tried_query_keys"},
+    "candidate_validator": {"pois", "candidate_active_gaps", "candidate_tried_query_keys", "candidate_coverage", "candidate_missing_coverage", "candidate_pool_status"},
     "main_meal_search": {"main_meal_candidates", "main_meal_status", "history"},
     "planner": {"route", "review_round", "history", "planner_reviewer_dialogue", "modification_concern", "route_stale_warning", "rag_sources", "meal_slots"},
     "route_distance_check": {"route_distance_legs", "route_distance_mode", "route_distance_note"},

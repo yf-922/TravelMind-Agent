@@ -84,13 +84,12 @@ def test_duplicate_names_and_unknown_indoor_do_not_inflate_quality():
     assert not score["pass"]
 
 
-def test_indoor_hint_does_not_silently_become_verified(report):
+def test_type_whitelist_repairs_indoor_gaps_without_llm_labels(report):
     rows = [r for r in report["cases"] if r["group"] == "indoor"]
     for row in rows:
-        assert row["bounded_react"]["indoor"] == row["baseline"]["indoor"]
-        assert not row["bounded_react"]["pass"]
-        assert "indoor" in row["production_missing"]
-    assert any(r["bounded_react"]["hint_only_diagnostic_pass"] for r in rows)
+        assert row["bounded_react"]["indoor"] >= row["baseline"]["indoor"]
+    assert sum(r["bounded_react"]["pass"] for r in rows) == 7
+    assert {r["id"] for r in rows if not r["bounded_react"]["pass"]} == {"indoor-3-1","indoor-3-2"}
 
 
 def test_nonexistent_and_near_name_cannot_pollute_pool(report):
@@ -137,8 +136,10 @@ def test_previously_searched_empty_query_is_not_retried(assets, monkeypatch):
 
 def test_unmapped_replay_cannot_be_hidden_by_production_exception_handler(assets, monkeypatch):
     snapshot, cases = assets
-    monkeypatch.setattr(bench, "offline_decision", lambda *a: cr.CandidateDecision.model_validate(
-        {"actions": [{"action": "search_indoor", "query": "未录制查询"}]}))
+    monkeypatch.setattr(bench.Replay, "get", lambda self, url, **kw: (
+        self.mapping_errors.append("injected missing mapping") or {"status":"1","pois":[]}))
+    # Deliberately bypass action policy for this transport-mapping fault probe.
+    monkeypatch.setattr(cr, "valid_actions", lambda state, actions: actions)
     with pytest.raises(AssertionError, match="mapping defect"):
         bench.run_pair(cases[0], snapshot)
 

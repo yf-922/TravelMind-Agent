@@ -149,6 +149,8 @@ flowchart TD
 
 代码入口：[candidate_react.py](app/planning/candidate_react.py) · [POI 适配器](app/providers/amap/poi.py)
 
+**候选链路 v3**：高德场馆类型白名单提供零模型 Token 的范围限定属性，过滤非文旅商户；Validator 输出结构化缺口，ReAct 只接收紧凑目标和已查黑名单，并由代码约束精确点名、室内补查和有限预算。28 个受控离线场景中修复 20/23 个非边界候选缺口，详见[架构与评测口径](docs/candidate_architecture_v3.md)。
+
 ### 03 · 硬约束与软约束分工审核
 
 **规则处理能明确计算的问题，模型补充需要理解语义的问题。**

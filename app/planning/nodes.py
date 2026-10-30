@@ -132,8 +132,8 @@ def make_query_rewrite_node(model_name: str | None, user_id: str | None):
                 f"雨天室内优先={'是' if state.rain_indoor_priority else '否'}"
             )
             rewritten: RewrittenQuery = invoke_structured(rewrite_llm, [
-                ("system", QUERY_REWRITE_SYSTEM),
-                ("human", f"原始查询：{raw}\n\n{intent_prefs}\n\n用户历史画像：\n{profile_text}"),
+                ("system", QUERY_REWRITE_SYSTEM + "\n当前原始请求与本轮修改中的点名、人群及排除项优先，不能被历史偏好覆盖。带老人/幼童时不引入历史登山徒步偏好。天气在并行节点完成后由候选 Validator 计算室内储备，不猜测未返回天气。"),
+                ("human", f"原始查询：{raw}\n本轮修改：{state.modification_notes or '无'}\n\n{intent_prefs}\n\n用户历史画像：\n{profile_text}"),
             ], retries=1)
 
             note = f"[query_rewrite] {raw!r} → {rewritten.rewritten_query!r}（{rewritten.reasoning}）"
