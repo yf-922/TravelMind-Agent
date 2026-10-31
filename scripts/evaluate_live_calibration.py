@@ -12,6 +12,7 @@ import asyncio
 import json
 import os
 import sys
+import threading
 import time
 import uuid
 from datetime import datetime, timezone
@@ -23,6 +24,7 @@ sys.path.insert(0, str(ROOT))
 from app.core.env import load_local_env
 from app.core.llm_usage import bind_run, take_run_snapshot, unbind_run
 from app.planning.candidate_react import effective_api_budget, requested_names
+from app.planning.constraints import capacity_policy
 from app.planning.graph import build_graph
 from app.planning.quality import result_envelope
 from app.planning.schemas import TravelPlanState
@@ -82,6 +84,7 @@ async def run_case(case: dict, output: Path, timeout: int) -> dict:
         "candidate_search_round": state.candidate_search_round,
         "candidate_api_calls": state.candidate_api_calls,
         "effective_api_budget": effective_api_budget(state),
+        "capacity_policy": capacity_policy(state),
         "requested_names": requested_names(state),
         "candidate_names": [p.get("name") for p in state.pois],
         "candidate_search_trace": state.candidate_search_trace,
@@ -112,6 +115,22 @@ async def main(args) -> None:
         raise SystemExit(json.dumps(ready))
     # Fresh real lookups, process-local only; .env.local is never modified.
     os.environ["REDIS_URL"] = ""
+    if args.poi_request_interval < 0:
+        raise SystemExit("--poi-request-interval must be nonnegative")
+    if args.poi_request_interval:
+        # Optional live-harness pacing, not a replay or an extra retry. The
+        # actual provider response and production candidate budget stay intact.
+        from app.providers.amap import poi as amap_poi
+        original_http = amap_poi.http_get_json
+        lock = threading.Lock()
+        next_start = 0.0
+        def paced_http(*http_args, **http_kwargs):
+            nonlocal next_start
+            with lock:
+                time.sleep(max(0.0, next_start - time.perf_counter()))
+                next_start = time.perf_counter() + args.poi_request_interval
+            return original_http(*http_args, **http_kwargs)
+        amap_poi.http_get_json = paced_http
     output = ROOT / "data" / "live_calibration" / datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     output.mkdir(parents=True, exist_ok=False)
     config = {
@@ -119,6 +138,7 @@ async def main(args) -> None:
         "model": os.getenv("AI_MODEL") or os.getenv("OPENAI_MODEL"),
         "redis_cache_disabled": True, "runner_retries": 0,
         "concurrency": args.concurrency, "case_timeout_seconds": args.timeout,
+        "poi_request_interval_seconds": args.poi_request_interval,
         "max_review_rounds": 3, "max_snapshots": 4, "candidate_max_rounds": 2,
         "candidate_api_budget_formula": "min(10,max(4,len(requested_names)+2))",
         "cost_status": "unpriced", "started_at_utc": datetime.now(timezone.utc).isoformat(),
@@ -142,4 +162,6 @@ if __name__ == "__main__":
     parser.add_argument("--concurrency", type=int, choices=(1, 2), default=2)
     parser.add_argument("--timeout", type=int, default=360)
     parser.add_argument("--cases", default="", help="Comma separated IDs; default: all four cases")
+    parser.add_argument("--poi-request-interval", type=float, default=0.0,
+                        help="Minimum seconds between POI requests; no extra retries")
     asyncio.run(main(parser.parse_args()))

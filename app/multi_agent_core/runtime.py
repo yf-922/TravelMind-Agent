@@ -83,6 +83,10 @@ class RoleContractError(ValueError):
 
 
 INPUTS["planner"].add("repair_feedback")
+for _role in ("planner", "risk_gate", "reviewer", "time_check", "candidate_validator"):
+    INPUTS[_role].update({"query", "modification_notes", "max_per_day_strict",
+                         "effective_max_per_day", "relaxed_constraints"})
+OUTPUTS["planner"].add("effective_max_per_day")
 
 
 def production_nodes(model_name=None, profile_hint="", user_id=None):

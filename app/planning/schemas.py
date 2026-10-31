@@ -218,6 +218,9 @@ class TravelPlanState(BaseModel):
 
     # 配置
     max_per_day: int = 5
+    # Explicit server ceiling; otherwise a default can expand for named POIs.
+    max_per_day_strict: bool = False
+    effective_max_per_day: int | None = None
     min_rating: float = 4.5
     max_spots: int = 30
     max_review_rounds: int = 3

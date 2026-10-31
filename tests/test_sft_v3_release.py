@@ -31,7 +31,11 @@ def test_release_preserves_migration_provenance_and_validation():
     # than requiring future production prompt versions to equal the old one.
     historical_system=rows[0]['messages'][0]['content']
     assert hashlib.sha256(historical_system.encode()).hexdigest()=='123e43ffa9d5f43ddffc05b753b754afe0fdaee68c20c52d1740a57dab59636b'
-    with patch('app.planning.nodes.JOINT_PLANNER_SYSTEM',historical_system):
+    # Historical headers displayed the configured cap, while the contract
+    # already carried the effective user cap. Pin that old header too; current
+    # production rendering is exercised by test_planning_capacity instead.
+    with patch('app.planning.nodes.JOINT_PLANNER_SYSTEM',historical_system), \
+         patch('app.planning.nodes.effective_daily_limit',lambda s: s.max_per_day):
         for r in rows:
             assert r['messages']==capture_messages(r['state'])
             if r['prompt_origin'].startswith('audited_contract_migration'):

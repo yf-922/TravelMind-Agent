@@ -359,6 +359,8 @@ async def confirm_modification(req: ConfirmModificationRequest, request: Request
             "time_check_required": state.time_check_required,
             "review_skipped": state.review_skipped,
             "max_per_day":      state.max_per_day,
+            "max_per_day_strict": state.max_per_day_strict,
+            "effective_max_per_day": state.effective_max_per_day,
             "max_review_rounds": state.max_review_rounds,
             "max_time_check_rounds": state.max_time_check_rounds,
             "model_name": state.model_name,

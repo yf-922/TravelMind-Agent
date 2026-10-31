@@ -133,6 +133,7 @@ class PlanRequest(BaseModel):
     engine: Literal["langgraph", "supervisor"] = "langgraph"
     query: str = Field(min_length=1, max_length=2000)
     max_per_day: int = Field(default=5, ge=1, le=12)
+    max_per_day_strict: bool = False
     min_rating: float = Field(default=4.5, ge=0, le=5)
     max_spots: int = Field(default=30, ge=1, le=100)
     max_review_rounds: int = Field(default=3, ge=0, le=8)
@@ -225,6 +226,7 @@ async def create_plan_stream(req: PlanRequest, request: Request):
     parent_plan_id = req.plan_id
     overrides = dict(
         max_per_day=req.max_per_day,
+        max_per_day_strict=req.max_per_day_strict,
         min_rating=req.min_rating,
         max_spots=req.max_spots,
         max_review_rounds=req.max_review_rounds,
@@ -258,6 +260,8 @@ async def create_plan_stream(req: PlanRequest, request: Request):
             "time_check_required": state.time_check_required,
             "review_skipped": state.review_skipped,
             "max_per_day":      state.max_per_day,
+            "max_per_day_strict": state.max_per_day_strict,
+            "effective_max_per_day": state.effective_max_per_day,
             "max_review_rounds": state.max_review_rounds,
             "max_time_check_rounds": state.max_time_check_rounds,
             "model_name": state.model_name,

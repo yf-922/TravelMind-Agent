@@ -12,6 +12,7 @@ import math
 from typing import Any
 
 from app.planning.helpers import canonical_poi_name, open_time_violations, poi_name_matches, unknown_spots
+from app.planning.constraints import capacity_policy, capacity_warnings, effective_daily_limit
 
 
 def _clock(value: Any) -> int | None:
@@ -162,16 +163,17 @@ def hard_constraint_report(state: Any) -> dict[str, list[dict[str, str]]]:
             continue
         l0.append({"code": "unknown_poi", "message": f"路线包含候选池外景点：{name}"})
 
-    requested = _requested_names(state)
-    placed = {str(spot.get("name") or "") for day in route for spot in (day.get("spots") or [])}
-    dropped = set((state.relaxed_constraints or {}).get("dropped_must_visit", []) or [])
-    unverified = set((state.relaxed_constraints or {}).get("unverified_must_visit", []) or [])
-    for name in requested:
-        canonical = canonical_poi_name(name, pois, state.destination or "") or name
-        exempt = any(poi_name_matches(item, name, state.destination or "")
-                     for item in dropped | unverified)
-        if canonical not in placed and not exempt:
+    policy = capacity_policy(state)
+    requested = policy["active_must_visit"]
+    placed = {canonical_poi_name(spot.get("name"), pois, state.destination or "") or str(spot.get("name") or "")
+              for day in route for spot in (day.get("spots") or [])}
+    for name in policy["omitted_names"]:
+        if not policy["overflow_exempt"]:
             l0.append({"code": "missing_must_visit", "message": f"未安排用户点名景点：{name}"})
+    for day in route:
+        if len(day.get("spots") or []) > policy["effective_max_per_day"]:
+            l1.append({"code": "daily_capacity_exceeded", "message":
+                       f"Day{day.get('day')} 景点数量超过每日有效上限 {policy['effective_max_per_day']}，请调整分配"})
 
     if len(route) != int(state.days or 0):
         l0.append({"code": "route_structure", "message": f"路线天数为 {len(route)}，要求 {state.days} 天"})
@@ -284,14 +286,9 @@ def hard_constraint_report(state: Any) -> dict[str, list[dict[str, str]]]:
 def compute_soft_score(state: Any, review: Any | None = None) -> tuple[float, dict[str, float]]:
     """Compute the 100-point deterministic hybrid score."""
     route = state.route or []
-    placed = {str(spot.get("name") or "") for day in route for spot in (day.get("spots") or [])}
-    requested = _requested_names(state)
-    dropped = set((state.relaxed_constraints or {}).get("dropped_must_visit", []) or [])
-    exempt = dropped | set((state.relaxed_constraints or {}).get("unverified_must_visit", []) or [])
-    valid_requested = [name for name in requested if name not in exempt]
-    named = 20.0 if not valid_requested else 20.0 * sum(
-        (canonical_poi_name(name, state.pois, state.destination or "") or name) in placed
-        for name in valid_requested) / len(valid_requested)
+    policy = capacity_policy(state)
+    valid_requested = policy["active_must_visit"]
+    named = 20.0 if not valid_requested else 20.0 * len(policy["arranged_names"]) / len(valid_requested)
 
     pace = 20.0
     habit = str(state.habit_preference or "")
@@ -299,7 +296,7 @@ def compute_soft_score(state: Any, review: Any | None = None) -> tuple[float, di
         count = len(day.get("spots") or [])
         if ("慢节奏" in habit or "每天景点别太多" in habit) and count > 2:
             pace -= min(10.0, 5.0 * (count - 2))
-        if count >= int(getattr(state, "max_per_day", 5) or 5):
+        if count >= effective_daily_limit(state):
             pace -= 5.0
     pace = max(0.0, pace)
 
@@ -349,6 +346,7 @@ def append_route_snapshot(state: Any, review: Any | None = None) -> dict[str, An
     iteration = max(1, int(state.review_round or 1))
     snapshot = {
         "iteration": iteration,
+        "capacity_policy": capacity_policy(state),
         "plan": {
             "route": state.route,
             "meal_slots": state.meal_slots,
@@ -405,6 +403,7 @@ def choose_snapshot(state: Any) -> tuple[dict[str, Any] | None, str, list[str], 
         chosen = max(tier1, key=lambda x: (float(x.get("soft_score", 0)), int(x.get("iteration", 0))))
         warnings = list((state.relaxed_constraints or {}).get("relaxation_warnings", []) or [])
         warnings.extend(chosen.get("reviewer_warnings", []))
+        warnings.extend(capacity_warnings(state, chosen.get("plan", {}).get("route", [])))
         if not chosen.get("reviewer_approved", True):
             warnings.append("当前路线通过硬约束校验，审核提出的软性体验建议已作为提醒保留。")
         return chosen, "SUCCESS_WITH_WARNINGS" if warnings else "SUCCESS", list(dict.fromkeys(warnings)), []
@@ -418,6 +417,7 @@ def choose_snapshot(state: Any) -> tuple[dict[str, Any] | None, str, list[str], 
         warnings = list((state.relaxed_constraints or {}).get("relaxation_warnings", []) or [])
         warnings.extend(v.get("message", "") for v in chosen.get("l1_violations", []))
         warnings.extend(chosen.get("reviewer_warnings", []))
+        warnings.extend(capacity_warnings(state, chosen.get("plan", {}).get("route", [])))
         return chosen, "PARTIAL_SUCCESS", list(dict.fromkeys(warnings)), []
     chosen = min(history, key=lambda x: (len(x.get("l0_violations", [])), -int(x.get("iteration", 0)), -float(x.get("soft_score", 0))))
     failures = [{**item, "stage": "L0_CONSTRAINT"} for item in chosen.get("l0_violations", [])]

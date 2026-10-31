@@ -426,6 +426,7 @@ def restore_modification_state(
     """Shared application checkpoint restoration, without model/provider calls."""
     return TravelPlanState(
         query=checkpoint.get("query", "修改行程"),
+        modification_notes=modification_notes,
         route=checkpoint.get("route", []),
         pois=checkpoint.get("pois", []),
         candidate_pool_status=checkpoint.get("candidate_pool_status", "pending"),
@@ -469,10 +470,11 @@ def restore_modification_state(
         time_check_required=bool(checkpoint.get("time_check_required", True)),
         review_skipped=bool(checkpoint.get("review_skipped", False)),
         max_per_day=checkpoint.get("max_per_day", 3),
+        max_per_day_strict=checkpoint.get("max_per_day_strict", False),
         route_modify_opinion=f"【用户修改意见】{modification_notes}",
         max_review_rounds=2,
         **{k: v for k, v in overrides.items()
-           if k not in ("model_name", "max_per_day", "route_modify_opinion", "max_review_rounds")},
+           if k not in ("model_name", "modification_notes", "max_per_day", "max_per_day_strict", "effective_max_per_day", "route_modify_opinion", "max_review_rounds")},
     )
 
 
@@ -538,6 +540,8 @@ async def run_modification_stream(
                     "main_meal_status": init.main_meal_status,
                     "meal_duration_min": init.meal_duration_min,
                     "max_per_day":      init.max_per_day,
+                    "max_per_day_strict": init.max_per_day_strict,
+                    "effective_max_per_day": acc.get("effective_max_per_day"),
                     "query":            init.query,
                     "relaxed_constraints": acc.get("relaxed_constraints", {}),
                     "route_history": acc.get("route_history", []),
@@ -599,12 +603,13 @@ async def run_confirm_stream(
         main_meal_status=pending_state.get("main_meal_status", "not_requested"),
         meal_duration_min=int(pending_state.get("meal_duration_min", 60) or 60),
         max_per_day=pending_state.get("max_per_day", 3),
+        max_per_day_strict=pending_state.get("max_per_day_strict", False),
         relaxed_constraints=pending_state.get("relaxed_constraints", {}),
         route_history=pending_state.get("route_history", []),
         warnings=pending_state.get("warnings", []),
         failure_reasons=pending_state.get("failure_reasons", []),
         score_info=pending_state.get("score_info", {}),
-        **{k: v for k, v in overrides.items() if k not in ("model_name", "max_per_day")},
+        **{k: v for k, v in overrides.items() if k not in ("model_name", "max_per_day", "max_per_day_strict", "effective_max_per_day")},
     )
     config = {"recursion_limit": 2 * (init.max_review_rounds + 1) + 2 * init.max_time_check_rounds + 14}
 

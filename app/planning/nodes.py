@@ -1,7 +1,7 @@
 """LangGraph 节点函数：意图识别、景点搜索、规划、评审、时间检查、餐饮搜索、推荐、finalize。"""
 
 from __future__ import annotations
-from app.planning.constraints import contract_text, effective_daily_limit, heat_violations
+from app.planning.constraints import capacity_prompt, contract_text, effective_daily_limit, heat_violations
 
 import json
 import logging
@@ -839,7 +839,7 @@ def make_joint_planner_node(model_name: str | None, *, knowledge_lookup=None, ll
         prompt = (
             contract_text(state) +
             f"用户需求：{state.rewritten_query or state.query}\n"
-            f"目的地：{state.destination}；天数：{state.days}；每天景点上限：{state.max_per_day}\n"
+            f"目的地：{state.destination}；天数：{state.days}；每天景点上限：{effective_daily_limit(state)}\n"
             f"景点偏好：{state.attraction_preference or '无'}；用餐偏好：{state.food_preference or '无'}\n"
             f"用餐时长：每餐约 {state.meal_duration_min} 分钟；步行上限：{state.max_walking_km or '未指定'} km\n"
             f"天气：{format_weather_for_llm(state.weather_forecast) or '无天气信息'}\n"
@@ -866,7 +866,7 @@ def make_joint_planner_node(model_name: str | None, *, knowledge_lookup=None, ll
         except ValueError as exc:
             # Never release the previous draft after a failed repair.
             logger.warning("[joint_planner] invalid structured output (%s)", type(exc).__name__)
-            return {"pois": state.pois, "route": [], "meal_slots": [], "selection_reasons": [], "rag_sources": [],
+            return {"pois": state.pois, "effective_max_per_day": effective_daily_limit(state), "route": [], "meal_slots": [], "selection_reasons": [], "rag_sources": [],
                     "approved": False, "review_round": state.max_review_rounds + 1,
                     "time_check_round": state.max_time_check_rounds, "time_check_done": True,
                     "reviewer_issues": ["规划模型返回格式无效，本次未生成可用路线，请重新提交请求。"],
@@ -911,6 +911,7 @@ def make_joint_planner_node(model_name: str | None, *, knowledge_lookup=None, ll
             note += f"；移除重复景点时间块 {removed_duplicates} 个（仍需校验剩余路线）"
         return {
             "pois": state.pois,
+            "effective_max_per_day": effective_daily_limit(state),
             "route": route,
             "meal_slots": slots,
             "rag_sources": rag_sources,
@@ -976,7 +977,8 @@ def _planner_constraint_guard(state: TravelPlanState) -> str:
         if unknown_names:
             break
 
-    blocks: list[str] = []
+    capacity = capacity_prompt(state)
+    blocks: list[str] = ["【点名与每日容量协议】" + capacity] if capacity else []
     if state.route_history:
         defects = state.route_history[-1].get("l1_violations", [])
         if defects:
@@ -1085,7 +1087,7 @@ def make_planner_node(model_name: str | None):
             f"目的地：{state.destination}\n旅行天数：{state.days} 天\n"
             f"单日总行程时长上限：{state.max_duration_hours if state.max_duration_hours is not None else '未指定'} 小时；"
             f"最晚结束时间：{state.latest_end_time or '未指定'}。餐饮节点也计入总时间窗口。\n"
-            f"每天景点数上限：{state.max_per_day}\n"
+            f"每天景点数上限：{effective_daily_limit(state)}\n"
             f"景点偏好：{state.attraction_preference or '无'}\n"
             f"游玩习惯/节奏：{state.habit_preference or '无'}\n"
             f"单段最大步行距离：{state.max_walking_km if state.max_walking_km is not None else '未指定'} km；"
@@ -1151,6 +1153,7 @@ def make_planner_node(model_name: str | None):
 
         return {
             "route": route,
+            "effective_max_per_day": effective_daily_limit(state),
             "review_round": rnd,
             "approved": False,
             "reviewer_issues": [],
@@ -1248,7 +1251,7 @@ def make_reviewer_node(model_name: str | None):
                 )
 
         prompt = (
-            f"目的地：{state.destination}，共 {state.days} 天，每天上限 {state.max_per_day}。\n"
+            f"目的地：{state.destination}，共 {state.days} 天，每天上限 {effective_daily_limit(state)}。\n"
             f"原始用户需求：{state.query}\n"
             f"本轮用户修改：{state.modification_notes or '无'}\n"
             f"景点偏好：{state.attraction_preference or '无'}\n"
