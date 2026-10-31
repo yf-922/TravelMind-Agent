@@ -93,7 +93,7 @@ def _build_recovery_graph(mode: Mode, model_name: str | None = None):
         graph.add_conditional_edges(
             "time_check",
             route_after_time_check,
-            {"planner": "planner", "reviewer": "reviewer", "meal_search": END, "spot_tips": END},
+            {"planner": "planner", "reviewer": "reviewer", "meal_search": END, "spot_tips": END, "finalize": END},
         )
         graph.add_conditional_edges(
             "reviewer", route_after_review,
@@ -104,7 +104,7 @@ def _build_recovery_graph(mode: Mode, model_name: str | None = None):
     graph.add_edge(START, "reviewer")
     if mode == "planner_reviewer":
         graph.add_conditional_edges(
-            "reviewer", route_after_review, {"planner": "planner", "time_check": END},
+            "reviewer", route_after_review, {"planner": "planner", "time_check": END, "finalize": END},
         )
         graph.add_edge("planner", "reviewer")
         return graph.compile()
@@ -112,7 +112,7 @@ def _build_recovery_graph(mode: Mode, model_name: str | None = None):
     graph.add_node("time_check", make_time_check_node(model_name))
     graph.add_conditional_edges(
         "reviewer", route_after_review,
-        {"planner": "planner", "time_check": "time_check"},
+        {"planner": "planner", "time_check": "time_check", "finalize": END},
     )
     graph.add_conditional_edges(
         "planner", route_after_planner,

@@ -37,7 +37,9 @@ from app.planning.helpers import (
     amap_key,
     clean_pref,
     cluster_pois_by_location,
+    canonical_poi_name,
     dinner_anchor_spot,
+    extract_time_constraints,
     fetch_city_spots,
     fetch_weather_for_dates,
     filter_by_rating,
@@ -82,6 +84,14 @@ def canonicalize_route_spot_names(
         for spot in day.get("spots", []):
             name = str(spot.get("name") or "")
             if not name or name in candidate_names:
+                continue
+            # Explicit request aliases (and Amap official-name variants) are
+            # deterministic identities, not fuzzy corrections. Canonicalize
+            # those before applying the stricter typo-only similarity fallback.
+            canonical = canonical_poi_name(name, pois)
+            if canonical:
+                spot["name"] = canonical
+                canonicalized.append((name, canonical))
                 continue
             best_name, best_ratio = "", 0.0
             for candidate in candidate_names:
@@ -200,6 +210,8 @@ def make_intent_node(model_name: str | None, profile_hint: str = ""):
 
         # 偏好归一化：去空白，并把 LLM 偶吐的 'null'/'无' 等占位垃圾值视为无偏好
         opt = clean_pref
+        # 用户明确给出的行程时限是硬约束；用确定性解析覆盖模型漏抽或误抽。
+        time_constraints = extract_time_constraints(state.query)
 
         note = (
             f"意图识别：destination={destination}，{start}~{end}（{days}天）"
@@ -216,6 +228,9 @@ def make_intent_node(model_name: str | None, profile_hint: str = ""):
             "habit_preference": opt(result.habit_preference),
             "max_walking_km": result.max_walking_km,
             "rain_indoor_priority": bool(result.rain_indoor_priority),
+            "max_duration_hours": time_constraints["max_duration_hours"]
+                if time_constraints["max_duration_hours"] is not None else result.max_duration_hours,
+            "latest_end_time": time_constraints["latest_end_time"] or result.latest_end_time,
             "days": days,
             "missing_fields": missing,
             "history": state.history + [note],
@@ -287,10 +302,19 @@ def clarify_request_node(state: TravelPlanState) -> dict[str, Any]:
 # ─── 高德景点搜索 ─────────────────────────────────────────────
 
 def attraction_search_node(state: TravelPlanState) -> dict[str, Any]:
-    from app.planning.candidate_react import baseline_actions, candidate_search_node
+    from app.planning.candidate_react import baseline_actions, candidate_search_node, effective_api_budget
 
-    seeded = state.model_copy(update={"candidate_search_actions": baseline_actions(state)})
+    # Materialize the named-request ceiling in state as well as in the helper.
+    # This keeps checkpoints and live calibration logs aligned with the actual
+    # shared bootstrap/supplement budget (e.g. five names -> seven attempts),
+    # while effective_api_budget remains the single source of truth for legacy
+    # callers that still carry the base default of four.
+    seeded = state.model_copy(update={
+        "candidate_search_actions": baseline_actions(state),
+        "candidate_api_budget": effective_api_budget(state),
+    })
     update = candidate_search_node(seeded)
+    update["candidate_api_budget"] = seeded.candidate_api_budget
     # The bootstrap shares the HTTP budget, but is not a ReAct revision round.
     update["candidate_search_round"] = state.candidate_search_round
     update["history"] = state.history + [f"高德基础候选池：{len(update['pois'])} 个景点"]
@@ -703,6 +727,9 @@ def _route_risk_flags(state: TravelPlanState) -> list[str]:
 def route_risk_gate_node(state: TravelPlanState, *, semantic_review: bool = True) -> dict[str, Any]:
     """Escalate only drafts with deterministic evidence of risk."""
     flags = _route_risk_flags(state)
+    from app.planning.quality import time_slot_violations
+    if time_slot_violations(state):
+        flags.append("invalid_time_slot")
     review_prefixes = (
         "duplicate_poi", "unknown_poi", "weather_outdoor_conflict", "heat_exposure_or_unknown_indoor",
         "walking_constraint", "long_road_leg", "route_structure",
@@ -714,6 +741,7 @@ def route_risk_gate_node(state: TravelPlanState, *, semantic_review: bool = True
         "meal_opening_conflict", "meal_overlap", "meal_budget_conflict",
         "meal_preference_conflict",
         "candidate_pool_preference_conflict",
+        "invalid_time_slot",
     )
     review_required = any(
         flag == prefix or flag.startswith(prefix + ":")
@@ -794,6 +822,8 @@ def make_joint_planner_node(model_name: str | None, *, knowledge_lookup=None, ll
         except Exception:
             logger.warning("[joint_planner] knowledge unavailable; continue with verified candidates", exc_info=True)
         rag_block = _retrieved_knowledge_block(rag_sources)
+        constraint_guard = _planner_constraint_guard(state)
+        constraint_block = f"{constraint_guard}\n" if constraint_guard else ""
         cluster_map = cluster_pois_by_location(state.pois, state.days)
         spot_text = format_spots_for_llm(state.pois, cluster_map)
         meal_text = "（无餐馆候选，餐馆时间块可留空并说明降级）"
@@ -816,6 +846,7 @@ def make_joint_planner_node(model_name: str | None, *, knowledge_lookup=None, ll
             f"景点候选池：\n{spot_text}\n\n"
             f"候选覆盖状态：{state.candidate_pool_status}；缺口：{state.candidate_missing_coverage}。"
             "候选不足时只用已有景点并说明缺口，不得编造景点。\n"
+            f"{constraint_block}"
             "同一景点全程仅安排一次，即使午餐前后分段也不能重复写入 spots；候选不足时宁可少排。\n"
             "当前原始需求及本轮修改优先于历史偏好或查询改写。检索事实只用于比较已核验候选的兴趣匹配，"
             "不得覆盖开放时间、道路通勤等硬约束。为已选景点输出 selection_reasons，"
@@ -884,6 +915,24 @@ def make_joint_planner_node(model_name: str | None, *, knowledge_lookup=None, ll
             "meal_slots": slots,
             "rag_sources": rag_sources,
             "selection_reasons": selection_reasons,
+            # A new draft invalidates every verdict and road fact attached to
+            # the previous route version.  The next distance/risk/reviewer
+            # stages must evaluate this route from a clean slate.
+            "approved": False,
+            "reviewer_issues": [],
+            "reviewer_model_score": None,
+            "reviewer_preference_match_level": "MEDIUM",
+            "reviewer_diversity_and_dining_level": "FAIR",
+            "time_violations": [],
+            "time_check_done": False,
+            "time_check_status": "ok",
+            "route_distance_legs": [],
+            "route_distance_note": None,
+            "route_risk_flags": [],
+            "route_risk_score": 0,
+            "review_required": True,
+            "review_skipped": False,
+            "risk_gate_rechecked": False,
             "review_round": state.review_round + 1,
             "history": state.history + [f"[joint_planner] {note}"],
             "planner_reviewer_dialogue": state.planner_reviewer_dialogue + [
@@ -910,6 +959,50 @@ def _retrieved_knowledge_block(sources: list[dict[str, Any]]) -> str:
     )
 
 
+def _planner_constraint_guard(state: TravelPlanState) -> str:
+    """Build high-priority closed-pool exclusions for every Planner prompt."""
+    relaxed = state.relaxed_constraints or {}
+    dropped = [str(x).strip() for x in (relaxed.get("dropped_must_visit", []) or []) if str(x).strip()]
+    unverified = [str(x).strip() for x in (relaxed.get("unverified_must_visit", []) or []) if str(x).strip()]
+    unknown_names: list[str] = []
+    for snapshot in reversed(state.route_history or []):
+        for violation in snapshot.get("l0_violations", []) or []:
+            if violation.get("code") != "unknown_poi":
+                continue
+            message = str(violation.get("message") or "")
+            name = message.rsplit("：", 1)[-1].strip() if "：" in message else ""
+            if name and name not in unknown_names:
+                unknown_names.append(name)
+        if unknown_names:
+            break
+
+    blocks: list[str] = []
+    if state.route_history:
+        defects = state.route_history[-1].get("l1_violations", [])
+        if defects:
+            blocks.append("【上一轮确定性排期问题，必须修复】" + "；".join(str(x.get("message", "")) for x in defects))
+            if any(x.get("code") == "time_window_exceeded" for x in defects):
+                blocks.append(
+                    "【总时间窗口超限，必须压缩】请先删除非必要午餐/晚餐等餐饮安排，"
+                    "再压缩可调整的停留时间，使当天从首个节点开始到最后节点结束不超过用户窗口；"
+                    "不得通过把节点移到窗口外来规避校验。若客观无法满足全部要求，保留可执行路线并说明冲突。"
+                )
+    if dropped or unverified:
+        names = list(dict.fromkeys(dropped + unverified))
+        blocks.append(
+            "【重要：已剔除的无效景点】用户提到的以下景点经核实不存在或暂不可用："
+            + "、".join(names)
+            + "。你绝对禁止将它们排入行程！请仅使用候选池中实际存在的景点排期。"
+        )
+    if unknown_names:
+        blocks.append(
+            "【重要：上一轮越界】上一轮使用了不在候选池中的景点："
+            + "、".join(unknown_names)
+            + "。请立即删除或替换为候选池内的合法景点，禁止回显。"
+        )
+    return "\n".join(blocks)
+
+
 def make_planner_node(model_name: str | None):
     llm = build_structured_llm(
         TravelRoute, model=model_name, temperature=0.3, task_type="planner"
@@ -932,6 +1025,8 @@ def make_planner_node(model_name: str | None):
             f"{state.destination or ''} {state.rewritten_query or state.query}", limit=3
         )
         rag_block = _retrieved_knowledge_block(rag_sources)
+        constraint_guard = _planner_constraint_guard(state)
+        constraint_block = f"\n{constraint_guard}" if constraint_guard else ""
         feedback = ""
         if state.route_modify_opinion:
             is_user_opinion = "【用户修改意见】" in state.route_modify_opinion
@@ -988,6 +1083,8 @@ def make_planner_node(model_name: str | None):
             f"用户本轮明确修改（最高优先级，不能被历史审核意见覆盖）：{state.modification_notes or '无'}\n"
             f"本轮修复反馈（仅参考，必须对当前路线重新验证）：{json.dumps(state.repair_feedback, ensure_ascii=False)[-4000:]}\n"
             f"目的地：{state.destination}\n旅行天数：{state.days} 天\n"
+            f"单日总行程时长上限：{state.max_duration_hours if state.max_duration_hours is not None else '未指定'} 小时；"
+            f"最晚结束时间：{state.latest_end_time or '未指定'}。餐饮节点也计入总时间窗口。\n"
             f"每天景点数上限：{state.max_per_day}\n"
             f"景点偏好：{state.attraction_preference or '无'}\n"
             f"游玩习惯/节奏：{state.habit_preference or '无'}\n"
@@ -998,6 +1095,7 @@ def make_planner_node(model_name: str | None):
             f"候选景点池（共 {len(state.pois)} 个）：\n{cand_text}"
             f"\n候选池覆盖状态：{state.candidate_pool_status}；缺口：{state.candidate_missing_coverage}。"
             "候选不足时仅使用已有候选并说明缺口，不得编造景点。"
+            f"{constraint_block}"
             f"{rag_block}"
             f"{feedback}"
             f"{dialogue_block}"
@@ -1054,6 +1152,21 @@ def make_planner_node(model_name: str | None):
         return {
             "route": route,
             "review_round": rnd,
+            "approved": False,
+            "reviewer_issues": [],
+            "reviewer_model_score": None,
+            "reviewer_preference_match_level": "MEDIUM",
+            "reviewer_diversity_and_dining_level": "FAIR",
+            "time_violations": [],
+            "time_check_done": False,
+            "time_check_status": "ok",
+            "route_distance_legs": [],
+            "route_distance_note": None,
+            "route_risk_flags": [],
+            "route_risk_score": 0,
+            "review_required": True,
+            "review_skipped": False,
+            "risk_gate_rechecked": False,
             "history": history,
             "planner_reviewer_dialogue": state.planner_reviewer_dialogue + [planner_line],
             "modification_concern": result.modification_concern or None,
@@ -1108,6 +1221,17 @@ def make_reviewer_node(model_name: str | None):
             if weather_text else "\n（无天气信息）\n"
         )
 
+        # Candidate-pool relaxation is a shared fact, not a Planner-only hint.
+        # Without this block the Reviewer can keep demanding a named POI that
+        # the validator has already confirmed unavailable, causing pointless
+        # rework until the snapshot cap.
+        candidate_guard = _planner_constraint_guard(state)
+        candidate_guard_block = (
+            f"\n{candidate_guard}\n"
+            "以上已剔除/暂不可用景点不得作为 Reviewer 的缺陷，也不得要求 Planner 将其补回。\n"
+            if candidate_guard else ""
+        )
+
         # 历轮沟通记录：让 Reviewer 知道自己之前提过哪些非时间类问题、是否已被修复
         dialogue_block = ""
         if state.planner_reviewer_dialogue:
@@ -1134,6 +1258,7 @@ def make_reviewer_node(model_name: str | None):
             f"{_travel_dates_block(state)}\n"
             f"{weather_block}\n"
             f"候选景点池：\n{format_spots_for_llm(state.pois, cluster_pois_by_location(state.pois, state.days))}\n\n"
+            f"{candidate_guard_block}"
             f"待评审路线：\n{json.dumps(state.route, ensure_ascii=False)}\n\n"
             f"系统客观预检（请据此判断）：\n{facts}"
             f"\n{distance_facts}"
@@ -1192,12 +1317,50 @@ def make_reviewer_node(model_name: str | None):
     return reviewer
 
 
-def route_after_review(state: TravelPlanState) -> str:
-    """主循环结束（通过 或 达最大轮数）→ time_check；否则还给 planner。
+def _snapshot_limit_reached(state: TravelPlanState) -> bool:
+    """Bound both recorded drafts and the existing terminal-error sentinel.
 
-    终止循环的判断从 route_after_planner 移到这里，确保每一份最终路线都经过 reviewer 评估。
-    然后进入 time_check 阶段独立核查开放时间，reviewer 不再处理时间问题。
+    Parsing failures set review_round to max_review_rounds + 1 without
+    producing a new valid draft. Snapshot length alone must not reopen that
+    terminal path and repeatedly invoke Planner on an empty route.
     """
+    limit = int(state.max_review_rounds or 0) + 1
+    return len(state.route_history or []) >= limit or (
+        bool(state.route_history) and state.review_round >= limit
+    )
+
+
+def _latest_snapshot_is_clean(state: TravelPlanState) -> bool:
+    # A direct/compatibility state can have ``approved=True`` before a
+    # reviewer snapshot exists. It must still follow the normal post-check
+    # path; early stop applies only to a recorded current snapshot.
+    if not state.route_history:
+        return False
+    latest = (state.route_history or [])[-1] if state.route_history else {}
+    return bool(
+        not latest.get("l0_violations")
+        and not latest.get("l1_violations")
+        and latest.get("preference_match_level", state.reviewer_preference_match_level) in {"HIGH", "MEDIUM"}
+        and latest.get("diversity_and_dining_level", state.reviewer_diversity_and_dining_level) in {"GOOD", "FAIR"}
+    )
+
+
+def route_after_review(state: TravelPlanState) -> str:
+    """Recorded hard-clean, acceptable-enum drafts stop; severe defects rework.
+
+    Legacy callers without a snapshot retain their independent time-check path.
+    """
+    # The snapshot is the authoritative unit of the bounded funnel.  Once the
+    # final allowed snapshot is recorded, never create another Planner draft.
+    # A hard-clean snapshot with acceptable enums exits instead of entering the
+    # independent time-check loop again.
+    if _snapshot_limit_reached(state):
+        return "finalize"
+    if _latest_snapshot_is_clean(state):
+        # Code has checked L0/L1; minor model objections become user warnings.
+        return "finalize"
+    if state.route_history:
+        return "planner"
     if state.approved or state.review_round > state.max_review_rounds:
         return "time_check"
     return "planner"
@@ -1234,6 +1397,10 @@ def route_after_time_check(state: TravelPlanState) -> str | list[str]:
     - 达 max_time_check_rounds 上限 → meal_search（带剩余问题前进，由 finalize 透传给前端）
     - 否则 → planner 修正
     """
+    if _snapshot_limit_reached(state) or _latest_snapshot_is_clean(state):
+        return "finalize"
+    if state.route_history:
+        return "planner"
     # Exhaustion also applies when there are no time violations but residual
     # meal/non-time risks would otherwise re-enter planner or reviewer forever.
     if state.time_check_round >= state.max_time_check_rounds:
@@ -1807,6 +1974,7 @@ def enrich_plan_ticket_budget(plan: dict[str, Any]) -> dict[str, Any]:
 
 def _finalize_impl(state: TravelPlanState) -> dict[str, Any]:
     """组装 final_plan，并优先使用高德道路距离生成交通建议。"""
+    from app.planning.candidate_react import effective_api_budget
     from app.planning.quality import choose_snapshot, hard_constraint_report
 
     legacy_terminal_rejection = not state.route_history and not state.approved
@@ -1864,6 +2032,16 @@ def _finalize_impl(state: TravelPlanState) -> dict[str, Any]:
         })
     else:
         state = state.model_copy(update={
+            # ``PARTIAL_SUCCESS`` deliberately returns the best L0-safe route
+            # with warnings, but it is not an approval of every constraint.
+            "approved": (
+                status in {"SUCCESS", "SUCCESS_WITH_WARNINGS"}
+                # PARTIAL_SUCCESS is an intentional L0-safe fallback.  The
+                # remaining L1 findings are exposed as warnings; a soft
+                # Reviewer rejection must not turn an otherwise usable route
+                # into an empty/failed response.
+                or status == "PARTIAL_SUCCESS"
+            ),
             "result_status": status,
             "warnings": list(dict.fromkeys(warnings)),
             "failure_reasons": [],
@@ -2121,6 +2299,7 @@ def _finalize_impl(state: TravelPlanState) -> dict[str, Any]:
             "coverage": state.candidate_coverage,
             "search_rounds": state.candidate_search_round,
             "api_calls": state.candidate_api_calls,
+            "effective_api_budget": effective_api_budget(state),
         },
         "query": state.query,
         "destination": state.destination,
@@ -2132,6 +2311,9 @@ def _finalize_impl(state: TravelPlanState) -> dict[str, Any]:
             "food": state.food_preference,
             "habit": state.habit_preference,
         },
+        # PARTIAL_SUCCESS is a usable L0-safe fallback. The legacy model score
+        # never decides whether a route is usable; status is derived from the
+        # deterministic snapshot funnel above.
         "approved": state.result_status != "FAILED",
         "status": state.result_status,
         "warnings": list(state.warnings or []),

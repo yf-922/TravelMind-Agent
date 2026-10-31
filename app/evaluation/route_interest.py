@@ -196,9 +196,9 @@ def build_final_route_graph(model, lookup, tips_done=None):
     g.add_conditional_edges('planner', nodes.route_after_planner,
                            {'reviewer': 'route_distance_check', 'time_check': 'route_distance_check'})
     g.add_edge('route_distance_check', 'risk_gate')
-    targets = {'reviewer': 'reviewer', 'time_check': 'time_check', 'meal_search': 'main_meal_output', 'spot_tips': 'spot_tips'}
+    targets = {'reviewer': 'reviewer', 'time_check': 'time_check', 'meal_search': 'main_meal_output', 'spot_tips': 'spot_tips', 'finalize': END}
     g.add_conditional_edges('risk_gate', nodes.route_after_risk_gate, targets)
-    g.add_conditional_edges('reviewer', nodes.route_after_review, {'planner': 'planner', 'time_check': 'time_check'})
+    g.add_conditional_edges('reviewer', nodes.route_after_review, {'planner': 'planner', 'time_check': 'time_check', 'finalize': END})
     g.add_conditional_edges('time_check', nodes.route_after_time_check,
                            {**targets, 'planner': 'planner'})
     g.add_edge(['main_meal_output', 'spot_tips'], 'finalize')

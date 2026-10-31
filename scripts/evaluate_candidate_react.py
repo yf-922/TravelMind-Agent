@@ -225,7 +225,16 @@ def run_pair(case, snapshot):
             types = "" if action.action == "search_user_requested_poi" else (
                 "140100" if action.action == "search_indoor" else "110000")
             key = (case["city"], action.query.strip(), types)
-            if key in issued_keys:
+            # The observation includes deterministic bootstrap searches too;
+            # count every model proposal that repeats an already-issued key,
+            # while keeping this denominator independent from production
+            # error records.
+            tried = {
+                (case["city"], item.get("query", "").strip(), item.get("types", ""))
+                for item in obs.get("tried_keys", [])
+                if item.get("query") is not None
+            }
+            if key in issued_keys or key in tried:
                 repeat_opportunities.append(key)
             issued_keys.add(key)
         return decision
@@ -280,7 +289,7 @@ def run_pair(case, snapshot):
     total_attempts = initial.candidate_api_calls + attempts
     rounds = len(observations) if error else final.candidate_search_round
     stop_reason = ("execution_error" if error else "coverage_ready" if final.candidate_pool_status == "ready"
-                   else "shared_http_budget_exhausted" if total_attempts >= 4
+                   else "shared_http_budget_exhausted" if total_attempts >= cr.effective_api_budget(final)
                    else "round_limit" if rounds >= 2 else "policy_stop")
     final_names = [p["name"] for p in final.pois]
     known = {p["name"] for p in case["base"]} | {p["name"] for p in replay.rows}
@@ -305,8 +314,12 @@ def run_pair(case, snapshot):
         "status": final.candidate_pool_status, "production_missing": final.candidate_missing_coverage,
         "rounds": rounds, "supplemental_http_attempts": attempts,
         "initial_http_attempts": initial.candidate_api_calls, "total_http_attempts": total_attempts,
+        "effective_api_budget": cr.effective_api_budget(final),
         "stop_reason": stop_reason,
         "trace": final.candidate_search_trace, "http": replay.http, "observations": observations,
+        # Numerator is the production guard's recorded blocks. Denominator is
+        # the independent count of duplicate proposals observed in the mock
+        # decision stream; never derive one from the other.
         "duplicate_blocks": errors["REPEATED_QUERY"], "search_failures": errors["SEARCH_FAILED"],
         "repeat_opportunities": len(repeat_opportunities),
         "optimistic_fixture_upper_bound": score(case, list(optimistic.values())),
@@ -316,7 +329,7 @@ def run_pair(case, snapshot):
         # Boundary probes may end in the explicit production failure state
         # (confirmed nonexistent named POI) or the normal insufficient state;
         # both are safe so long as no fabricated candidate was admitted.
-        "guard_pass": not error and rounds <= 2 and total_attempts <= 4
+        "guard_pass": not error and rounds <= 2 and total_attempts <= cr.effective_api_budget(final)
                       and final.candidate_pool_status in {"insufficient", "failed"}
                       and not after["pass"]}
 
@@ -337,7 +350,7 @@ def summarize(records):
         "fixture_limited_cases_even_trusting_hints": [r["id"] for r in deficits if not r["optimistic_fixture_upper_bound"]["pass"]],
         "optimistically_fixture_satisfiable": paired([r for r in deficits if r["optimistic_fixture_upper_bound"]["pass"]]),
         "boundary_safe_incomplete": fraction(sum(r["guard_pass"] for r in boundaries), len(boundaries)),
-        "budget_and_round_compliance": fraction(sum(r["rounds"] <= 2 and r["total_http_attempts"] <= 4 for r in records), len(records)),
+        "budget_and_round_compliance": fraction(sum(r["rounds"] <= 2 and r["total_http_attempts"] <= r["effective_api_budget"] for r in records), len(records)),
         "fictional_or_near_name_accepted": fraction(sum(r["bounded_react"]["pass"] for r in boundaries if r["requirements"]["required_names"]), 2),
         "duplicate_query_blocks": sum(r["duplicate_blocks"] for r in records),
         "repeat_query_guard": fraction(sum(r["duplicate_blocks"] for r in records), sum(r["repeat_opportunities"] for r in records)),
@@ -355,7 +368,8 @@ def evaluate(assets=ASSETS):
     cases = json.loads((assets / "cases.json").read_text(encoding="utf-8"))
     validate_assets(snapshot, cases)
     records = [run_pair(c, snapshot) for c in cases]
-    config = {"round_limit": 2, "shared_http_limit": 4, "cache": "disabled",
+    config = {"round_limit": 2, "base_shared_http_limit": 4,
+              "shared_http_limit_formula": "min(10, max(default_budget, requested_names + 2))", "cache": "disabled",
               "candidate_min_per_day": 2, "min_rating": 4.5, "model": "deterministic_policy_double",
               "indoor_policy": "type whitelist + outdoor-name veto; scoped amap_type_verified; no LLM labeling"}
     return {"protocol": "candidate-react-controlled-v3", "scope": "post-bootstrap controlled deficits; offline mechanism ablation",
@@ -379,7 +393,7 @@ def markdown(report):
         "两组从完全相同的固定基础候选池出发，Baseline 不补查；实验组运行生产 LangGraph 决策包装器→搜索→校验→条件边。LLM 决策由读取当前缺口的确定性策略替身代替，因此不验证真实 LLM 的工具选择能力。",
         "POI 来自已有真实高德响应快照，保留原名称、ID、坐标、类型与评分。点名查询按同名过滤原始记录，分类查询返回冻结博物馆记录；这是受控 HTTP 响应映射，不是这些具体查询的实测响应或实时高德召回率。空结果、超时、重复行、近名干扰为显式注入。",
         "v3 保留旧基础池与独立通过标准。新增 POI 通过生产分类白名单取得带范围的 amap_type_verified 标签，室外名称词根否决；标签表示高德建筑场馆分类，不是现场全程避雨证明。旧 v2 资产与报告保留。named-3-3 将误分类的绿盾门窗替换为同一三亚原始快照中的三亚自然博物馆，不更改原始 POI 字段；快照记录 curations。",
-        "生产基础检索本身已按请求选择查询词；本实验刻意选取其后仍有缺口的状态，不代表完整基础检索平均表现。4 次 HTTP 是共享预算：多数场景起点为 0（前置开销未录制），另有起点已用 3 次的共享预算探针；报告同时保留初始、补查、总次数，不声称全流程实测最多 4 次。",
+        "生产基础检索本身已按请求选择查询词；本实验刻意选取其后仍有缺口的状态，不代表完整基础检索平均表现。共享 HTTP 上限为 min(10, max(默认预算, 点名数量+2))，当前28例均为4次；多数场景起点为0（前置开销未录制），另有已用3次的共享预算探针。报告保留初始、补查、总次数及每例动态上限。点名先精确查，再去后缀查核心词；两者仍按原名校验回包，不转向无关分类查询。",
         "候选前提独立评分：点名集合全部出现、去重数量达标、明确室内数量达标，三项同时满足才通过。生产 validator 状态另外记录；不执行 Planner，不将前提满足冒充最终路线可规划/成功率。主分母为 23 个非边界受控缺口，不称为全都可满足；其中可能存在固定响应容量不足，另报诊断子集。",
         "无真实 LLM、外网或付费调用；禁用缓存、退避等待。HTTP 重试与预算使用生产 Provider 实现。不存在景点只在受控响应中设为空，不声称现实中同名地点一定不存在。", "",
         "## 结果", "", "| 场景 | 仅基础候选 | + 有界补查 |", "|---|---:|---:|"]

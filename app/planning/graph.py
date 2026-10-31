@@ -85,6 +85,7 @@ def build_graph(
     g.add_node("snapshot_time_check", record_route_snapshot_node)
     g.add_node("spot_tips",        bounded_spot_tips(make_spot_tips_node(model_name)))
     g.add_node("finalize",         make_finalize_node(memory_writer))
+    g.add_node("finalize_direct",  make_finalize_node(memory_writer))
 
     g.add_edge(START,   "intent")
     g.add_conditional_edges(
@@ -125,18 +126,19 @@ def build_graph(
     g.add_edge("reviewer", "snapshot_reviewer")
     g.add_conditional_edges(
         "snapshot_reviewer", route_after_review,
-        {"planner": "planner", "time_check": "time_check"},
+        {"planner": "planner", "time_check": "time_check", "finalize": "finalize_direct"},
     )
     # time_check：无违规/达上限 → meal_search；有违规且未达上限 → planner 修正
     g.add_edge("time_check", "snapshot_time_check")
     g.add_conditional_edges(
         "snapshot_time_check", route_after_time_check,
-        {"planner": "planner", "reviewer": "reviewer", "meal_search": "main_meal_output", "spot_tips": "spot_tips"},
+        {"planner": "planner", "reviewer": "reviewer", "meal_search": "main_meal_output", "spot_tips": "spot_tips", "finalize": "finalize_direct"},
     )
     # The dependent search -> recommend meal subflow and attraction tips are
     # independent branches. Finalize waits for both.
     g.add_edge(["main_meal_output", "spot_tips"], "finalize")
     g.add_edge("finalize",       END)
+    g.add_edge("finalize_direct", END)
 
     return g.compile()
 
@@ -345,6 +347,7 @@ def build_modification_graph(model_name: str | None = None, memory_writer=None):
     g.add_node("main_meal_output", meal_output_with_legacy_compat)
     g.add_node("spot_tips",      bounded_spot_tips(make_spot_tips_node(model_name)))
     g.add_node("finalize",       make_finalize_node(memory_writer))
+    g.add_node("finalize_direct", make_finalize_node(memory_writer))
     g.add_edge(START, "planner")
     g.add_edge("planner", "route_distance_check")
     g.add_edge("route_distance_check", "risk_gate")
@@ -357,15 +360,16 @@ def build_modification_graph(model_name: str | None = None, memory_writer=None):
     g.add_edge("reviewer", "snapshot_reviewer")
     g.add_conditional_edges(
         "snapshot_reviewer", route_after_review,
-        {"planner": "planner", "time_check": "time_check"},
+        {"planner": "planner", "time_check": "time_check", "finalize": "finalize_direct"},
     )
     g.add_edge("time_check", "snapshot_time_check")
     g.add_conditional_edges(
         "snapshot_time_check", route_after_time_check,
-        {"planner": "planner", "reviewer": "reviewer", "meal_search": "main_meal_output", "spot_tips": "spot_tips"},
+        {"planner": "planner", "reviewer": "reviewer", "meal_search": "main_meal_output", "spot_tips": "spot_tips", "finalize": "finalize_direct"},
     )
     g.add_edge(["main_meal_output", "spot_tips"], "finalize")
     g.add_edge("finalize",       END)
+    g.add_edge("finalize_direct", END)
     return g.compile()
 
 
@@ -390,6 +394,7 @@ def build_confirm_graph(model_name: str | None = None, memory_writer=None):
     g.add_node("main_meal_output", meal_output_with_legacy_compat)
     g.add_node("spot_tips",      bounded_spot_tips(make_spot_tips_node(model_name)))
     g.add_node("finalize",       make_finalize_node(memory_writer))
+    g.add_node("finalize_direct", make_finalize_node(memory_writer))
     g.add_edge(START,            "route_distance_check")
     g.add_edge("route_distance_check", "risk_gate")
     g.add_edge("risk_gate", "snapshot_gate")
@@ -401,16 +406,17 @@ def build_confirm_graph(model_name: str | None = None, memory_writer=None):
     g.add_edge("reviewer", "snapshot_reviewer")
     g.add_conditional_edges(
         "snapshot_reviewer", route_after_review,
-        {"planner": "planner", "time_check": "time_check"},
+        {"planner": "planner", "time_check": "time_check", "finalize": "finalize_direct"},
     )
     g.add_edge("planner", "route_distance_check")
     g.add_edge("time_check", "snapshot_time_check")
     g.add_conditional_edges(
         "snapshot_time_check", route_after_time_check,
-        {"planner": "planner", "reviewer": "reviewer", "meal_search": "main_meal_output", "spot_tips": "spot_tips"},
+        {"planner": "planner", "reviewer": "reviewer", "meal_search": "main_meal_output", "spot_tips": "spot_tips", "finalize": "finalize_direct"},
     )
     g.add_edge(["main_meal_output", "spot_tips"], "finalize")
     g.add_edge("finalize",   END)
+    g.add_edge("finalize_direct", END)
     return g.compile()
 
 

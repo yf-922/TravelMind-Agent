@@ -11,6 +11,15 @@ def test_extract_explicit_place_requests_is_conservative():
     assert extract_explicit_place_requests(text) == ["南京博物院", "总统府"]
 
 
+def test_extract_explicit_place_requests_covers_must_visit_and_lists():
+    text = '必须去“外滩”、 “豫园”和“上海博物馆”，只去“南京博物院”'
+    assert extract_explicit_place_requests(text) == ["外滩", "豫园", "上海博物馆", "南京博物院"]
+
+
+def test_extract_explicit_place_requests_does_not_include_exclusions():
+    assert extract_explicit_place_requests('不想去“商业街”，想去“总统府”') == ["总统府"]
+
+
 def test_canonicalize_near_spelling_without_masking_hallucination():
     route = [{"day": 1, "spots": [
         {"name": "水墨大垸旅游区"},
@@ -54,6 +63,35 @@ def test_intent_fans_out_weather_as_independent_stage():
         travel_end_date=date(2026, 9, 20),
     )
     assert nodes.route_after_intent(state) == ["query_rewrite", "weather_search", "main_meal_search"]
+
+
+def test_reviewer_is_told_not_to_demand_confirmed_dropped_poi(monkeypatch):
+    captured = {}
+    monkeypatch.setattr(nodes, "build_structured_llm", lambda *args, **kwargs: object())
+
+    def invoke(_llm, messages):
+        captured["prompt"] = messages[1][1]
+        from app.planning.schemas import RouteReview
+        return RouteReview(
+            reasoning="仅审核候选池内路线。", approved=True,
+            preference_match_level="HIGH",
+            diversity_and_dining_level="GOOD",
+            route_modify_opinion="", issues=[],
+        )
+
+    monkeypatch.setattr(nodes, "invoke_structured", invoke)
+    state = TravelPlanState(
+        query='上海一日游，必须去“外滩”和“星河幻境博物馆”',
+        destination="上海", days=1,
+        pois=[{"name": "外滩", "indoor": False}],
+        route=[{"day": 1, "spots": [{"name": "外滩", "start_time": "10:00", "end_time": "12:00"}]}],
+        relaxed_constraints={"dropped_must_visit": ["星河幻境博物馆"]},
+    )
+
+    nodes.make_reviewer_node(None)(state)
+
+    assert "星河幻境博物馆" in captured["prompt"]
+    assert "不得作为 Reviewer 的缺陷" in captured["prompt"]
 
 
 def test_weather_search_node_is_degradable_and_returns_forecast(monkeypatch):

@@ -115,7 +115,8 @@ def test_budget_and_two_round_limit_preserve_partial_pool(monkeypatch):
     state = state.model_copy(update=cr.candidate_search_node(state))
     state = state.model_copy(update=cr.candidate_validator_node(state))
     assert state.candidate_pool_status == "insufficient"
-    assert state.candidate_api_calls == 1 and state.pois == [poi("公园")]
+    assert state.candidate_api_calls == cr.effective_api_budget(state) == 2
+    assert state.pois == [poi("公园")]
     assert cr.route_after_candidate_validation(state) == "planner"
 
 

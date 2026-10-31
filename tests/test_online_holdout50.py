@@ -34,6 +34,7 @@ class RejectFirst(MockBackend):
         raw=super().__call__(task,schema,messages,seed,temperature,session)
         if task=='reviewer' and sum(c['task']=='reviewer' for c in session.calls)==1:
             obj=dict(reasoning='第1天建议调整安排。',approved=False,score=50,
+                     preference_match_level='LOW',diversity_and_dining_level='GOOD',
                      route_modify_opinion='请把第1天乙公园调整到15:00开始，其他要求保持。',issues=['注意休息。'])
             raw['choices'][0]['message']['content']=json.dumps(obj,ensure_ascii=False)
         if task=='joint_planner' and sum(c['task']=='joint_planner' for c in session.calls)>1:
@@ -63,21 +64,23 @@ def test_production_rework_receives_prior_route_and_reviewer_instruction(example
     assert score_result(result,case,maps)['passed']
 
 
-def test_time_repair_uses_production_day_poi_detail(example):
+def test_deterministic_time_repair_uses_production_day_poi_detail(example):
     case,maps=example
     class TimeReject(MockBackend):
         def __call__(self,task,schema,messages,seed,temperature,session):
             raw=super().__call__(task,schema,messages,seed,temperature,session)
-            if task=='time_check' and sum(c['task']==task for c in session.calls)==1:
-                raw['choices'][0]['message']['content']=json.dumps(dict(reasoning='Mock targeted violation.',
-                    violations=[dict(day=1,spot_name='乙公园',detail='请调整为15:00，测试定向时间反馈。')]),ensure_ascii=False)
+            if task=='joint_planner' and sum(c['task']==task for c in session.calls)==1:
+                obj=copy.deepcopy(session.case['feasibility_witness'])
+                obj['days'][0]['spots'][1].update(start_time='14:00',end_time='19:00')
+                raw['choices'][0]['message']['content']=json.dumps(obj,ensure_ascii=False)
             return raw
     with production_replay(maps) as g:
         r=run_session(g,Session(case,43,TimeReject(),maps),'online-rework')
     planner=[c for c in r['calls'] if c['task']=='joint_planner']
     assert len(planner)==2
-    assert '【开放时间修正（第1轮）】' in planner[1]['messages'][-1]['content']
-    assert 'Day1 乙公园' in planner[1]['messages'][-1]['content']
+    assert '上一轮确定性排期问题' in planner[1]['messages'][-1]['content']
+    assert '开放时间' in planner[1]['messages'][-1]['content']
+    assert '乙公园' in planner[1]['messages'][-1]['content']
 
 
 def test_reviewer_rejection_budget_is_real_production_budget(example):
@@ -86,14 +89,17 @@ def test_reviewer_rejection_budget_is_real_production_budget(example):
         def __call__(self,task,schema,messages,seed,temperature,session):
             raw=super().__call__(task,schema,messages,seed,temperature,session)
             if task=='reviewer':
-                obj=json.loads(raw['choices'][0]['message']['content']);obj.update(approved=False,score=0,route_modify_opinion='请重新安排。')
+                obj=json.loads(raw['choices'][0]['message']['content']);obj.update(approved=False,score=0,
+                    preference_match_level='LOW',diversity_and_dining_level='POOR',route_modify_opinion='请重新安排。')
                 raw['choices'][0]['message']['content']=json.dumps(obj)
             return raw
     with production_replay(maps) as g:
         r=run_session(g,Session(case,42,RejectAll(),maps),'online-rework')
     assert r['planner_calls']==4
-    assert not r['approved']
-    assert not score_result(r,case,maps)['passed']
+    # The final funnel may retain a hard-clean route with warnings even when
+    # semantic improvements were exhausted. It is not an empty L0 failure.
+    assert r['final_state']['final_plan']['status']=='SUCCESS_WITH_WARNINGS'
+    assert r['final_state']['final_plan']['warnings']
 
 
 def test_invalid_response_is_saved_before_schema_validation(example):

@@ -112,7 +112,7 @@ def build_evaluation_graph(
     g.add_edge("planner", "reviewer")
     g.add_conditional_edges(
         "reviewer", route_after_review,
-        {"planner": "planner", "time_check": END},
+        {"planner": "planner", "time_check": END, "finalize": END},
     )
     if mode == "planner_reviewer":
         return g.compile()
@@ -130,11 +130,11 @@ def build_evaluation_graph(
     )
     g.add_conditional_edges(
         "reviewer", route_after_review,
-        {"planner": "planner", "time_check": "time_check"},
+        {"planner": "planner", "time_check": "time_check", "finalize": END},
     )
     g.add_conditional_edges(
         "time_check", route_after_time_check,
-        {"planner": "planner", "reviewer": "reviewer", "meal_search": END, "spot_tips": END},
+        {"planner": "planner", "reviewer": "reviewer", "meal_search": END, "spot_tips": END, "finalize": END},
     )
     return g.compile()
 

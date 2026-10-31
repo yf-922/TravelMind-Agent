@@ -15,27 +15,259 @@ logger = logging.getLogger(__name__)
 
 # 仅识别用户明确标注的景点名，避免把“适合孩子的博物馆”这类自然语言偏好
 # 误当成具体 POI 去请求地图接口。未加引号的模糊需求仍交给 Planner 处理。
-_EXPLICIT_PLACE_RE = re.compile(
-    r"(?:想去|换成|改成|增加|加入|安排)(?:去|成)?\s*[“\"「]([^”\"」]{2,60})[”\"」]"
+#
+# 触发词覆盖旅行对话中常见的必去表达；实际提取时会把同一分句中紧随
+# 触发词的多个引号项一起收集，例如：想去“外滩”、 “豫园”和“南京博物院”。
+_EXPLICIT_PLACE_TRIGGER_RE = re.compile(
+    r"(?<!不)(?:想去|换成|改成|增加|加入|安排(?:去)?|必去|必须去|一定要去|只去|打卡|包含)"
+)
+_QUOTED_PLACE_RE = re.compile(r"[“\"「]([^”\"」]{2,60})[”\"」]")
+_EXCLUSION_TRIGGER_RE = re.compile(r"(?:不要|不去|不想去|排除|不喜欢)")
+
+
+def normalize_poi_name(value: Any) -> str:
+    """Normalize presentation noise while preserving the POI identity."""
+    return re.sub(r"[\s·•()（）\[\]【】\-—]", "", str(value or "")).lower()
+
+
+_POI_SUFFIXES = (
+    "风景名胜区", "旅游景区", "民俗风貌区", "历史文化街区", "文化街区",
+    "观景台", "风景区", "景区", "古镇", "博物馆", "美术馆", "科技馆",
+    "展览馆", "纪念馆", "天文馆", "海洋馆", "水族馆", "夜景", "公园", "遗址",
+)
+_AUXILIARY_POI_MARKERS = (
+    "停车场", "停车点", "停车区", "公厕", "公共厕所", "卫生间", "洗手间",
+    "地铁站", "轻轨站", "轨道交通", "公交站", "公交车站", "客运站", "火车站",
+    "酒店", "宾馆", "民宿", "停车库", "售票处", "票务中心", "游客中心",
 )
 
 
+def is_auxiliary_poi(name: Any, category: Any = "", typecode: Any = "") -> bool:
+    """Reject nearby service/transport POIs from explicit-attraction identity matches."""
+    label = str(name or "")
+    kind = str(category or "")
+    code = str(typecode or "")
+    if any(marker in label for marker in _AUXILIARY_POI_MARKERS):
+        return True
+    if any(marker in kind for marker in (
+        "交通设施", "住宿服务", "公共设施", "汽车服务", "汽车销售", "医疗保健",
+        "金融保险服务", "商务住宅;住宅区", "餐饮服务", "餐饮",
+    )):
+        return True
+    return code.startswith(("15", "17", "18", "19")) and not any(
+        marker in kind for marker in ("风景名胜", "科教文化服务")
+    )
+
+
+def _strip_poi_suffix(value: str) -> str:
+    for suffix in _POI_SUFFIXES:
+        if value.endswith(suffix) and len(value) - len(suffix) >= 2:
+            return value[:-len(suffix)]
+    return value
+
+
+def _ordered_core_match(needle: str, haystack: str) -> bool:
+    """Require every core character in order, with a bounded intervening span."""
+    if len(needle) < 3:
+        return False
+    positions = []
+    cursor = 0
+    for char in needle:
+        position = haystack.find(char, cursor)
+        if position < 0:
+            return False
+        positions.append(position)
+        cursor = position + 1
+    # Reject accidental matches scattered through a long compound business name.
+    return (
+        positions[-1] == len(haystack) - 1
+        and positions[-1] - positions[0] + 1 <= len(needle) + 6
+    )
+
+
+def poi_name_matches(
+    returned_name: Any, requested_name: Any, city: str = "", *,
+    category: Any = "", typecode: Any = "",
+) -> bool:
+    """Match exact aliases and conservative official-name/core-name variants.
+
+    Besides bounded venue suffixes, Amap sometimes inserts words in an official
+    name (``解放碑`` -> ``人民解放纪念碑``). An ordered full-core match handles
+    those variants; service/transport POIs are rejected before fuzzy matching.
+    """
+    name = normalize_poi_name(returned_name)
+    query = normalize_poi_name(requested_name)
+    if not name or not query:
+        return False
+    if is_auxiliary_poi(returned_name, category, typecode):
+        return False
+    if name == query:
+        return True
+    city_norm = normalize_poi_name(city)
+    names = [name]
+    if city_norm and name.startswith(city_norm):
+        names.append(name[len(city_norm):])
+    queries = [query]
+    query_core = _strip_poi_suffix(query)
+    if query_core != query:
+        queries.append(query_core)
+    name_variants = list(dict.fromkeys(names + [_strip_poi_suffix(item) for item in names]))
+    for candidate in name_variants:
+        for target in queries:
+            if candidate == target:
+                return True
+            # Preserve the existing bounded official-suffix behavior.
+            if candidate.startswith(target) and _strip_poi_suffix(candidate) == target:
+                return True
+            # Do not accept arbitrary business-name substrings (e.g. a
+            # restaurant named "星河幻境咖啡店" for a requested museum).
+            # Official prefixes/suffixes are handled by the bounded suffix
+            # check above; inserted official words are handled below.
+            if _ordered_core_match(target, candidate):
+                return True
+    return False
+
+
+def canonical_poi_name(value: Any, pois: list[dict[str, Any]], city: str = "") -> str | None:
+    """Return the candidate-pool spelling for an official name alias."""
+    raw = str(value or "").strip()
+    # A canonical spelling must never be redirected through another POI's
+    # alias/fuzzy match, regardless of pool ordering or old checkpoint aliases.
+    for poi in pois or []:
+        candidate = str(poi.get("name") or "").strip()
+        if (candidate and normalize_poi_name(candidate) == normalize_poi_name(raw)
+                and not is_auxiliary_poi(candidate, poi.get("category"), poi.get("typecode"))):
+            return candidate
+    for poi in pois or []:
+        candidate = str(poi.get("name") or "").strip()
+        if is_auxiliary_poi(candidate, poi.get("category"), poi.get("typecode")):
+            continue
+        aliases = [str(item).strip() for item in (poi.get("aliases") or []) if str(item).strip()]
+        if candidate and (any(normalize_poi_name(alias) == normalize_poi_name(raw) for alias in aliases)
+                          or poi_name_matches(candidate, raw, city,
+                              category=poi.get("category"), typecode=poi.get("typecode"))):
+            return candidate
+    return None
+
+
+def _chinese_number(value: str) -> float | None:
+    if re.fullmatch(r"\d+(?:\.\d+)?", value):
+        return float(value)
+    digits = {"零": 0, "〇": 0, "一": 1, "二": 2, "两": 2, "三": 3, "四": 4,
+              "五": 5, "六": 6, "七": 7, "八": 8, "九": 9}
+    if value == "十":
+        return 10.0
+    if "十" in value and all(char in digits or char == "十" for char in value):
+        left, _, right = value.partition("十")
+        return float((digits[left] if left else 1) * 10 + (digits[right] if right else 0))
+    if value and all(char in digits for char in value):
+        return float("".join(str(digits[char]) for char in value))
+    return None
+
+
+def extract_time_constraints(text: str) -> dict[str, float | str | None]:
+    """Extract explicit daily duration/end-time limits without inferring preferences."""
+    source = text or ""
+    duration_values: list[float] = []
+    number = r"(?P<hours>\d+(?:\.\d+)?|[零〇一二两三四五六七八九十]+)"
+    duration_patterns = (
+        re.compile(number + r"\s*(?:个)?小时\s*内"),
+        re.compile(r"(?:只有|仅有|总共|总计|一共|限时|仅限|最多|不超过|控制在|可用时间(?:为|只有)?|时间窗口(?:为|是)?)\s*" + number + r"\s*(?:个)?小时"),
+    )
+    for pattern in duration_patterns:
+        for match in pattern.finditer(source):
+            value = _chinese_number(match.group("hours"))
+            if value is not None and value > 0:
+                duration_values.append(value)
+    if re.search(r"(?:只有|仅有|安排|游玩|玩|限时)?\s*半天(?:内|时间|行程)?", source):
+        duration_values.append(4.0)
+
+    end_values: list[int] = []
+    end_pattern = re.compile(
+        r"(?P<period>早上|上午|中午|下午|傍晚|晚上)?\s*"
+        r"(?P<hour>\d{1,2})(?::(?P<minute>\d{2})|点(?P<cnminute>\d{1,2})?分?|时(?P<shiminute>\d{1,2})?分?)"
+        r"\s*前(?:结束|完成|收工|返程|回程|回到目的地)?"
+    )
+    for match in end_pattern.finditer(source):
+        hour = int(match.group("hour"))
+        minute = int(match.group("minute") or match.group("cnminute") or match.group("shiminute") or 0)
+        period = match.group("period") or ""
+        if minute >= 60 or hour > 24:
+            continue
+        if period in {"下午", "傍晚", "晚上"} and 1 <= hour <= 11:
+            hour += 12
+        elif period == "中午" and hour < 11:
+            hour += 12
+        if hour >= 24:
+            continue
+        end_values.append(hour * 60 + minute)
+
+    return {
+        "max_duration_hours": min(duration_values) if duration_values else None,
+        "latest_end_time": (f"{min(end_values) // 60:02d}:{min(end_values) % 60:02d}"
+                            if end_values else None),
+    }
+
+
 def extract_explicit_place_requests(text: str) -> list[str]:
-    """Extract quoted place names from a modification request, preserving order."""
+    """Extract explicitly requested quoted places, preserving order.
+
+    A trigger applies to every quoted item in its current clause.  This keeps
+    multi-name requests deterministic while leaving exclusion phrases to
+    ``excluded_names``/``missing_explicit_places``.
+    """
     seen: set[str] = set()
     result: list[str] = []
-    for raw in _EXPLICIT_PLACE_RE.findall(text or ""):
-        name = raw.strip()
-        if name and name not in seen:
-            seen.add(name)
-            result.append(name)
+    source = text or ""
+    # Chinese punctuation is a natural boundary for one requirement clause.
+    clause_start = 0
+    for match in _QUOTED_PLACE_RE.finditer(source):
+        boundary = max(source.rfind(mark, clause_start, match.start())
+                       for mark in ("。", "；", ";", "\n"))
+        if boundary >= clause_start:
+            clause_start = boundary + 1
+        prefix = source[clause_start:match.start()]
+        # A new trigger in this clause activates all following quoted names;
+        # reset only after a hard clause boundary.
+        explicit_matches = list(_EXPLICIT_PLACE_TRIGGER_RE.finditer(prefix))
+        exclusion_matches = list(_EXCLUSION_TRIGGER_RE.finditer(prefix))
+        last_explicit = explicit_matches[-1] if explicit_matches else None
+        last_exclusion = exclusion_matches[-1] if exclusion_matches else None
+        # ``不想去`` contains the positive trigger ``想去``. Comparing only
+        # start offsets would misclassify the quoted name as a must-visit.
+        overlapping_exclusion = bool(
+            last_exclusion
+            and last_explicit
+            and last_exclusion.end() > last_explicit.start()
+        )
+        explicit = last_explicit is not None and (
+            last_exclusion is None
+            or (
+                last_explicit.start() > last_exclusion.start()
+                and not overlapping_exclusion
+            )
+        )
+        excluded = last_exclusion is not None and not explicit
+        if explicit and not excluded:
+            name = match.group(1).strip()
+            if name and name not in seen:
+                seen.add(name)
+                result.append(name)
+        # Keep the trigger context through list punctuation, but start a new
+        # clause after sentence/semicolon/newline boundaries.
+        boundary = max(
+            source.rfind(mark, clause_start, match.start())
+            for mark in ("。", "；", ";", "\n")
+        )
+        if boundary >= clause_start:
+            clause_start = boundary + 1
     return result
 
 
 def missing_explicit_places(text: str, pois: list[dict[str, Any]]) -> list[str]:
     """Return explicitly requested quoted places absent from the current candidate pool."""
-    names = {str(item.get("name") or "").strip() for item in pois}
-    return [name for name in extract_explicit_place_requests(text) if name not in names]
+    return [name for name in extract_explicit_place_requests(text)
+            if canonical_poi_name(name, pois) is None]
 
 from app.core.env import load_local_env
 from app.core.llm_usage import extract_usage, record_call
@@ -308,12 +540,15 @@ def open_time_violations(route: list[dict[str, Any]], pois: list[dict[str, Any]]
 
 
 def unknown_spots(route: list[dict[str, Any]], pois: list[dict[str, Any]]) -> list[str]:
-    """找出不在候选池的景点名。"""
+    """找出不在候选池且无法映射到其稳定官方名称/别名的景点名。"""
     valid = {s["name"] for s in pois}
     bad = []
     for day in route:
         for spot in day.get("spots", []):
-            if spot["name"] not in valid:
+            name = str(spot.get("name") or "")
+            if name not in valid and canonical_poi_name(name, pois):
+                continue
+            if name not in valid:
                 bad.append(f"Day{day.get('day')} {spot['name']}")
     return bad
 

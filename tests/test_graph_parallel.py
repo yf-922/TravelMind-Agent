@@ -34,12 +34,14 @@ def test_intent_post_processing_runs_weather_and_rewrite_in_parallel(monkeypatch
     ))
     monkeypatch.setattr(graph_module, "attraction_search_node", lambda state: {
         "pois": [{"name": "Verified Museum", "rating": 5, "indoor": True,
-                  "location": {"lat": 32, "lng": 118}}],
+                  "location": {"lat": 32, "lng": 118}, "open_time": "09:00-18:00"}],
         "history": state.history + ["attractions"]
     })
     def planner(state):
         assert state.pois[0]["name"] == "Verified Museum"
-        return {"route": [{"day": 1, "spots": []}], "review_round": 1}
+        return {"route": [{"day": 1, "spots": [{"name": "Verified Museum",
+            "period": "morning", "start_time": "10:00", "end_time": "11:00"}]}],
+            "review_round": state.review_round + 1}
     monkeypatch.setattr(graph_module, "make_planner_node", lambda *a, **k: planner)
     monkeypatch.setattr(graph_module, "route_distance_check_node", lambda state: {})
     monkeypatch.setattr(graph_module, "make_reviewer_node", lambda *a, **k: lambda state: {

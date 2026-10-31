@@ -164,9 +164,11 @@ def benchmark_post_intent_fanout(runs: int, delay_ms: float) -> dict[str, Any]:
         })),
         patch.object(graph_module, "make_candidate_react_node", return_value=lambda state: {"candidate_search_actions": [{"action": "stop"}]}),
         patch.object(graph_module, "attraction_search_node", lambda state: {}),
-        patch.object(graph_module, "candidate_search_node", lambda state: {"pois": [], "candidate_search_round": 2}),
+        patch.object(graph_module, "candidate_search_node", lambda state: {"pois": [
+            {"name": "Verified Museum", "indoor": True, "open_time": "09:00-18:00"}], "candidate_search_round": 2}),
         patch.object(graph_module, "make_planner_node", return_value=lambda state: {
-            "route": [{"day": 1, "spots": []}], "review_round": 1,
+            "route": [{"day": 1, "spots": [{"name": "Verified Museum", "period": "morning",
+                "start_time": "10:00", "end_time": "11:00"}]}], "review_round": state.review_round + 1,
         }),
         patch.object(graph_module, "route_distance_check_node", lambda state: {}),
         patch.object(graph_module, "make_reviewer_node", return_value=lambda state: {
@@ -256,9 +258,11 @@ def benchmark_enrichment_fanout(runs: int, delay_ms: float) -> dict[str, Any]:
         }),
         patch.object(graph_module, "make_candidate_react_node", return_value=lambda state: {"candidate_search_actions": [{"action": "stop"}]}),
         patch.object(graph_module, "attraction_search_node", lambda state: {}),
-        patch.object(graph_module, "candidate_search_node", lambda state: {"pois": [], "candidate_search_round": 2}),
+        patch.object(graph_module, "candidate_search_node", lambda state: {"pois": [
+            {"name": "Verified Museum", "indoor": True, "open_time": "09:00-18:00"}], "candidate_search_round": 2}),
         patch.object(graph_module, "make_planner_node", return_value=lambda state: {
-            "route": [{"day": 1, "spots": []}], "review_round": 1,
+            "route": [{"day": 1, "spots": [{"name": "Verified Museum", "period": "morning",
+                "start_time": "10:00", "end_time": "11:00"}]}], "review_round": state.review_round + 1,
         }),
         patch.object(graph_module, "route_distance_check_node", lambda state: {}),
         patch.object(graph_module, "make_reviewer_node", return_value=lambda state: {

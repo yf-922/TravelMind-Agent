@@ -98,8 +98,9 @@ def test_nonexistent_and_near_name_cannot_pollute_pool(report):
         row = rows[ident]
         assert row["final_names"] == row["initial_names"]
         assert row["bounded_react"]["missing_names"] == row["requirements"]["required_names"]
-        assert row["supplemental_http_attempts"] == 1
-        assert row["duplicate_blocks"] == row["repeat_opportunities"] == 3
+        assert row["supplemental_http_attempts"] == 2
+        assert row["duplicate_blocks"] == row["repeat_opportunities"] == 0
+        assert len({h["query"] for h in row["http"]}) == 2
     assert rows["near-name-reject"]["http"][0]["raw_count"] == 1
 
 
@@ -161,7 +162,9 @@ def test_score_counters_do_not_drop_failed_rows_or_conflate_guard_success(report
     summary = report["summary"]
     assert summary["non_boundary_coverage"]["bounded_react"]["denominator"] == 23
     assert summary["boundary_safe_incomplete"]["denominator"] == 5
-    assert summary["repeat_query_guard"]["denominator"] == 6
+    # Named gaps now use the deterministic exact/core queue: no duplicate
+    # model proposal is exercised here. The direct guard probe above remains.
+    assert summary["repeat_query_guard"] == bench.fraction(0, 0)
     assert summary["baseline_prerequisite_blocked"]["numerator"] == 23
     assert sum(summary["blocker_counts"]["baseline"].values()) == 23
     assert set(summary["fixture_limited_cases_even_trusting_hints"]) == {"indoor-3-1", "indoor-3-2", "count-3"}

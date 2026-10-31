@@ -30,6 +30,14 @@ class IntentExtraction(BaseModel):
         default=False,
         description="用户明确要求雨天优先室内景点时为 true，否则 false",
     )
+    max_duration_hours: float | None = Field(
+        default=None, ge=0.5, le=24,
+        description="用户明确给出的单日最大行程时长（小时）；未提及则 null，不要猜测",
+    )
+    latest_end_time: str | None = Field(
+        default=None, pattern=r"^(?:[01]\d|2[0-3]):[0-5]\d$",
+        description="用户明确要求的最晚结束时间 HH:MM；未提及则 null",
+    )
 
 
 class SpotPlan(BaseModel):
@@ -203,6 +211,8 @@ class TravelPlanState(BaseModel):
     habit_preference: Optional[str] = None
     max_walking_km: Optional[float] = Field(default=None, ge=0, le=50)
     rain_indoor_priority: bool = False
+    max_duration_hours: Optional[float] = Field(default=None, ge=0.5, le=24)
+    latest_end_time: Optional[str] = Field(default=None, pattern=r"^(?:[01]\d|2[0-3]):[0-5]\d$")
     days: int = 0
     missing_fields: list[str] = Field(default_factory=list)
 
@@ -296,6 +306,7 @@ class TravelPlanState(BaseModel):
     candidate_search_round: int = 0
     candidate_max_rounds: int = Field(default=2, ge=1, le=2)
     candidate_min_per_day: int = Field(default=2, ge=1, le=5)
+    # Base budget; effective ceiling is min(10, max(base, named_count + 2)).
     candidate_api_budget: int = Field(default=4, ge=0, le=12)
     candidate_api_calls: int = 0
     candidate_search_actions: list[dict[str, Any]] = Field(default_factory=list)

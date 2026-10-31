@@ -38,5 +38,5 @@ def test_attraction_search_expands_pool_with_targeted_user_query(monkeypatch):
         query='我想去"Xinglongao"', destination="重庆", min_rating=4.5,
     ))
 
-    assert [spot["name"] for spot in update["pois"]] == ["Xinglongao", "Generic Museum"]
+    assert [spot["name"] for spot in update["pois"]] == ["Xinglongao"]
     assert "基础候选池" in update["history"][-1]

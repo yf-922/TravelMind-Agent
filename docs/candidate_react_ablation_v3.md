@@ -6,7 +6,7 @@
 两组从完全相同的固定基础候选池出发，Baseline 不补查；实验组运行生产 LangGraph 决策包装器→搜索→校验→条件边。LLM 决策由读取当前缺口的确定性策略替身代替，因此不验证真实 LLM 的工具选择能力。
 POI 来自已有真实高德响应快照，保留原名称、ID、坐标、类型与评分。点名查询按同名过滤原始记录，分类查询返回冻结博物馆记录；这是受控 HTTP 响应映射，不是这些具体查询的实测响应或实时高德召回率。空结果、超时、重复行、近名干扰为显式注入。
 v3 保留旧基础池与独立通过标准。新增 POI 通过生产分类白名单取得带范围的 amap_type_verified 标签，室外名称词根否决；标签表示高德建筑场馆分类，不是现场全程避雨证明。旧 v2 资产与报告保留。named-3-3 将误分类的绿盾门窗替换为同一三亚原始快照中的三亚自然博物馆，不更改原始 POI 字段；快照记录 curations。
-生产基础检索本身已按请求选择查询词；本实验刻意选取其后仍有缺口的状态，不代表完整基础检索平均表现。4 次 HTTP 是共享预算：多数场景起点为 0（前置开销未录制），另有起点已用 3 次的共享预算探针；报告同时保留初始、补查、总次数，不声称全流程实测最多 4 次。
+生产基础检索本身已按请求选择查询词；本实验刻意选取其后仍有缺口的状态，不代表完整基础检索平均表现。共享 HTTP 上限为 min(10, max(默认预算, 点名数量+2))，当前28例均为4次；多数场景起点为0（前置开销未录制），另有已用3次的共享预算探针。报告保留初始、补查、总次数及每例动态上限。点名先精确查，再去后缀查核心词；两者仍按原名校验回包，不转向无关分类查询。
 候选前提独立评分：点名集合全部出现、去重数量达标、明确室内数量达标，三项同时满足才通过。生产 validator 状态另外记录；不执行 Planner，不将前提满足冒充最终路线可规划/成功率。主分母为 23 个非边界受控缺口，不称为全都可满足；其中可能存在固定响应容量不足，另报诊断子集。
 无真实 LLM、外网或付费调用；禁用缓存、退避等待。HTTP 重试与预算使用生产 Provider 实现。不存在景点只在受控响应中设为空，不声称现实中同名地点一定不存在。
 
@@ -21,8 +21,8 @@ v3 保留旧基础池与独立通过标准。新增 POI 通过生产分类白名
 
 - 基础候选前提受阻：23/23 (100.00%)；补查后仍受阻：3/23 (13.04%)。
 - 边界安全退出并保留不足：5/5 (100.00%)；轮次/预算合规：28/28 (100.00%)。
-- 虚构/近名错误接纳：0/2 (0.00%)；重复查询拦截：6/6 (100.00%)（决策侧独立计算重复动作数作分母，核对实际 HTTP 未重复）。
-- 补查共 37 轮，均值 1.3214 轮/单；HTTP 尝试共 43 次，均值 1.5357 次/单；最大 2 轮、总 HTTP 4 次。
+- 虚构/近名错误接纳：0/2 (0.00%)；重复查询拦截：N/A (0/0)（决策侧独立计算重复动作数作分母，核对实际 HTTP 未重复）。
+- 补查共 37 轮，均值 1.3214 轮/单；HTTP 尝试共 45 次，均值 1.6071 次/单；最大 2 轮、总 HTTP 4 次。
 - 执行异常：0/28 (0.00%)，失败请求不剔除。
 - 若误把 indoor_hint 当作确定室内，诊断得分会变成 20/23 (86.96%)；该数不是正式通过率，不能用于宣称室内安全。
 
@@ -56,8 +56,8 @@ v3 保留旧基础池与独立通过标准。新增 POI 通过生产分类白名
 | count-3 | 三亚历史与自然结合，候选去重筛选后数量不足，需要补充 | 0→0 | 2/2/0 | insufficient: insufficient_count |
 | count-4 | 南京历史与自然结合，候选去重筛选后数量不足，需要补充 | 0→1 | 2/2/0 | insufficient:  |
 | count-5 | 上海历史与自然结合，候选去重筛选后数量不足，需要补充 | 0→1 | 2/2/0 | insufficient:  |
-| nonexistent-repeat | 想去“霍格沃茨魔法学校” | 0→0 | 2/1/0 | insufficient: missing_required_poi |
-| near-name-reject | 想去“南京博物院魔法分馆” | 0→0 | 2/1/0 | insufficient: missing_required_poi |
+| nonexistent-repeat | 想去“霍格沃茨魔法学校” | 0→0 | 2/2/0 | failed: missing_required_poi |
+| near-name-reject | 想去“南京博物院魔法分馆” | 0→0 | 2/2/0 | failed: missing_required_poi |
 | round-limit | 雨天只去室内 | 0→0 | 2/4/0 | insufficient: indoor_not_established |
 | retry-budget | 只去室内 | 0→0 | 1/4/0 | insufficient: indoor_not_established |
 | shared-budget | 只去室内 | 0→0 | 1/1/3 | insufficient: indoor_not_established |
@@ -86,13 +86,13 @@ python -m pytest -q
 {
   "snapshot": "9c41307d283ab0498351297ebec37ffa3b00e9e0b900a8fa6f782c12238c50f3",
   "cases": "cf0da58931961dbc8d37d9dccee274dd76d7f2bdb27e0b21d67a9400964022a7",
-  "config": "a0cbf03f50900e5b2e2b9ff759c1c1e337ad50e48647ac97e7f3fb7e01c9f3b9",
+  "config": "adab2d4e773c8dedf7d008c35816a2b64689ef364ef471ade82c188ea2b9f4bc",
   "code": {
-    "app/planning/candidate_react.py": "36182eef30bd70c859bfcae7f5599307e3964060df5e7701eb823feca2d4905b",
-    "app/planning/schemas.py": "ddf0fb8a87eaceb2b72e6218f3988858a733a2ae17017927e7a6921ae1126bcc",
-    "app/planning/helpers.py": "e02be852f963edb7329697d0f7e8481a749e2225ed146b9b912f85046dc303bc",
+    "app/planning/candidate_react.py": "a5e01f335717ed29065761fe79a900c0ea737745f0244255ee133130bfe364e2",
+    "app/planning/schemas.py": "5df3f32b28f4df87a806caa4cee6d6fa16863c70ebbc9bdcbb433d4f06a031a3",
+    "app/planning/helpers.py": "72e6b5c9301ad612cb4890451abae4a8e3d13e77b50a6cc9dda9f3416aa9a235",
     "app/providers/amap/poi.py": "dee6cfa11f41032894fb9089e7d789fa3ac8e739741923f6ed63178f432f3309",
-    "scripts/evaluate_candidate_react.py": "7729b335798a7843ead44077aea80222c3ae3ec6a8ccf8aa428a2142391bfc89"
+    "scripts/evaluate_candidate_react.py": "c5028de0291da1f7f420d3ca536ace425e0f49147dea4d56faa929a7a2b4b0ae"
   }
 }
 ```

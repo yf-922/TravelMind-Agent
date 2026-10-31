@@ -13,7 +13,10 @@ from pydantic import BaseModel, Field
 
 from app.core.cache import POI_TTL, get_cached, set_cached
 from app.llm.factory import build_structured_llm
-from app.planning.helpers import amap_key, extract_explicit_place_requests, invoke_structured
+from app.planning.helpers import (
+    amap_key, canonical_poi_name, extract_explicit_place_requests,
+    invoke_structured, poi_name_matches,
+)
 from app.planning.schemas import TravelPlanState
 from app.planning.poi_attributes import enrich_pois
 from app.providers.amap.poi import poi_to_spot, search_city_pois, non_tourism_poi, type_indoor
@@ -26,6 +29,7 @@ class CandidateAction(BaseModel):
                     "search_food_culture", "search_user_requested_poi", "stop",
                     "EXACT_NAME", "INDOOR_CATEGORY", "THEME", "STOP"]
     query: str = Field(default="", max_length=100)
+    requested_name: str = Field(default="", max_length=100)
     reason: str = Field(default="", max_length=200)
 
 
@@ -47,6 +51,35 @@ def excluded_names(state):
 
 def requested_names(state):
     return [n for n in extract_explicit_place_requests(current_request(state)) if n not in excluded_names(state)]
+
+
+def effective_api_budget(state):
+    """Shared bootstrap/supplement HTTP ceiling; named work reserves capacity."""
+    return min(10, max(state.candidate_api_budget, len(requested_names(state)) + 2))
+
+
+def named_retry_query(name: str, city: str = "") -> str:
+    """One bounded core-name retry; never replace a named gap with a category."""
+    core = re.sub(r"(?:风景名胜区|旅游景区|风景区|博物馆|观景台|景区|公园|古镇)$", "", name).strip()
+    if len(core) >= 2 and core != name:
+        return core
+    if city and name.startswith(city) and len(name[len(city):]) >= 2:
+        return name[len(city):]
+    return f"{city}{name}" if city else f"{name}景区"
+
+
+def _requested_poi_name_matches(
+    returned_name: str, requested_name: str, city: str = "", *,
+    category: str = "", typecode: str = "",
+) -> bool:
+    """Accept an official Amap name variant without admitting near-name POIs.
+
+    Amap may append venue suffixes or insert official-name words. Identity
+    matching is ordered/core-based and rejects service/transport POIs first;
+    arbitrary fuzzy matching is intentionally not used.
+    """
+    return poi_name_matches(returned_name, requested_name, city,
+                            category=category, typecode=typecode)
 
 
 def query_key(city, query, types):
@@ -117,7 +150,8 @@ def coverage(state: TravelPlanState) -> tuple[dict, list[str]]:
     outdoor_only = any(word in text for word in ("只去户外", "只安排户外", "仅户外"))
     rain = weather_indoor_required(state)
     indoor_target = target if indoor_only else min(state.max_spots, 2) if rain else 0
-    missing = ["requested:" + name for name in requested if name not in names]
+    missing = ["requested:" + name for name in requested
+               if canonical_poi_name(name, pool, state.destination or "") is None]
     if len(pool) < target:
         missing.append("count")
     if indoor < indoor_target:
@@ -133,7 +167,8 @@ def coverage(state: TravelPlanState) -> tuple[dict, list[str]]:
     stats = {"count": len(pool), "required_count": target, "indoor": indoor, "outdoor": outdoor,
              "required_indoor": indoor_target,
              "unknown_type": len(pool) - indoor - outdoor,
-             "requested_count": len(requested), "requested_hits": sum(n in names for n in requested),
+             "requested_count": len(requested),
+             "requested_hits": sum(canonical_poi_name(n, pool, state.destination or "") is not None for n in requested),
              "regions": len({p.get("adname") for p in pool if p.get("adname")}),
              "categories": len({p.get("category") for p in pool if p.get("category")})}
     return stats, missing
@@ -150,7 +185,7 @@ def active_gaps(state):
 def compact_observation(state):
     return {"destination": state.destination,
         "remaining_rounds": max(0,state.candidate_max_rounds-state.candidate_search_round),
-        "remaining_http": max(0,state.candidate_api_budget-state.candidate_api_calls),
+        "remaining_http": max(0,effective_api_budget(state)-state.candidate_api_calls),
         "preferences": fused_preferences(state),
         "candidates": [{"name":p["name"],"indoor":p.get("indoor")} for p in state.pois],
         "active_gaps": active_gaps(state),
@@ -188,8 +223,12 @@ def baseline_actions(state: TravelPlanState) -> list[dict]:
     """Search real categories, never a generated itinerary or invented place."""
     requested = requested_names(state)
     if requested:
-        return [{"action": "search_user_requested_poi", "query": requested[0]},
-                {"action": "search_indoor", "query": "博物馆"}]
+        # Do not spend the unique-place confirmation budget on unrelated POIs.
+        actions = [
+            {"action": "search_user_requested_poi", "query": name}
+            for name in requested[:2]
+        ]
+        return actions
     indoor_only = weather_indoor_required(state) or any(word in current_request(state) for word in ("只去室内", "只安排室内", "仅室内", "只要室内", "老人", "幼童"))
     if indoor_only:
         return [{"action": "search_indoor", "query": "博物馆"},
@@ -198,13 +237,59 @@ def baseline_actions(state: TravelPlanState) -> list[dict]:
             {"action": "search_indoor", "query": "博物馆"}]
 
 
+def deterministic_named_actions(state: TravelPlanState) -> list[dict]:
+    """Return untried exact-name searches before allowing semantic actions.
+
+    The model can still decide category/theme searches once this queue is
+    empty, but a missing explicit place must never be left to a best-effort
+    ReAct choice.  The action count is bounded by the remaining shared HTTP
+    budget. Deterministic batches can exceed the model's two-action limit,
+    so six names cannot lose their first lookup merely due to round limits.
+    """
+    gaps = active_gaps(state).get("missing_named_pois", [])
+    if not gaps:
+        return []
+    remaining_http = max(0, effective_api_budget(state) - state.candidate_api_calls)
+    if remaining_http <= 0:
+        return []
+    seen = tried_keys(state)
+    actions: list[dict] = []
+    for name in gaps:
+        if query_key(state.destination, name, "") in seen:
+            continue
+        actions.append({"action": "search_user_requested_poi", "query": name})
+        if len(actions) >= remaining_http:
+            break
+    # Every untried original name goes before any second/core lookup.
+    for name in gaps:
+        if len(actions) >= remaining_http:
+            break
+        exact = query_key(state.destination, name, "")
+        core = named_retry_query(name, state.destination or "")
+        if exact in seen and query_key(state.destination, core, "") not in seen:
+            actions.append({"action": "search_user_requested_poi", "query": core,
+                            "requested_name": name})
+    return actions
+
+
 def make_candidate_react_node(model_name=None):
     def decide(state: TravelPlanState):
         # Refresh initial/checkpoint pools before deciding whether a gap exists;
         # a verified indoor visit need not cause another category search.
         state = state.model_copy(update={"pois": clean_pool(state)})
         stats, missing = coverage(state)
-        if not missing or state.candidate_search_round >= state.candidate_max_rounds or state.candidate_api_calls >= state.candidate_api_budget:
+        if not missing or state.candidate_search_round >= state.candidate_max_rounds or state.candidate_api_calls >= effective_api_budget(state):
+            return {"pois": state.pois, "candidate_search_actions": [{"action": "stop"}]}
+        # Explicit names are deterministic requirements.  Do not let a
+        # non-deterministic model response consume the round on a category
+        # search while a named gap is still untried.
+        exact_actions = deterministic_named_actions(state)
+        if exact_actions:
+            return {"pois": state.pois, "candidate_search_actions": exact_actions,
+                    "candidate_search_trace": state.candidate_search_trace + [
+                        {"action": "deterministic_exact_queue", "names": [a["query"] for a in exact_actions]}
+                    ]}
+        if active_gaps(state)["missing_named_pois"]:
             return {"pois": state.pois, "candidate_search_actions": [{"action": "stop"}]}
         try:
             llm = build_structured_llm(CandidateDecision, model=model_name, temperature=0, task_type="candidate_react")
@@ -237,8 +322,11 @@ def candidate_search_node(state: TravelPlanState):
     pool = clean_pool(state)
     names = {p.get("name") for p in pool}
     trace = list(state.candidate_search_trace)
-    budget = {"remaining": max(0, state.candidate_api_budget - state.candidate_api_calls), "used": 0}
-    for raw in state.candidate_search_actions[:2]:
+    budget = {"remaining": max(0, effective_api_budget(state) - state.candidate_api_calls), "used": 0}
+    actions = state.candidate_search_actions
+    # Only the server's validated named queue may exceed two actions.
+    named_batch = actions and all(ALIASES.get(a.get("action"), a.get("action")) == "search_user_requested_poi" for a in actions)
+    for raw in actions[:10 if named_batch else 2]:
         try:
             action = CandidateAction.model_validate(raw)
             action.action = ALIASES.get(action.action, action.action)
@@ -251,9 +339,15 @@ def candidate_search_node(state: TravelPlanState):
         if not query and action.action != "search_history":
             trace.append({"action": action.action, "error_code": "EMPTY_QUERY"})
             continue
-        if action.action == "search_user_requested_poi" and query not in requested_names(state):
-            trace.append({"action": action.action, "error_code": "UNREQUESTED_PLACE"})
-            continue
+        original_name = action.requested_name or query
+        if action.action == "search_user_requested_poi":
+            allowed = original_name in requested_names(state) and (
+                query == original_name or (
+                    query == named_retry_query(original_name, state.destination or "")
+                    and query_key(state.destination, original_name, "") in tried_keys(state)))
+            if not allowed:
+                trace.append({"action": action.action, "error_code": "UNREQUESTED_PLACE"})
+                continue
         if action.action == "search_indoor" and query not in INDOOR_QUERIES:
             trace.append({"action":action.action,"error_code":"INVALID_INDOOR_QUERY"})
             continue
@@ -267,15 +361,27 @@ def candidate_search_node(state: TravelPlanState):
             continue
         record = {"action": action.action, "round": state.candidate_search_round + 1,
                   "query_key": key, "query": query,"types":types,"result_count": 0, "cache_hit": False}
+        if action.action == "search_user_requested_poi":
+            record["requested_name"] = original_name
+            record["query_variant"] = "exact" if query == original_name else "core"
+        shared_budget_exhausted = False
         try:
             rows = get_cached(key)
             record["cache_hit"] = rows is not None
             if rows is None:
                 if budget["remaining"] <= 0:
+                    shared_budget_exhausted = True
                     raise RuntimeError("candidate_api_budget_exhausted")
-                rows = search_city_pois(state.destination or "", amap_key(), keywords=query,
-                    types=types,
-                    offset=25, request_budget=budget)
+                # One HTTP attempt per named variant reserves an opportunity
+                # for every name. Provider errors remain unverified, never empty.
+                request_budget = {"remaining": 1, "used": 0} if action.action == "search_user_requested_poi" else budget
+                try:
+                    rows = search_city_pois(state.destination or "", amap_key(), keywords=query,
+                        types=types, offset=25, request_budget=request_budget)
+                finally:
+                    if request_budget is not budget:
+                        budget["remaining"] -= request_budget["used"]
+                        budget["used"] += request_budget["used"]
                 if rows:
                     set_cached(key, rows, POI_TTL)
             record["raw_count"] = len(rows)
@@ -295,7 +401,12 @@ def candidate_search_node(state: TravelPlanState):
                 if not (-90 <= spot["location"]["lat"] <= 90 and -180 <= spot["location"]["lng"] <= 180):
                     continue
                 if action.action == "search_user_requested_poi":
-                    if spot["name"] != query or query not in extract_explicit_place_requests(state.query + "\n" + (state.modification_notes or "")):
+                    if not _requested_poi_name_matches(
+                        spot["name"], original_name, state.destination or "",
+                        category=row.get("type") or row.get("category") or "",
+                        typecode=row.get("typecode") or "",
+                    ):
+                        record["name_mismatch_filtered"] = record.get("name_mismatch_filtered", 0) + 1
                         continue
                 elif spot.get("rating") is not None and spot["rating"] < state.min_rating:
                     record["rating_filtered"] += 1
@@ -305,11 +416,34 @@ def candidate_search_node(state: TravelPlanState):
                 if spot["name"] not in names:
                     spot.update(source="amap", category=str(row.get("type") or ""),
                                 rating_status="unknown" if spot.get("rating") is None else "known")
+                    if action.action == "search_user_requested_poi" and spot["name"] != original_name:
+                        spot["aliases"] = list(dict.fromkeys(
+                            [*(spot.get("aliases") or []), original_name]
+                        ))
                     pool.append(spot)
                     names.add(spot["name"])
                     record["result_count"] += 1
+                elif action.action == "search_user_requested_poi":
+                    # An exact request may resolve to a POI already present in
+                    # the bootstrap pool. Preserve the alias on that canonical
+                    # entry so downstream planning and hard checks agree.
+                    for existing in pool:
+                        if existing.get("name") == spot["name"] and spot["name"] != original_name:
+                            existing["aliases"] = list(dict.fromkeys(
+                                [*(existing.get("aliases") or []), original_name]
+                            ))
+                            break
         except Exception as exc:
-            record["error_code"] = "BUDGET_EXHAUSTED" if "budget_exhausted" in str(exc) else "SEARCH_FAILED"
+            # A per-request retry allowance can be exhausted after a rate-limit
+            # response.  That is an external provider failure, not evidence
+            # that the shared candidate budget was consumed by a second HTTP
+            # attempt.  Keep the two conditions distinct for validator
+            # relaxation and production metrics.
+            record["error_code"] = (
+                "BUDGET_EXHAUSTED"
+                if shared_budget_exhausted
+                else "SEARCH_FAILED"
+            )
         trace.append(record)
     pool = enrich_pois(pool, state.destination or "")
     return {"pois": pool, "candidate_search_round": state.candidate_search_round + 1,
@@ -321,7 +455,7 @@ def candidate_validator_node(state: TravelPlanState):
     state = state.model_copy(update={"pois": clean_pool(state)})
     stats, missing = coverage(state)
     stopped = all(a.get("action") == "stop" for a in state.candidate_search_actions)
-    budget_exhausted = state.candidate_api_calls >= state.candidate_api_budget
+    budget_exhausted = state.candidate_api_calls >= effective_api_budget(state)
     exhausted = bool(stopped or budget_exhausted or state.candidate_search_round >= state.candidate_max_rounds)
     status = "ready" if not missing else ("insufficient" if exhausted else "searching")
     relaxed = dict(state.relaxed_constraints or {})
@@ -333,13 +467,16 @@ def candidate_validator_node(state: TravelPlanState):
         dropped = list(relaxed.get("dropped_must_visit", []) or [])
         unverified = list(relaxed.get("unverified_must_visit", []) or [])
         for name in exact_missing:
-            attempts = [item for item in trace if item.get("query") == name]
+            attempts = [item for item in trace if item.get("requested_name", item.get("query")) == name]
             provider_failed = any(item.get("error_code") in {"SEARCH_FAILED", "BUDGET_EXHAUSTED"} for item in attempts)
             if provider_failed:
                 if name not in unverified:
                     unverified.append(name)
                 warnings.append(f"因地图服务瞬时繁忙，暂未能核实景点{name}的位置信息，已先为您安排其余行程")
-            elif attempts:
+            elif {name, named_retry_query(name, state.destination or "")} <= {
+                item.get("query") for item in attempts if not item.get("error_code")
+                and item.get("result_count", 0) == 0
+            }:
                 if name not in dropped:
                     dropped.append(name)
                 warnings.append(f"未找到指定景点{name}，已为您剔除并安排其余行程")
@@ -367,13 +504,16 @@ def candidate_validator_node(state: TravelPlanState):
         # claiming that the city has no candidates.
         sole_named_unavailable = (
             len(exact_missing) == 1 and len(requested_names(state)) == 1
-            and exact_missing[0] in dropped
         )
         if state.destination and (trace or exact_missing) and (not state.pois or sole_named_unavailable):
             status = "failed"
             relaxed.setdefault("failure_reasons", []).append({
-                "code": "candidate_pool_empty" if not state.pois else "named_poi_unavailable",
-                "message": "未找到可用于生成行程的有效景点候选" if not state.pois else f"未找到用户指定景点：{exact_missing[0]}",
+                "code": ("named_poi_unverified" if sole_named_unavailable and exact_missing[0] in unverified
+                         else "named_poi_unavailable" if sole_named_unavailable else "candidate_pool_empty"),
+                "message": (f"暂未能核实用户唯一指定景点：{exact_missing[0]}，请稍后重试"
+                            if sole_named_unavailable and exact_missing[0] in unverified
+                            else f"未找到用户指定景点：{exact_missing[0]}" if sole_named_unavailable
+                            else "未找到可用于生成行程的有效景点候选"),
                 "stage": "PRECHECK",
             })
     return {"pois": state.pois,"candidate_coverage": stats, "candidate_missing_coverage": missing,
