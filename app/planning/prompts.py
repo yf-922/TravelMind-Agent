@@ -79,7 +79,9 @@ REVIEWER_SYSTEM = (
     "若 approved=true 且没有需要提醒用户的事项，issues 留空。\n\n"
     "输出顺序严格按 schema 字段顺序：\n"
     "① 先在 reasoning 字段对每条评审维度逐一分析，写出各维度的结论（合格/不合格+原因）；\n"
-    "② 再从 reasoning 的结论中提炼 approved、score、route_modify_opinion、issues。\n"
+    "② 输出 preference_match_level，只能是 HIGH/MEDIUM/LOW；\n"
+    "③ 输出 diversity_and_dining_level，只能是 GOOD/FAIR/POOR；\n"
+    "④ 再从 reasoning 的结论中提炼 approved、score、route_modify_opinion、issues。score 仅作兼容日志参考，不要把硬约束问题用高分掩盖。\n"
     "⚠️ issues 和 route_modify_opinion 不得包含 reasoning 中未提及的内容。"
 )
 

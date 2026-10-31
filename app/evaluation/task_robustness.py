@@ -167,18 +167,24 @@ def grade(state, case, maps, error=None):
             except (ValueError, TypeError): hard.append("invalid_road_time")
     if state.time_violations: hard.append("unresolved_time")
     approved = final.get("approved") is True
+    status = final.get("status")
     messages = final.get("route_issues", [])
     explained = any("无法生成满足" in str(m) or "未生成可用路线" in str(m) for m in messages)
     success = not error and approved and not hard and not soft
     rejection = not error and bool(final) and not approved and explained
     unknown_weather_disclosed = bool(state.weather_note) if case.get("fault") == "unknown" else True
-    robustness_ok = rejection if case.get("expected") == "reject" else (success or rejection)
+    partial = status == "PARTIAL_SUCCESS" and bool(route) and not error
+    robustness_ok = (
+        rejection if case.get("expected") == "reject"
+        else partial if case.get("expected") == "partial_success"
+        else success or rejection
+    )
     if case.get("fault") == "unknown": robustness_ok = robustness_ok and unknown_weather_disclosed
     return {"task_success": success, "hard_pass": not hard, "soft_pass": not soft,
             "hard_violations": sorted(set(hard)), "soft_violations": sorted(set(soft)),
             "selected": names, "approved": approved, "rework": max(0, state.review_round - 1),
             "safe_explained_rejection": rejection, "robustness_ok": robustness_ok,
-            "unsafe_release": approved and bool(hard or soft), "user_messages": messages,
+            "unsafe_release": approved and status != "PARTIAL_SUCCESS" and bool(hard or soft), "user_messages": messages,
             "interest_precision": len(matched) / len(names) if names else 0,
             "unknown_weather_disclosed": unknown_weather_disclosed, "error": error}
 
@@ -302,7 +308,9 @@ def build_soft_review_cases():
         case.update(id='soft-review-'+label, suite='soft_review', category=label,
                     replaces=replacement, label_status='verified_v2',
                     draft_origin='author_injected_controlled_defect' if label != 'clean' else 'author_clean_control',
-                    expected='reject' if label in {'infeasible', 'time-deadlock', 'indoor-pool-conflict'} else 'repair_or_preserve',
+                    expected=('reject' if label in {'infeasible', 'indoor-pool-conflict'}
+                              else 'partial_success' if label == 'time-deadlock'
+                              else 'repair_or_preserve'),
                     expected_hard_violations=expected_hard,
                     rubric={'min_count': len(schedule), 'min_visit': 60},
                     semantic_rubric=semantic, injected_route=route,
@@ -340,8 +348,11 @@ def grade_soft_review(state, case, maps, error=None):
             and (not case.get('required_refusal_phrase')
                  or case['required_refusal_phrase'] in refusal_text)
         )
-    result['expected_behavior_pass'] = (result['safe_explained_rejection'] if case['expected'] == 'reject'
-                                        else result['task_success'])
+    result['expected_behavior_pass'] = (
+        result['safe_explained_rejection'] if case['expected'] == 'reject'
+        else result['robustness_ok'] if case['expected'] == 'partial_success'
+        else result['task_success']
+    )
     return result
 
 

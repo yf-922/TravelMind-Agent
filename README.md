@@ -483,7 +483,18 @@ checkpoint 已移除阶段等待与固定 Token 预算模拟，改为读取 **30
 - **不可行场景的捷径学习与反馈鸿沟**：当前 5 道不可行题实际上是同一类冲突：每题有 20 个候选，但用户窗口只有 60 分钟，必游单点要求连续 90 分钟。本地微调模型合规拒答率为 0%，教师模型为 100%。静态审计发现，训练集 60 条空路线样本全部集中在 1–3 个候选点的小池子里，模型可能把“拒答”与“小候选池”虚假绑定；本地无解分支 Early Return 只返回抽象英文错误码，缺少“可用 60 分钟 < 要求 90 分钟”的算术证据。
 - **不可行识别率不是充分指标**：本地评分器的关键词识别率存在假阳性，例如“无法据此推断通勤”可能命中“无法”和“90/分钟”等词；必须以“空 `spots`、完整天数结构、准确冲突原因”同时满足作为合规拒答。
 - **评测边界**：这 50 题已用于诊断和数据迭代，虽与训练 Prompt 指纹不交集，但不应再称完全盲测。当前闭环是“生产 Planner + 本地规则反馈”，不等同于线上语义 Reviewer 闭环；评测器增加过可选教师 API 后端，核心判分、返工和聚合逻辑已审计保持一致。
-- **生产落地建议**：`C-DPO` 适合作为本地 7B 主力 `Joint Planner`，负责可行路线的高效生成和局部规则返工；硬性容量、开放窗口、道路可行性和无解判断交由前置确定性可行性检查器（Pre-flight Deterministic Checker）兜底拦截。不要把端到端无解拒答完全交给 7B 模型。
+- **Checkpoint 局部重规划审计边界**：120 对 Prompt 的候选池哈希一致，但历史账本没有保存 Planner 输出；32.3% 仅代表输入 Token 降幅。当前 B-1 采用声明配置，并以输入保真、TravelRoute Schema 和跨探针哈希碰撞门禁控制重放。
+- **B-1 无效批次**：2026-10-30 重放因 `human` role 未转换为 `user` 导致用户 Prompt 被丢弃，详见 [Invalid-run 审计](data/eval/checkpoint_prompt_diff_b0/b1_c_dpo_20261030/b2c_audit.md)。
+- **生产落地建议**：`C-DPO` 作为本地 7B Joint Planner，硬性无解判断由前置确定性检查器兜底；详见上文局限性与架构结论。
+
+### Invalid run: B-1 output-consistency replay (2026-10-30)
+
+Marked **invalid-run**. Root cause was fully diagnosed by a zero-inference audit:
+
+- The replay client forwarded LangChain-style messages (`role: human`) to the OpenAI-compatible vLLM endpoint. The Qwen chat template recognizes only `user`, so the requirements, checkpoint context, and modification request were silently dropped. The server received only the fixed 253-token system shell per request, while the B-0 ledger contained probe-varying 1,300–1,800-token Planner inputs.
+- Outputs within each seed were byte-identical across all prompts; changing the seed produced a different fixed output. No route-level conclusion is valid for this batch.
+
+The deferred B-1b fix is to map `human` → `user`. Its launch gates are: (1) input fidelity, with server `prompt_tokens` matching the full-prompt tokenizer count on a dry run; (2) `TravelRoute` schema validation on three probes; and (3) immediate abort on cross-probe output-hash collision, with request ordinal, timestamp, and response ID recorded.
 
 相关证据与资产：
 
@@ -491,6 +502,23 @@ checkpoint 已移除阶段等待与固定 Token 预算模拟，改为读取 **30
 - 教师 JSON-mode 对照：[summary.json](data/post_train/online_holdout50_20261027_v2/teacher-api-localrules-20261028-jsonmode/teacher-gpt-6.1-sol/summary.json)
 - C 版冻结训练集：[c_sft_train.json](data/post_train/c_release_20261028_training/c_sft_train.json) · [c_dpo_train.json](data/post_train/c_release_20261028_training/c_dpo_train.json)
 - 受控评测脚本：[evaluate_controlled_online_holdout.py](scripts/evaluate_controlled_online_holdout.py)
+
+## 无候选池 Base 对照：预注册协议（2026-10-30）
+
+本实验仅比较有无候选池协议下裸 Planner 的首轮生成，不是完整系统消融；不调用外部教师/Reviewer，不触发规划返工。固定原 50 场景、seeds 1001/1002/1003、temperature=0.3、top_p=0.95、max_tokens=2048、并发1；复用 GPU0 的 BF16 Qwen2.5-7B-Instruct，关闭 Prefix Cache，5条预热不计分。
+
+- 主表：45可行场景×3种子；5道无解题×3种子只列行为观察。Schema沿用历史请求的严格JSON Schema，只把 `$defs.SpotPlan.properties.name.description` 从“必须严格来自候选池”改为自由文本。该字段原本即 string，无池ID/枚举，不改变字段、类型、必填项、时间格式及其余描述。
+- Prompt删除景点列表、覆盖状态、池内白名单/补查说明与候选规模事实；保留用户城市、天数、数量、时间窗、必去/排除、偏好和天气。空餐馆约束保留，避免引入餐饮业务。完整请求及哈希写入新实验目录，冻结资产不变。
+- 每个场景/seed只计首次响应。仅JSON/Schema解析失败允许相同请求再试一次，另记解析恢复率，不回填主指标。网络失败停止并保留已完成账本，不当作模型解析失败。
+- 实体出现次数为分母（去重仅用于检索缓存）。批量缓存高德搜索/详情、查询时间、失败原因和城市行政区边界；再纯离线核验：a同城景点、b跨城、c非景点类别、d未能确认同一实体。近名不自动认作同一实体；API失败、缺坐标或缺边界保留pending，不能归入d。景点类别白名单为风景名胜及博物馆/美术馆/纪念馆，公园、文化场馆等边界分类须人工复核。
+- 报告不可核验率(b+c+d)/实体数、行程污染率、首次解析失败率、恢复率、数量不足率；数量不足以首次成功解析行程为分母。偏好指标仅包含可客观判定的明确排除实体，其他语义偏好标为未评分。
+- A-3 搜索范围审计：222 个高德缓存请求中，111 个为目标城市限定（`city` + `citylimit=true`），111 个为全国范围搜索；d/pending 复核行的全国 Top-5 候选直接复用已缓存全国响应，未新增 API 调用。全国搜索结果仅作为人工复核证据，不改变自动桶；“跨城=0”不能解释为只搜索了目标城市。
+- 历史 Base 的0.5797%为2/345池外实体，C-DPO为0/328，均属可行集；池外率与高德不可核验率不同，不能直接拼成因果曲线。对两组已存首轮结果复用同一核验器，不重新生成；白名单协议收益也不等于单一规则的独立收益。
+- 四桶分层人工复核，每个非空桶至少12个（不足全查），d桶全查。`human_review.csv` 未签署前只发布自动核验的暂定结果，不声称人工误判率或置信区间。重复实体和同场景seed相关，普通实体二项区间不适用。
+
+实现：`scripts/evaluate_no_pool_base.py --prepare` 冻结请求；`--run --url http://127.0.0.1:8000/v1` 生成。`scripts/verify_no_pool_entities.py prefetch` 预取（缺失缓存API预算默认1000次），`score` 完全离线计分。实验账本：`data/post_train/no_pool_base_20261030/`。生成可在服务器独立后台运行，不携带外部API密钥；高德预取在本机读取 `.env.local`。
+
+无池实验的实体计数口径固定为“生成行程中的景点出现次数”：同一名称在不同天或同一天重复出现均按出现次数计入分母，跨 Seed 的重复也不折叠；唯一名称只用于高德缓存和复核资产索引。首次解析失败不进入实体分母，重试仅统计解析恢复率。5 个无解场景（15 次运行）独立做行为观察，不混入可行集不可核验率；本批无池 Base 自动结果为 0/15 合规拒答，不能据此声称前置可行性检查器已启用。
 
 ## 测试与复现
 
@@ -638,20 +666,6 @@ Redis 不可用时跳过缓存；Chroma 用户记忆返回 `skipped/degraded` �
 
 ---
 
-
-## 无候选池 Base 对照：预注册协议（2026-10-30）
-
-本实验仅比较有无候选池协议下裸 Planner 的首轮生成，不是完整系统消融；不调用外部教师/Reviewer，不触发规划返工。固定原 50 场景、seeds 1001/1002/1003、temperature=0.3、top_p=0.95、max_tokens=2048、并发1；复用 GPU0 的 BF16 Qwen2.5-7B-Instruct，关闭 Prefix Cache，5条预热不计分。
-
-- 主表：45可行场景×3种子；5道无解题×3种子只列行为观察。Schema沿用历史请求的严格JSON Schema，只把 `$defs.SpotPlan.properties.name.description` 从“必须严格来自候选池”改为自由文本。该字段原本即 string，无池ID/枚举，不改变字段、类型、必填项、时间格式及其余描述。
-- Prompt删除景点列表、覆盖状态、池内白名单/补查说明与候选规模事实；保留用户城市、天数、数量、时间窗、必去/排除、偏好和天气。空餐馆约束保留，避免引入餐饮业务。完整请求及哈希写入新实验目录，冻结资产不变。
-- 每个场景/seed只计首次响应。仅JSON/Schema解析失败允许相同请求再试一次，另记解析恢复率，不回填主指标。网络失败停止并保留已完成账本，不当作模型解析失败。
-- 实体出现次数为分母（去重仅用于检索缓存）。批量缓存高德搜索/详情、查询时间、失败原因和城市行政区边界；再纯离线核验：a同城景点、b跨城、c非景点类别、d未能确认同一实体。近名不自动认作同一实体；API失败、缺坐标或缺边界保留pending，不能归入d。景点类别白名单为风景名胜及博物馆/美术馆/纪念馆，公园、文化场馆等边界分类须人工复核。
-- 报告不可核验率(b+c+d)/实体数、行程污染率、首次解析失败率、恢复率、数量不足率；数量不足以首次成功解析行程为分母。偏好指标仅包含可客观判定的明确排除实体，其他语义偏好标为未评分。
-- 历史 Base 的0.5797%为2/345池外实体，C-DPO为0/328，均属可行集；池外率与高德不可核验率不同，不能直接拼成因果曲线。对两组已存首轮结果复用同一核验器，不重新生成；白名单协议收益也不等于单一规则的独立收益。
-- 四桶分层人工复核，每个非空桶至少12个（不足全查），d桶全查。`human_review.csv` 未签署前只发布自动核验的暂定结果，不声称人工误判率或置信区间。重复实体和同场景seed相关，普通实体二项区间不适用。
-
-实现：`scripts/evaluate_no_pool_base.py --prepare` 冻结请求；`--run --url http://127.0.0.1:8000/v1` 生成。`scripts/verify_no_pool_entities.py prefetch` 预取（缺失缓存API预算默认1000次），`score` 完全离线计分。实验账本：`data/post_train/no_pool_base_20261030/`。生成可在服务器独立后台运行，不携带外部API密钥；高德预取在本机读取 `.env.local`。
 
 <div align="center">
 

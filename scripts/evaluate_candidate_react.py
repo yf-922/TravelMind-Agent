@@ -235,11 +235,18 @@ def run_pair(case, snapshot):
     graph.add_node("candidate_react", cr.make_candidate_react_node())
     graph.add_node("search", cr.candidate_search_node)
     graph.add_node("validate", cr.candidate_validator_node)
+    # Production graph has an explicit terminal failure node.  The offline
+    # candidate-only harness does not need to execute it, but it must model
+    # the same edge so a confirmed empty/invalid pool is a valid outcome
+    # rather than a benchmark exception.
+    graph.add_node("candidate_failure", lambda state: {})
     graph.add_edge(START, "candidate_react")
     graph.add_edge("candidate_react", "search")
     graph.add_edge("search", "validate")
     graph.add_conditional_edges("validate", cr.route_after_candidate_validation,
-                               {"candidate_react": "candidate_react", "planner": END})
+                               {"candidate_react": "candidate_react", "planner": END,
+                                "candidate_failure": "candidate_failure"})
+    graph.add_edge("candidate_failure", END)
     compiled = graph.compile()
     error = None
     try:
@@ -306,8 +313,12 @@ def run_pair(case, snapshot):
         "budget_guard_errors": errors["BUDGET_EXHAUSTED"],
         "unique_names": len(final_names) == len(set(final_names)),
         "provenance_ok": set(final_names) <= known,
+        # Boundary probes may end in the explicit production failure state
+        # (confirmed nonexistent named POI) or the normal insufficient state;
+        # both are safe so long as no fabricated candidate was admitted.
         "guard_pass": not error and rounds <= 2 and total_attempts <= 4
-                      and final.candidate_pool_status == "insufficient" and not after["pass"]}
+                      and final.candidate_pool_status in {"insufficient", "failed"}
+                      and not after["pass"]}
 
 
 def summarize(records):

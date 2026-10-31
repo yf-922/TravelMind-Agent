@@ -19,6 +19,7 @@ from app.core.env import load_local_env
 from app.evaluation.task_robustness import build_cases, load_assets, fault_distance, grade
 from app.evaluation.rag_protocol import fingerprint
 from app.planning import nodes
+from app.planning.quality import append_route_snapshot
 from app.planning.schemas import TravelPlanState
 from scripts.compare_route_interest import exclusive_ledger, implementation_fingerprint
 
@@ -66,6 +67,11 @@ def run_arm(initial, arm, planner, reviewer, max_repairs=3, trace=None):
         if arm == 'rules_reviewer':
             state = state.model_copy(update=reviewer(state))
             state.approved = state.approved and not faults
+        # Keep the same bounded history used by the production graph.  This
+        # lets the offline safety replay exercise snapshot selection rather
+        # than accidentally testing only the legacy one-shot finalizer.
+        if arm != 'planner_only':
+            state = state.model_copy(update=append_route_snapshot(state))
         if state.approved or repairs >= max_repairs or not state.route:
             break
         feedback = []

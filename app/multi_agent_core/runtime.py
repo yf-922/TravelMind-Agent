@@ -11,6 +11,7 @@ from typing import Any
 
 from app.multi_agent_core.memory import AgentMemoryStore
 from app.planning.schemas import TravelPlanState
+from app.planning.quality import append_route_snapshot, result_envelope
 
 logger = logging.getLogger(__name__)
 
@@ -64,16 +65,16 @@ OUTPUTS = {
     "attraction_search": {"pois", "history", "candidate_search_round", "candidate_api_calls", "candidate_search_trace", "candidate_tried_query_keys"},
     "candidate_react": {"pois", "candidate_search_actions", "candidate_pool_status", "candidate_search_trace"},
     "candidate_search": {"pois", "candidate_search_round", "candidate_api_calls", "candidate_search_trace", "candidate_tried_query_keys"},
-    "candidate_validator": {"pois", "candidate_active_gaps", "candidate_tried_query_keys", "candidate_coverage", "candidate_missing_coverage", "candidate_pool_status"},
+    "candidate_validator": {"pois", "candidate_active_gaps", "candidate_tried_query_keys", "candidate_coverage", "candidate_missing_coverage", "candidate_pool_status", "relaxed_constraints"},
     "main_meal_search": {"main_meal_candidates", "main_meal_status", "history"},
     "planner": {"route", "review_round", "history", "planner_reviewer_dialogue", "modification_concern", "route_stale_warning", "rag_sources", "meal_slots"},
     "route_distance_check": {"route_distance_legs", "route_distance_mode", "route_distance_note"},
     "risk_gate": {"route_risk_flags", "route_risk_score", "review_required", "time_check_required", "review_skipped", "approved", "need_modify_route", "time_check_done", "time_check_status"},
-    "reviewer": {"approved", "need_modify_route", "route_modify_opinion", "reviewer_issues", "history", "planner_reviewer_dialogue"},
+    "reviewer": {"approved", "need_modify_route", "route_modify_opinion", "reviewer_issues", "reviewer_preference_match_level", "reviewer_diversity_and_dining_level", "reviewer_model_score", "history", "planner_reviewer_dialogue"},
     "time_check": {"time_violations", "time_check_done", "time_check_round", "time_check_status", "approved", "route_risk_flags", "review_required", "risk_gate_rechecked", "route_modify_opinion", "history", "planner_reviewer_dialogue"},
     "meal_enrichment": {"meal_candidates", "meals", "meal_search_status", "meal_recommend_status", "history"},
     "spot_tips": {"spot_tips", "spot_guides", "spot_tips_status"},
-    "finalize": {"final_plan", "history"},
+    "finalize": {"final_plan", "history", "result_status", "warnings", "failure_reasons", "score_info"},
 }
 
 
@@ -94,14 +95,19 @@ def production_nodes(model_name=None, profile_hint="", user_id=None):
     from app.multi_agent_core.modification import make_modification_intent_node, candidate_refresh_node
     finalize = nodes.make_finalize_node()
     def finalize_result(state):
-        if not state.approved:
+        # Finalization itself performs the L0/L1 funnel selection. The
+        # supervisor must not discard a viable Tier-2 route merely because the
+        # last Reviewer call returned approved=False.
+        if not state.route_history and not state.approved:
             return {"final_plan": {
                 "approved": False, "destination": state.destination, "days_count": state.days,
-                "draft_route": state.route, "route_issues": state.reviewer_issues,
+                "days": [], "draft_route": state.route, "route_issues": state.reviewer_issues,
                 "unresolved_time_violations": state.time_violations,
                 "unresolved_risk_flags": state.route_risk_flags,
                 "draft_only": True,
-            }, "history": state.history + ["finalize: unapproved draft, external enrichment skipped"]}
+            }, "result_status": "FAILED",
+                    "failure_reasons": [{"code": "unapproved_route", "message": "路线未通过审核", "stage": "L0_CONSTRAINT"}],
+                    "history": state.history + ["finalize: unapproved draft, external enrichment skipped"]}
         return finalize(state)
     return {
         "modification_intent": make_modification_intent_node(model_name),
@@ -320,8 +326,14 @@ class TravelSupervisor:
                           "出行结束日期": "旅行天数/结束日期", "结束日期早于开始日期": "有效的日期范围"}
                 missing = [labels.get(x, x) for x in state.missing_fields]
                 message = f"我还不能准确理解这次旅行请求，请补充：{'、'.join(dict.fromkeys(missing))}。"
-                yield {"type": "result", "success": False, "missing_fields": state.missing_fields,
-                       "message": message, "failure_details": {"kind": "clarification"}, "plan": None}
+                yield {"type": "result", "status": "FAILED", "success": False,
+                       "missing_fields": state.missing_fields,
+                       "message": message,
+                       "warnings": [],
+                       "failure_reasons": [{"code": "missing_required_fields", "message": message, "stage": "PRECHECK"}],
+                       "score_info": {},
+                       "failure_details": {"kind": "clarification"},
+                       "plan": {"days": [], "route_issues": []}}
                 return
             initial_parallel_roles = ["query_rewrite", "weather_search"]
             if "main_meal_search" in self.nodes:
@@ -371,7 +383,8 @@ class TravelSupervisor:
                     else:
                         yield event
 
-        for revision in range(state.max_review_rounds + 1):
+        pool_failed = state.candidate_pool_status == "failed"
+        for revision in ([] if pool_failed else range(state.max_review_rounds + 1)):
             # Derived conclusions never survive a new route generation.
             state.approved = False
             state.reviewer_issues = []
@@ -422,6 +435,10 @@ class TravelSupervisor:
                 state.approved = False
                 feedback = "【规则校验未通过】" + ", ".join(hard_faults)
                 state.route_modify_opinion = "\n".join(filter(None, [state.route_modify_opinion, feedback]))
+            # Keep an optimistic/partial provider result from being selected as
+            # a success when it did not pass the deterministic gate.
+            if hard_faults:
+                state.approved = False
             if state.time_violations:
                 details = json.dumps(state.time_violations, ensure_ascii=False)
                 state.route_modify_opinion = "\n".join(filter(None, [state.route_modify_opinion, details]))
@@ -434,9 +451,21 @@ class TravelSupervisor:
                     "instruction": (state.route_modify_opinion or "")[-1600:],
                 }
                 state.repair_feedback = [*state.repair_feedback[-2:], feedback]
+            snapshot_update = append_route_snapshot(state)
+            state = state.model_copy(update=snapshot_update)
             if state.approved and not state.time_violations:
                 break
-        if state.approved:
+        # Enrichment is useful only for an accepted snapshot.  A rejected
+        # route (including a Tier-2 candidate that will be returned with
+        # warnings) must first pass final selection; otherwise we would spend
+        # provider calls and stream meal/tip stages for an eventual FAILED
+        # response.
+        has_accepted_snapshot = any(
+            not item.get("l0_violations") and not item.get("l1_violations")
+            and item.get("reviewer_approved")
+            for item in (state.route_history or [])
+        )
+        if state.approved or has_accepted_snapshot:
             for role in ("meal_enrichment", "spot_tips"):
                 yield {"type": "stage", "node": role}
             async for event in parallel_stream(("meal_enrichment", "spot_tips")):
@@ -456,22 +485,21 @@ class TravelSupervisor:
         state = await execute("finalize")
         yield {"type": "stage_summary", "node": "finalize", "summary": "completed"}
         plan = state.final_plan
+        # Legacy/adaptor nodes may return an unapproved draft without route
+        # snapshots. Keep that terminal state conservative and explicit.
+        if state.result_status == "SUCCESS" and not state.route_history and not state.approved:
+            state.result_status = "FAILED"
+            state.failure_reasons = state.failure_reasons or [{
+                "code": "unapproved_route", "message": "路线未通过审核", "stage": "L0_CONSTRAINT"
+            }]
         if plan is not None:
             plan["unresolved_time_violations"] = state.time_violations
             plan["unresolved_risk_flags"] = state.route_risk_flags if not state.approved else []
             if self._memory_degraded:
                 plan["degraded_services"] = list(dict.fromkeys([*(plan.get("degraded_services") or []), "private_memory"]))
-        yield {"type": "result", "success": bool(plan) and state.approved,
-               "plan": plan, "missing_fields": [], "history": state.history,
-               "message": None if state.approved else (
-                   (state.reviewer_issues[0] if state.reviewer_issues else
-                    "当前无法生成满足全部要求的路线，请调整约束或补充候选后重试。")),
-               "failure_details": None if state.approved else {
-                   "risk_flags": state.route_risk_flags,
-                   "time_violations": state.time_violations,
-                   "reviewer_issues": state.reviewer_issues,
-               },
-               "checkpoint": state.model_dump(mode="json")}
+        payload = result_envelope(state)
+        payload["checkpoint"] = state.model_dump(mode="json")
+        yield {"type": "result", **payload}
 
 
 async def run_stream(query, profile_hint="", memory_writer=None, user_id=None, **overrides):

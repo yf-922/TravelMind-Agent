@@ -23,8 +23,11 @@ from scripts.evaluate_soft_review import preflight
 
 
 def evaluate():
+    # Only routes with a genuinely missing feasible candidate set belong in
+    # the refusal safety suite.  A complete but time-tight route is Tier 2
+    # and is covered by the partial-success benchmark.
     cases = [c for c in build_soft_review_cases()
-             if c['category'] in {'time-deadlock', 'indoor-pool-conflict'}]
+             if c['category'] == 'indoor-pool-conflict']
     _, maps = load_assets()
     checks = preflight(cases, maps)
     rows = []

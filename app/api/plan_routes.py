@@ -380,6 +380,11 @@ async def confirm_modification(req: ConfirmModificationRequest, request: Request
             "candidate_search_round": state.candidate_search_round,
             "candidate_api_calls": state.candidate_api_calls,
             "candidate_search_trace": state.candidate_search_trace,
+            "relaxed_constraints": state.relaxed_constraints,
+            "route_history": state.route_history,
+            "warnings": state.warnings,
+            "failure_reasons": state.failure_reasons,
+            "score_info": state.score_info,
             "query":            state.query,
         }
         with get_conn() as conn:
@@ -410,7 +415,7 @@ async def confirm_modification(req: ConfirmModificationRequest, request: Request
 
     async def observed_sse():
         async for event in observe_agent_events(gen(), run_id):
-            yield f"data: {json.dumps(event, ensure_ascii=False)}\n\n"
+            yield f"data: {json.dumps(event, ensure_ascii=False, default=str)}\n\n"
 
     return StreamingResponse(
         observed_sse(),

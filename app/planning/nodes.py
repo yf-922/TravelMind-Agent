@@ -747,6 +747,16 @@ def route_risk_gate_node(state: TravelPlanState, *, semantic_review: bool = True
     return update
 
 
+def record_route_snapshot_node(state: TravelPlanState) -> dict[str, Any]:
+    """Record the current post-distance/review version before another hop."""
+    from app.planning.quality import append_route_snapshot
+    review = type("ReviewView", (), {
+        "preference_match_level": state.reviewer_preference_match_level,
+        "diversity_and_dining_level": state.reviewer_diversity_and_dining_level,
+    })()
+    return append_route_snapshot(state, review)
+
+
 # ─── Planner ─────────────────────────────────────────────────
 
 def _travel_dates_block(state: TravelPlanState) -> str:
@@ -1150,7 +1160,7 @@ def make_reviewer_node(model_name: str | None):
         )
         logger.info(
             "[Reviewer 第%d轮] %s（%d分）opinion=%r  issues=%r",
-            state.review_round, verdict, result.score,
+            state.review_round, verdict, result.score or 0,
             result.route_modify_opinion or "(无)", result.issues,
         )
 
@@ -1158,7 +1168,7 @@ def make_reviewer_node(model_name: str | None):
         opinion_full = result.route_modify_opinion or "(无意见)"
         issues_full  = ("；".join(result.issues)) if result.issues else ""
         note = (
-            f"[第{state.review_round}轮] Reviewer {verdict}（{result.score}分）：{opinion_full}"
+            f"[第{state.review_round}轮] Reviewer {verdict}（{result.score or 0}分）：{opinion_full}"
             + (f"\n  → 问题列表：{issues_full}" if issues_full else "")
         )
 
@@ -1172,6 +1182,9 @@ def make_reviewer_node(model_name: str | None):
             "need_modify_route": not approved,
             "route_modify_opinion": result.route_modify_opinion,
             "reviewer_issues": result.issues,
+            "reviewer_preference_match_level": result.preference_match_level,
+            "reviewer_diversity_and_dining_level": result.diversity_and_dining_level,
+            "reviewer_model_score": result.score,
             "history": state.history + [note],
             "planner_reviewer_dialogue": state.planner_reviewer_dialogue + [reviewer_line],
         }
@@ -1659,6 +1672,20 @@ def finalize_node(state: TravelPlanState) -> dict[str, Any]:
     return _finalize_impl(state)
 
 
+def candidate_failure_node(state: TravelPlanState) -> dict[str, Any]:
+    """Short-circuit an objectively empty candidate pool into finalize."""
+    reasons = list((state.relaxed_constraints or {}).get("failure_reasons", []) or [])
+    return {
+        "route": [], "approved": False, "result_status": "FAILED",
+        "failure_reasons": reasons or [{
+            "code": "candidate_pool_empty",
+            "message": "未找到可用于生成行程的有效景点候选",
+            "stage": "PRECHECK",
+        }],
+        "warnings": [], "history": state.history + ["[CandidatePoolCheck] 候选池客观无解，短路返回明确原因"],
+    }
+
+
 def _money_value(value: Any) -> float | None:
     """Parse a POI price while keeping unknown values distinct from zero."""
     if value is None or isinstance(value, bool):
@@ -1780,12 +1807,39 @@ def enrich_plan_ticket_budget(plan: dict[str, Any]) -> dict[str, Any]:
 
 def _finalize_impl(state: TravelPlanState) -> dict[str, Any]:
     """组装 final_plan，并优先使用高德道路距离生成交通建议。"""
+    from app.planning.quality import choose_snapshot, hard_constraint_report
+
+    legacy_terminal_rejection = not state.route_history and not state.approved
+    had_route_content = any((day.get("spots") or []) for day in (state.route or []))
+    selected, status, warnings, failure_reasons = choose_snapshot(state)
+    if legacy_terminal_rejection:
+        status = "FAILED"
+        warnings = []
+        failure_reasons = list(state.failure_reasons or [])
+    elif not state.route_history and selected and selected.get("l1_violations"):
+        # A direct/legacy finalize call has no evidence that the bounded
+        # three-repair funnel was exhausted; do not downgrade an unverified
+        # one-shot route into a partial success.
+        status = "FAILED"
+        warnings = []
+        failure_reasons = [{**item, "stage": "L1_EXHAUSTED"} for item in selected["l1_violations"]]
+    if selected:
+        selected_route = (selected.get("plan") or {}).get("route")
+        selected_meals = (selected.get("plan") or {}).get("meal_slots")
+        selected_legs = (selected.get("plan") or {}).get("route_distance_legs")
+        if isinstance(selected_route, list):
+            state = state.model_copy(update={"route": selected_route})
+        if isinstance(selected_meals, list):
+            state = state.model_copy(update={"meal_slots": selected_meals})
+        if isinstance(selected_legs, list):
+            state = state.model_copy(update={"route_distance_legs": selected_legs})
     final_flags = _route_risk_flags(state)
-    hard_failures = [flag for flag in final_flags if flag not in {
-        "opening_time_unknown", "user_modification", "long_road_leg", "preference_review",
-    }]
+    final_report = hard_constraint_report(state)
+    hard_failures = list(final_report.get("l0", []))
     # Recheck against original requirements; a later audit cannot erase them.
-    if hard_failures or not state.approved:
+    # Snapshot selection has already separated L0 from L1. A legacy state with
+    # no snapshots still receives the conservative empty-plan behavior.
+    if status == "FAILED" or hard_failures:
         explanations = {
             "route_structure": "缺少有效景点或行程结构不完整",
             "indoor_constraint": "候选景点不能满足仅室内要求",
@@ -1796,12 +1850,28 @@ def _finalize_impl(state: TravelPlanState) -> dict[str, Any]:
             "commute_time_conflict": "景点间预留的通勤时间不足",
             "candidate_pool_preference_conflict": "候选池中没有满足纯室内要求的景点",
         }
-        reason = "；".join(explanations.get(flag, flag) for flag in dict.fromkeys(hard_failures)) or "审核未通过"
+        reason = "；".join(item.get("message", item.get("code", "")) for item in hard_failures) or "审核未通过"
+        failure_reasons = list(state.failure_reasons or []) or failure_reasons or [{**item, "stage": "L0_CONSTRAINT"} for item in hard_failures]
+        if not failure_reasons and state.reviewer_issues:
+            failure_reasons.extend({"code": "reviewer_finding", "message": issue, "stage": "L0_CONSTRAINT"}
+                                    for issue in state.reviewer_issues if issue)
         state = state.model_copy(update={
             "approved": False, "route_risk_flags": final_flags,
+            "result_status": "FAILED", "warnings": [], "failure_reasons": failure_reasons,
             "reviewer_issues": list(state.reviewer_issues or []) + [
                 "当前无法生成满足全部要求的路线：" + reason + "。请调整约束或补充候选后重新规划。"
             ],
+        })
+    else:
+        state = state.model_copy(update={
+            "result_status": status,
+            "warnings": list(dict.fromkeys(warnings)),
+            "failure_reasons": [],
+            "score_info": {
+                "final_score": selected.get("soft_score") if selected else None,
+                "selected_iteration": selected.get("iteration") if selected else None,
+                "breakdown": selected.get("score_breakdown", {}) if selected else {},
+            },
         })
     spot_info    = {s["name"]: s for s in state.pois}
     meals_by_day = {m["day"]: m for m in state.meals}
@@ -2033,11 +2103,15 @@ def _finalize_impl(state: TravelPlanState) -> dict[str, Any]:
         "main_meal_search": "主链路餐馆候选查询部分失败，餐馆时间块可能为空或为降级结果。",
         "spot_tips": "景点贴士生成暂不可用，请以景区官方游览须知为准。",
     }
+    if state.result_status != "FAILED":
+        state = state.model_copy(update={
+            "warnings": list(dict.fromkeys([*(state.warnings or []),
+                *(degradation_messages[name] for name in degraded_services)]))
+        })
 
-    # A rejected draft is never exposed as a usable itinerary.  The route is
-    # retained in state for diagnostics/checkpoint replay, while the client
-    # receives an empty days list and the explicit refusal reasons above.
-    if hard_failures or not state.approved:
+    # Only L0 failure is empty. L1-exhausted snapshots are exposed as a
+    # PARTIAL_SUCCESS with concrete warnings.
+    if state.result_status == "FAILED":
         days_out = []
 
     final_plan = {
@@ -2058,7 +2132,11 @@ def _finalize_impl(state: TravelPlanState) -> dict[str, Any]:
             "food": state.food_preference,
             "habit": state.habit_preference,
         },
-        "approved": state.approved,
+        "approved": state.result_status != "FAILED",
+        "status": state.result_status,
+        "warnings": list(state.warnings or []),
+        "failure_reasons": list(state.failure_reasons or []) if state.result_status == "FAILED" else [],
+        "score_info": dict(state.score_info or {}),
         "review_rounds": state.review_round,
         "audit_policy": {
             "review_skipped": state.review_skipped,
@@ -2078,9 +2156,14 @@ def _finalize_impl(state: TravelPlanState) -> dict[str, Any]:
         # 已是给用户看的友好出行提醒。time_check 的 violations 不属于注意事项——
         # 它要么被 planner 修完（time_violations 清空），要么属于极端兜底情况（达轮数上限未清完），
         # 不是给用户的常规提醒。
-        "route_issues": list(state.reviewer_issues or []) + [
+        "route_issues": (list(state.warnings or [])
+            + ([("当前无法生成满足全部要求的路线，请调整约束或补充候选后重试。")] if state.result_status == "FAILED" else [])
+            + ([item.get("message", "") for item in state.failure_reasons
+                if item.get("code") != "no_route_snapshot"]
+               if state.result_status == "FAILED" and had_route_content else [])
+            + ([] if state.result_status == "FAILED" else list(state.reviewer_issues or [])) + [
             degradation_messages[name] for name in degraded_services
-        ],
+        ]),
         "service_status": service_status,
         "degraded_services": degraded_services,
         "days": days_out,
@@ -2119,4 +2202,11 @@ def _finalize_impl(state: TravelPlanState) -> dict[str, Any]:
     history = state.history + ["finalize：已组装最终计划"]
     # 规划过程日志随 plan 一起落库，历史详情页回看时可还原完整规划过程
     final_plan["history"] = history
-    return {"final_plan": final_plan, "history": history}
+    return {
+        "final_plan": final_plan,
+        "history": history,
+        "result_status": state.result_status,
+        "warnings": list(state.warnings or []),
+        "failure_reasons": list(state.failure_reasons or []),
+        "score_info": dict(state.score_info or {}),
+    }

@@ -6,6 +6,7 @@ import json
 import math
 import hashlib
 import re
+import logging
 from typing import Literal
 
 from pydantic import BaseModel, Field
@@ -16,6 +17,8 @@ from app.planning.helpers import amap_key, extract_explicit_place_requests, invo
 from app.planning.schemas import TravelPlanState
 from app.planning.poi_attributes import enrich_pois
 from app.providers.amap.poi import poi_to_spot, search_city_pois, non_tourism_poi, type_indoor
+
+logger = logging.getLogger(__name__)
 
 
 class CandidateAction(BaseModel):
@@ -319,12 +322,67 @@ def candidate_validator_node(state: TravelPlanState):
     stats, missing = coverage(state)
     stopped = all(a.get("action") == "stop" for a in state.candidate_search_actions)
     budget_exhausted = state.candidate_api_calls >= state.candidate_api_budget
-    status = "ready" if not missing else ("insufficient" if stopped or budget_exhausted or state.candidate_search_round >= state.candidate_max_rounds else "searching")
+    exhausted = bool(stopped or budget_exhausted or state.candidate_search_round >= state.candidate_max_rounds)
+    status = "ready" if not missing else ("insufficient" if exhausted else "searching")
+    relaxed = dict(state.relaxed_constraints or {})
+    warnings = list(relaxed.get("relaxation_warnings", []) or [])
+    if status == "insufficient" and missing:
+        logger.info("[CandidatePoolCheck] round=%s missing=%s pool=%s", state.candidate_search_round, missing, stats)
+        trace = list(state.candidate_search_trace or [])
+        exact_missing = [value.split(":", 1)[1] for value in missing if value.startswith("requested:")]
+        dropped = list(relaxed.get("dropped_must_visit", []) or [])
+        unverified = list(relaxed.get("unverified_must_visit", []) or [])
+        for name in exact_missing:
+            attempts = [item for item in trace if item.get("query") == name]
+            provider_failed = any(item.get("error_code") in {"SEARCH_FAILED", "BUDGET_EXHAUSTED"} for item in attempts)
+            if provider_failed:
+                if name not in unverified:
+                    unverified.append(name)
+                warnings.append(f"因地图服务瞬时繁忙，暂未能核实景点{name}的位置信息，已先为您安排其余行程")
+            elif attempts:
+                if name not in dropped:
+                    dropped.append(name)
+                warnings.append(f"未找到指定景点{name}，已为您剔除并安排其余行程")
+            else:
+                # No successful/failed provider response means the absence is
+                # unverified; do not silently convert it into a confirmed
+                # non-existent place.
+                if name not in unverified:
+                    unverified.append(name)
+                warnings.append(f"暂未能核实景点{name}，已先为您安排其余行程")
+        if dropped:
+            relaxed["dropped_must_visit"] = dropped
+        if unverified:
+            relaxed["unverified_must_visit"] = unverified
+        if "indoor" in missing:
+            relaxed["relaxed_indoor_only"] = True
+            warnings.append("符合当前室内要求的候选不足，已优先安排可确认景点并补充代表性景点")
+        if "count" in missing and state.pois:
+            relaxed["relaxed_count"] = True
+            warnings.append("符合全部筛选条件的候选数量有限，已按可用景点生成行程")
+        if warnings:
+            relaxed["relaxation_warnings"] = list(dict.fromkeys(warnings))
+        # Without a resolved destination this may be a legacy/incomplete
+        # fixture; let the planner surface the missing context instead of
+        # claiming that the city has no candidates.
+        sole_named_unavailable = (
+            len(exact_missing) == 1 and len(requested_names(state)) == 1
+            and exact_missing[0] in dropped
+        )
+        if state.destination and (trace or exact_missing) and (not state.pois or sole_named_unavailable):
+            status = "failed"
+            relaxed.setdefault("failure_reasons", []).append({
+                "code": "candidate_pool_empty" if not state.pois else "named_poi_unavailable",
+                "message": "未找到可用于生成行程的有效景点候选" if not state.pois else f"未找到用户指定景点：{exact_missing[0]}",
+                "stage": "PRECHECK",
+            })
     return {"pois": state.pois,"candidate_coverage": stats, "candidate_missing_coverage": missing,
             "candidate_active_gaps": active_gaps(state),
             "candidate_tried_query_keys": sorted(set(state.candidate_tried_query_keys) | {t["query_key"] for t in state.candidate_search_trace if t.get("query_key")}),
-            "candidate_pool_status": status}
+            "candidate_pool_status": status, "relaxed_constraints": relaxed}
 
 
 def route_after_candidate_validation(state: TravelPlanState):
+    if state.candidate_pool_status == "failed":
+        return "candidate_failure"
     return "candidate_react" if state.candidate_pool_status == "searching" else "planner"

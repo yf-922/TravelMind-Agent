@@ -70,7 +70,7 @@ def test_controlled_cases_are_rule_clean_and_soft_defective_before_spending():
 
 @pytest.mark.parametrize('arm', ['rules', 'rules_reviewer'])
 @pytest.mark.parametrize('case_id', [
-    'soft-review-time-deadlock', 'soft-review-indoor-pool-conflict',
+    'soft-review-indoor-pool-conflict',
 ])
 def test_new_infeasible_cases_exit_after_three_repairs_with_specific_refusal(case_id, arm):
     from unittest.mock import patch
@@ -112,6 +112,46 @@ def test_new_infeasible_cases_exit_after_three_repairs_with_specific_refusal(cas
     assert not grade['task_success']
 
 
+@pytest.mark.parametrize('arm', ['rules', 'rules_reviewer'])
+def test_complete_time_deadlock_draft_is_l1_partial_success(arm):
+    """A complete but too-tight route remains usable as Tier 2 output.
+
+    The route contains both required POIs and a non-empty day, so the
+    physical deadlock is an L1 warning.  L0 is reserved for a dropped
+    required POI or an empty day.
+    """
+    from unittest.mock import patch
+    from app.evaluation.route_interest import route_key
+    from app.planning import nodes
+    from app.planning.quality import hard_constraint_report
+    from scripts.evaluate_reviewer_ablation import run_arm
+
+    case = next(c for c in build_soft_review_cases() if c['id'] == 'soft-review-time-deadlock')
+    _, maps = load_assets()
+    initial = {**copy.deepcopy(case['state']), 'route': copy.deepcopy(case['injected_route'])}
+
+    def planner(state):
+        return {'route': copy.deepcopy(case['injected_route']), 'review_round': state.review_round + 1}
+
+    def reviewer(state):
+        return {'approved': True, 'route_modify_opinion': '', 'reviewer_issues': []}
+
+    with patch.object(nodes, 'amap_key', return_value='replay'), \
+         patch.object(nodes, 'plan_route_distance', side_effect=lambda a, b, key, mode='drive':
+                      copy.deepcopy(maps.get(route_key(a, b, mode)))), \
+         patch.object(nodes, 'recommend_chain_hotel', return_value=None), \
+         patch.object(nodes, 'lookup_live_ticket_prices', return_value={}):
+        state, repairs = run_arm(initial, arm, planner, reviewer, max_repairs=3, trace=[])
+
+    report = hard_constraint_report(state)
+    assert repairs == 3
+    assert not report['l0']
+    assert {item['code'] for item in report['l1']} >= {'physical_time_deadlock', 'commute_time_conflict'}
+    assert state.final_plan['status'] == 'PARTIAL_SUCCESS'
+    assert state.final_plan['approved'] is True
+    assert state.final_plan['days']
+
+
 @pytest.mark.parametrize('case', build_soft_review_cases(), ids=lambda c: c['id'])
 def test_semantic_challenge_scoring_never_trusts_optimistic_model_verdict(case):
     _, maps = load_assets()
@@ -144,11 +184,11 @@ def test_offline_infeasible_replay_preserves_unaudited_baseline_and_never_calls_
     monkeypatch.setattr(nodes, 'plan_route_distance', unexpected_call)
     monkeypatch.setattr(nodes, 'invoke_structured', unexpected_call)
     report = evaluate()
-    assert report['summary']['rules'] == {'safe_rejections': 2, 'cases': 2}
-    assert report['summary']['rules_reviewer'] == {'safe_rejections': 2, 'cases': 2}
+    assert report['summary']['rules'] == {'safe_rejections': 1, 'cases': 1}
+    assert report['summary']['rules_reviewer'] == {'safe_rejections': 1, 'cases': 1}
     assert report['model_calls'] == report['external_calls'] == 0
     baseline = [r for r in report['rows'] if r['arm'] == 'planner_only']
-    assert len(baseline) == 2
+    assert len(baseline) == 1
     assert all(r['grade']['unsafe_release'] for r in baseline)
     assert all(r['grade']['selected'] for r in baseline)
     assert all(not r['grade']['task_success'] for r in baseline)

@@ -121,7 +121,10 @@ async def _encode_observed_sse(
     source: AsyncIterator[dict[str, Any]], run_id: str
 ) -> AsyncIterator[str]:
     async for event in observe_agent_events(source, run_id):
-        yield f"data: {json.dumps(event, ensure_ascii=False)}\n\n"
+        # Runtime emits model_dump(mode="json") checkpoints; default=str is
+        # a final guard for optional provider/Pydantic values in diagnostic
+        # stage payloads so one malformed enrichment cannot break SSE.
+        yield f"data: {json.dumps(event, ensure_ascii=False, default=str)}\n\n"
 
 
 # ─── API 路由 ─────────────────────────────────────────────────
@@ -276,6 +279,11 @@ async def create_plan_stream(req: PlanRequest, request: Request):
             "candidate_search_round": state.candidate_search_round,
             "candidate_api_calls": state.candidate_api_calls,
             "candidate_search_trace": state.candidate_search_trace,
+            "relaxed_constraints": state.relaxed_constraints,
+            "route_history": state.route_history,
+            "warnings": state.warnings,
+            "failure_reasons": state.failure_reasons,
+            "score_info": state.score_info,
             "query":            state.query,
         }
         with get_conn() as conn:

@@ -7,6 +7,7 @@ from typing import Any, AsyncIterator
 from langgraph.graph import END, START, StateGraph
 
 from app.planning.schemas import TravelPlanState
+from app.planning.quality import result_envelope
 from app.planning.enrichment import bounded_spot_tips
 from app.planning.helpers import invoke_structured  # re-export for convenience
 from app.planning.candidate_react import (
@@ -27,6 +28,8 @@ from app.planning.nodes import (
     make_reviewer_node,
     make_spot_tips_node,
     make_time_check_node,
+    record_route_snapshot_node,
+    candidate_failure_node,
     clarify_request_node,
     route_distance_check_node,
     route_risk_gate_node,
@@ -69,6 +72,7 @@ def build_graph(
     # meant a provider timeout could turn an otherwise valid city into 0 POIs.
     g.add_node("attraction_search", attraction_search_node)
     g.add_node("candidate_validator", candidate_validator_node)
+    g.add_node("candidate_failure", candidate_failure_node)
     g.add_node("main_meal_search", main_meal_candidate_search_node)
     g.add_node("main_meal_output", main_meal_output_node)
     g.add_node("planner",          _planner_for_graph(model_name))
@@ -76,6 +80,9 @@ def build_graph(
     g.add_node("risk_gate", route_risk_gate_node)
     g.add_node("reviewer",         make_reviewer_node(model_name))
     g.add_node("time_check",       make_time_check_node(model_name))
+    g.add_node("snapshot_gate",    record_route_snapshot_node)
+    g.add_node("snapshot_reviewer", record_route_snapshot_node)
+    g.add_node("snapshot_time_check", record_route_snapshot_node)
     g.add_node("spot_tips",        bounded_spot_tips(make_spot_tips_node(model_name)))
     g.add_node("finalize",         make_finalize_node(memory_writer))
 
@@ -97,7 +104,9 @@ def build_graph(
     g.add_edge("candidate_react", "candidate_search")
     g.add_edge("candidate_search", "candidate_validator")
     g.add_conditional_edges("candidate_validator", route_after_candidate_validation,
-                           {"candidate_react": "candidate_react", "planner": "candidate_ready"})
+                           {"candidate_react": "candidate_react", "planner": "candidate_ready",
+                            "candidate_failure": "candidate_failure"})
+    g.add_edge("candidate_failure", "finalize")
     g.add_node("candidate_ready", lambda state: {})
     g.add_edge(["candidate_ready", "main_meal_search"], "planner")
     # planner 输出：time_check_done=False 时进 reviewer 走主循环；True 时进 time_check 重新核查
@@ -106,19 +115,22 @@ def build_graph(
         {"reviewer": "route_distance_check", "time_check": "route_distance_check"},
     )
     g.add_edge("route_distance_check", "risk_gate")
+    g.add_edge("risk_gate", "snapshot_gate")
     g.add_conditional_edges(
-        "risk_gate", route_after_risk_gate,
+        "snapshot_gate", route_after_risk_gate,
         {"reviewer": "reviewer", "time_check": "time_check",
          "meal_search": "main_meal_output", "spot_tips": "spot_tips"},
     )
     # reviewer：通过或达最大轮数 → time_check 阶段；否则打回 planner
+    g.add_edge("reviewer", "snapshot_reviewer")
     g.add_conditional_edges(
-        "reviewer", route_after_review,
+        "snapshot_reviewer", route_after_review,
         {"planner": "planner", "time_check": "time_check"},
     )
     # time_check：无违规/达上限 → meal_search；有违规且未达上限 → planner 修正
+    g.add_edge("time_check", "snapshot_time_check")
     g.add_conditional_edges(
-        "time_check", route_after_time_check,
+        "snapshot_time_check", route_after_time_check,
         {"planner": "planner", "reviewer": "reviewer", "meal_search": "main_meal_output", "spot_tips": "spot_tips"},
     )
     # The dependent search -> recommend meal subflow and attraction tips are
@@ -137,6 +149,10 @@ def build_graph(
 # 节点名 → 进度文案。同时充当“哪些事件需要透出”的过滤白名单。
 # planner/reviewer 文案在运行时按轮次/通过位动态拼接，这里留占位。
 _NODE_LABELS: dict[str, str] = {
+    "candidate_failure": "候选池无法满足核心要求，正在整理失败原因",
+    "snapshot_gate": "正在记录本轮硬约束结果",
+    "snapshot_reviewer": "正在记录本轮审核结果",
+    "snapshot_time_check": "正在记录本轮时间核验结果",
     "candidate_search": "正在定向补充景点候选",
     "candidate_react": "正在判断景点候选缺口",
     "candidate_validator": "正在检查候选覆盖与多样性",
@@ -314,6 +330,9 @@ def build_modification_graph(model_name: str | None = None, memory_writer=None):
     g.add_node("risk_gate", route_risk_gate_node)
     g.add_node("reviewer",       make_reviewer_node(model_name))
     g.add_node("time_check",     make_time_check_node(model_name))
+    g.add_node("snapshot_gate",    record_route_snapshot_node)
+    g.add_node("snapshot_reviewer", record_route_snapshot_node)
+    g.add_node("snapshot_time_check", record_route_snapshot_node)
     legacy_meal = make_meal_enrichment_node(model_name)
 
     def meal_output_with_legacy_compat(state: TravelPlanState) -> dict[str, Any]:
@@ -329,17 +348,20 @@ def build_modification_graph(model_name: str | None = None, memory_writer=None):
     g.add_edge(START, "planner")
     g.add_edge("planner", "route_distance_check")
     g.add_edge("route_distance_check", "risk_gate")
+    g.add_edge("risk_gate", "snapshot_gate")
     g.add_conditional_edges(
-        "risk_gate", route_after_risk_gate,
+        "snapshot_gate", route_after_risk_gate,
         {"reviewer": "reviewer", "time_check": "time_check",
          "meal_search": "main_meal_output", "spot_tips": "spot_tips"},
     )
+    g.add_edge("reviewer", "snapshot_reviewer")
     g.add_conditional_edges(
-        "reviewer", route_after_review,
+        "snapshot_reviewer", route_after_review,
         {"planner": "planner", "time_check": "time_check"},
     )
+    g.add_edge("time_check", "snapshot_time_check")
     g.add_conditional_edges(
-        "time_check", route_after_time_check,
+        "snapshot_time_check", route_after_time_check,
         {"planner": "planner", "reviewer": "reviewer", "meal_search": "main_meal_output", "spot_tips": "spot_tips"},
     )
     g.add_edge(["main_meal_output", "spot_tips"], "finalize")
@@ -355,6 +377,9 @@ def build_confirm_graph(model_name: str | None = None, memory_writer=None):
     g.add_node("reviewer",       make_reviewer_node(model_name))
     g.add_node("planner",        _planner_for_graph(model_name))
     g.add_node("time_check",     make_time_check_node(model_name))
+    g.add_node("snapshot_gate",    record_route_snapshot_node)
+    g.add_node("snapshot_reviewer", record_route_snapshot_node)
+    g.add_node("snapshot_time_check", record_route_snapshot_node)
     legacy_meal = make_meal_enrichment_node(model_name)
 
     def meal_output_with_legacy_compat(state: TravelPlanState) -> dict[str, Any]:
@@ -367,18 +392,21 @@ def build_confirm_graph(model_name: str | None = None, memory_writer=None):
     g.add_node("finalize",       make_finalize_node(memory_writer))
     g.add_edge(START,            "route_distance_check")
     g.add_edge("route_distance_check", "risk_gate")
+    g.add_edge("risk_gate", "snapshot_gate")
     g.add_conditional_edges(
-        "risk_gate", route_after_risk_gate,
+        "snapshot_gate", route_after_risk_gate,
         {"reviewer": "reviewer", "time_check": "time_check",
          "meal_search": "main_meal_output", "spot_tips": "spot_tips"},
     )
+    g.add_edge("reviewer", "snapshot_reviewer")
     g.add_conditional_edges(
-        "reviewer", route_after_review,
+        "snapshot_reviewer", route_after_review,
         {"planner": "planner", "time_check": "time_check"},
     )
     g.add_edge("planner", "route_distance_check")
+    g.add_edge("time_check", "snapshot_time_check")
     g.add_conditional_edges(
-        "time_check", route_after_time_check,
+        "snapshot_time_check", route_after_time_check,
         {"planner": "planner", "reviewer": "reviewer", "meal_search": "main_meal_output", "spot_tips": "spot_tips"},
     )
     g.add_edge(["main_meal_output", "spot_tips"], "finalize")
@@ -403,6 +431,13 @@ def restore_modification_state(
         candidate_search_round=checkpoint.get("candidate_search_round", 0),
         candidate_api_calls=checkpoint.get("candidate_api_calls", 0),
         candidate_search_trace=checkpoint.get("candidate_search_trace", []),
+        relaxed_constraints=checkpoint.get("relaxed_constraints", {}),
+        # A modification starts a fresh selection run; old snapshots remain
+        # available in the persisted plan but cannot win the new run.
+        route_history=[],
+        warnings=[],
+        failure_reasons=[],
+        score_info={},
         planner_reviewer_dialogue=checkpoint.get("planner_reviewer_dialogue", []),
         destination=checkpoint.get("destination"),
         travel_start_date=checkpoint.get("travel_start_date"),
@@ -498,6 +533,11 @@ async def run_modification_stream(
                     "meal_duration_min": init.meal_duration_min,
                     "max_per_day":      init.max_per_day,
                     "query":            init.query,
+                    "relaxed_constraints": acc.get("relaxed_constraints", {}),
+                    "route_history": acc.get("route_history", []),
+                    "warnings": acc.get("warnings", []),
+                    "failure_reasons": acc.get("failure_reasons", []),
+                    "score_info": acc.get("score_info", {}),
                 }
                 yield {
                     "type": "modification_warning",
@@ -512,18 +552,14 @@ async def run_modification_stream(
 
     if not planner_done:
         # planner 事件未触发（不应出现）
-        yield {"type": "result", "success": False, "missing_fields": ["规划失败，请重试"], "history": [], "plan": None}
+        failed = TravelPlanState(query="修改行程", result_status="FAILED",
+                                 failure_reasons=[{"code": "planner_not_run", "message": "规划节点未执行", "stage": "L0_CONSTRAINT"}])
+        yield {"type": "result", **result_envelope(failed)}
         return
 
     final = TravelPlanState(**acc)
-    success = final.final_plan is not None
-    yield {
-        "type": "result",
-        "success": success,
-        "missing_fields": [],
-        "history": final.history,
-        "plan": final.final_plan if success else None,
-    }
+    payload = result_envelope(final)
+    yield {"type": "result", **payload}
 
 
 async def run_confirm_stream(
@@ -557,6 +593,11 @@ async def run_confirm_stream(
         main_meal_status=pending_state.get("main_meal_status", "not_requested"),
         meal_duration_min=int(pending_state.get("meal_duration_min", 60) or 60),
         max_per_day=pending_state.get("max_per_day", 3),
+        relaxed_constraints=pending_state.get("relaxed_constraints", {}),
+        route_history=pending_state.get("route_history", []),
+        warnings=pending_state.get("warnings", []),
+        failure_reasons=pending_state.get("failure_reasons", []),
+        score_info=pending_state.get("score_info", {}),
         **{k: v for k, v in overrides.items() if k not in ("model_name", "max_per_day")},
     )
     config = {"recursion_limit": 2 * (init.max_review_rounds + 1) + 2 * init.max_time_check_rounds + 14}
@@ -579,14 +620,8 @@ async def run_confirm_stream(
         acc.update(upd)
 
     final = TravelPlanState(**acc)
-    success = final.final_plan is not None
-    yield {
-        "type": "result",
-        "success": success,
-        "missing_fields": [],
-        "history": final.history,
-        "plan": final.final_plan if success else None,
-    }
+    payload = result_envelope(final)
+    yield {"type": "result", **payload}
 
 
 async def run_stream(
@@ -635,14 +670,6 @@ async def run_stream(
                 acc.update(upd)
 
     final = TravelPlanState(**acc)
-    success = not bool(final.missing_fields) and final.final_plan is not None
-    yield {
-        "type": "result",
-        "success": success,
-        "missing_fields": final.missing_fields,
-        "history": final.history,
-        "message": (final.reviewer_issues[0] if final.reviewer_issues else None),
-        "failure_details": ({"missing_fields": final.missing_fields}
-                            if final.missing_fields else None),
-        "plan": final.final_plan if success else None,
-    }
+    payload = result_envelope(final)
+    payload["missing_fields"] = final.missing_fields
+    yield {"type": "result", **payload}

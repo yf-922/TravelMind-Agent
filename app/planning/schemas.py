@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from datetime import date
-from typing import Any, Optional
+from typing import Any, Literal, Optional
 
 from pydantic import BaseModel, Field
 
@@ -114,7 +114,14 @@ class RouteReview(BaseModel):
         )
     )
     approved: bool = Field(description="路线是否达标")
-    score: int = Field(description="综合评分 0-100")
+    # Compatibility field only; final selection uses the backend score.
+    score: int | None = Field(default=None, ge=0, le=100, description="兼容旧日志的模型参考分")
+    preference_match_level: Literal["HIGH", "MEDIUM", "LOW"] = Field(
+        default="MEDIUM", description="兴趣与排除偏好匹配程度；由后端映射为固定分值"
+    )
+    diversity_and_dining_level: Literal["GOOD", "FAIR", "POOR"] = Field(
+        default="FAIR", description="景点多样性与餐饮组合；由后端映射为固定分值"
+    )
     route_modify_opinion: str = Field(
         default="",
         description="给 planner 看的修改指令，诊断语气，可技术化；approved=true 时可空",
@@ -266,6 +273,14 @@ class TravelPlanState(BaseModel):
 
     # Reviewer 最后一轮发现的问题（最大轮数未通过时透传给前端）
     reviewer_issues: list[str] = Field(default_factory=list)
+    reviewer_preference_match_level: Literal["HIGH", "MEDIUM", "LOW"] = "MEDIUM"
+    reviewer_diversity_and_dining_level: Literal["GOOD", "FAIR", "POOR"] = "FAIR"
+    reviewer_model_score: int | None = None
+    route_history: list[dict[str, Any]] = Field(default_factory=list)
+    warnings: list[str] = Field(default_factory=list)
+    failure_reasons: list[dict[str, Any]] = Field(default_factory=list)
+    score_info: dict[str, Any] = Field(default_factory=dict)
+    result_status: Literal["SUCCESS", "SUCCESS_WITH_WARNINGS", "PARTIAL_SUCCESS", "FAILED"] = "SUCCESS"
 
     # 时间核查（time_check 节点：planner-reviewer 主循环后插入的二次修正循环）
     time_violations: list[dict[str, Any]] = Field(default_factory=list)
@@ -292,6 +307,7 @@ class TravelPlanState(BaseModel):
     candidate_tried_query_keys: list[str] = Field(default_factory=list)
     candidate_force_named_non_tourism: bool = False
     semantic_memory_status: str = "not_requested"
+    relaxed_constraints: dict[str, Any] = Field(default_factory=dict)
 
     rag_sources: list[dict[str, Any]] = Field(default_factory=list)
     selection_reasons: list[dict[str, Any]] = Field(default_factory=list)
