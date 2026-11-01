@@ -2,8 +2,11 @@ import copy
 from collections import Counter
 import json
 
-from scripts.build_representative_eval50 import OUT, score_case
+from pathlib import Path
+from scripts.build_representative_eval50 import score_case
 from scripts.evaluate_representative50 import verify
+
+OUT = Path(__file__).parent / 'fixtures' / 'post_train' / 'representative'
 
 
 def assets():
@@ -11,9 +14,10 @@ def assets():
             json.loads((OUT/'maps.json').read_text(encoding='utf-8'))['routes'])
 
 
-def test_frozen_50_has_exact_balanced_city_strata_and_genuine_large_pools():
-    # This test checks historical assets, not permission to rerun an old report
-    # against changed production code. Evaluation keeps strict verification.
+def test_frozen_50_has_exact_balanced_city_strata_and_genuine_large_pools(monkeypatch):
+    # Check the versioned projection, not the original historical release.
+    # Production evaluation retains strict source-version verification.
+    monkeypatch.setattr('scripts.evaluate_representative50.SUITE', OUT)
     verify(check_protocol=False)
     cases,_=assets()
     assert len({c['id'] for c in cases})==50

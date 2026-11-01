@@ -1,7 +1,10 @@
 import copy
 import json
 
-from scripts.evaluate_no_pool_base import SUITE, SEEDS, strip_pool
+from pathlib import Path
+from scripts.evaluate_no_pool_base import SEEDS, strip_pool
+
+SUITE = Path(__file__).parent / 'fixtures' / 'post_train' / 'holdout'
 from scripts.verify_no_pool_entities import classify, spot_names
 
 

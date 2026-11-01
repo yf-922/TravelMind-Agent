@@ -1,0 +1,1692 @@
+[
+  {
+    "id": "representative50-1-01",
+    "witness_passed": true,
+    "negative_rejected": [
+      "road_unverified",
+      "unknown_poi"
+    ],
+    "controls": [
+      {
+        "kind": "out_of_pool_or_unexplained_rejection",
+        "faults": [
+          "road_unverified",
+          "unknown_poi"
+        ]
+      },
+      {
+        "kind": "global_duplicate",
+        "faults": [
+          "duplicate_poi",
+          "global_duplicate",
+          "road_unverified"
+        ]
+      },
+      {
+        "kind": "minimum_visit",
+        "faults": [
+          "minimum_visit"
+        ]
+      }
+    ],
+    "pool_size": 23,
+    "expected": "feasible"
+  },
+  {
+    "id": "representative50-1-02",
+    "witness_passed": true,
+    "negative_rejected": [
+      "required_missing",
+      "road_unverified",
+      "unknown_poi"
+    ],
+    "controls": [
+      {
+        "kind": "out_of_pool_or_unexplained_rejection",
+        "faults": [
+          "required_missing",
+          "road_unverified",
+          "unknown_poi"
+        ]
+      },
+      {
+        "kind": "global_duplicate",
+        "faults": [
+          "duplicate_poi",
+          "global_duplicate",
+          "road_unverified"
+        ]
+      },
+      {
+        "kind": "minimum_visit",
+        "faults": [
+          "minimum_visit"
+        ]
+      }
+    ],
+    "pool_size": 23,
+    "expected": "feasible"
+  },
+  {
+    "id": "representative50-1-03",
+    "witness_passed": true,
+    "negative_rejected": [
+      "required_missing",
+      "road_unverified",
+      "unknown_poi"
+    ],
+    "controls": [
+      {
+        "kind": "out_of_pool_or_unexplained_rejection",
+        "faults": [
+          "required_missing",
+          "road_unverified",
+          "unknown_poi"
+        ]
+      },
+      {
+        "kind": "global_duplicate",
+        "faults": [
+          "duplicate_poi",
+          "global_duplicate",
+          "road_unverified"
+        ]
+      },
+      {
+        "kind": "minimum_visit",
+        "faults": [
+          "minimum_visit"
+        ]
+      }
+    ],
+    "pool_size": 23,
+    "expected": "feasible"
+  },
+  {
+    "id": "representative50-1-04",
+    "witness_passed": true,
+    "negative_rejected": [
+      "unknown_poi"
+    ],
+    "controls": [
+      {
+        "kind": "out_of_pool_or_unexplained_rejection",
+        "faults": [
+          "unknown_poi"
+        ]
+      },
+      {
+        "kind": "global_duplicate",
+        "faults": [
+          "duplicate_poi",
+          "global_duplicate",
+          "opening_evidence",
+          "opening_time_conflict"
+        ]
+      },
+      {
+        "kind": "minimum_visit",
+        "faults": [
+          "minimum_visit"
+        ]
+      }
+    ],
+    "pool_size": 23,
+    "expected": "feasible"
+  },
+  {
+    "id": "representative50-1-05",
+    "witness_passed": true,
+    "negative_rejected": [
+      "road_unverified",
+      "unknown_poi"
+    ],
+    "controls": [
+      {
+        "kind": "out_of_pool_or_unexplained_rejection",
+        "faults": [
+          "road_unverified",
+          "unknown_poi"
+        ]
+      },
+      {
+        "kind": "global_duplicate",
+        "faults": [
+          "duplicate_poi",
+          "global_duplicate",
+          "road_unverified"
+        ]
+      },
+      {
+        "kind": "minimum_visit",
+        "faults": [
+          "minimum_visit"
+        ]
+      }
+    ],
+    "pool_size": 23,
+    "expected": "feasible"
+  },
+  {
+    "id": "representative50-1-06",
+    "witness_passed": true,
+    "negative_rejected": [
+      "road_unverified",
+      "unknown_poi"
+    ],
+    "controls": [
+      {
+        "kind": "out_of_pool_or_unexplained_rejection",
+        "faults": [
+          "road_unverified",
+          "unknown_poi"
+        ]
+      },
+      {
+        "kind": "global_duplicate",
+        "faults": [
+          "duplicate_poi",
+          "global_duplicate",
+          "road_unverified"
+        ]
+      },
+      {
+        "kind": "minimum_visit",
+        "faults": [
+          "minimum_visit"
+        ]
+      },
+      {
+        "kind": "heat_boundary",
+        "faults": [
+          "heat_exposure_or_unknown_indoor"
+        ]
+      }
+    ],
+    "pool_size": 23,
+    "expected": "feasible"
+  },
+  {
+    "id": "representative50-1-07",
+    "witness_passed": true,
+    "negative_rejected": [
+      "required_missing",
+      "road_unverified",
+      "unknown_poi"
+    ],
+    "controls": [
+      {
+        "kind": "out_of_pool_or_unexplained_rejection",
+        "faults": [
+          "required_missing",
+          "road_unverified",
+          "unknown_poi"
+        ]
+      },
+      {
+        "kind": "global_duplicate",
+        "faults": [
+          "duplicate_poi",
+          "global_duplicate",
+          "road_unverified"
+        ]
+      },
+      {
+        "kind": "minimum_visit",
+        "faults": [
+          "minimum_visit"
+        ]
+      },
+      {
+        "kind": "strict_start_equality",
+        "faults": [
+          "user_time_window"
+        ]
+      }
+    ],
+    "pool_size": 23,
+    "expected": "feasible"
+  },
+  {
+    "id": "representative50-1-08",
+    "witness_passed": true,
+    "negative_rejected": [
+      "required_missing",
+      "road_unverified",
+      "unknown_poi"
+    ],
+    "controls": [
+      {
+        "kind": "out_of_pool_or_unexplained_rejection",
+        "faults": [
+          "required_missing",
+          "road_unverified",
+          "unknown_poi"
+        ]
+      },
+      {
+        "kind": "global_duplicate",
+        "faults": [
+          "duplicate_poi",
+          "global_duplicate",
+          "road_unverified"
+        ]
+      },
+      {
+        "kind": "minimum_visit",
+        "faults": [
+          "minimum_visit"
+        ]
+      },
+      {
+        "kind": "midday_break",
+        "faults": [
+          "route_structure",
+          "user_break_overlap"
+        ]
+      }
+    ],
+    "pool_size": 23,
+    "expected": "feasible"
+  },
+  {
+    "id": "representative50-1-09",
+    "witness_passed": true,
+    "negative_rejected": [
+      "unknown_poi"
+    ],
+    "controls": [
+      {
+        "kind": "out_of_pool_or_unexplained_rejection",
+        "faults": [
+          "unknown_poi"
+        ]
+      },
+      {
+        "kind": "global_duplicate",
+        "faults": [
+          "duplicate_poi",
+          "global_duplicate"
+        ]
+      },
+      {
+        "kind": "minimum_visit",
+        "faults": [
+          "minimum_visit"
+        ]
+      }
+    ],
+    "pool_size": 3,
+    "expected": "feasible"
+  },
+  {
+    "id": "representative50-1-10",
+    "witness_passed": true,
+    "negative_rejected": [
+      "infeasible_not_explained",
+      "infeasible_wrong_reason"
+    ],
+    "controls": [
+      {
+        "kind": "out_of_pool_or_unexplained_rejection",
+        "faults": [
+          "infeasible_not_explained",
+          "infeasible_wrong_reason"
+        ]
+      }
+    ],
+    "pool_size": 2,
+    "expected": "explained_infeasible"
+  },
+  {
+    "id": "representative50-2-01",
+    "witness_passed": true,
+    "negative_rejected": [
+      "road_unverified",
+      "unknown_poi"
+    ],
+    "controls": [
+      {
+        "kind": "out_of_pool_or_unexplained_rejection",
+        "faults": [
+          "road_unverified",
+          "unknown_poi"
+        ]
+      },
+      {
+        "kind": "global_duplicate",
+        "faults": [
+          "duplicate_poi",
+          "global_duplicate",
+          "road_unverified"
+        ]
+      },
+      {
+        "kind": "minimum_visit",
+        "faults": [
+          "minimum_visit"
+        ]
+      }
+    ],
+    "pool_size": 23,
+    "expected": "feasible"
+  },
+  {
+    "id": "representative50-2-02",
+    "witness_passed": true,
+    "negative_rejected": [
+      "required_missing",
+      "road_unverified",
+      "unknown_poi"
+    ],
+    "controls": [
+      {
+        "kind": "out_of_pool_or_unexplained_rejection",
+        "faults": [
+          "required_missing",
+          "road_unverified",
+          "unknown_poi"
+        ]
+      },
+      {
+        "kind": "global_duplicate",
+        "faults": [
+          "duplicate_poi",
+          "global_duplicate",
+          "road_unverified"
+        ]
+      },
+      {
+        "kind": "minimum_visit",
+        "faults": [
+          "minimum_visit"
+        ]
+      }
+    ],
+    "pool_size": 23,
+    "expected": "feasible"
+  },
+  {
+    "id": "representative50-2-03",
+    "witness_passed": true,
+    "negative_rejected": [
+      "required_missing",
+      "road_unverified",
+      "unknown_poi"
+    ],
+    "controls": [
+      {
+        "kind": "out_of_pool_or_unexplained_rejection",
+        "faults": [
+          "required_missing",
+          "road_unverified",
+          "unknown_poi"
+        ]
+      },
+      {
+        "kind": "global_duplicate",
+        "faults": [
+          "duplicate_poi",
+          "global_duplicate",
+          "road_unverified"
+        ]
+      },
+      {
+        "kind": "minimum_visit",
+        "faults": [
+          "minimum_visit"
+        ]
+      }
+    ],
+    "pool_size": 23,
+    "expected": "feasible"
+  },
+  {
+    "id": "representative50-2-04",
+    "witness_passed": true,
+    "negative_rejected": [
+      "unknown_poi"
+    ],
+    "controls": [
+      {
+        "kind": "out_of_pool_or_unexplained_rejection",
+        "faults": [
+          "unknown_poi"
+        ]
+      },
+      {
+        "kind": "global_duplicate",
+        "faults": [
+          "duplicate_poi",
+          "global_duplicate"
+        ]
+      },
+      {
+        "kind": "minimum_visit",
+        "faults": [
+          "minimum_visit"
+        ]
+      }
+    ],
+    "pool_size": 23,
+    "expected": "feasible"
+  },
+  {
+    "id": "representative50-2-05",
+    "witness_passed": true,
+    "negative_rejected": [
+      "road_unverified",
+      "unknown_poi"
+    ],
+    "controls": [
+      {
+        "kind": "out_of_pool_or_unexplained_rejection",
+        "faults": [
+          "road_unverified",
+          "unknown_poi"
+        ]
+      },
+      {
+        "kind": "global_duplicate",
+        "faults": [
+          "duplicate_poi",
+          "global_duplicate",
+          "road_unverified"
+        ]
+      },
+      {
+        "kind": "minimum_visit",
+        "faults": [
+          "minimum_visit"
+        ]
+      }
+    ],
+    "pool_size": 23,
+    "expected": "feasible"
+  },
+  {
+    "id": "representative50-2-06",
+    "witness_passed": true,
+    "negative_rejected": [
+      "road_unverified",
+      "unknown_poi"
+    ],
+    "controls": [
+      {
+        "kind": "out_of_pool_or_unexplained_rejection",
+        "faults": [
+          "road_unverified",
+          "unknown_poi"
+        ]
+      },
+      {
+        "kind": "global_duplicate",
+        "faults": [
+          "duplicate_poi",
+          "global_duplicate",
+          "road_unverified"
+        ]
+      },
+      {
+        "kind": "minimum_visit",
+        "faults": [
+          "minimum_visit"
+        ]
+      },
+      {
+        "kind": "heat_boundary",
+        "faults": [
+          "heat_exposure_or_unknown_indoor"
+        ]
+      }
+    ],
+    "pool_size": 23,
+    "expected": "feasible"
+  },
+  {
+    "id": "representative50-2-07",
+    "witness_passed": true,
+    "negative_rejected": [
+      "required_missing",
+      "road_unverified",
+      "unknown_poi"
+    ],
+    "controls": [
+      {
+        "kind": "out_of_pool_or_unexplained_rejection",
+        "faults": [
+          "required_missing",
+          "road_unverified",
+          "unknown_poi"
+        ]
+      },
+      {
+        "kind": "global_duplicate",
+        "faults": [
+          "duplicate_poi",
+          "global_duplicate",
+          "road_unverified"
+        ]
+      },
+      {
+        "kind": "minimum_visit",
+        "faults": [
+          "minimum_visit"
+        ]
+      },
+      {
+        "kind": "strict_start_equality",
+        "faults": [
+          "user_time_window"
+        ]
+      }
+    ],
+    "pool_size": 23,
+    "expected": "feasible"
+  },
+  {
+    "id": "representative50-2-08",
+    "witness_passed": true,
+    "negative_rejected": [
+      "required_missing",
+      "road_unverified",
+      "unknown_poi"
+    ],
+    "controls": [
+      {
+        "kind": "out_of_pool_or_unexplained_rejection",
+        "faults": [
+          "required_missing",
+          "road_unverified",
+          "unknown_poi"
+        ]
+      },
+      {
+        "kind": "global_duplicate",
+        "faults": [
+          "duplicate_poi",
+          "global_duplicate",
+          "road_unverified"
+        ]
+      },
+      {
+        "kind": "minimum_visit",
+        "faults": [
+          "minimum_visit"
+        ]
+      },
+      {
+        "kind": "midday_break",
+        "faults": [
+          "route_structure",
+          "user_break_overlap"
+        ]
+      }
+    ],
+    "pool_size": 23,
+    "expected": "feasible"
+  },
+  {
+    "id": "representative50-2-09",
+    "witness_passed": true,
+    "negative_rejected": [
+      "unknown_poi"
+    ],
+    "controls": [
+      {
+        "kind": "out_of_pool_or_unexplained_rejection",
+        "faults": [
+          "unknown_poi"
+        ]
+      },
+      {
+        "kind": "global_duplicate",
+        "faults": [
+          "duplicate_poi",
+          "global_duplicate"
+        ]
+      },
+      {
+        "kind": "minimum_visit",
+        "faults": [
+          "minimum_visit"
+        ]
+      }
+    ],
+    "pool_size": 3,
+    "expected": "feasible"
+  },
+  {
+    "id": "representative50-2-10",
+    "witness_passed": true,
+    "negative_rejected": [
+      "infeasible_not_explained",
+      "infeasible_wrong_reason"
+    ],
+    "controls": [
+      {
+        "kind": "out_of_pool_or_unexplained_rejection",
+        "faults": [
+          "infeasible_not_explained",
+          "infeasible_wrong_reason"
+        ]
+      }
+    ],
+    "pool_size": 23,
+    "expected": "explained_infeasible"
+  },
+  {
+    "id": "representative50-3-01",
+    "witness_passed": true,
+    "negative_rejected": [
+      "road_unverified",
+      "unknown_poi"
+    ],
+    "controls": [
+      {
+        "kind": "out_of_pool_or_unexplained_rejection",
+        "faults": [
+          "road_unverified",
+          "unknown_poi"
+        ]
+      },
+      {
+        "kind": "global_duplicate",
+        "faults": [
+          "duplicate_poi",
+          "global_duplicate",
+          "road_unverified"
+        ]
+      },
+      {
+        "kind": "minimum_visit",
+        "faults": [
+          "minimum_visit"
+        ]
+      }
+    ],
+    "pool_size": 19,
+    "expected": "feasible"
+  },
+  {
+    "id": "representative50-3-02",
+    "witness_passed": true,
+    "negative_rejected": [
+      "required_missing",
+      "road_unverified",
+      "unknown_poi"
+    ],
+    "controls": [
+      {
+        "kind": "out_of_pool_or_unexplained_rejection",
+        "faults": [
+          "required_missing",
+          "road_unverified",
+          "unknown_poi"
+        ]
+      },
+      {
+        "kind": "global_duplicate",
+        "faults": [
+          "duplicate_poi",
+          "global_duplicate",
+          "road_unverified"
+        ]
+      },
+      {
+        "kind": "minimum_visit",
+        "faults": [
+          "minimum_visit"
+        ]
+      }
+    ],
+    "pool_size": 19,
+    "expected": "feasible"
+  },
+  {
+    "id": "representative50-3-03",
+    "witness_passed": true,
+    "negative_rejected": [
+      "required_missing",
+      "road_unverified",
+      "unknown_poi"
+    ],
+    "controls": [
+      {
+        "kind": "out_of_pool_or_unexplained_rejection",
+        "faults": [
+          "required_missing",
+          "road_unverified",
+          "unknown_poi"
+        ]
+      },
+      {
+        "kind": "global_duplicate",
+        "faults": [
+          "duplicate_poi",
+          "global_duplicate",
+          "road_unverified"
+        ]
+      },
+      {
+        "kind": "minimum_visit",
+        "faults": [
+          "minimum_visit"
+        ]
+      }
+    ],
+    "pool_size": 19,
+    "expected": "feasible"
+  },
+  {
+    "id": "representative50-3-04",
+    "witness_passed": true,
+    "negative_rejected": [
+      "unknown_poi"
+    ],
+    "controls": [
+      {
+        "kind": "out_of_pool_or_unexplained_rejection",
+        "faults": [
+          "unknown_poi"
+        ]
+      },
+      {
+        "kind": "global_duplicate",
+        "faults": [
+          "duplicate_poi",
+          "global_duplicate"
+        ]
+      },
+      {
+        "kind": "minimum_visit",
+        "faults": [
+          "minimum_visit"
+        ]
+      }
+    ],
+    "pool_size": 19,
+    "expected": "feasible"
+  },
+  {
+    "id": "representative50-3-05",
+    "witness_passed": true,
+    "negative_rejected": [
+      "road_unverified",
+      "unknown_poi"
+    ],
+    "controls": [
+      {
+        "kind": "out_of_pool_or_unexplained_rejection",
+        "faults": [
+          "road_unverified",
+          "unknown_poi"
+        ]
+      },
+      {
+        "kind": "global_duplicate",
+        "faults": [
+          "duplicate_poi",
+          "global_duplicate",
+          "road_unverified"
+        ]
+      },
+      {
+        "kind": "minimum_visit",
+        "faults": [
+          "minimum_visit"
+        ]
+      }
+    ],
+    "pool_size": 19,
+    "expected": "feasible"
+  },
+  {
+    "id": "representative50-3-06",
+    "witness_passed": true,
+    "negative_rejected": [
+      "road_unverified",
+      "unknown_poi"
+    ],
+    "controls": [
+      {
+        "kind": "out_of_pool_or_unexplained_rejection",
+        "faults": [
+          "road_unverified",
+          "unknown_poi"
+        ]
+      },
+      {
+        "kind": "global_duplicate",
+        "faults": [
+          "duplicate_poi",
+          "global_duplicate",
+          "road_unverified"
+        ]
+      },
+      {
+        "kind": "minimum_visit",
+        "faults": [
+          "minimum_visit"
+        ]
+      },
+      {
+        "kind": "heat_boundary",
+        "faults": [
+          "heat_exposure_or_unknown_indoor"
+        ]
+      }
+    ],
+    "pool_size": 19,
+    "expected": "feasible"
+  },
+  {
+    "id": "representative50-3-07",
+    "witness_passed": true,
+    "negative_rejected": [
+      "required_missing",
+      "road_unverified",
+      "unknown_poi"
+    ],
+    "controls": [
+      {
+        "kind": "out_of_pool_or_unexplained_rejection",
+        "faults": [
+          "required_missing",
+          "road_unverified",
+          "unknown_poi"
+        ]
+      },
+      {
+        "kind": "global_duplicate",
+        "faults": [
+          "duplicate_poi",
+          "global_duplicate",
+          "road_unverified"
+        ]
+      },
+      {
+        "kind": "minimum_visit",
+        "faults": [
+          "minimum_visit"
+        ]
+      },
+      {
+        "kind": "strict_start_equality",
+        "faults": [
+          "user_time_window"
+        ]
+      }
+    ],
+    "pool_size": 19,
+    "expected": "feasible"
+  },
+  {
+    "id": "representative50-3-08",
+    "witness_passed": true,
+    "negative_rejected": [
+      "required_missing",
+      "road_unverified",
+      "unknown_poi"
+    ],
+    "controls": [
+      {
+        "kind": "out_of_pool_or_unexplained_rejection",
+        "faults": [
+          "required_missing",
+          "road_unverified",
+          "unknown_poi"
+        ]
+      },
+      {
+        "kind": "global_duplicate",
+        "faults": [
+          "duplicate_poi",
+          "global_duplicate",
+          "road_unverified"
+        ]
+      },
+      {
+        "kind": "minimum_visit",
+        "faults": [
+          "minimum_visit"
+        ]
+      },
+      {
+        "kind": "midday_break",
+        "faults": [
+          "route_structure",
+          "user_break_overlap"
+        ]
+      }
+    ],
+    "pool_size": 19,
+    "expected": "feasible"
+  },
+  {
+    "id": "representative50-3-09",
+    "witness_passed": true,
+    "negative_rejected": [
+      "unknown_poi"
+    ],
+    "controls": [
+      {
+        "kind": "out_of_pool_or_unexplained_rejection",
+        "faults": [
+          "unknown_poi"
+        ]
+      },
+      {
+        "kind": "global_duplicate",
+        "faults": [
+          "duplicate_poi",
+          "global_duplicate"
+        ]
+      },
+      {
+        "kind": "minimum_visit",
+        "faults": [
+          "minimum_visit"
+        ]
+      }
+    ],
+    "pool_size": 3,
+    "expected": "feasible"
+  },
+  {
+    "id": "representative50-3-10",
+    "witness_passed": true,
+    "negative_rejected": [
+      "infeasible_not_explained",
+      "infeasible_wrong_reason"
+    ],
+    "controls": [
+      {
+        "kind": "out_of_pool_or_unexplained_rejection",
+        "faults": [
+          "infeasible_not_explained",
+          "infeasible_wrong_reason"
+        ]
+      }
+    ],
+    "pool_size": 2,
+    "expected": "explained_infeasible"
+  },
+  {
+    "id": "representative50-4-01",
+    "witness_passed": true,
+    "negative_rejected": [
+      "road_unverified",
+      "unknown_poi"
+    ],
+    "controls": [
+      {
+        "kind": "out_of_pool_or_unexplained_rejection",
+        "faults": [
+          "road_unverified",
+          "unknown_poi"
+        ]
+      },
+      {
+        "kind": "global_duplicate",
+        "faults": [
+          "duplicate_poi",
+          "global_duplicate",
+          "road_unverified"
+        ]
+      },
+      {
+        "kind": "minimum_visit",
+        "faults": [
+          "minimum_visit"
+        ]
+      }
+    ],
+    "pool_size": 22,
+    "expected": "feasible"
+  },
+  {
+    "id": "representative50-4-02",
+    "witness_passed": true,
+    "negative_rejected": [
+      "required_missing",
+      "road_unverified",
+      "unknown_poi"
+    ],
+    "controls": [
+      {
+        "kind": "out_of_pool_or_unexplained_rejection",
+        "faults": [
+          "required_missing",
+          "road_unverified",
+          "unknown_poi"
+        ]
+      },
+      {
+        "kind": "global_duplicate",
+        "faults": [
+          "duplicate_poi",
+          "global_duplicate",
+          "road_unverified"
+        ]
+      },
+      {
+        "kind": "minimum_visit",
+        "faults": [
+          "minimum_visit"
+        ]
+      }
+    ],
+    "pool_size": 22,
+    "expected": "feasible"
+  },
+  {
+    "id": "representative50-4-03",
+    "witness_passed": true,
+    "negative_rejected": [
+      "required_missing",
+      "road_unverified",
+      "unknown_poi"
+    ],
+    "controls": [
+      {
+        "kind": "out_of_pool_or_unexplained_rejection",
+        "faults": [
+          "required_missing",
+          "road_unverified",
+          "unknown_poi"
+        ]
+      },
+      {
+        "kind": "global_duplicate",
+        "faults": [
+          "duplicate_poi",
+          "global_duplicate",
+          "road_unverified"
+        ]
+      },
+      {
+        "kind": "minimum_visit",
+        "faults": [
+          "minimum_visit"
+        ]
+      }
+    ],
+    "pool_size": 22,
+    "expected": "feasible"
+  },
+  {
+    "id": "representative50-4-04",
+    "witness_passed": true,
+    "negative_rejected": [
+      "unknown_poi"
+    ],
+    "controls": [
+      {
+        "kind": "out_of_pool_or_unexplained_rejection",
+        "faults": [
+          "unknown_poi"
+        ]
+      },
+      {
+        "kind": "global_duplicate",
+        "faults": [
+          "duplicate_poi",
+          "global_duplicate"
+        ]
+      },
+      {
+        "kind": "minimum_visit",
+        "faults": [
+          "minimum_visit"
+        ]
+      }
+    ],
+    "pool_size": 22,
+    "expected": "feasible"
+  },
+  {
+    "id": "representative50-4-05",
+    "witness_passed": true,
+    "negative_rejected": [
+      "road_unverified",
+      "unknown_poi"
+    ],
+    "controls": [
+      {
+        "kind": "out_of_pool_or_unexplained_rejection",
+        "faults": [
+          "road_unverified",
+          "unknown_poi"
+        ]
+      },
+      {
+        "kind": "global_duplicate",
+        "faults": [
+          "duplicate_poi",
+          "global_duplicate",
+          "road_unverified"
+        ]
+      },
+      {
+        "kind": "minimum_visit",
+        "faults": [
+          "minimum_visit"
+        ]
+      }
+    ],
+    "pool_size": 22,
+    "expected": "feasible"
+  },
+  {
+    "id": "representative50-4-06",
+    "witness_passed": true,
+    "negative_rejected": [
+      "road_unverified",
+      "unknown_poi"
+    ],
+    "controls": [
+      {
+        "kind": "out_of_pool_or_unexplained_rejection",
+        "faults": [
+          "road_unverified",
+          "unknown_poi"
+        ]
+      },
+      {
+        "kind": "global_duplicate",
+        "faults": [
+          "duplicate_poi",
+          "global_duplicate",
+          "road_unverified"
+        ]
+      },
+      {
+        "kind": "minimum_visit",
+        "faults": [
+          "minimum_visit"
+        ]
+      },
+      {
+        "kind": "heat_boundary",
+        "faults": [
+          "heat_exposure_or_unknown_indoor"
+        ]
+      }
+    ],
+    "pool_size": 22,
+    "expected": "feasible"
+  },
+  {
+    "id": "representative50-4-07",
+    "witness_passed": true,
+    "negative_rejected": [
+      "required_missing",
+      "road_unverified",
+      "unknown_poi"
+    ],
+    "controls": [
+      {
+        "kind": "out_of_pool_or_unexplained_rejection",
+        "faults": [
+          "required_missing",
+          "road_unverified",
+          "unknown_poi"
+        ]
+      },
+      {
+        "kind": "global_duplicate",
+        "faults": [
+          "duplicate_poi",
+          "global_duplicate",
+          "road_unverified"
+        ]
+      },
+      {
+        "kind": "minimum_visit",
+        "faults": [
+          "minimum_visit"
+        ]
+      },
+      {
+        "kind": "strict_start_equality",
+        "faults": [
+          "user_time_window"
+        ]
+      }
+    ],
+    "pool_size": 22,
+    "expected": "feasible"
+  },
+  {
+    "id": "representative50-4-08",
+    "witness_passed": true,
+    "negative_rejected": [
+      "required_missing",
+      "road_unverified",
+      "unknown_poi"
+    ],
+    "controls": [
+      {
+        "kind": "out_of_pool_or_unexplained_rejection",
+        "faults": [
+          "required_missing",
+          "road_unverified",
+          "unknown_poi"
+        ]
+      },
+      {
+        "kind": "global_duplicate",
+        "faults": [
+          "duplicate_poi",
+          "global_duplicate",
+          "road_unverified"
+        ]
+      },
+      {
+        "kind": "minimum_visit",
+        "faults": [
+          "minimum_visit"
+        ]
+      },
+      {
+        "kind": "midday_break",
+        "faults": [
+          "route_structure",
+          "user_break_overlap"
+        ]
+      }
+    ],
+    "pool_size": 22,
+    "expected": "feasible"
+  },
+  {
+    "id": "representative50-4-09",
+    "witness_passed": true,
+    "negative_rejected": [
+      "unknown_poi"
+    ],
+    "controls": [
+      {
+        "kind": "out_of_pool_or_unexplained_rejection",
+        "faults": [
+          "unknown_poi"
+        ]
+      },
+      {
+        "kind": "global_duplicate",
+        "faults": [
+          "duplicate_poi",
+          "global_duplicate"
+        ]
+      },
+      {
+        "kind": "minimum_visit",
+        "faults": [
+          "minimum_visit"
+        ]
+      }
+    ],
+    "pool_size": 3,
+    "expected": "feasible"
+  },
+  {
+    "id": "representative50-4-10",
+    "witness_passed": true,
+    "negative_rejected": [
+      "infeasible_not_explained",
+      "infeasible_wrong_reason"
+    ],
+    "controls": [
+      {
+        "kind": "out_of_pool_or_unexplained_rejection",
+        "faults": [
+          "infeasible_not_explained",
+          "infeasible_wrong_reason"
+        ]
+      }
+    ],
+    "pool_size": 22,
+    "expected": "explained_infeasible"
+  },
+  {
+    "id": "representative50-5-01",
+    "witness_passed": true,
+    "negative_rejected": [
+      "road_unverified",
+      "unknown_poi"
+    ],
+    "controls": [
+      {
+        "kind": "out_of_pool_or_unexplained_rejection",
+        "faults": [
+          "road_unverified",
+          "unknown_poi"
+        ]
+      },
+      {
+        "kind": "global_duplicate",
+        "faults": [
+          "duplicate_poi",
+          "global_duplicate",
+          "road_unverified"
+        ]
+      },
+      {
+        "kind": "minimum_visit",
+        "faults": [
+          "minimum_visit"
+        ]
+      }
+    ],
+    "pool_size": 24,
+    "expected": "feasible"
+  },
+  {
+    "id": "representative50-5-02",
+    "witness_passed": true,
+    "negative_rejected": [
+      "required_missing",
+      "road_unverified",
+      "unknown_poi"
+    ],
+    "controls": [
+      {
+        "kind": "out_of_pool_or_unexplained_rejection",
+        "faults": [
+          "required_missing",
+          "road_unverified",
+          "unknown_poi"
+        ]
+      },
+      {
+        "kind": "global_duplicate",
+        "faults": [
+          "duplicate_poi",
+          "global_duplicate",
+          "road_unverified"
+        ]
+      },
+      {
+        "kind": "minimum_visit",
+        "faults": [
+          "minimum_visit"
+        ]
+      }
+    ],
+    "pool_size": 24,
+    "expected": "feasible"
+  },
+  {
+    "id": "representative50-5-03",
+    "witness_passed": true,
+    "negative_rejected": [
+      "required_missing",
+      "road_unverified",
+      "unknown_poi"
+    ],
+    "controls": [
+      {
+        "kind": "out_of_pool_or_unexplained_rejection",
+        "faults": [
+          "required_missing",
+          "road_unverified",
+          "unknown_poi"
+        ]
+      },
+      {
+        "kind": "global_duplicate",
+        "faults": [
+          "duplicate_poi",
+          "global_duplicate",
+          "road_unverified"
+        ]
+      },
+      {
+        "kind": "minimum_visit",
+        "faults": [
+          "minimum_visit"
+        ]
+      }
+    ],
+    "pool_size": 24,
+    "expected": "feasible"
+  },
+  {
+    "id": "representative50-5-04",
+    "witness_passed": true,
+    "negative_rejected": [
+      "unknown_poi"
+    ],
+    "controls": [
+      {
+        "kind": "out_of_pool_or_unexplained_rejection",
+        "faults": [
+          "unknown_poi"
+        ]
+      },
+      {
+        "kind": "global_duplicate",
+        "faults": [
+          "duplicate_poi",
+          "global_duplicate",
+          "opening_evidence",
+          "opening_time_conflict"
+        ]
+      },
+      {
+        "kind": "minimum_visit",
+        "faults": [
+          "minimum_visit"
+        ]
+      }
+    ],
+    "pool_size": 24,
+    "expected": "feasible"
+  },
+  {
+    "id": "representative50-5-05",
+    "witness_passed": true,
+    "negative_rejected": [
+      "road_unverified",
+      "unknown_poi"
+    ],
+    "controls": [
+      {
+        "kind": "out_of_pool_or_unexplained_rejection",
+        "faults": [
+          "road_unverified",
+          "unknown_poi"
+        ]
+      },
+      {
+        "kind": "global_duplicate",
+        "faults": [
+          "duplicate_poi",
+          "global_duplicate",
+          "road_unverified"
+        ]
+      },
+      {
+        "kind": "minimum_visit",
+        "faults": [
+          "minimum_visit"
+        ]
+      }
+    ],
+    "pool_size": 24,
+    "expected": "feasible"
+  },
+  {
+    "id": "representative50-5-06",
+    "witness_passed": true,
+    "negative_rejected": [
+      "road_unverified",
+      "unknown_poi"
+    ],
+    "controls": [
+      {
+        "kind": "out_of_pool_or_unexplained_rejection",
+        "faults": [
+          "road_unverified",
+          "unknown_poi"
+        ]
+      },
+      {
+        "kind": "global_duplicate",
+        "faults": [
+          "duplicate_poi",
+          "global_duplicate",
+          "road_unverified"
+        ]
+      },
+      {
+        "kind": "minimum_visit",
+        "faults": [
+          "minimum_visit"
+        ]
+      },
+      {
+        "kind": "heat_boundary",
+        "faults": [
+          "heat_exposure_or_unknown_indoor"
+        ]
+      }
+    ],
+    "pool_size": 24,
+    "expected": "feasible"
+  },
+  {
+    "id": "representative50-5-07",
+    "witness_passed": true,
+    "negative_rejected": [
+      "required_missing",
+      "road_unverified",
+      "unknown_poi"
+    ],
+    "controls": [
+      {
+        "kind": "out_of_pool_or_unexplained_rejection",
+        "faults": [
+          "required_missing",
+          "road_unverified",
+          "unknown_poi"
+        ]
+      },
+      {
+        "kind": "global_duplicate",
+        "faults": [
+          "duplicate_poi",
+          "global_duplicate",
+          "road_unverified"
+        ]
+      },
+      {
+        "kind": "minimum_visit",
+        "faults": [
+          "minimum_visit"
+        ]
+      },
+      {
+        "kind": "strict_start_equality",
+        "faults": [
+          "user_time_window"
+        ]
+      }
+    ],
+    "pool_size": 24,
+    "expected": "feasible"
+  },
+  {
+    "id": "representative50-5-08",
+    "witness_passed": true,
+    "negative_rejected": [
+      "required_missing",
+      "road_unverified",
+      "unknown_poi"
+    ],
+    "controls": [
+      {
+        "kind": "out_of_pool_or_unexplained_rejection",
+        "faults": [
+          "required_missing",
+          "road_unverified",
+          "unknown_poi"
+        ]
+      },
+      {
+        "kind": "global_duplicate",
+        "faults": [
+          "duplicate_poi",
+          "global_duplicate",
+          "road_unverified"
+        ]
+      },
+      {
+        "kind": "minimum_visit",
+        "faults": [
+          "minimum_visit"
+        ]
+      },
+      {
+        "kind": "midday_break",
+        "faults": [
+          "commute_time_conflict",
+          "route_structure",
+          "user_break_overlap"
+        ]
+      }
+    ],
+    "pool_size": 24,
+    "expected": "feasible"
+  },
+  {
+    "id": "representative50-5-09",
+    "witness_passed": true,
+    "negative_rejected": [
+      "unknown_poi"
+    ],
+    "controls": [
+      {
+        "kind": "out_of_pool_or_unexplained_rejection",
+        "faults": [
+          "unknown_poi"
+        ]
+      },
+      {
+        "kind": "global_duplicate",
+        "faults": [
+          "duplicate_poi",
+          "global_duplicate"
+        ]
+      },
+      {
+        "kind": "minimum_visit",
+        "faults": [
+          "minimum_visit"
+        ]
+      }
+    ],
+    "pool_size": 3,
+    "expected": "feasible"
+  },
+  {
+    "id": "representative50-5-10",
+    "witness_passed": true,
+    "negative_rejected": [
+      "infeasible_not_explained",
+      "infeasible_wrong_reason"
+    ],
+    "controls": [
+      {
+        "kind": "out_of_pool_or_unexplained_rejection",
+        "faults": [
+          "infeasible_not_explained",
+          "infeasible_wrong_reason"
+        ]
+      }
+    ],
+    "pool_size": 2,
+    "expected": "explained_infeasible"
+  }
+]

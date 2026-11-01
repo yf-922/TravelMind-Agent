@@ -1,11 +1,16 @@
 """Check the shared preference release's causal and split invariants."""
 import json
-from scripts.build_shared_dpo import OUT,read,digest,conv
+from pathlib import Path
+from scripts.build_shared_dpo import read,digest,conv
 from app.planning.schemas import TravelRoute
+
+OUT = Path(__file__).parent / 'fixtures' / 'post_train' / 'shared_dpo'
 
 def test_chosen_is_valid_and_negatives_are_proven_distinct():
     for split in ['train','validation']:
-        for row in read(OUT/f'{split}.ledger.jsonl'):
+        rows = read(OUT/f'{split}.ledger.jsonl')
+        assert rows, 'Regression fixtures must not be empty'
+        for row in rows:
             TravelRoute.model_validate(row['chosen'])
             assert row['chosen_faults']==[]
             assert row['rejected_faults']
@@ -24,6 +29,7 @@ def test_prompt_and_source_family_split_is_disjoint():
 def test_export_keeps_identical_production_message_content():
     rows=read(OUT/'train.ledger.jsonl')
     exported=read(OUT/'shared_dpo_train.json')
+    assert len(rows) == len(exported) > 0
     for row,pair in zip(rows,exported):
         assert [m['content'] for m in row['messages']]==[m['value'] for m in pair['conversations']]
         assert json.loads(pair['chosen']['value'])==row['chosen']

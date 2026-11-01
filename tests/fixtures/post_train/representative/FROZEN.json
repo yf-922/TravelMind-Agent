@@ -1,0 +1,9 @@
+{
+  "scope": "CI regression projection, NOT the original frozen evaluation release",
+  "hashes": {
+    "cases.json": "a9dfd22735ea63ea2798847f4ed45e187b63ae238b873c209477f01c7cf975bd",
+    "maps.json": "13cd2d4c1e17597438c6f4c7d921a208953ccd5c7c2f7bf082877df7c9093cb1",
+    "audit.json": "4ef1911fb574585249ba08b9287e11edf92e0d8ee5494868a8453ac56b064975"
+  },
+  "source_hashes": {}
+}

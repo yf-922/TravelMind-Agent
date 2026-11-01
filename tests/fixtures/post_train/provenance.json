@@ -1,0 +1,26 @@
+{
+  "representative": {
+    "source": "data\\post_train\\representative_eval50_v1",
+    "source_cases_sha256": "f4b338fe4e916dcf50022209ebe79f3690c5744016ea799ea7682a1ab5b42a61",
+    "cases": 50,
+    "road_edges": 40,
+    "projection": "Witness-adjacent recorded roads only; representative messages omitted. Not suitable for model evaluation."
+  },
+  "holdout": {
+    "source": "data\\post_train\\online_holdout50_20261027_v2",
+    "source_cases_sha256": "ec281fa0eeff95a6fdbbfa16008dbb64c75bb2e0d853a0c08fe6cc5f635b4861",
+    "cases": 50,
+    "road_edges": 40,
+    "projection": "Witness-adjacent recorded roads only; representative messages omitted. Not suitable for model evaluation."
+  },
+  "dpo_train": {
+    "source_rows_sha256": "000ad15bc3d72d92fb8eb8e2603ac39e03f220989e068648c888661a338a18b6",
+    "rows": 9,
+    "selection": "first existing row per category; not full training release"
+  },
+  "dpo_validation": {
+    "source_rows_sha256": "95a38f9a932d9cf18a0332054ad3da77aa8d1508ec8f28a47fca62907a8ee05e",
+    "rows": 9,
+    "selection": "first existing row per category; not full training release"
+  }
+}

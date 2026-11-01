@@ -1,0 +1,3 @@
+# Checksummed fixtures must retain identical bytes on Windows and Linux.
+*.json text eol=lf
+*.jsonl text eol=lf

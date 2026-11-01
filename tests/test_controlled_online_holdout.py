@@ -1,5 +1,8 @@
 from types import SimpleNamespace
+from pathlib import Path
 import sys
+
+OUT = Path(__file__).parent / 'fixtures' / 'post_train' / 'holdout'
 
 from scripts.evaluate_controlled_online_holdout import local_rules_rework, summarize_rework
 from app.evaluation.online_replay import SESSION, Session
@@ -8,7 +11,6 @@ from app.planning.schemas import TravelPlanState
 
 def test_local_rules_rework_uses_fault_feedback_and_allows_three_extra_calls(monkeypatch):
     import copy,json
-    from scripts.build_online_holdout50 import OUT
     from scripts.evaluate_controlled_online_holdout import local_rules_rework
     from scripts.build_representative_eval50 import score_case
     cases=json.loads((OUT/'cases.json').read_text(encoding='utf-8'))
@@ -62,7 +64,6 @@ def test_recovery_is_paired_by_case_and_seed():
 def test_in_pool_faithfulness_counts_repeated_outside_entities(tmp_path):
     import copy,json
     from pathlib import Path
-    from scripts.build_online_holdout50 import OUT
     from scripts.evaluate_controlled_online_holdout import grade
 
     cases=json.loads((OUT/'cases.json').read_text(encoding='utf-8'))
@@ -80,7 +81,6 @@ def test_in_pool_faithfulness_counts_repeated_outside_entities(tmp_path):
 
 def test_infeasible_is_correct_refusal_not_a_feasible_rule_pass():
     import json
-    from scripts.build_online_holdout50 import OUT
     from scripts.evaluate_controlled_online_holdout import grade, summarize
 
     cases=json.loads((OUT/'cases.json').read_text(encoding='utf-8'))

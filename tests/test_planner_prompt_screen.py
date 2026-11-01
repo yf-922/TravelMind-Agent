@@ -2,7 +2,10 @@
 import copy
 import json
 
-from scripts.compare_planner_prompt_candidates import PROMPTS, SUITE, score_output, strict_schema
+from pathlib import Path
+from scripts.compare_planner_prompt_candidates import PROMPTS, score_output, strict_schema
+
+SUITE = Path(__file__).parent / 'fixtures' / 'post_train' / 'representative'
 
 
 def fixture():
