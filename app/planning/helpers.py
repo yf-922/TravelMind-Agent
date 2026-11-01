@@ -502,7 +502,104 @@ def spot_location_map(pois: list[dict[str, Any]]) -> dict[str, dict[str, float]]
 
 
 
-_TIME_RANGE_RE = re.compile(r"(\d{1,2})[:：](\d{2})\s*[-~—至]\s*(\d{1,2})[:：](\d{2})")
+_TIME_RANGE_RE = re.compile(r"(\d{1,2})[:：](\d{2})\s*[-~—–至]\s*(\d{1,2})[:：](\d{2})")
+
+_WEEKDAY_NUMBER = {char: index for index, chars in enumerate(
+    ("一1", "二2", "三3", "四4", "五5", "六6", "日天7")) for char in chars}
+_WEEKDAY_EXPR = (
+    r"(?:每\s*)?(?:周|星期|礼拜)\s*[一二三四五六日天1-7]"
+    r"(?:\s*(?:至|到|[-~—–]|、|，|,|及|和)\s*(?:(?:周|星期|礼拜)\s*)?[一二三四五六日天1-7])*"
+)
+_CLOSURE_ACTION = r"(?:闭馆|闭园|休馆|休园|休息|不开放|不对外开放|不营业)"
+_WEEKDAY_CLOSURE_RE = re.compile(
+    rf"(?P<days>{_WEEKDAY_EXPR})\s*(?:[（(][^（）()；;。]{{0,40}}[）)]\s*)?"
+    rf"(?:全天\s*)?{_CLOSURE_ACTION}"
+)
+_CLOSURE_DAY_RE = re.compile(
+    rf"{_CLOSURE_ACTION}(?:日|时间)?\s*[:：为是]\s*(?P<days>{_WEEKDAY_EXPR})"
+)
+
+
+def closed_weekdays(opening_text: str) -> set[int]:
+    """Explicit recurring closures only; absence of an open day proves nothing.
+
+    Holiday exceptions remain uncertain: callers report a possible closure and
+    ask for verification, rather than inventing an override calendar.
+    """
+    text = str(opening_text or "")
+    days: set[int] = set()
+    for pattern in (_WEEKDAY_CLOSURE_RE, _CLOSURE_DAY_RE):
+        for match in pattern.finditer(text):
+            # Do not interpret quoted/negated closure statements as evidence.
+            if re.search(r"(?:并非|不是|并不是|取消|不再)\s*$", text[max(0, match.start() - 8):match.start()]):
+                continue
+            expression = match.group("days")
+            tokens = list(re.finditer(r"[一二三四五六日天1-7]", expression))
+            for index, token in enumerate(tokens):
+                current = _WEEKDAY_NUMBER[token.group()]
+                days.add(current)
+                if index and re.search(r"至|到|[-~—–]", expression[tokens[index - 1].end():token.start()]):
+                    previous = _WEEKDAY_NUMBER[tokens[index - 1].group()]
+                    days.update((previous + offset) % 7 for offset in range((current - previous) % 7 + 1))
+    return days
+
+
+def visit_weekday(day: dict[str, Any], travel_start_date: date | str | None = None) -> tuple[int, str] | None:
+    """Use a real date first, or an explicitly supplied Chinese weekday.
+
+    Never infer the visit day from today's date or the weather array order.
+    """
+    raw_date = day.get("date")
+    actual = raw_date if isinstance(raw_date, date) else parse_iso_date(str(raw_date or ""))
+    start = travel_start_date if isinstance(travel_start_date, date) else parse_iso_date(str(travel_start_date or ""))
+    if actual is None and start is not None:
+        try:
+            day_number = int(day.get("day"))
+            actual = start + timedelta(days=day_number - 1) if day_number > 0 else None
+        except (ValueError, TypeError, OverflowError):
+            pass
+    label = f"Day{day.get('day', '?')}"
+    if actual is not None:
+        weekday = actual.weekday()
+        return weekday, f"{label}（{actual.isoformat()} 周{'一二三四五六日'[weekday]}）"
+    explicit = re.fullmatch(r"\s*(?:周|星期|礼拜)([一二三四五六日天1-7])\s*", str(day.get("weekday") or ""))
+    if explicit:
+        return _WEEKDAY_NUMBER[explicit.group(1)], f"{label}（{explicit.group().strip()}）"
+    return None
+
+
+def weekday_closure_violations(
+    route: list[dict[str, Any]], pois: list[dict[str, Any]], travel_start_date: date | str | None = None,
+) -> list[dict[str, Any]]:
+    """L1 findings tied to this route version's actual scheduled visits."""
+    by_name = {poi.get("name"): poi for poi in pois}
+    findings: list[dict[str, Any]] = []
+    seen: set[tuple[str, str]] = set()
+    for day in route:
+        visit = visit_weekday(day, travel_start_date)
+        if visit is None:
+            continue  # Unknown date is not evidence of a closure.
+        weekday, label = visit
+        for spot in day.get("spots") or []:
+            name = str(spot.get("name") or "")
+            canonical = name if name in by_name else canonical_poi_name(name, pois)
+            poi = by_name.get(canonical, {})
+            # Both fields may carry complementary opening information.
+            opening = "；".join(dict.fromkeys(str(poi.get(key) or "").strip()
+                for key in ("open_time", "business_hours") if str(poi.get(key) or "").strip()))
+            key = (label, canonical or name)
+            if weekday not in closed_weekdays(opening) or key in seen:
+                continue
+            seen.add(key)
+            # Keep the closure-bearing clause even when the provider text is long.
+            clauses = re.split(r"[；;。\n]", opening)
+            relevant = next((part for part in clauses if weekday in closed_weekdays(part)), opening)
+            excerpt = relevant[:180] + ("…" if len(relevant) > 180 else "")
+            findings.append({
+                "code": "closed_on_visit_day", "day": day.get("day"), "poi_name": name,
+                "message": f"{label} 景点可能闭馆：{name}（参考开放信息：{excerpt}），建议调整游览日期或行前核实",
+            })
+    return findings
 
 
 def _to_minutes(hhmm: str) -> int | None:
@@ -514,11 +611,12 @@ def _to_minutes(hhmm: str) -> int | None:
 
 def open_time_violations(route: list[dict[str, Any]], pois: list[dict[str, Any]]) -> list[str]:
     """检查每个景点游玩时段是否落在开放时间内。"""
-    open_map = {s["name"]: (s.get("open_time") or "") for s in pois}
+    open_map = {s["name"]: (s.get("open_time") or s.get("business_hours") or "") for s in pois}
     bad: list[str] = []
     for day in route:
         for spot in day.get("spots", []):
-            ranges = list(_TIME_RANGE_RE.finditer(open_map.get(spot["name"], "")))
+            name = canonical_poi_name(spot["name"], pois) or spot["name"]
+            ranges = list(_TIME_RANGE_RE.finditer(open_map.get(name, "")))
             if not ranges:
                 continue
             s_start = _to_minutes(spot.get("start_time", ""))

@@ -53,6 +53,7 @@ from app.planning.helpers import (
     restaurant_to_dict,
     spot_location_map,
     unknown_spots,
+    weekday_closure_violations,
 )
 from app.planning.prompts import (
     INTENT_SYSTEM,
@@ -644,12 +645,12 @@ def _route_risk_flags(state: TravelPlanState) -> list[str]:
         flags.append("route_structure")
     if habit_risk:
         flags.append("habit_constraint")
-    if open_time_violations(route, state.pois):
+    if open_time_violations(route, state.pois) or weekday_closure_violations(route, state.pois, state.travel_start_date):
         flags.append("opening_time_conflict")
 
     poi_by_name = {str(poi.get("name") or ""): poi for poi in state.pois}
     if any(
-        name in poi_by_name and not str(poi_by_name[name].get("open_time") or "").strip()
+        name in poi_by_name and not str(poi_by_name[name].get("open_time") or poi_by_name[name].get("business_hours") or "").strip()
         for name in names
     ):
         flags.append("opening_time_unknown")
@@ -798,8 +799,8 @@ def _travel_dates_block(state: TravelPlanState) -> str:
         for i in range(state.days)
     ]
     return (
-        "\n\n出行日期与星期（请据此判断景点当天是否开放，"
-        "勿把有闭馆日/限定开放日的景点排在其不开放的星期）：\n" + "\n".join(lines)
+        "\n\n出行日期与星期（据此判断开放风险；必去景点优先调换到行程内开放日，"
+        "无法调换时依照闭馆冲突处理指令保留风险草案并明确提醒）：\n" + "\n".join(lines)
     )
 
 
@@ -979,6 +980,24 @@ def _planner_constraint_guard(state: TravelPlanState) -> str:
 
     capacity = capacity_prompt(state)
     blocks: list[str] = ["【点名与每日容量协议】" + capacity] if capacity else []
+    # Give the production joint Planner concrete dates and explicit recurring
+    # closures too. Do not let an infeasible named stop erase a whole day.
+    closure_risks = weekday_closure_violations([
+        {"day": index + 1, "spots": [{"name": poi.get("name")} for poi in state.pois]}
+        for index in range(state.days or 0)
+    ], state.pois, state.travel_start_date)
+    if closure_risks:
+        blocks.append(_travel_dates_block(state))
+        blocks.append(
+            "【星期闭馆冲突处理，禁止生成空白行程】\n"
+            + "\n".join(str(item["message"]) for item in closure_risks)
+            + "\n多日行程应优先将必去景点调换到本次行程内的开放日；"
+            "非必去景点优先替换为当日开放的候选。若必去景点在目标日期存在闭馆风险且无法调换"
+            "（例如单日游或所有行程日均闭馆），仍然必须按正常游览顺序将其排入当日行程，"
+            "不得生成空路线、空白行程日或丢弃该必去景点，不得伪造已开放或隐瞒闭馆风险。"
+            "这仅是待核实/改期的风险草案，不代表可以入馆；在 notes 中保留闭馆及改期提醒，"
+            "系统会用后置 L1 校验标记冲突并在最终 warnings 中提示调整日期或行前核实。"
+        )
     if state.route_history:
         defects = state.route_history[-1].get("l1_violations", [])
         if defects:

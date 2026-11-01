@@ -11,7 +11,7 @@ import re
 import math
 from typing import Any
 
-from app.planning.helpers import canonical_poi_name, open_time_violations, poi_name_matches, unknown_spots
+from app.planning.helpers import canonical_poi_name, open_time_violations, poi_name_matches, unknown_spots, weekday_closure_violations
 from app.planning.constraints import capacity_policy, capacity_warnings, effective_daily_limit
 
 
@@ -240,6 +240,7 @@ def hard_constraint_report(state: Any) -> dict[str, list[dict[str, str]]]:
         l1.append({"code": "duplicate_poi", "message": f"景点重复安排：{name}"})
     if open_time_violations(route, pois):
         l1.append({"code": "opening_time_conflict", "message": "当前时间窗口无法安排所选景点，存在开放时间或闭馆日冲突"})
+    l1.extend(weekday_closure_violations(route, pois, state.travel_start_date))
 
     leg_map = {
         (int(leg.get("day") or 0), str(leg.get("from") or ""), str(leg.get("to") or "")): leg
@@ -398,6 +399,13 @@ def choose_snapshot(state: Any) -> tuple[dict[str, Any] | None, str, list[str], 
             }]
         else:
             return None, "FAILED", [], [{"code": "no_route_snapshot", "message": "当前无法生成满足全部要求的路线，请调整约束或补充候选后重试。", "stage": "L0_CONSTRAINT"}]
+    # Restored/older snapshots may predate weekday checks. Recheck each own
+    # route before tier selection; do not mutate the original recorded history
+    # or borrow the latest draft's visits. Replace only closure findings.
+    history = [{**snapshot, "l1_violations": [
+        item for item in snapshot.get("l1_violations", []) if item.get("code") != "closed_on_visit_day"
+    ] + weekday_closure_violations(snapshot.get("plan", {}).get("route", []), state.pois, state.travel_start_date)}
+        for snapshot in history]
     tier1 = [x for x in history if not x.get("l0_violations") and not x.get("l1_violations")]
     if tier1:
         chosen = max(tier1, key=lambda x: (float(x.get("soft_score", 0)), int(x.get("iteration", 0))))
@@ -433,8 +441,7 @@ def result_envelope(state: Any) -> dict[str, Any]:
     if state.route_history and status == "SUCCESS":
         _chosen, derived_status, derived_warnings, derived_failures = choose_snapshot(state)
         status = derived_status
-        if not state.warnings:
-            state.warnings = list(derived_warnings)
+        state.warnings = list(dict.fromkeys([*(state.warnings or []), *derived_warnings]))
         if not state.failure_reasons:
             state.failure_reasons = list(derived_failures)
     elif not state.route_history and status == "SUCCESS" and not state.approved:
