@@ -2,30 +2,37 @@
 
 # TravelMind · 途见
 
-**支持长期记忆与局部修改的多 Agent 旅行规划系统**
+**多角色节点协同 · 有界工具调用 · 本地 7B 后训练的旅行规划系统**
 
 [![Python CI](https://github.com/yf-922/TravelMind-Agent/actions/workflows/ci.yml/badge.svg)](https://github.com/yf-922/TravelMind-Agent/actions/workflows/ci.yml)
 ![Python](https://img.shields.io/badge/Python-3.11%20%7C%203.12-3776AB?logo=python&logoColor=white)
 ![LangGraph](https://img.shields.io/badge/Agent-LangGraph-1C3C3C)
 ![FastAPI](https://img.shields.io/badge/API-FastAPI-009688?logo=fastapi&logoColor=white)
 
-[功能与设计](#功能与设计) · [规划流程](#规划流程) · [快速开始](#快速开始) · [验证与评测](#验证与评测) · [代码与文档](#代码与文档)
+[核心成果](#核心工作与结果) · [功能与设计](#功能与设计) · [规划流程](#规划流程) · [快速开始](#快速开始) · [验证与评测](#验证与评测) · [代码与文档](#代码与文档)
 
 </div>
 
 ![TravelMind 首页](static/images/规划页.png)
 
-把自然语言需求转为包含景点、餐饮、天气和交通的每日行程，再通过对话继续修改。
+针对 LLM 编造地点、时间安排不可执行与修改重复查询的问题，基于 **LangGraph** 构建多角色节点协同系统，并通过 **Qwen2.5-7B-Instruct 的 LoRA SFT + 4-bit QLoRA DPO** 提升规划节点的约束遵循能力。支持每日行程、地图展示与对话修改；后训练评测仅覆盖景点与日内路线，不涉及住宿、机票或餐饮预算。
 
 > 南京两日游，喜欢历史文化，慢节奏，避开商业街。<br>
 > 修改：第二天下午换成室内景点，其他安排尽量保留。
+
+## 核心工作与结果
+
+- **候选池与有界 ReAct**：检索与生成解耦，Planner 从高德 POI 核验池选点；缺口经预定义动作补查，执行侧限制轮次、查询去重和 HTTP 预算。冻结集首轮池外实体率：基座 **0.58% → 微调模型 0%**；无池结果另按“不可核验率”统计，不能混为同一指标。
+- **分层审核与闭环纠错**：规则检查时间窗、开放时间和道路通勤，**LLM-as-Judge** 判断偏好与合理性，违规证据回传 Planner，最多返工 3 次。历史配对消融中，30 条常规任务违规放行 **4/30 → 0/30**；该收益来自规则与返工，不单独归因于 Reviewer。
+- **状态图与局部修改**：独立 Prompt / Schema、共享 Pydantic State；SQLite 规划快照支持跳过前置解析并复用候选。3 城、30 份初稿衍生的 **120 个离线修改探针**，输入 Prompt 文本 Token **312,912 → 211,740（−32.3%）**，仅衡量输入组装，不代表生成结果一致或端到端加速。
+- **数据驱动后训练**：审计时间边界标签与整点偏好，清洗、补充约束及反馈修正样本，形成 **433 条 SFT + 433 对 DPO**。可行集首轮通过率 **49.6% → 83.7% → 87.4%**，规则返工闭环 **91.9%**；闭环 Planner 累计输入与输出 Token 较基座 **减少 49.8%**，详见下方受控评测。
 
 ## 功能与设计
 
 | 能力 | 实现方式 |
 | :--- | :--- |
 | **真实候选池** | 高德 POI 核验与非文旅数据过滤；有界 ReAct 按点名、室内和数量缺口定向补查，查询去重并受轮次 / HTTP 预算限制 |
-| **联合规划** | LangGraph + Pydantic State 编排检索、景点与餐饮排期、并发道路核验及审核 |
+| **联合规划** | LangGraph + Pydantic State 编排多角色节点；独立 Prompt / Schema、共享状态，支持本地微调 Planner |
 | **质量闭环** | 确定性规则检查硬约束，LLM Reviewer 判断偏好等软约束；最多返工 3 次，保存最多 4 版快照并择优返回 |
 | **局部修改** | 应用层 checkpoint 复用需求、天气与候选；缓存池不足时补查，不默认全量重跑 |
 | **长期记忆** | SQLite 保存结构化偏好与行程，Chroma 按用户隔离召回语义记忆；当前明确需求优先 |
@@ -161,7 +168,26 @@ CI 使用版本管理的 [离线回归 Fixture](tests/fixtures/post_train/README
 | HTTP 并发压测 | **8,100 次**本机请求，覆盖健康、画像和历史接口；不包含 LLM 规划吞吐 | [压测口径与结果](evaluation/http_load_20261020.md) |
 | 最新真实联调 | 点名容量扩容、名称核验、4 小时时间窗及闭馆提醒；保留失败、降级与逐轮快照 | [联调记录](docs/live_calibration_final_20261031.md) |
 
-RAG 保留实验开关，未把检索命中或说明文字变好当作选点提升；协议见 [RAG 评测](docs/rag_benchmark_v2.md) 和 [最终选点评估](docs/route_interest_evaluation.md)。后训练的多模型对照独立记录在 [受控评测报告](docs/post_train_online_holdout50_report.md)，不与 API 联调结果混算。
+RAG 保留实验开关，未把检索命中或说明文字变好当作选点提升；协议见 [RAG 评测](docs/rag_benchmark_v2.md) 和 [最终选点评估](docs/route_interest_evaluation.md)。后训练结果见下节，与 API 联调、语义审核消融分别报告。
+
+### 后训练与受控消融
+
+**数据与训练**：教师答案合成结合确定性规则过滤；清洗历史严格时间边界错误，保留 343 条历史样本，新增 90 个约束场景（含 20 条带规则反馈的返工修正样本），合计 **433 条 SFT / 433 对 DPO**。负例采用单缺陷扰动与失败样本，正例经过本地评分器校验，并执行冻结集指纹去重。从原始 **Qwen2.5-7B-Instruct** 进行 LoRA SFT（`r=16`），合并后作为 4-bit QLoRA DPO 的父模型。
+
+**评测协议**：冻结 **50 场景 = 45 可行 + 5 无解**，共同 seeds `1001/1002/1003`，每模型 150 次。固定 Joint Planner Prompt、`TravelRoute` Schema、`temperature=0.3 / top_p=0.95`；全部合并 BF16，通过流式 vLLM 顺序加载评测，关闭 Prefix Cache、并发 1、每模型丢弃 5 条预热。首轮结果直接复用为 Planner-Only；闭环仅用本地确定性错误反馈，最多额外返工 3 次，**不调用外部 Reviewer**。
+
+| 模型 | 首轮通过 / 135 | 规则闭环通过 / 135 | 闭环 Planner 累计 Token |
+| :--- | ---: | ---: | ---: |
+| 原始基座 | 49.6%（67/135） | 50.4%（68/135） | 1,118,242 |
+| 最终 LoRA SFT | 83.7%（113/135） | 91.9%（124/135） | 598,329 |
+| 最终 SFT + DPO | **87.4%（118/135）** | **91.9%（124/135）** | **560,897** |
+
+- **数据修复收益**：相较上一代 DPO，首轮时间窗违约 **34/135 → 12/135（−64.7%）**。这是清洗与补样后完整训练迭代的结果，不能单独归因于 SFT 或某一类样本。
+- **DPO 的收益与边界**：与最终 SFT 相比，首轮提高 **3.7 个百分点**，终态通过数相同；闭环 Token 再降 **6.3%**，来自返工调用减少（52 → 41 次），不是压短首轮答案。返工挽回率 **50.0% → 35.3%**，不声称 DPO 全面增强纠错能力。
+- **性能与外部对照**：本地 TPOT P50 约 **17.4 ms/token**；最终 DPO 可行集闭环 E2E P50/P95 **6.6 / 22.4 秒**。同冻结任务的 GPT-6.1-sol JSON-mode Planner 首轮 **91.1%**，本地 **87.4%**；教师延迟含网络与调度，不与本地推理速度直接比较。
+- **能力边界**：最终本地两模型无解合规拒答均 **0/15**，不能把可行集 91.9% 写成全场景完成率；前置容量检查与当前系统的分级终态处理也不计入这批模型增益。该冻结集已用于失败诊断，属于迭代对照，尚需独立盲测。
+
+[九模型结果与口径](docs/post_training_controlled_results.md) · [SFT 配置](configs/post_train/c_planner_sft.yaml) · [DPO 配置](configs/post_train/c_planner_dpo.yaml) · [评测执行器](scripts/evaluate_controlled_online_holdout.py)
 
 ## 代码与文档
 
