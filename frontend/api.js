@@ -73,39 +73,52 @@ async function streamPlan(body, callbacks, url = "/api/plan/stream") {
     const reader = r.body.getReader();
     const dec = new TextDecoder();
     let buf = "";
-
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      buf += dec.decode(value, { stream: true });
-      const parts = buf.split("\n\n");
-      buf = parts.pop();
-      for (const part of parts) {
-        const line = part.replace(/^data: /, "").trim();
-        if (!line) continue;
-        try {
+    let terminal = false;
+    try {
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) {
+          buf += dec.decode();
+          if (buf.trim()) throw new Error("规划数据不完整，连接已中断");
+          if (!terminal) throw new Error("规划连接在最终结果前中断");
+          break;
+        }
+        buf += dec.decode(value, { stream: true });
+        const parts = buf.split(/\r?\n\r?\n/);
+        buf = parts.pop();
+        for (const part of parts) {
+          const line = part.split(/\r?\n/).filter(x => x.startsWith("data:"))
+            .map(x => x.slice(5).replace(/^ /, "")).join("\n");
+          if (!line.trim()) continue;
           const ev = JSON.parse(line);
-          if (ev.type === "run") {
-            onRun && onRun(ev);
-          } else if (ev.type === "stage") {
-            onStage && onStage(ev);
-          } else if (ev.type === "stage_summary") {
-            onStageSummary && onStageSummary(ev);
-          } else if (ev.type === "result") {
+          if (ev.type === "run") onRun && onRun(ev);
+          else if (ev.type === "stage") onStage && onStage(ev);
+          else if (ev.type === "stage_summary") onStageSummary && onStageSummary(ev);
+          else if (ev.type === "result") {
+            terminal = true;
+            const status = ev.status || ev.plan?.status;
             if (ev.success === false && ev.missing_fields?.length) {
               onMissingFields && onMissingFields(ev);
-            } else if (ev.success === false) {
-              onError && onError(ev.message || "行程未通过审核，请调整需求后重试；本轮草稿未保存为有效行程。");
+            } else if (ev.success === false || status === "FAILED") {
+              onError && onError(ev.message || "行程未通过审核，请调整需求后重试。");
             } else {
-              onResult && onResult(ev);
+              const partial = status === "PARTIAL_SUCCESS";
+              // Usable partial routes remain visible, but never count as full passes.
+              onResult && onResult({ ...ev, quality_status: status || "SUCCESS",
+                full_success: !partial, partial_success: partial });
             }
           } else if (ev.type === "modification_warning") {
+            terminal = true;
             onWarning && onWarning(ev);
           } else if (ev.type === "error") {
+            terminal = true;
             onError && onError(ev.message || "规划出错");
           }
-        } catch {}
+        }
       }
+    } finally {
+      try { await reader.cancel(); } catch {}
+      reader.releaseLock && reader.releaseLock();
     }
   } catch (e) {
     if (e.name !== "AbortError") onError && onError(e.message || "网络错误");
@@ -700,10 +713,14 @@ function adaptPlan(backendPlan, username) {
   // 途途小贴士：天气说明 + 全部出行提醒（reviewer issues）合并为一组提示
   const tips = [
     ...(backendPlan.weather_note ? [backendPlan.weather_note] : []),
+    ...(backendPlan.status === "PARTIAL_SUCCESS" ? ["部分完成：仍有未解决的排期问题，请查看警告。"] : []),
+    ...(backendPlan.warnings || []),
     ...(backendPlan.route_issues || []),
   ];
 
   return {
+    status: backendPlan.status || "SUCCESS",
+    full_success: backendPlan.status !== "PARTIAL_SUCCESS" && backendPlan.status !== "FAILED",
     _raw: backendPlan,  // 原始 plan：路线优化/回退时按天替换 timeline 后重新 adapt
     plan_id: backendPlan.plan_id,
     title,

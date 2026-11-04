@@ -90,3 +90,42 @@ def test_result_envelope_keeps_failed_plan_object_shape():
     assert result["status"] == "FAILED"
     assert result["plan"]["days"] == []
     assert result["failure_reasons"][0]["code"] == "named_poi_unavailable"
+
+
+
+def test_hard_tiers_dominate_extreme_soft_scores():
+    for tier in ("l0", "l1"):
+        dirty = snapshot(2, 1000000, **{tier: [{"code": "unknown_poi" if tier == "l0" else "commute_time_conflict", "message": "bad"}]})
+        chosen, status, _, _ = choose_snapshot(TravelPlanState(query="x", route_history=[snapshot(1, 0), dirty]))
+        assert chosen["iteration"] == 1 and status == "SUCCESS"
+    chosen, status, _, _ = choose_snapshot(TravelPlanState(query="x", route_history=[
+        snapshot(1, 0, l1=[{"code": "walking_constraint", "message": "warning"}]),
+        snapshot(2, 1000000, l0=[{"code": "unknown_poi", "message": "bad"}]),
+    ]))
+    assert chosen["iteration"] == 1 and status == "PARTIAL_SUCCESS"
+
+
+def test_soft_score_70_30_split_and_enum_order():
+    from app.planning.quality import compute_soft_score
+    scores = []
+    for pref, diversity in [("LOW", "POOR"), ("MEDIUM", "FAIR"), ("HIGH", "GOOD")]:
+        state = TravelPlanState(query="x", reviewer_preference_match_level=pref, reviewer_diversity_and_dining_level=diversity)
+        score, parts = compute_soft_score(state)
+        assert sum(parts[k] for k in ("named_poi", "pace", "continuity", "weather")) == 70
+        assert parts["preference_match"] + parts["diversity_and_dining"] <= 30
+        assert score == sum(parts.values())
+        scores.append(score)
+    assert scores == [75, 87, 100]
+
+
+
+def test_default_candidate_round_contract_stops_with_gap_at_two():
+    state = TravelPlanState(query="旅行", candidate_search_round=1,
+        candidate_search_actions=[{"action": "search_indoor", "query": "博物馆"}])
+    assert state.candidate_max_rounds == 2
+    first = state.model_copy(update=candidate_validator_node(state))
+    assert route_after_candidate_validation(first) == "candidate_react"
+    last = first.model_copy(update={"candidate_search_round": 2})
+    last = last.model_copy(update=candidate_validator_node(last))
+    assert last.candidate_missing_coverage
+    assert route_after_candidate_validation(last) == "planner"

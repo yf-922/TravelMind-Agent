@@ -158,6 +158,10 @@ node --test scripts/test_sse_client.cjs
 
 CI 使用版本管理的 [离线回归 Fixture](tests/fixtures/post_train/README.md)，不依赖开发机的 `data/`。测试覆盖候选补查预算、消息与状态契约、审核返工与历史择优、时间约束、用户隔离、API / SSE 及评测资产校验。执行状态以上方 CI 徽章为准。
 
+本地最新验证：**915 passed 默认断网保护回归**（3 项依赖弃用警告），以及 **9/9 Node SSE 分帧与异常断流测试**。Python 测试默认在收集前拦截非 loopback socket 连接、DNS 与 UDP 外发；CI 禁止关闭保护。本地显式联网集成测试可设置 `TRAVELMIND_TEST_ALLOW_NETWORK=1`。该保护作用于 pytest Python 进程，不替代子进程或操作系统级网络隔离。
+
+SSE 回归覆盖中文 UTF-8 跨 Chunk、事件粘包、reader 异常与不完整尾帧，并验证 reader 清理。`PARTIAL_SUCCESS` 可展示路线和警告，但客户端标记 **`full_success=false`**，不得计为完整规则通过；后端的可用结果 `success` 与评测 `rules_pass` 保持不同语义。快照契约验证 L0/L1 分层优先于软分、70:30 评分构成及默认两轮候选补查上限。
+
 ### 已有实验与适用范围
 
 | 实验 | 结果摘要 | 复核材料 |
