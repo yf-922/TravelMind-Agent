@@ -25,4 +25,3 @@ def test_real_loopback_connection_remains_available():
         server.bind(("127.0.0.1", 0)); server.listen(1)
         with socket.create_connection(server.getsockname(), timeout=1):
             connection, _ = server.accept(); connection.close()
-
