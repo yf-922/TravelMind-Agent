@@ -490,7 +490,7 @@ def test_supervisor_api_uses_authenticated_runtime(monkeypatch):
         captured.update(options)
         yield {"type": "result", "success": False, "missing_fields": ["date"], "plan": None}
     monkeypatch.setattr(runtime, "run_stream", fake_stream)
-    monkeypatch.setattr(main, "search_user_memories", lambda *args: [])
+    monkeypatch.setattr(main, "search_user_memories_with_status", lambda *args: ([], "skipped"))
     client = TestClient(main.app)
     assert client.post("/api/plan/stream", json={"query": "trip", "engine": "supervisor"}).status_code == 401
     response = client.post("/api/plan/stream", json={"query": "trip", "engine": "supervisor"},

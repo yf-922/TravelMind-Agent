@@ -267,6 +267,7 @@ def test_plan_stream_exposes_trace_end_to_end(monkeypatch):
         }
 
     monkeypatch.setattr(main, "run_plan_stream", fake_plan_stream)
+    monkeypatch.setattr(main, "search_user_memories_with_status", lambda *args: ([], "skipped"))
     user_id = "stream-owner"
     headers = {"Authorization": "Bearer " + create_token(user_id)}
     client = TestClient(main.app)

@@ -49,6 +49,12 @@ def _local_address(address):
 
 
 def pytest_configure(config):
+    from pathlib import Path
+
+    # Pin exact tokenizer assets independently of machine-local download caches.
+    tokenizer_cache = str(Path(__file__).parent / "fixtures" / "tiktoken")
+    config._previous_tiktoken_cache = os.environ.get("TIKTOKEN_CACHE_DIR")
+    os.environ["TIKTOKEN_CACHE_DIR"] = tokenizer_cache
     if os.getenv("TRAVELMIND_TEST_ALLOW_NETWORK") == "1":
         if os.getenv("CI"):
             raise pytest.UsageError("CI cannot disable the offline network guard")
@@ -78,6 +84,11 @@ def pytest_configure(config):
 
 
 def pytest_unconfigure(config):
+    previous = getattr(config, "_previous_tiktoken_cache", None)
+    if previous is None:
+        os.environ.pop("TIKTOKEN_CACHE_DIR", None)
+    else:
+        os.environ["TIKTOKEN_CACHE_DIR"] = previous
     guard = getattr(config, "_offline_network_guard", None)
     if guard:
         guard.undo()

@@ -61,7 +61,10 @@ def test_real_meal_transfer_is_l1_and_prevents_enum_early_stop(minutes, valid):
 
 @pytest.mark.parametrize("pref,div", [("HIGH", "GOOD"), ("HIGH", "FAIR"),
     ("MEDIUM", "GOOD"), ("MEDIUM", "FAIR")])
-def test_acceptable_enums_early_stop_despite_model_veto(pref, div):
+def test_acceptable_enums_early_stop_despite_model_veto(pref, div, monkeypatch):
+    # This tests routing/approval, not external ticket price enrichment.
+    monkeypatch.setattr(nodes, "lookup_live_ticket_prices", lambda requests: {})
+    monkeypatch.setattr(nodes, "resolve_attraction_price", lambda item, *args, **kwargs: item)
     state = scheduled(approved=False, review_round=1, time_check_required=True,
         reviewer_preference_match_level=pref, reviewer_diversity_and_dining_level=div,
         route_modify_opinion="午餐可再丰富一些", reviewer_issues=["可增加午餐选择"])

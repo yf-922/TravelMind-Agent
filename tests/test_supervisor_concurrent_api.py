@@ -22,7 +22,7 @@ def test_same_owner_parallel_api_trips_save_distinct_private_sessions(monkeypatc
     database.init_db()
     store = SQLiteAgentMemoryStore(tmp_path / "private.db")
     monkeypatch.setattr(memory_module, "SQLiteAgentMemoryStore", lambda: store)
-    monkeypatch.setattr(main, "search_user_memories", lambda *a: [])
+    monkeypatch.setattr(main, "search_user_memories_with_status", lambda *a: ([], "skipped"))
     async def no_background(*a):
         return None
     monkeypatch.setattr(main, "run_profile_update_agent", no_background)
